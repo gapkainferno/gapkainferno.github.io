@@ -111,15 +111,20 @@ function updateCartUI() {
                 <div class="cart-item">
                     <div class="cart-item-info">
                         <div class="cart-item-name">${escapeHtml(item.name)}</div>
-                        <div class="cart-item-details">${parseFloat(item.price).toFixed(2)} ₴ / шт.</div>
-                    </div>
-                    <div class="cart-item-actions">
+                        <div class="cart-item-details">
+                            ${parseFloat(item.price).toFixed(2)} ₴ 
+                            <span style="opacity: 0.7; font-size: 0.9em;">
+                                ${(item.name.toLowerCase().includes('соус') || item.name.toLowerCase().includes('sauce')) ? '/ шт.' : '/ пакет (5 насінин)'}
+                            </span>
+                        </div>
+                    </div> <div class="cart-item-actions">
                         <span class="cart-item-subtotal">${(parseFloat(item.price) * parseInt(item.qty)).toFixed(2)} ₴</span>
                         <div class="qty-stepper">
                             <button class="qty-btn qty-minus" onclick="changeQty(${index}, -1)" aria-label="Зменшити">−</button>
                             <span class="qty-value">${parseInt(item.qty)}</span>
                             <button class="qty-btn qty-plus"  onclick="changeQty(${index}, +1)" aria-label="Збільшити">+</button>
                         </div>
+                        <button class="cart-item-remove" onclick="removeFromCart(${index})" aria-label="Видалити товар">×</button>
                     </div>
                 </div>
             `).join('');
@@ -392,7 +397,8 @@ window.submitOrder = async function() {
         city: fields.city.value.trim(),
         branch: fields.branch.value.trim(),
         email: document.getElementById('email')?.value.trim() || "-",
-        comment: (document.getElementById('cust-comment')?.value.trim() || "").substring(0, 500)
+        comment: (document.getElementById('cust-comment')?.value.trim() || "").substring(0, 500),
+        secret_token: "summerof26"
     };
 
     // Зберігаємо в пам'ять для наступного разу
@@ -412,14 +418,20 @@ window.submitOrder = async function() {
     orderText += `\n\n💰 РАЗОМ: ${totalSum.toFixed(2)} ₴`;
 
     try {
-        await fetch("https://script.google.com/macros/s/AKfycbyvsLBdoNMlNdwqONwIncN1nVeRpkYXPEvz2YE3Vm0i9-CGSY6Li7HGluSQpX7zBd-g/exec", {
-            method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" },
+        await fetch("https://script.google.com/macros/s/AKfycbwoomvnzTKc2-YOUm3jqoPpX1zEcMAUNGY5oJ1W0GDzHzw6kmllnx_tvK3kSNN8nAT8/exec", {
+            method: "POST", 
+            mode: "no-cors", 
+            cache: 'no-cache', 
+            headers: { "Content-Type": "text/plain" },
             body: JSON.stringify({ 
-    id: orderData.id,
-    message: orderText,       // Текст для Telegram (як і раніше)
-    email: orderData.email,   // Передаємо email для відправки листа
-    name: orderData.name      // Передаємо ім'я для звернення у листі
-})
+                id: orderData.id,
+                message: orderText,       
+                email: orderData.email,   
+                name: orderData.name,
+                phone: orderData.phone,    // Додав телефон (зайвим не буде)
+                total: totalSum,           // Додав суму окремим полем для логів
+                secret_token: "summerof26" // ОБОВ'ЯЗКОВО ДОДАЄМО СЮДИ
+            })
         });
         
         // Показ успіху
@@ -495,7 +507,7 @@ if (honey) return; // Якщо поле заповнене — це бот, пр
 
     try {
         // 3. Реальна відправка
-        await fetch("https://script.google.com/macros/s/AKfycbzk1Yeg_GjGZ52KZCnmP2yf_i6jpR3AfwL2BxWT4HoE4VTkn1x_ksg9LuEm8PDS7GmH/exec", {
+        await fetch("https://script.google.com/macros/s/AKfycbzAN1VnfuzH1SrRjEJPJh3V0UOHHQGAnwki6ROuyKCHD3K_psk65dNZZrlICR13KRw6/exec", {
             method: "POST", 
             mode: "no-cors", 
             headers: { "Content-Type": "application/json" },
