@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 Homestead Inferno Club | Certified Heat Survivor  </title>
+    <title>🔥 Gapka`s Homestead Inferno | Certified Heat Survivor  </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Zilla Slab для заголовків (жирний geometric slab) + Courier Prime для body (typewriter vibe) -->
@@ -351,7 +351,25 @@
         }
 
         /* Footer */
-        .cert-footer {
+        
+.footer-logo-link {
+    display: inline-block;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.footer-logo-link:hover {
+    transform: scale(1.05);
+}
+
+.footer-logo {
+    width: 200px;
+    max-width: 80vw;
+    height: auto;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+}
+
+.cert-footer {
             border-top: 1px solid rgba(255,255,255,0.08);
             padding: 20px;
             text-align: center;
@@ -407,6 +425,44 @@
     filter: drop-shadow(0 0 5px rgba(255, 69, 0, 0.2));
     align-items: center;
 }
+/* ВІДКОРИГОВАНІ СТИЛІ ДЛЯ ЛОГО ВНИЗУ */
+
+/* Оновлений футер для центрування всього */
+.footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 25px 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+    border: 1px solid var(--border-warm);
+    /* Додаємо ці рядки */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Оновлене посилання для логотипу */
+.main-logo-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-decoration: none;
+    margin-bottom: 15px;
+}
+
+/* Оновлене зображення логотипу */
+.logo-image {
+    width: 400px;
+    max-width: 90vw;
+    height: auto;
+    /* Змінюємо grid на block, щоб спрацював margin */
+    display: block; 
+    margin: 0 auto;
+    filter: drop-shadow(0 0 12px rgba(255, 69, 0, 0.3));
+}
+
     </style>
 </head>
 <body>
@@ -427,7 +483,7 @@
             <div class="seal">HEAT<br>SURVIVOR<br></div>
             <div class="flame-icon">🔥</div>
             <div class="logo-wrapper" style="position: relative; z-index: 10; margin-top: 20px;">
-    <a href="index.html" class="main-logo-link">
+    <a href="https://homesteadinferno.github.io/homestead-sauces-and-seeds/index.html" class="main-logo-link">
         <img src="homesteadlogo.svg" alt="Homestead" class="logo-image">
     </a>
 </div>
@@ -490,7 +546,7 @@
 
         <!-- Footer -->
         <div class="cert-footer">
-            <strong>Homestead™</strong> • Est. 2026 • Вироблено в Україні<br>
+            <a href="https://homesteadinferno.github.io/homestead-sauces-and-seeds/index.html" class="footer-logo-link"><img src="homesteadlogo.svg" alt="Homestead" class="footer-logo"></a><br>Est. 2026 • Вироблено в Україні<br>
             Made with fire & passion
         </div>
 

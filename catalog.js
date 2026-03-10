@@ -34,14 +34,20 @@ const cardHTML = `
             <img src="${product.images[0]}" alt="${product.name}" 
                  style="${isInStock ? '' : 'filter: grayscale(0.8); opacity: 0.7;'}">
             
-            <div class="scoville-overlay heat-${product.heatScore || 'unknown'}">
-                <div class="shu-value">${currentHeat.shu}</div>
-                <div class="scoville-bar-container">
-                    <div class="scoville-bar-fill" style="width: ${currentHeat.width}"></div>
-                </div>
-                <div class="scoville-label">Scoville Units</div>
-            </div>
+            ${(product.category === 'seeds' || product.category === 'sauces') ? `
+    <div class="scoville-overlay heat-${product.heatScore || 'unknown'}">
+        <div class="shu-value">${currentHeat.shu}</div>
+        <div class="scoville-bar-container">
+            <div class="scoville-bar-fill" style="width: ${currentHeat.width}"></div>
         </div>
+        <div class="scoville-label">Scoville Units</div>
+    </div>
+` : ''}
+
+
+        </div>
+
+
         <div class="product-label">
             <h3 class="p-name">${product.name}</h3>
                             <div class="price-row">

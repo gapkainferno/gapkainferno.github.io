@@ -290,6 +290,7 @@ header {
     height: auto;
     display: block;
     filter: drop-shadow(0 0 5px rgba(255, 69, 0, 0.2));
+    align-items: center;
 }
 
 .logo-small {
@@ -305,6 +306,7 @@ header {
     align-items: center; /* Вирівнює значок і текст по центру по вертикалі */
     gap: 12px;           /* Відстань між значком і текстом */
     text-decoration: none;
+    
 }
 
 .logo-round {
@@ -314,6 +316,8 @@ header {
     filter: drop-shadow(0 0 8px rgba(255, 102, 0, 0.3));
     transition: transform 0.3s ease;
 }
+
+
 
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

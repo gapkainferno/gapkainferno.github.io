@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌶️ Інструкція з вирощування — Homestead Inferno</title>
+    <title>🌶️ Інструкція з вирощування — Gapka’s Homestead Inferno</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,6 +14,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            
         }
 
         :root {
@@ -35,6 +36,7 @@
             line-height: 1.6;
             padding: 20px 10px;
             min-height: 100vh;
+            
         }
 
         .container {
@@ -101,6 +103,25 @@
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
             position: relative;
             z-index: 1;
+        }
+
+        
+        .header-logo-link {
+            display: inline-block;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo-link:hover {
+            transform: scale(1.05);
+        }
+
+        .header-logo {
+            width: 180px;
+            max-width: 70vw;
+            height: auto;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
         }
 
         .subtitle {
@@ -374,6 +395,7 @@
             background: rgba(255, 255, 255, 0.02);
             border-radius: 10px;
             border: 1px solid var(--border-warm);
+            
         }
 
         .footer-brand {
@@ -389,7 +411,34 @@
             font-size: 12px;
             color: var(--text-secondary);
             line-height: 1.8;
+            text-decoration: none;
         }
+
+        /* Логотипи */
+.logo-image {
+    width: 400px;
+    max-width: 90vw;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 0 5px rgba(255, 69, 0, 0.2));
+}
+
+.logo-small {
+    max-width: 400px;
+    height: auto;
+    display: block;
+    margin: 16px auto;
+    filter: drop-shadow(0 0 5px rgba(255, 69, 0, 0.2));
+}
+
+.main-logo-link {
+    display: block;
+    text-align: center;
+    margin: 0 auto 15px;
+    text-decoration: none;
+}
+        
 
         /* RESPONSIVE */
         @media (max-width: 480px) {
@@ -408,12 +457,14 @@
         <div class="header">
             <div class="pepper-icon">🌶️</div>
             <h1>Інструкція з вирощування</h1>
-            <div class="subtitle">Homestead Inferno</div>
+            <a href="https://homesteadinferno.github.io/homestead-sauces-and-seeds/index.html" class="header-logo-link">
+                <img src="homesteadlogo.svg" alt="Homestead Inferno" class="header-logo">
+            </a>
         </div>
 
         <!-- SPECIES SELECTOR -->
         <div class="species-selector">
-            <div class="selector-label">🔬 Оберіть вид вашого перцю</div>
+            <div class="selector-label">🔬 Оберіть вид вашого перцю (він вказаний на накладці Вашого пакетику з насінням)</div>
             <div class="species-buttons">
                 <button class="species-btn active" data-species="chinense">
                     Capsicum<br><em>Chinense</em>
@@ -998,16 +1049,15 @@
 
         <!-- FOOTER -->
         <div class="footer">
-            <div class="footer-brand">🌶️ HOMESTEAD INFERNO</div>
+    <a href="https://homesteadinferno.github.io/homestead-sauces-and-seeds/index.html" class="main-logo-link"> 
+        <img src="homesteadlogo.svg" alt="Homestead" class="logo-image"></a>
             <div class="footer-text">
                 Крафтові соуси • Насіння суперхотів<br>
                 Вирощено з любов'ю та вогнем 🔥<br><br>
                 <strong>Потрібна допомога?</strong> Напишіть нам:<br>
-                📧 homestead.inferno@gmail.com<br>
+                <a href="mailto:homestead.inferno@gmail.com" style="color: var(--accent-orange); text-decoration: none;">📧 homestead.inferno@gmail.com</a>
               <!--  📱 @homesteadinferno-->
             </div>
-        </div>
-
     </div>
 
     <script>
@@ -1047,7 +1097,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.style.transform =                     entry.target.style.transform = 'translateY(0)';
                 }
             });
         }, { threshold: 0.1 });
