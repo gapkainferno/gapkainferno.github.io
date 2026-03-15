@@ -3,8 +3,13 @@
 // JavaScript для відображення окремої статті
 // ═══════════════════════════════════════════════════════════════
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { 
+    getDatabase, 
+    ref, 
+    onValue, 
+    runTransaction 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBoScvps08gY0fGPNNi-Ms_6J3uCRoh_6U",
@@ -19,6 +24,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 const analytics = getAnalytics(app);
 class ArticleApp {
     constructor() {
