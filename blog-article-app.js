@@ -2,7 +2,24 @@
 // 🔥 BLOG ARTICLE APP — HOMESTEAD INFERNO
 // JavaScript для відображення окремої статті
 // ═══════════════════════════════════════════════════════════════
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyBoScvps08gY0fGPNNi-Ms_6J3uCRoh_6U",
+  authDomain: "gapkas-homestead-inferno.firebaseapp.com",
+  databaseURL: "https://gapkas-homestead-inferno-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "gapkas-homestead-inferno",
+  storageBucket: "gapkas-homestead-inferno.firebasestorage.app",
+  messagingSenderId: "598710636413",
+  appId: "1:598710636413:web:b8edf854d8e8ba2a274614",
+  measurementId: "G-9CL9XT7H4D"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 class ArticleApp {
     constructor() {
         this.currentPost = null;
@@ -96,7 +113,53 @@ class ArticleApp {
                 </div>
             `;
         }
+
+
+
+
+        // Встав це в кінець методу renderArticle()
+const reactionsHTML = `
+    <div class="article-reactions">
+        <h4>Ваш чесний вердикт:</h4>
+        <div class="reaction-group">
+            <button class="react-btn" data-reaction="fire" title="Вогонь!">🔥 <span class="count">0</span></button>
+            <button class="react-btn" data-reaction="base" title="База">😎 <span class="count">0</span></button>
+            <button class="react-btn" data-reaction="trash" title="Ну і лайно...">💩 <span class="count">0</span></button>
+        </div>
+        <p class="reaction-hint">Чи цікава була стаття?</p>
+    </div>
+`;
+document.querySelector('.article-content-full').innerHTML += reactionsHTML;
+this.attachReactionEvents(); // Запускаємо обробку кліків
     }
+
+    attachReactionEvents() {
+    const postId = this.currentPost.id;
+    const buttons = document.querySelectorAll('.react-btn');
+
+    buttons.forEach(btn => {
+        const type = btn.dataset.reaction;
+        const countSpan = btn.querySelector('.count');
+
+        // 1. Отримуємо актуальні дані з бази в реальному часі
+        const reactionRef = ref(db, `posts/${postId}/reactions/${type}`);
+        onValue(reactionRef, (snapshot) => {
+            countSpan.textContent = snapshot.val() || 0;
+        });
+
+        // 2. Обробка кліку
+        btn.addEventListener('click', () => {
+            if (localStorage.getItem(`reacted_${postId}_${type}`)) return; // Захист від накрутки
+
+            runTransaction(reactionRef, (currentCount) => {
+                return (currentCount || 0) + 1;
+            }).then(() => {
+                btn.classList.add('reacted');
+                localStorage.setItem(`reacted_${postId}_${type}`, true);
+            });
+        });
+    });
+}
 
     // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     // RELATED POSTS

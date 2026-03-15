@@ -60,7 +60,7 @@ const blogPosts = [
         date: '2026-03-10',
         author: 'Gapka',
         readTime: '8 хв',
-        image: 'images/seedlings.jpg',
+        image: 'images/Habanerochocolate.png',
         featured: false,
         excerpt: 'Ви вирішили виростити щось гостріше за звичайний "Вогник"? Забудьте все, що знали про перці. Суперхоти грають за власними правилами!',
         content: `
