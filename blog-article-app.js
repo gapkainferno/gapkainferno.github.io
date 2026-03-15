@@ -25,7 +25,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const analytics = getAnalytics(app);
 class ArticleApp {
     constructor() {
         this.currentPost = null;
