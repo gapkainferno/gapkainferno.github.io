@@ -15,7 +15,7 @@
     <meta name="description" id="meta-description" content="Купити насіння гострих перців та соуси в магазині Homestead">
 <meta property="og:title" id="og-title" content="Товар Homestead">
 <meta property="og:description" id="og-description" content="Найкраще насіння та соуси">
-<meta property="og:image" id="og-image" content="">
+<meta property="og:image" id="og-image" content="https://homesteadinferno.github.io/ghi/homesteadlogo.svg">
     <link rel="stylesheet" href="style.css"> 
     <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
@@ -67,6 +67,16 @@
                 </div>
             </div>
         </header>
+
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb" style="margin: 10px 0; font-size: 0.85rem; opacity: 0.8;">
+            <ul style="list-style: none; padding: 0; display: flex; gap: 8px;">
+                <li><a href="index.html">Головна</a></li>
+                <li>/</li>
+                <li><a href="#" id="breadcrumb-category-link">Категорія</a></li>
+                <li>/</li>
+                <li aria-current="page" id="breadcrumb-product-name" style="color: var(--primary-orange);">Товар</li>
+            </ul>
+        </nav>
 
         <button class="back-btn" onclick="goBack()">
             <svg style="width:20px" viewBox="0 0 24 24"><path fill="currentColor" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg>

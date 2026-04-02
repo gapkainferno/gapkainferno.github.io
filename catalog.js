@@ -31,7 +31,7 @@ const cardHTML = `
     <a href="product.html?id=${id}" class="product-card ${isInStock ? '' : 'out-of-stock'}" data-id="${id}">
         <div class="product-tags">${tagsHTML}</div>
         <div class="img-container">
-            <img src="${product.images[0]}" alt="${product.name}" 
+            <img src="${product.images[0]}" alt="${product.name}" loading="lazy"
                  style="${isInStock ? '' : 'filter: grayscale(0.8); opacity: 0.7;'}">
             
             ${(product.category === 'seeds' || product.category === 'sauces') ? `

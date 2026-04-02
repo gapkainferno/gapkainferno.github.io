@@ -39,10 +39,43 @@ document.addEventListener('DOMContentLoaded', () => {
         body.classList.add('otherseeds-page');
     }
 
+    function injectBreadcrumbSchema(product, id) {
+        const baseUrl = "https://homesteadinferno.github.io/ghi/";
+        const categoryMap = {
+            'seeds': { name: 'Насіння суперхотів', url: 'seedsandseedlings.html' },
+            'sauces': { name: 'Крафтові Соуси', url: 'sauces.html' },
+            'otherseeds': { name: 'Інше насіння', url: 'otherseeds.html' }
+        };
+        const cat = categoryMap[product.category] || { name: 'Каталог', url: 'index.html' };
+
+        const breadcrumbLink = document.getElementById('breadcrumb-category-link');
+        const breadcrumbProd = document.getElementById('breadcrumb-product-name');
+        if (breadcrumbLink) {
+            breadcrumbLink.textContent = cat.name;
+            breadcrumbLink.href = cat.url;
+        }
+        if (breadcrumbProd) breadcrumbProd.textContent = product.name;
+
+        const schema = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Головна", "item": baseUrl + "index.html" },
+                { "@type": "ListItem", "position": 2, "name": cat.name, "item": baseUrl + cat.url },
+                { "@type": "ListItem", "position": 3, "name": product.name, "item": window.location.href }
+            ]
+        };
+
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.text = JSON.stringify(schema);
+        document.head.appendChild(script);
+    }
+
     // Переміщуємо функцію injectProductSchema на початок для кращої читабельності
     function injectProductSchema(product, id) {
         const baseUrl = "https://homesteadinferno.github.io/ghi/"; // Зміни на свій домен
-        
+
         const schema = {
             "@context": "https://schema.org/",
             "@type": "Product",
@@ -73,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (product) {
         injectProductSchema(product, productId);
+        injectBreadcrumbSchema(product, productId);
         
         // ===== 1. SEO (для Google та соцмереж) =====
         document.title = `${product.name} — купити в Homestead`;
@@ -89,8 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const ogImage = document.getElementById('og-image');
         if (ogImage && product.images && product.images[0]) {
             // Додаємо базову адресу до назви картинки
-            const baseUrl = "https://homesteadinferno.github.io/homestead-sauces-and-seeds/";
-            ogImage.content = baseUrl + "images/" + product.images[0];
+            const baseUrl = "https://homesteadinferno.github.io/ghi/";
+            ogImage.content = baseUrl + product.images[0];
         }
         
         // ===== 11. ПЕРЕВІРКА НАЯВНОСТІ (Out of Stock логіка) =====

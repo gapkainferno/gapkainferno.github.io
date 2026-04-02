@@ -7,4 +7,4 @@ Disallow: /node_modules/
 Disallow: /.github/
 
 # Шлях до карти сайту
-Sitemap: https://homesteadinferno.github.io/homestead-sauces-and-seeds/sitemap.xml
+Sitemap: https://homesteadinferno.github.io/ghi/sitemap.xml
