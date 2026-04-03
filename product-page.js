@@ -109,16 +109,26 @@ document.addEventListener('DOMContentLoaded', () => {
         injectBreadcrumbSchema(product, productId);
         
         // ===== 1. SEO (для Google та соцмереж) =====
-        document.title = `${product.name} — купити в Homestead`;
+        const categorySEO = {
+            'seeds': 'Насіння суперхотів',
+            'sauces': 'Крафтові соуси',
+            'otherseeds': 'Насіння овочів та томатів'
+        };
+        const catName = categorySEO[product.category] || 'Товари';
+        document.title = `${product.name} — ${catName} — купити в Gapka's Homestead Inferno`;
         
         // Оновлюємо мета-теги з перевірками
         const metaDesc = document.getElementById('meta-description');
         if (metaDesc) {
-            metaDesc.content = product.description.replace(/<[^>]*>/g, '').substring(0, 160);
+            if (product.metaDescription) {
+                metaDesc.content = product.metaDescription;
+            } else {
+                metaDesc.content = product.description.replace(/<[^>]*>/g, '').substring(0, 160);
+            }
         }
         
         const ogTitle = document.getElementById('og-title');
-        if (ogTitle) ogTitle.content = product.name;
+        if (ogTitle) ogTitle.content = `${product.name} — ${catName} — Gapka's Homestead Inferno`;
         
         const ogImage = document.getElementById('og-image');
         if (ogImage && product.images && product.images[0]) {
@@ -165,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <h5>УВАГА: ЕКСТРЕМАЛЬНА ГОСТРОТА</h5>
                             <p>${isSauce 
                                 ? "Цей соус містить екстремальну концентрацію капсаїцину. Вживати мікродозами." 
-                                : "Концентрація речовини класифікується як екстремальна. Homestead рекомендує використовувати рукавички при роботі з насінням та плодами."}
+                                : "Концентрація речовини класифікується як екстремальна. Gapka's Homestead Inferno рекомендує використовувати рукавички при роботі з насінням та плодами."}
                             </p>
                         </div>
                     </div>`;

@@ -12,7 +12,7 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://homesteadinferno.github.io/homestead-sauces-and-seeds/homesteadlogo.svg</image:loc>
+      <image:loc>https://homesteadinferno.github.io/ghi/homesteadlogo.svg</image:loc>
       <image:caption>Gapka's Homestead Inferno - Гострі соуси та насіння</image:caption>
     </image:image>
   </url>
@@ -357,5 +357,5 @@
 
 6. Відправ Google:
    - Google Search Console → Sitemaps → Add sitemap
-   - URL: https://homesteadinferno.github.io/homestead-sauces-and-seeds/sitemap.xml
+   - URL: https://homesteadinferno.github.io/ghi/sitemap.xml
 -->
