@@ -7,11 +7,18 @@
     default-src 'self' https://*.firebasedatabase.app; 
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
     font-src 'self' https://fonts.gstatic.com; 
-    script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebasedatabase.app; 
-    connect-src 'self' https://*.firebasedatabase.app https://*.googleapis.com wss://*.firebasedatabase.app wss://*.firebaseio.com; 
+    script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebasedatabase.app https://www.googletagmanager.com; 
+    connect-src 'self' https://*.firebasedatabase.app https://*.googleapis.com wss://*.firebasedatabase.app wss://*.firebaseio.com https://www.google-analytics.com;
     frame-src 'self' https://*.firebasedatabase.app;
     img-src 'self' data:;
-">
+"><!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9CL9XT7H4D');
+    </script>
     
     <title>Блог Gapka's Homestead Inferno — Все про гострі перці та соуси</title>
     <meta name="description" content="Поради з вирощування суперхотів, рецепти гострих соусів, новини ферми та цікавинки про найгостріші перці світу від Gapka's Homestead Inferno">
