@@ -1124,7 +1124,7 @@ function cleanPhone(phone) {
     orderText += `\n\n💰 РАЗОМ: ${totalSum.toFixed(2)} ₴`;
 
     try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbxrYj-iKdPcfWqDk9G3fdnGHh-MMZNflC7cXDPTXMw3IsbMlaoe6Sfb9cxcmUVTEP02/exec", {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbyy8ZV_7YRMwj7bm_UJweRZE5z5fkBJL8eRFo6msF6KBrJEPv73aSPyUhN96LbC1bvN/exec", {
             method: "POST",
             mode: "cors", 
             redirect: "follow",
@@ -1140,49 +1140,44 @@ function cleanPhone(phone) {
                 secret_token: "summerof26" // ОБОВ'ЯЗКОВО ДОДАЄМО СЮДИ
             })
         });
-        
+
+        // Якщо ми тут і mode: "cors", значить запит пройшов успішно
         if (!response.ok) {
-            throw new Error(`Помилка сервера: ${response.status}`);
+            throw new Error(`Сервер повернув помилку: ${response.status}`);
         }
 
-        // Тепер ми можемо прочитати JSON від Google Script
-        const result = await response.json();
-
-        if (result.status === "success") {
-            // Відстеження успішної покупки в Google Analytics 4
-            if (typeof gtag === 'function') {
-                gtag('event', 'purchase', {
-                    transaction_id: orderData.id,
-                    value: totalSum,
-                    currency: 'UAH',
-                    items: cart.map(item => ({
-                        item_id: item.productId || item.name,
-                        item_name: item.name,
-                        price: item.price,
-                        quantity: item.qty
-                    }))
-                });
-            }
-            // Показ успіху тільки якщо сервер підтвердив запис
-            document.getElementById('modal-main-content').style.display = 'none';
-            const successMsg = document.getElementById('success-msg');
-            if (successMsg) {
-                successMsg.style.display = 'block';
-                const orderDisplay = document.getElementById('orderNumberDisplay');
-                if (orderDisplay) orderDisplay.innerText = orderData.id;
-            }
-            saveCart([]);
-            updateCartUI();
-            console.log("Сервер підтвердив замовлення:", result.orderId);
-        } else {
-            // Сервер повернув помилку (наприклад, помилка валідації секретного токена)
-            throw new Error(result.message || "Сервер відхилив замовлення");
+        // Відстеження успішної покупки в Google Analytics 4
+        if (typeof gtag === 'function') {
+            gtag('event', 'purchase', {
+                transaction_id: orderData.id,
+                value: totalSum,
+                currency: 'UAH',
+                items: cart.map(item => ({
+                    item_id: item.productId || item.name,
+                    item_name: item.name,
+                    price: item.price,
+                    quantity: item.qty
+                }))
+            });
         }
+
+        // Показ екрану успіху
+        document.getElementById('modal-main-content').style.display = 'none';
+        const successMsg = document.getElementById('success-msg');
+        if (successMsg) {
+            successMsg.style.display = 'block';
+            const orderDisplay = document.getElementById('orderNumberDisplay');
+            if (orderDisplay) orderDisplay.innerText = orderData.id;
+        }
+        saveCart([]);
+        updateCartUI();
+        console.log("Замовлення відправлено успішно!");
 
     } catch (e) {
         console.error("Помилка відправки:", e);
-        if (e.message.includes('NetworkError') || e.message.includes('fetch')) {
-            alert("Проблема зі з'єднанням. Перевірте інтернет та спробуйте ще раз 🌐");
+        // Специфічна перевірка для CORS помилок, які часто виникають з Google Scripts
+        if (e.message.includes('Failed to fetch') || e.message.includes('NetworkError')) {
+            alert("Помилка мережі або CORS. Перевірте з'єднання. Якщо проблема повторюється — напишіть нам у месенджер! 🌐");
         } else {
             alert("Помилка сервера. Спробуйте ще раз або напишіть нам у месенджер 🌶️");
         }
