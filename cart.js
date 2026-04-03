@@ -1,4 +1,4 @@
-﻿﻿//БЛОК КЕРУВАННЯ АКЦІЯМИ.
+﻿﻿﻿﻿//БЛОК КЕРУВАННЯ АКЦІЯМИ.
 const GLOBAL_SETTINGS = {
     isSaleActive: false, 
     discountPercent: 10, 
@@ -1001,7 +1001,8 @@ window.submitOrder = async function() {
     const cleaned = phone.replace(/[\s\(\)\-]/g, '');
     
     // 2. Перевіряємо формат: +380XXXXXXXXX або 0XXXXXXXXX
-    const phoneRegex = /^(?:\+38)?0\d{9}$/;
+    // Дозволяємо +380, 380, 80 або просто 0 на початку
+    const phoneRegex = /^(?:\+?38)?(?:0|80)\d{9}$/;
     
     return phoneRegex.test(cleaned);
 }
