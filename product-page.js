@@ -76,6 +76,35 @@ document.addEventListener('DOMContentLoaded', () => {
     function injectProductSchema(product, id) {
         const baseUrl = "https://homesteadinferno.github.io/ghi/"; // Зміни на свій домен
 
+        let offers;
+        // Якщо товар має варіанти (наприклад, насіння), використовуємо AggregateOffer
+        if (product.seedVersions && Object.keys(product.seedVersions).length > 1) {
+            const prices = Object.values(product.seedVersions).map(v => v.price);
+            let finalPrices = prices;
+            if (typeof GLOBAL_SETTINGS !== 'undefined' && GLOBAL_SETTINGS.isSaleActive && product.allowSale) {
+                finalPrices = prices.map(p => Math.round(p * (1 - GLOBAL_SETTINGS.discountPercent / 100)));
+            }
+            offers = {
+                "@type": "AggregateOffer",
+                "url": window.location.href,
+                "priceCurrency": "UAH",
+                "lowPrice": Math.min(...finalPrices),
+                "highPrice": Math.max(...finalPrices),
+                "offerCount": finalPrices.length,
+                "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                "itemCondition": "https://schema.org/NewCondition"
+            };
+        } else {
+            offers = {
+                "@type": "Offer",
+                "url": window.location.href,
+                "priceCurrency": "UAH",
+                "price": product.price,
+                "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                "itemCondition": "https://schema.org/NewCondition"
+            };
+        }
+
         const schema = {
             "@context": "https://schema.org/",
             "@type": "Product",
@@ -87,15 +116,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 "@type": "Brand",
                 "name": "Gapka's Homestead Inferno"
             },
-            "offers": {
-                "@type": "Offer",
-                "url": window.location.href,
-                "priceCurrency": "UAH",
-                "price": product.price,
-                "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-                "itemCondition": "https://schema.org/NewCondition"
-            }
+            "offers": offers
         };
+
+        // Додаємо відгуки та рейтинг, якщо вони є
+        if (product.reviews && product.reviews.length > 0) {
+            schema.review = product.reviews.map(r => ({
+                "@type": "Review",
+                "author": { "@type": "Person", "name": r.author },
+                "reviewBody": r.text
+            }));
+            schema.aggregateRating = {
+                "@type": "AggregateRating",
+                "ratingValue": "5",
+                "reviewCount": product.reviews.length
+            };
+        }
 
         // Створюємо елемент скрипта
         const script = document.createElement('script');
