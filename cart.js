@@ -1124,7 +1124,7 @@ function cleanPhone(phone) {
     orderText += `\n\n💰 РАЗОМ: ${totalSum.toFixed(2)} ₴`;
 
     try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbyPqVKjb_-7WzXMWbF7V5BHx_xQZTPBH1PwZrYGHGr27Gd40mW-uu4W2WKhZtJ6ED0o/exec", {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbxUfrOJkuhvbLQ0KuooVzvg85gGR0DrjwVl0f5jBI8h-Ejelpc9-1_m3H3dqYQYpeMH/exec", {
             method: "POST",
             mode: "cors", 
             redirect: "follow",
@@ -1137,7 +1137,8 @@ function cleanPhone(phone) {
                 name: orderData.name,
                 phone: orderData.phone,    // Додав телефон (зайвим не буде)
                 total: totalSum,           // Додав суму окремим полем для логів
-                secret_token: "summerof26" // ОБОВ'ЯЗКОВО ДОДАЄМО СЮДИ
+                cart: cart,                // Передаємо масив товарів для чека в імейлі
+                secret_token: "summerof26"
             })
         });
 
@@ -1242,7 +1243,7 @@ window.sendReview = async function() {
 
     try {
         // 3. Реальна відправка
-        await fetch("https://script.google.com/macros/s/AKfycbzAN1VnfuzH1SrRjEJPJh3V0UOHHQGAnwki6ROuyKCHD3K_psk65dNZZrlICR13KRw6/exec", {
+        await fetch("https://script.google.com/macros/s/AKfycbzbBRpcgSGY2llXEN5MbmwmbfwiI6SwIlI9QU7XkqXm7lrFX61xt-pnZ0-f-IP9Zd3Y/exec", {
             method: "POST",
             mode: "cors",
             redirect: "follow",
