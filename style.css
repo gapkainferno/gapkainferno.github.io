@@ -45,6 +45,15 @@
     --sidebar-bg:      rgba(20, 15, 10, 0.92);
     --sidebar-width:   270px;        /* ширина sidebar              */
 
+    /* ── Z-Index Scale ── */
+    --z-below:         -1;
+    --z-base:          1;
+    --z-header:        1000;
+    --z-dropdown:      2000;
+    --z-floating:      3000;
+    --z-modal:         10000;
+    --z-max:           99999;
+
     /* ── Кошик / модалка ── */
     --cart-bg:         #2a1f18;
     --modal-overlay:   rgba(0, 0, 0, 0.88);
@@ -55,6 +64,11 @@
     --fs-xs:           15px;         /* дуже дрібний                  */
     --fs-h1:           30px;         /* заголовок головної            */
     --fs-product-name: 3rem;         /* назва товару                  */
+    --fs-base:         1.25rem;      /* 20px - основний текст         */
+    --fs-sm:           1.063rem;     /* 17px - дрібніший текст        */
+    --fs-xs:           0.938rem;     /* 15px - дуже дрібний           */
+    --fs-h1:           1.875rem;     /* 30px - заголовок головної     */
+    --fs-product-name: 3rem;         /* 48px - назва товару           */
 
     /* ── Радіуси ── */
     --radius-sm:   6px;
@@ -201,13 +215,16 @@ body {
     width: 100%;
 }
 /* Виняток: Головна сторінка має картинку, тому перезаписуємо змінну */
+
 body.homepage {
     --bg-gradient: url('peppers-bg.webp'); 
+    --bg-gradient: url('peppers-bg.webp');
 }
 
 /* Сторінка товару: якщо теми немає, даємо дефолтний градієнт */
 body.product-page-layout {
     background-image: var(--bg-gradient, radial-gradient(ellipse at 50% 20%, #2c1e17 0%, #0f0806 100%)) !important;
+    background-image: var(--bg-gradient, radial-gradient(ellipse at 50% 20%, #2c1e17 0%, #0f0806 100%));
 }
 
 /* Оверлей */
@@ -222,6 +239,7 @@ body.product-page-layout {
 /* На головній затемнюємо картинку */
 body.homepage .overlay {
     background: linear-gradient(to bottom, rgba(30,18,10,0.9), rgba(30,18,10,0.6), rgba(30,18,10,0.9)) !important;
+    background: linear-gradient(to bottom, rgba(30,18,10,0.9), rgba(30,18,10,0.6), rgba(30,18,10,0.9));
 }
 a, a:visited, a:active, a:focus {
     text-decoration: none !important; /* Ніяких ліній під текстом */
@@ -248,6 +266,7 @@ header {
     border-bottom: 1px solid rgba(255,255,255,0.06);
     position: relative;
     z-index: 1000;
+    z-index: var(--z-header);
 }
 
 /* Анімований рядок-підказка */
@@ -326,6 +345,7 @@ header {
 .search-container {
     position: relative;
     z-index: 11000;
+    z-index: calc(var(--z-header) + 1);
     max-width: 520px;
     width: 100%;
     margin: 0 auto;
@@ -370,8 +390,10 @@ header {
     border: 1px solid var(--primary-color);
     border-radius: var(--radius-lg);
     max-height: 480px;
+    max-height: 30rem;
     overflow-y: auto;
     z-index: 11001; /* Збільшено з 1000 до 9999, щоб уникнути перекриття з іншими елементами */
+    z-index: var(--z-dropdown);
     display: none;
     box-shadow: 0 12px 36px rgba(0,0,0,0.5);
     backdrop-filter: blur(10px);
@@ -404,6 +426,7 @@ header {
    §6  🛒  КОШИК
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .cart-wrapper {
+    display: none !important; /* Приховуємо стару круглу кнопку, щоб не дублювати новий кошик у хедері */
     position: absolute;
     top: 24px;
     right: 36px;
@@ -504,6 +527,43 @@ header {
 .floating-cart .cart-icon   { font-size: 22px; }
 .floating-cart #cart-count  { font-size: 11px; font-weight: 700; }
 
+/* Стилі для верхньої текстової кнопки кошика */
+.header-cart-link {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: var(--z-floating);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    background: var(--surface);
+    border: 1px solid var(--primary-color);
+    border-radius: 30px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.header-cart-link:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+    color: #fff !important;
+}
+
+.header-cart-link .cart-count {
+    background: var(--danger-color);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+}
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    §7  🏠  ГОЛОВНА СТОРІНКА
@@ -1827,7 +1887,7 @@ main.product-page {
 .modal-box {
     background: linear-gradient(160deg, #1a110d 0%, #120c0a 100%);
     width: 100%;
-    max-width: 1020px;
+    max-width: 1400px; /* Ще більше збільшуємо ширину для простору */
     margin: 30px auto;
     border-radius: 16px;
     position: relative;
@@ -1885,7 +1945,7 @@ main.product-page {
     text-transform: uppercase;
     letter-spacing: var(--ls-caps);
     margin: 0;
-    font-size: 22px;
+    font-size: 28px; /* Збільшено заголовок */
     font-weight: 700;
 }
 .modal-title span {
@@ -1921,7 +1981,7 @@ main.product-page {
 .form-group label {
     display: block;
     font-family: var(--font-body);
-    font-size: 11px;
+    font-size: 14px; /* Збільшено назви полів */
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -1940,7 +2000,7 @@ main.product-page {
     padding: 11px 14px;
     color: var(--text-color);
     font-family: var(--font-body);
-    font-size: 15px;
+    font-size: 18px; /* Збільшено текст у полях вводу */
     line-height: 1.4;
     transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
     appearance: none;
@@ -2014,7 +2074,7 @@ main.product-page {
 
 .summary-title {
     font-family: var(--font-heading);
-    font-size: 17px;
+    font-size: 22px; /* Збільшено заголовок замовлення */
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -2079,10 +2139,29 @@ main.product-page {
 }
 .cart-item:last-child { border-bottom: none; }
 
+/* Стилі для зображення товару в кошику */
+.cart-item-image-wrapper {
+    width: 80px; /* Збільшено фото в кошику */
+    height: 80px; 
+    flex-shrink: 0; /* Запобігаємо стисканню зображення */
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--surface-2); /* Фоновий колір-заповнювач */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-item-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Зображення покриває область, обрізаючи за потреби */
+}
+
 .cart-item-info { flex: 1; min-width: 0; }
 
 .cart-item-name {
-    font-size: 13px;
+    font-size: 16px; /* Збільшено назву товару в списку */
     font-weight: 700;
     color: var(--text-color);
     margin-bottom: 3px;
@@ -2095,7 +2174,7 @@ main.product-page {
 }
 
 .cart-item-details {
-    font-size: 12px;
+    font-size: 14px; /* Збільшено деталі (ціну) */
     color: rgba(255,255,255,0.4);
     line-height: 1.4;
 }
@@ -2222,7 +2301,7 @@ main.product-page {
 .total-price-display {
     font-family: var(--font-heading);
     font-weight: 800;
-    font-size: 30px;
+    font-size: 38px; /* Збільшено фінальну ціну */
     color: var(--primary-color);
     white-space: nowrap;
     line-height: 1;
@@ -2237,7 +2316,7 @@ main.product-page {
     padding: 15px 20px;
     border-radius: 8px;
     font-family: var(--font-heading);
-    font-size: 16px;
+    font-size: 18px; /* Збільшено текст на кнопці */
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: var(--ls-caps);
@@ -2880,6 +2959,11 @@ footer {
 
     .hero-text       { padding: 30px 10px; }
     .error-404 h1    { font-size: 80px; }
+
+    /* Ховаємо верхній кошик на мобільних, щоб не перекривав пошук/лого */
+    .header-cart-link {
+        display: none;
+    }
 
     /* Product page на крихітному екрані */
     .main-img-wrap   { aspect-ratio: 4 / 3; }  /* трохи ширше */

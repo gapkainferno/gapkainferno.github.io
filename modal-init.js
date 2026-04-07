@@ -91,5 +91,33 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
     </div>`;
 
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    // HTML для плаваючого кошика, який буде видно завжди
+    const floatingCartHTML = `
+    <a href="javascript:void(0)" class="floating-cart" onclick="openCheckout()" title="Відкрити кошик">
+        <span class="cart-icon">🛒</span>
+        <span id="cart-count">0</span>
+    </a>`;
+
+    // HTML для текстової кнопки кошика у верхньому правому куті
+    const headerCartHTML = `
+    <a href="javascript:void(0)" class="header-cart-link" onclick="openCheckout()" title="Перейти до кошика">
+        <span class="cart-text">Кошик</span>
+        <span class="cart-icon">🛒</span>
+        <span class="cart-count">0</span>
+    </a>`;
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML + floatingCartHTML + headerCartHTML);
+
+    // Закриття модального вікна при кліку на темну область поза формою (оверлей)
+    const modal = document.getElementById('checkoutModal');
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeCheckout();
+        }
+    });
+
+    // Оновлюємо інтерфейс кошика відразу після додавання, якщо функція доступна
+    if (typeof updateCartUI === 'function') {
+        updateCartUI();
+    }
 });

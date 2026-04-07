@@ -1,4 +1,4 @@
-﻿﻿﻿﻿//БЛОК КЕРУВАННЯ АКЦІЯМИ.
+﻿﻿﻿﻿﻿﻿//БЛОК КЕРУВАННЯ АКЦІЯМИ.
 const GLOBAL_SETTINGS = {
     isSaleActive: false, 
     discountPercent: 10, 
@@ -176,10 +176,19 @@ function updateCartUI() {
                 const priceDisplay = hasDiscount 
                     ? `<span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; margin-right: 5px;">${parseFloat(item.originalPrice).toFixed(2)} ₴</span>${parseFloat(item.price).toFixed(2)} ₴`
                     : `${parseFloat(item.price).toFixed(2)} ₴`;
+                
+                // Отримуємо дані продукту для зображення
+                const productData = allProducts[item.productId];
+                const imageUrl = (productData && productData.images && productData.images.length > 0) 
+                                 ? productData.images[0] 
+                                 : 'placeholder.webp'; // Запасне зображення
 
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'cart-item';
                 itemDiv.innerHTML = `
+                    <div class="cart-item-image-wrapper">
+                        <img src="${imageUrl}" alt="${escapeHtml(item.name)}" class="cart-item-img">
+                    </div>
                     <div class="cart-item-info">
                         <div class="cart-item-name">${escapeHtml(item.name)}</div>
                         <div class="cart-item-details">
@@ -336,8 +345,8 @@ function initNovaPoshta() {
     // ───────────────────────────────────────────────────────────────
 
     const triggerCitySearch = async (query) => {
-        // ✅ ФІКС: Додано більше перевірок
-        if (isLocked) {
+        // Додаємо перевірку блокування на початку функції
+        if (isLocked || !query) {
             console.log('🔒 Пошук заблокований');
             return;
         }
@@ -437,9 +446,11 @@ function initNovaPoshta() {
         if (isLocked) return;
         
         const val = cityInput.value.trim();
+        const cleanedVal = cleanForSearch(val);
+        const cleanedLast = cleanForSearch(lastSelectedCity);
         
         // Якщо вже є вибране місто — показуємо підказку
-        if (val.length >= 1 && val === lastSelectedCity && cityInput.dataset.ref) {
+        if (cleanedVal.length >= 1 && cleanedVal === cleanedLast && cityInput.dataset.ref) {
             citySuggestions.innerHTML = `<div class="np-item np-info">✅ Обрано: ${escapeHtml(lastSelectedCity)}</div>`;
             citySuggestions.style.display = 'block';
             setTimeout(() => {
@@ -463,6 +474,9 @@ function initNovaPoshta() {
 
         e.stopPropagation();
         
+        // 0. Миттєво скасовуємо будь-який запланований пошук
+        clearTimeout(debounceTimeout);
+
         // ✅ ФІКС: Блокуємо надійно
         isLocked = true;
         clearTimeout(debounceTimeout);
