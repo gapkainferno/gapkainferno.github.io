@@ -1,4 +1,4 @@
-﻿const allProducts = {
+﻿﻿const allProducts = {
     // ID товару (використовується в посиланні: product.html?id=habaneroredsavina)
 "habaneroredsavina": {
         name: "Habanero Red Savina",
@@ -1242,5 +1242,62 @@ heatScore:"2",
             }
         });
         console.log("🔥 Gapka's Homestead Inferno: Протоколи ціноутворення синхронізовано.");
+
+        // ───────────────────────────────────────────────────────────────
+        // АВТОМАТИЧНА СИНХРОНІЗАЦІЯ SEO-РОЗМІТКИ (JSON-LD)
+        // ───────────────────────────────────────────────────────────────
+        const syncSchemaWithDatabase = () => {
+            const schemaScript = document.querySelector('script[type="application/ld+json"]');
+            if (!schemaScript) return;
+
+            try {
+                const data = JSON.parse(schemaScript.textContent);
+                const graph = data['@graph'] || [data];
+                let wasUpdated = false;
+
+                graph.forEach(obj => {
+                    if (obj['@type'] === 'Product') {
+                        const nameLower = obj.name.toLowerCase();
+                        let targetCategory = "";
+
+                        // Визначаємо категорію для агрегованих цін на головній
+                        if (nameLower.includes("соуси")) targetCategory = "sauces";
+                        else if (nameLower.includes("суперхотів")) targetCategory = "seeds";
+                        else if (nameLower.includes("інше насіння")) targetCategory = "otherseeds";
+
+                        if (targetCategory) {
+                            const allPrices = [];
+                            Object.values(allProducts)
+                                .filter(p => p.category === targetCategory)
+                                .forEach(p => {
+                                    allPrices.push(Number(p.price));
+                                    if (p.isolatedAvailable) allPrices.push(Math.round(p.price * 1.25));
+                                });
+
+                            if (allPrices.length > 0 && obj.offers && obj.offers['@type'] === 'AggregateOffer') {
+                                obj.offers.lowPrice = Math.min(...allPrices);
+                                obj.offers.highPrice = Math.max(...allPrices);
+                                obj.offers.offerCount = allPrices.length;
+                                wasUpdated = true;
+                            }
+                        }
+                    }
+                });
+
+                if (wasUpdated) {
+                    schemaScript.textContent = JSON.stringify(data, null, 2);
+                    console.log("✅ SEO: Ціни в JSON-LD синхронізовано з базою товарів.");
+                }
+            } catch (e) {
+                console.warn("⚠️ SEO: Не вдалося автоматично оновити ціни в розмітці:", e);
+            }
+        };
+
+        // Запускаємо синхронізацію після завантаження сторінки
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', syncSchemaWithDatabase);
+        } else {
+            syncSchemaWithDatabase();
+        }
     }
 })();
