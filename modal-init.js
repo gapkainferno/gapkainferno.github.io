@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         <select id="cust-delivery">
                             <option value="Відділення НП">Нова Пошта (Відділення)</option>
                             <option value="Поштомат НП">Нова Пошта (Поштомат)</option>
+                            <option value="Укрпошта">Укрпошта</option>
                             <option value="Кур'єр НП">Нова Пошта (Адресна доставка)</option>
                         </select>
                     </div>
