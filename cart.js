@@ -3,9 +3,9 @@ const GLOBAL_SETTINGS = {
     isSaleActive: false, 
     discountPercent: 10, 
     saleDeadline: "2026-02-05", 
-    promoText: "ПЕКЕЛЬНИЙ ТИЖДЕНЬ: -10% НА НАСІННЯ ТА СОУСИ!",
+    promoText: "🔥 ГОТУЄМОСЯ ДО ВЕЛИКОГО ЗАПУСКУ ВОСЕНИ 2026!",
     // Щоб розблокувати — просто зробіть масив порожнім: lockedCategories: []  ЗАМІСТь "ГОТУЄМОСЯ..." promoText: "ПЕКЕЛЬНИЙ ТИЖДЕНЬ: -10% НА НАСІННЯ ТА СОУСИ!"
-    lockedCategories: [] 
+    lockedCategories: ['sauces', 'seeds', 'otherseeds'] 
 };
 
 const CART_CONSTANTS = {
@@ -187,7 +187,25 @@ function saveCart(cart) { localStorage.setItem('homestead_cart', JSON.stringify(
 
 // === 2. ОНОВЛЕННЯ ІНТЕРФЕЙСУ ===
 function updateCartUI() {
-    const cart = getFreshCart(); 
+    let cart = getFreshCart(); 
+
+    // ✅ АВТО-ОЧИЩЕННЯ: Видаляємо товари, яких більше немає в базі (products.js)
+    if (typeof allProducts !== 'undefined' && cart.length > 0) {
+        const originalLength = cart.length;
+        cart = cart.filter(item => {
+            // Бандли (Box) з головної сторінки не внесені в products.js, тому їх не видаляємо
+            if (item.productId && item.productId.startsWith('bundle_')) return true;
+            
+            // Перевіряємо наявність ID у глобальному об'єкті allProducts
+            return !!allProducts[item.productId];
+        });
+
+        if (cart.length !== originalLength) {
+            saveCart(cart);
+            console.log('🛒 Кошик синхронізовано: видалено застарілі товари, яких немає в базі');
+        }
+    }
+
     const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
     const totalSum = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
 
@@ -208,20 +226,27 @@ function updateCartUI() {
                     ? `<span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; margin-right: 5px;">${parseFloat(item.originalPrice).toFixed(2)} ₴</span>${parseFloat(item.price).toFixed(2)} ₴`
                     : `${parseFloat(item.price).toFixed(2)} ₴`;
                 
-                // Отримуємо дані продукту для зображення
-                const productData = allProducts[item.productId];
+                // Перевірка на існування товару в базі (захист від видалених ID)
+                const productData = (typeof allProducts !== 'undefined' && item.productId) 
+                                    ? allProducts[item.productId] 
+                                    : null;
+
                 const imageUrl = (productData && productData.images && productData.images.length > 0) 
                                  ? productData.images[0] 
                                  : 'placeholder.webp'; // Запасне зображення
+
+                // Використовуємо збережену назву з кошика (вона містить версію), 
+                // або беремо з бази, або ставимо дефолтну заглушку
+                const safeName = item.name || (productData ? productData.name : 'Товар');
 
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'cart-item';
                 itemDiv.innerHTML = `
                     <div class="cart-item-image-wrapper">
-                        <img src="${imageUrl}" alt="${escapeHtml(item.name)}" class="cart-item-img">
+                        <img src="${imageUrl}" alt="${escapeHtml(safeName)}" class="cart-item-img">
                     </div>
                     <div class="cart-item-info">
-                        <div class="cart-item-name">${escapeHtml(item.name)}</div>
+                        <div class="cart-item-name">${escapeHtml(safeName)}</div>
                         <div class="cart-item-details">
                             ${priceDisplay} 
                             <span style="opacity: 0.7; font-size: 0.9em;">
