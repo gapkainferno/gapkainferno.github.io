@@ -1,11 +1,11 @@
-﻿﻿﻿﻿﻿﻿//БЛОК КЕРУВАННЯ АКЦІЯМИ.
+﻿﻿﻿﻿﻿﻿﻿﻿//БЛОК КЕРУВАННЯ АКЦІЯМИ.
 const GLOBAL_SETTINGS = {
-    isSaleActive: true, 
+    isSaleActive: false, 
     discountPercent: 10, 
     saleDeadline: "2026-02-05", 
-    promoText: "🔥 ГОТУЄМОСЯ ДО ВЕЛИКОГО ЗАПУСКУ ВОСЕНИ 2026!",
+    promoText: "ПЕКЕЛЬНИЙ ТИЖДЕНЬ: -10% НА НАСІННЯ ТА СОУСИ!",
     // Щоб розблокувати — просто зробіть масив порожнім: lockedCategories: []  ЗАМІСТь "ГОТУЄМОСЯ..." promoText: "ПЕКЕЛЬНИЙ ТИЖДЕНЬ: -10% НА НАСІННЯ ТА СОУСИ!"
-    lockedCategories: ['sauces', 'seeds', 'otherseeds'] 
+    lockedCategories: [] 
 };
 
 const CART_CONSTANTS = {
@@ -916,6 +916,18 @@ window.addToCart = function(productId, price, name, qty = 1, originalPrice = nul
     
     saveCart(cart);
     updateCartUI();
+
+    // Відстеження додавання в кошик для аналізу воронки продажів
+    if (typeof gtag === 'function') {
+        gtag('event', 'add_to_cart', {
+            items: [{
+                item_id: productId,
+                item_name: safeName,
+                price: validatedPrice,
+                quantity: validatedQty
+            }]
+        });
+    }
 };
 
 

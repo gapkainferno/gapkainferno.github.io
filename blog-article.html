@@ -234,6 +234,29 @@
 
 <script src="blog-data.js"></script>
 <script type="module" src="blog-article-app.js"></script>
+<script>
+    // Функції для кнопок "Поділитися", які мають бути глобальними
+    function shareToTelegram() {
+        const url = window.location.href;
+        const text = document.title;
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function shareToFacebook() {
+        const url = window.location.href;
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    }
+
+    function copyLink() {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(() => {
+            // alert — це тимчасово, пізніше можна зробити гарну плашку
+            alert("🌶️ Посилання скопійовано! Тепер можна відправити друзям.");
+        }).catch(err => {
+            console.error('Помилка копіювання: ', err);
+        });
+    }
+</script>
 
 </body>
 </html>
