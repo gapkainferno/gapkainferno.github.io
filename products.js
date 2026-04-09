@@ -2,7 +2,7 @@
     // ID товару (використовується в посиланні: product.html?id=habaneroredsavina)
 "habaneroredsavina": {
         name: "Habanero Red Savina",
-        searchName: "Хабанеро Савіна Ред, хабанеро ред савіна, хабанеро червоний, ред, савіна",
+        searchName: "gapka насіння, гапка насіння, Хабанеро Савіна Ред, хабанеро ред савіна, хабанеро червоний, ред, савіна",
         category: "seeds",
         price: 50,
         heatLevel: "🔥 🔥  Висока (350,000-577,000 SHU)",
@@ -43,7 +43,7 @@ heatScore: "2",
 
 "carolinareaperred": {
         name: "Carolina Reaper Red",
-        searchName: "Кароліна Ріпер, ріпер, кароліна, рипер, Carolina Reaper",
+        searchName: "gapka насіння, гапка насіння, Кароліна Ріпер, ріпер, кароліна, рипер, Carolina Reaper",
         category: "seeds",
         price: 70,
         heatLevel: "☠️ ЕКСТРЕМАЛЬНА (1,500,000 – 2,200,000+ SHU)",
@@ -794,7 +794,7 @@ heatScore:"2",
     // Твої соуси...
 "sauceCoreHeat": {
         name: "Core Heat Sauce",
-        searchName: "Соус гострий класика, кор хіт, база",
+        searchName: "gapka соуси, гапка соуси, Соус гострий класика, кор хіт, база",
         category: "sauces",
         price: 219,
         heatLevel: "🔥🔥🔥 ЕКСТРЕМАЛЬНА",
