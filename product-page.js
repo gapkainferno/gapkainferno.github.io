@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function injectBreadcrumbSchema(product, id) {
-        const baseUrl = "https://homesteadinferno.github.io/ghi/";
+        const baseUrl = "https://gapkainferno.github.io/";
         const categoryMap = {
             'seeds': { name: 'Насіння суперхотів', url: 'seedsandseedlings.html' },
             'sauces': { name: 'Крафтові Соуси', url: 'sauces.html' },
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Переміщуємо функцію injectProductSchema на початок для кращої читабельності
     function injectProductSchema(product, id) {
-        const baseUrl = "https://homesteadinferno.github.io/ghi/"; // Зміни на свій домен
+        const baseUrl = "https://gapkainferno.github.io/"; // Зміни на свій домен
 
         let offers;
         // Якщо товар має варіанти (наприклад, насіння), використовуємо AggregateOffer
@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const ogImage = document.getElementById('og-image');
         if (ogImage && product.images && product.images[0]) {
             // Додаємо базову адресу до назви картинки
-            const baseUrl = "https://homesteadinferno.github.io/ghi/";
+            const baseUrl = "https://gapkainferno.github.io/";
             ogImage.content = baseUrl + product.images[0];
         }
         
