@@ -6,4 +6,4 @@ Disallow: /node_modules/
 Disallow: /.github/
 Disallow: /404.html
 
-Sitemap: https://homesteadinferno.github.io/ghi/sitemap.xml
+Sitemap: https://gapkainferno.github.io/sitemap.xml
