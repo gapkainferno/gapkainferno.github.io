@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "sku": id.toUpperCase(),
             "brand": {
                 "@type": "Brand",
-                "name": "Gapka's Homestead Inferno"
+                "name": "Gapka Homestead Inferno"
             },
             "offers": offers
         };
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'otherseeds': 'Насіння овочів та томатів'
         };
         const catName = categorySEO[product.category] || 'Товари';
-        document.title = `${product.name} — ${catName} — купити в Gapka's Homestead Inferno`;
+        document.title = `${product.name} — ${catName} — купити в Gapka Homestead Inferno`;
         
         // Оновлюємо мета-теги з перевірками
         const metaDesc = document.getElementById('meta-description');
@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const ogTitle = document.getElementById('og-title');
-        if (ogTitle) ogTitle.content = `${product.name} — ${catName} — Gapka's Homestead Inferno`;
+        if (ogTitle) ogTitle.content = `${product.name} — ${catName} — Gapka Homestead Inferno`;
         
         const ogImage = document.getElementById('og-image');
         if (ogImage && product.images && product.images[0]) {
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <h5>УВАГА: ЕКСТРЕМАЛЬНА ГОСТРОТА</h5>
                             <p>${isSauce 
                                 ? "Цей соус містить екстремальну концентрацію капсаїцину. Вживати мікродозами." 
-                                : "Концентрація речовини класифікується як екстремальна. Gapka's Homestead Inferno рекомендує використовувати рукавички при роботі з насінням та плодами."}
+                                : "Концентрація речовини класифікується як екстремальна. Gapka Homestead Inferno рекомендує використовувати рукавички при роботі з насінням та плодами."}
                             </p>
                         </div>
                     </div>`;
