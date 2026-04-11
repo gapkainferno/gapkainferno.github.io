@@ -3737,9 +3737,9 @@ body.otherseeds-page header::after {
 .card-link.is-locked::before {
     content: "ЗАПУСК ВОСЕНИ 🌶️";
     position: absolute;
-    top: 25%;
+    top: 82%;
     left: 50%;
-    transform: translate(-50%, -50%) rotate(-10deg);
+    transform: translate(-50%, -50%) rotate(-5deg);
     background: var(--primary-color);
     color: #fff;
     padding: 10px 20px;
@@ -3751,6 +3751,7 @@ body.otherseeds-page header::after {
     box-shadow: 0 5px 20px rgba(0,0,0,0.7);
     white-space: nowrap;
     letter-spacing: 1px;
+    animation: badge-pulse 2s infinite ease-in-out;
 }
 
 .card-link.is-locked:hover {
@@ -3807,4 +3808,15 @@ body.otherseeds-page header::after {
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     white-space: nowrap;
+}
+
+@keyframes badge-pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) rotate(-5deg) scale(1);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(-5deg) scale(1.05);
+        box-shadow: 0 8px 30px var(--accent-shadow);
+    }
 }
