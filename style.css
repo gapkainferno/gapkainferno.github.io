@@ -3737,9 +3737,9 @@ body.otherseeds-page header::after {
 .card-link.is-locked::before {
     content: "ЗАПУСК ВОСЕНИ 🌶️";
     position: absolute;
-    top: 50%;
+    top: 25%;
     left: 50%;
-    transform: translate(-50%, -50%) rotate(-15deg);
+    transform: translate(-50%, -50%) rotate(-10deg);
     background: var(--primary-color);
     color: #fff;
     padding: 10px 20px;
