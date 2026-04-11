@@ -7,14 +7,18 @@
     const THEMES = {
         seeds:      'seeds-page',
         sauces:     'sauces-page',
-        otherseeds: 'otherseeds-page'
+        otherseeds: 'otherseeds-page',
+        'fresh-peppers': 'fresh-peppers-page',
+        poultry:    'poultry-page'
     };
 
     const URL_MAP = {
         'seedsandseedlings': 'seeds',
         'sauces':            'sauces',
         'otherseeds':        'otherseeds',
-        'superhots':         'seeds'
+        'superhots':         'seeds',
+        'fresh-peppers':     'fresh-peppers',
+        'poultry':           'poultry'
     };
 
     function getThemeFromUrl() {

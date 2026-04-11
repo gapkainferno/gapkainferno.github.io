@@ -16,7 +16,7 @@ const blogPosts = [
         date: '2026-03-14',
         author: 'Gapka',
         readTime: '5 хв',
-        image: 'images/seedlings.jpg',
+        image: 'images/photo_2026-04-11_17-48-47.jpg',
         featured: true,
         excerpt: 'Часто нас питають: "А чи точно воно виросте?". Замість тисячі слів ми просто показуємо наш сімейний архів пророщування суперхотів цього сезону.',
         content: `
@@ -47,7 +47,10 @@ const blogPosts = [
                     <img src="images/photo_2026-03-15_14-32-02.jpg" alt="15 березня">
                     <p><strong>15 березня:</strong> Ці хлопці та дівчата вже починають набувати характеру.</p>
                 </div>
-
+                <div class="timeline-item">
+                    <img src="images/photo_2026-04-11_17-48-47.jpg" alt="11 квітня">
+                    <p><strong>11 квітня:</strong> Вони готові до справжньої землі!</p>
+                </div>
             </div>
             <blockquote class="article-quote">
                 <strong>Наш секрет успіху:</strong> Ми не просто садимо насіння. Ми стежимо за кожним етапом і відбираємо лише найсильніших "атлетів".

@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿//БЛОК КЕРУВАННЯ АКЦІЯМИ.
+﻿﻿//БЛОК КЕРУВАННЯ АКЦІЯМИ.
 const GLOBAL_SETTINGS = {
     isSaleActive: true, 
     discountPercent: 10, 
@@ -1288,7 +1288,7 @@ function cleanPhone(phone) {
     orderText += `\n\n💰 РАЗОМ: ${totalSum.toFixed(2)} ₴`;
 
     try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbzeU2e3mHS9_lsKkHsPfRY-c187RgYgrlF-0cXK2jTrwBvQCTFWGTivv24NHNcmpru_/exec", {
+        const response = await fetch("https://script.google.com/macros/s/AKfycby0gxk94Z-I4IAFAMTmPoLBFSX4ppmpzM9LjYT5gxtEJRJ1u0Ng_E2os9Ciybnd8-32/exec", {
             method: "POST",
             mode: "cors", 
             redirect: "follow",

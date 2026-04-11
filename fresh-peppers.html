@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Врожай Пекла 2025 — Свіжі суперхоти | Gapka Homestead</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="fresh-peppers-page product-page-layout">
+    <div class="overlay">
+        <div class="container">
+            <header>
+                <a href="index.html" class="main-logo-link">
+                    <img src="GapkaLogo.png" alt="Gapka Homestead Inferno" class="logo-image">
+                </a>
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Шукати товари..." autocomplete="off">
+                    <span class="search-icon">🔍</span>
+                    <div id="search-results"></div>
+                </div>
+            </header>
+
+            <button class="back-btn" onclick="goBack()">
+                <svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg>
+                Назад
+            </button>
+
+            <div class="main-layout">
+                <aside class="sidebar">
+                    <h3>Категорії</h3>
+                    <nav>
+                        <ul>
+                            <li><a href="seedsandseedlings.html">🌶️ Насіння суперхотів</a></li>
+                            <li><a href="sauces.html">🔥 Крафтові Соуси</a></li>
+                            <li><a href="otherseeds.html">🌱 Насіння овочів</a></li>
+                            <li><a href="fresh-peppers.html" class="theme-active">🌶️ Врожай Пекла</a></li>
+                            <li><a href="javascript:void(0)" style="opacity: 0.5; cursor: not-allowed;">🥚 Яйця Орпінгтон 🔒</a></li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <main class="products-grid" data-category="fresh-peppers">
+                    <h1 class="page-title">Врожай Пекла: Свіжі та Сушені Перці</h1>
+                    <p class="description" style="margin-top: -10px; margin-bottom: 30px;">
+                        Тут з'являться плоди, які ми збираємо на власних грядках. <br>
+                        Свіжі суперхоти будуть доступні <b>восени 2026</b>.
+                    </p>
+
+                    <div class="filter-section">
+                        <span class="filter-title">Тип продукту:</span>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-heat="all">Всі</button>
+                            <button class="filter-btn" data-heat="1">🥗 Свіжі</button>
+                            <button class="filter-btn" data-heat="2">💨 Сушені</button>
+                        </div>
+                    </div>
+
+                    <div id="catalog-container" class="products-grid-inner"></div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <img src="GapkaLogo.png" alt="Gapka Homestead Inferno" class="footer-logo-img">
+                <p class="footer-tagline">Справжня гострота вирощується тут. <br>Від насіння до вогняних соусів.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Клієнтам</h4>
+                <div class="footer-links">
+                    <a href="blog.html">🗞 Нотатки Gapka Homestead Inferno</a>
+                    <a href="faq.html">Питання та відповіді (FAQ)</a> 
+                    <a href="shipping.html">Доставка та оплата</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Зв'язок</h4>
+                <div class="footer-contacts">
+                    <span>+00000000000</span>
+                    <a href="mailto:homestead.inferno@gmail.com">homestead.inferno@gmail.com</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Інфо</h4>
+                <div class="footer-pp">
+                    <a href="privacy.html">Конфіденційність</a>
+                    <a href="terms.html">Публічна оферта</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Gapka Homestead Inferno. 🔥</p>
+        </div>
+    </footer>
+
+    <a href="#" class="floating-cart" onclick="openCheckout(); return false;">
+        <span class="cart-icon">🛒</span>
+        <span id="cart-count">0</span>
+    </a>
+
+    <script src="products.js"></script>
+    <script src="search.js"></script>
+    <script src="modal-init.js"></script>
+    <script src="cart.js"></script>
+    <script src="catalog.js"></script>
+</body>
+</html>

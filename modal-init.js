@@ -90,6 +90,21 @@ document.addEventListener("DOMContentLoaded", function() {
                 <button class="order-btn" style="max-width: 200px; margin: 20px auto 0;" onclick="closeCheckout()">Закрити</button>
             </div>
         </div>
+    </div>
+
+    <div id="notifyModal" class="modal">
+        <div class="modal-box" style="max-width: 500px; padding: 40px; text-align: center;">
+            <button class="close-btn" onclick="document.getElementById('notifyModal').style.display='none'">&times;</button>
+            <h2 class="modal-title">Повідомити про <span>запуск</span></h2>
+            <p style="margin: 20px 0; opacity: 0.8;" id="notify-text">Залиште свій email, і ми надішлемо вам пекельну звістку, як тільки товар з'явиться!</p>
+            <div class="form-group">
+                <input type="email" id="notify-email" placeholder="Ваш Email" style="width: 100%; margin-bottom: 20px;">
+                <button class="order-btn" onclick="submitNotification()">Хочу дізнатися першим</button>
+            </div>
+            <div id="notify-success" style="display:none; color: var(--primary-color); margin-top: 20px; font-weight: bold;">
+                Записано! Чекайте на вогонь у поштовій скриньці 🌶️
+            </div>
+        </div>
     </div>`;
 
     // HTML для плаваючого кошика, який буде видно завжди
@@ -122,3 +137,110 @@ document.addEventListener("DOMContentLoaded", function() {
         updateCartUI();
     }
 });
+
+// ВСТАВ СЮДИ СВОЄ ПОСИЛАННЯ З cart.js
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0gxk94Z-I4IAFAMTmPoLBFSX4ppmpzM9LjYT5gxtEJRJ1u0Ng_E2os9Ciybnd8-32/exec";
+
+let currentNotifyCategory = '';
+
+function openNotifyModal(category) {
+    const modal = document.getElementById('notifyModal');
+    const text = document.getElementById('notify-text');
+    currentNotifyCategory = category;
+    
+    if (category === 'fresh-peppers') {
+        text.innerText = "Ми напишемо вам, як тільки зберемо перший врожай свіжих суперхотів восени 2025! 🍂";
+    } else if (category === 'poultry') {
+        text.innerText = "Орпінгтони готуються до виходу! Ми сповістимо вас про старт продажів інкубаційних яєць. 🐣";
+    }
+    
+    modal.style.display = 'flex';
+}
+
+// Універсальна функція для відправки даних у таблицю
+async function sendToGoogleSheet(data) {
+    try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors', // Важливо для Google Scripts
+            cache: 'no-cache',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        return true;
+    } catch (error) {
+        console.error('Помилка відправки:', error);
+        return false;
+    }
+}
+
+// Допоміжна функція перевірки формату Email
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+async function submitNotification() {
+    const emailInput = document.getElementById('notify-email');
+    const email = emailInput.value.trim();
+    
+    if (!validateEmail(email)) {
+        alert('Будь ласка, введіть коректну адресу електронної пошти!');
+        emailInput.classList.add('input-error');
+        return;
+    }
+    emailInput.classList.remove('input-error');
+
+    const btn = document.querySelector('#notifyModal .order-btn');
+    btn.disabled = true;
+    btn.innerText = "Записуємо...";
+
+    const data = {
+        date: new Date().toLocaleString("uk-UA"),
+        email: email,
+        orderType: "ЗАПИТ_НА_ЗАПУСК",
+        details: `Категорія: ${currentNotifyCategory}`,
+        secret_token: "summerof26"
+    };
+
+    await sendToGoogleSheet(data);
+
+    document.getElementById('notify-success').style.display = 'block';
+    setTimeout(() => {
+        document.getElementById('notifyModal').style.display = 'none';
+        document.getElementById('notify-success').style.display = 'none';
+        btn.disabled = false;
+        btn.innerText = "Хочу дізнатися першим";
+        emailInput.value = '';
+    }, 2500);
+}
+
+async function handleGeneralSubscribe(event) {
+    event.preventDefault();
+    const emailInput = document.getElementById('sub-email');
+    const email = emailInput.value.trim();
+    const btn = document.getElementById('sub-btn');
+
+    if (!validateEmail(email)) {
+        alert('Будь ласка, введіть коректну адресу електронної пошти!');
+        emailInput.classList.add('input-error');
+        return;
+    }
+    emailInput.classList.remove('input-error');
+
+    btn.disabled = true;
+    btn.innerText = "⏳";
+
+    await sendToGoogleSheet({
+        date: new Date().toLocaleString("uk-UA"),
+        email: email,
+        orderType: "ПІДПИСКА_МАРКЕТИНГ",
+        details: "Підписка з головної сторінки (футер)",
+        secret_token: "summerof26"
+    });
+
+    alert('Дякуємо! Тепер ви в списку обраних 🔥');
+    btn.disabled = false;
+    btn.innerText = "Підписатися";
+    document.getElementById('sub-email').value = '';
+}

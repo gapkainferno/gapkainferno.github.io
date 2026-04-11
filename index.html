@@ -9,7 +9,7 @@
     font-src 'self' https://fonts.gstatic.com; 
     script-src 'self' 'unsafe-inline' https://script.google.com https://www.googletagmanager.com; 
     connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com; 
-    img-src 'self' data:;">
+    img-src 'self' data: https://gapkainferno.github.io;">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9CL9XT7H4D"></script>
@@ -260,6 +260,7 @@
     <link rel="stylesheet" href="style.css">
 <meta name="google-site-verification" content="ZHWp3dDyPfgW63HqbmKizw4DOSzIvlCrq7mUrW8wDro" />
 </head>
+
 <body class="homepage">
     <div class="fire-wrapper">
         <div class="ember" style="--left:15%; --duration:7s; --delay:0s; --size:4px; --color:#ff4500;"></div>
@@ -307,26 +308,121 @@
 
 <main>
             <section class="hero-text">
-                <h1>А щоб час пробіг швидше, завітайте у наш <a href="https://gapkainferno.github.io/blog.html"><span class="fire-text">INFERNO-БЛОГ</span></a>! Ми будемо раді, а Ви - підготовлені. <br><br>Gapka Homestead Inferno — це Ваша перепустка у світ гостроти. Вирощуйте врожай, яким хочеться хвалитися. Спробуйте крафтові соуси, що наділяють звичайну їжу <a href="sauces.html"><span class="fire-text">INFERNO</span></a> здібностями.</h1>
+                <h1>А щоб час пробіг швидше, завітайте у наші <a href="https://gapkainferno.github.io/blog.html"><span class="fire-text">Inferno Нотатки</span></a>! Ми будемо раді, а Ви - підготовлені. <br><br>Gapka Homestead Inferno — це Ваша перепустка у світ гостроти. Вирощуйте врожай, яким хочеться хвалитися. Спробуйте крафтові соуси, що наділяють звичайну їжу <a href="sauces.html"><span class="fire-text">INFERNO</span></a> здібностями.</h1>
             </section>
 
-            <section class="cards-section">
-                <a href="sauces.html" class="card-link card-link sauces">
-                    <img src="sauces-inferno-assortment.webp" alt="Купити гострі соуси Inferno" class="card-image" width="400" height="300">
-                    <div class="card-label">Гострі<br>Соуси INFERNO</div>
-                </a>
+    <!-- 📧 СЕКЦІЯ ПІДПИСКИ (ПЕРЕНЕСЕНО ВИЩЕ ДЛЯ МАКСИМАЛЬНОЇ ВИДИМОСТІ) -->
+    <section class="subscribe-section container">
+        <div class="subscribe-container">
+            <div class="fire-emoji" style="font-size: 2rem;">📩</div>
+            <h2 class="modal-title" style="margin-top: 10px;">Станьте частиною <span>Inferno!</span></h2>
+            <p style="margin-top: 10px; opacity: 0.8;">Наразі ми готуємося до великого запуску сезону 2026. Залиште свій email, щоб першими дізнатися про відкриття категорій!</p>
+            <form class="subscribe-form" onsubmit="handleGeneralSubscribe(event)">
+                <input type="email" id="sub-email" placeholder="Ваш Email" required 
+                       style="flex: 1; padding: 12px 20px; border-radius: 30px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white;">
+                <button type="submit" id="sub-btn" class="add-btn" style="width: auto; margin: 0; padding: 12px 30px;">Підписатися</button>
+            </form>
+        </div>
+    </section>
 
-                <a href="seedsandseedlings.html" class="card-link card-link seeds">
-                     <img src="Habanero-chocolate-plant.webp" alt="Замовити насіння та розсаду перцю" class="card-image" width="400" height="300">
-                    <div class="card-label">Насіння та розсада<br>перців - суперхотів</div>
-                </a>
+<section class="cards-section">
+    <!-- ════════════════════════════════════════════════════════
+         СОУСИ (доступно)
+         ════════════════════════════════════════════════════════ -->
+    <a href="sauces.html" class="card-link sauces">
+        <img src="sauces-inferno-assortment.webp" 
+             alt="Купити гострі соуси Inferno" 
+             class="card-image" 
+             width="400" 
+             height="300">
+        <div class="card-label">Гострі<br>Соуси INFERNO</div>
+    </a>
 
-                <a href="otherseeds.html" class="card-link card-link otherseeds">
-                    <img src="other-vegetable-seeds-assortment.webp" alt="Насіння овочів" class="card-image" width="400" height="300">
-                    <div class="card-label">Насіння Томатів та Овочів</div>
-                </a>
-            </section>
-<p class="description">
+    <!-- ════════════════════════════════════════════════════════
+         НАСІННЯ ПЕРЦІВ (доступно)
+         ════════════════════════════════════════════════════════ -->
+    <a href="seedsandseedlings.html" class="card-link seeds">
+        <img src="Habanero-chocolate-plant.webp" 
+             alt="Замовити насіння та розсаду перцю" 
+             class="card-image" 
+             width="400" 
+             height="300">
+        <div class="card-label">Насіння та розсада<br>перців - суперхотів</div>
+    </a>
+
+    <!-- ════════════════════════════════════════════════════════
+         НАСІННЯ ОВОЧІВ (доступно)
+         ════════════════════════════════════════════════════════ -->
+    <a href="otherseeds.html" class="card-link otherseeds">
+        <img src="other-vegetable-seeds-assortment.webp" 
+             alt="Насіння овочів" 
+             class="card-image" 
+             width="400" 
+             height="300">
+        <div class="card-label">Насіння Томатів та Овочів</div>
+    </a>
+
+    <!-- ════════════════════════════════════════════════════════
+         🌶️ НОВА КАТЕГОРІЯ: СВІЖІ ТА СУШЕНІ ПЕРЦІ (доступно восени)
+         ════════════════════════════════════════════════════════ -->
+    <a href="fresh-peppers.html" class="card-link fresh-peppers coming-soon" data-launch="autumn">
+        <img src="fresh-dried-peppers.webp" 
+             alt="Свіжі та сушені гострі перці" 
+             class="card-image" 
+             width="400" 
+             height="300">
+        <div class="card-label">Врожай Пекла:<br>Свіжі та Сушені Перці</div>
+        
+        <!-- Оверлей "Скоро" -->
+        <div class="coming-soon-overlay">
+            <div class="coming-soon-content">
+                <div class="fire-emoji">🔥</div>
+                <h3>Вогонь народжується восени</h3>
+                <p>Зараз перці ростуть на грядках.<br>
+                   Свіжі та сушені суперхоти будуть<br>
+                   доступні після збору врожаю.</p>
+                <div class="season-badge">
+                    <span class="season-icon">🍂</span>
+                    <span>ВОСЕНИ 2026</span>
+                </div>
+                <button class="notify-btn" onclick="openNotifyModal('fresh-peppers')">
+                    🔔 Повідомити про запуск
+                </button>
+            </div>
+        </div>
+    </a>
+
+    <!-- ════════════════════════════════════════════════════════
+         🐓 НОВА КАТЕГОРІЯ: ІНКУБАЦІЙНІ ЯЙЦЯ (закрита, планується)
+         ════════════════════════════════════════════════════════ -->
+    <a href="javascript:void(0)" class="card-link poultry coming-soon" data-launch="future">
+        <img src="orpington-eggs.webp" 
+             alt="Інкубаційні яйця курей породи Орпінгтон" 
+             class="card-image blurred" 
+             width="400" 
+             height="300">
+        <div class="card-label">Інкубаційні Яйця<br>🐓</div>
+        
+        <!-- Оверлей "Незабаром" -->
+        <div class="coming-soon-overlay">
+            <div class="coming-soon-content">
+                <div class="fire-emoji">🥚</div>
+                <h3>Незабаром на фермі</h3>
+                <p>Плануємо запустити категорію<br>
+                   інкубаційних яєць породистих<br>
+                   курей.</p>
+                <div class="season-badge future">
+                    <span class="season-icon">🐣</span>
+                    <span>СКОРО</span>
+                </div>
+                <button class="notify-btn" onclick="openNotifyModal('poultry')">
+                    🔔 Хочу дізнатись першим
+                </button>
+            </div>
+        </div>
+    </a>
+</section>
+                  <p class="description">
                     Генетика <a href="seedsandseedlings.html"><span class="green-text">насіння</span></a> від перевіреної класики до власних суперхотів.<br>
                     Саме з нього народжена лінійка ультра-гострих соусів <a href="sauces.html"><span class="fire-text">INFERNO</span></a>
                     Ми відібрали світові легенди: <strong>Carolina Reaper, Ghost Pepper, Habanero</strong>
@@ -471,7 +567,7 @@
 </main>
         </div>
 
-        <footer>
+<footer>
     <div class="container footer-content">
         <div class="footer-brand">
             <img src="GapkaLogo.png" alt="Gapka Homestead Inferno Logo" class="footer-logo-img" width="180" height="45">
@@ -481,7 +577,7 @@
         <div class="footer-section">
             <h4>Клієнтам</h4>
             <div class="footer-links">
-                <a href="https://gapkainferno.github.io/blog.html">🗞 Нотатки Gapka Homestead Inferno</a>
+                <a href="https://gapkainferno.github.io/blog.html">Inferno Нотатки</a>
                 <a href="https://gapkainferno.github.io/faq.html">Питання та відповіді (FAQ)</a> 
                 <a href="https://gapkainferno.github.io/shipping.html">Доставка та оплата</a>
             </div>
@@ -508,7 +604,7 @@
 
     <div style="text-align: center; margin-top: 20px; border-top: 1px solid rgba(255, 69, 0, 0.2); padding-top: 20px; padding-left: 30px; padding-right: 30px;">
         <p style="font-size: 14px; opacity: 0.8; font-style: italic;">
-            Свіжий випуск: <a href="https://gapkainferno.github.io/blog.html" style="color: var(--primary-color); text-decoration: underline;">Як виростити сильні рослини з насіння без нервів та переживань. Читайте пізнавальні статті ТУТ.</a>
+            Свіжий випуск: <a href="https://gapkainferno.github.io/blog.html" style="color: var(--primary-color); text-decoration: underline;">Як виростити сильні рослини з насіння без нервів та переживань. Читайте Inferno Нотатки.</a>
         </p>
     </div>
 

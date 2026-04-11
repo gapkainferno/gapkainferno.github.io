@@ -28,15 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
 
     // Очищуємо старі класи тем, щоб вони не змішувалися
-    body.classList.remove('seeds-page', 'sauces-page', 'otherseeds-page', 'theme-fire');
+    body.classList.remove('seeds-page', 'sauces-page', 'otherseeds-page', 'fresh-peppers-page', 'poultry-page', 'theme-fire');
 
-    // Встановлюємо тему залежно від категорії
-    if (product.category === 'seeds') {
-        body.classList.add('seeds-page');
-    } else if (product.category === 'sauces') {
-        body.classList.add('sauces-page');
-    } else if (product.category === 'otherseeds') {
-        body.classList.add('otherseeds-page');
+    // Встановлюємо тему залежно від категорії товару
+    const themeClass = `${product.category}-page`;
+    if (product.category) {
+        body.classList.add(themeClass);
     }
 
     function injectBreadcrumbSchema(product, id) {

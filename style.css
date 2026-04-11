@@ -170,6 +170,54 @@ body.otherseeds-page {
     --card-accent-bar: linear-gradient(90deg, #4a8c50, #78b87e, #4a8c50);
 }
 
+/* ─────────────────────────────────────────
+   🌶️  FRESH-PEPPERS-PAGE — Врожай Пекла
+   Тема: Розпечена лава, дим, чорне вугілля
+   ───────────────────────────────────────── */
+body.fresh-peppers-page {
+    --primary-color:   #ff4d00;     /* яскравий вогонь              */
+    --primary-hover:   #cc3d00;     /* приглушений жар              */
+    --primary-light:   #ff8552;     /* іскри                        */
+    --price-color:     #ffd700;     /* золотий відблиск             */
+    --accent-shadow:   rgba(255, 77, 0, 0.4);
+    --card-glow:       rgba(255, 77, 0, 0.15);
+    --surface:         #150a05;     /* глибокий коричнево-чорний    */
+    --surface-2:       #20100a;
+    --border-warm:     #4d1a00;
+    --tag-color:       #ff4d00;
+
+    /* Фон: вогняне сяйво знизу (немов від грядки) */
+    --bg-gradient: radial-gradient(circle at 50% 100%, #3d1200 0%, #1a0800 50%, #0a0500 100%);
+
+    --card-label-from: #1a0800;
+    --card-label-to:   #0d0400;
+    --card-accent-bar: linear-gradient(90deg, #ff4d00, #ffd700, #ff4d00);
+}
+
+/* ─────────────────────────────────────────
+   🥚  POULTRY-PAGE — Інкубаційні яйця
+   Тема: Золотиста солома, крафт, тепла земля
+   ───────────────────────────────────────── */
+body.poultry-page {
+    --primary-color:   #d4a373;     /* колір Buff Orpington         */
+    --primary-hover:   #bc6c25;     /* палена сиєна                 */
+    --primary-light:   #fefae0;     /* колір яєчної шкаралупи       */
+    --price-color:     #faedcd;     /* вершковий                    */
+    --accent-shadow:   rgba(212, 163, 115, 0.35);
+    --card-glow:       rgba(212, 163, 115, 0.1);
+    --surface:         #15120f;     /* глибокий теплий чорний       */
+    --surface-2:       #1f1a16;
+    --border-warm:     #3d3028;
+    --tag-color:       #bc6c25;
+
+    /* Фон: м'яке сонячне сяйво зверху */
+    --bg-gradient: radial-gradient(ellipse at 50% 0%, #3d3028 0%, #1a1512 45%, #0a0807 100%);
+
+    --card-label-from: #1f1a16;
+    --card-label-to:   #0f0d0b;
+    --card-accent-bar: linear-gradient(90deg, #d4a373, #faedcd, #d4a373);
+}
+
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    §3  🌍  БАЗОВІ СТИЛІ (ОНОВЛЕНО)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -3457,6 +3505,89 @@ body.otherseeds-page header::after {
     color: #ffd700;
     font-weight: 500;
 }
+
+/* ── Coming Soon Overlay ── */
+.coming-soon {
+    position: relative;
+}
+
+.coming-soon-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    padding: 20px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.card-link:hover .coming-soon-overlay {
+    opacity: 1;
+}
+
+.coming-soon-content h3 {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.coming-soon-content p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+.notify-btn {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.notify-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+/* ── Subscription Section ── */
+.subscribe-section {
+    padding: 10px 0;
+    background: radial-gradient(circle at center, rgba(200, 90, 42, 0.05) 0%, transparent 70%);
+    text-align: center;
+}
+
+.subscribe-container {
+    max-width: 1200px; /* Збільшено для більш розтягнутого вигляду */
+    margin: 0 auto;
+    padding: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.subscribe-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+@media (max-width: 600px) {
+    .subscribe-form { flex-direction: column; }
+}
+
 /* Стиль для бандлу "Вирости свій вогонь" */
 .special-grow {
     border: 2px solid #588157 !important; /* Натуральний зелений */
@@ -3587,9 +3718,14 @@ body.otherseeds-page header::after {
     color: #95a5a6;
 }
 /* ╔══════════════════════════════════════════════════════════════╗
-   ║  КІНЕЦЬ — v6.0 · 23 секції · динамічні теми                ║
+   ║ Стилі категорій               ║
    ╚══════════════════════════════════════════════════════════════╝ */
 
+
+   
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║  КІНЕЦЬ — v6.0 · 23 секції · динамічні теми                ║
+   ╚══════════════════════════════════════════════════════════════╝ */
  /* ПРИБРТИИ НА СТАРТІ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 🔒 СИСТЕМА БЛОКУВАННЯ (COMING SOON) */
 .card-link.is-locked {
     filter: grayscale(0.8) brightness(0.6);
@@ -3672,5 +3808,3 @@ body.otherseeds-page header::after {
     box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     white-space: nowrap;
 }
-
-
