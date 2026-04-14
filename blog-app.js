@@ -7,7 +7,7 @@ class BlogApp {
     constructor() {
         this.currentCategory = 'all';
         this.currentPage = 1;
-        this.postsPerPage = 6;
+        this.postsPerPage = 12;
         this.searchQuery = '';
         
         this.init();
