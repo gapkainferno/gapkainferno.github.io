@@ -711,7 +711,7 @@ const blogPosts = [
         date: '2026-05-05',
         author: 'Gapka',
         readTime: '5 хв',
-        image: 'images/blog/autumn-harvest.jpg',
+        image: 'autumn-main.png',
         featured: false,
         excerpt: 'Багато хто питає, чому ми запускаємо повноцінний продаж насіння та соусів саме восени. Відповідь проста — ми чекаємо, поки природа зробить свою справу.',
         content: `
