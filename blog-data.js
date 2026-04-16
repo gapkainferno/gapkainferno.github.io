@@ -238,7 +238,7 @@ const blogPosts = [
         date: '2026-03-01',
         author: 'Gapka',
         readTime: '12 хв',
-        image: 'images/chinense.jpg',
+        image: 'caps-chinense-kings.webp',
         featured: false,
         excerpt: 'Повний гайд по виду Capsicum Chinense — звідки береться найбільша гострота у світі перців.',
         content: `
