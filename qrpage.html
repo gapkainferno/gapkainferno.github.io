@@ -637,7 +637,7 @@
                 </form>
                 <!-- Honeypot field (захист від ботів, як у modal-init) -->
                 <div style="position: absolute; left: -9999px; opacity: 0;">
-                    <input type="text" id="website_url" tabindex="-1" autocomplete="off">
+                    <input type="text" id="hp_sub_qr" tabindex="-1" autocomplete="off">
                 </div>
                 <p class="club-micro">Жодного спаму. Наш головний по безпеці, півень Чилі, особисто це контролює 🐓</p>
             </div>
@@ -676,7 +676,18 @@
         });
 
         // --- ЛОГІКА ПІДПИСКИ (GOOGLE SHEETS) ---
+        
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZK1F30stAzlsKyegtcgKOGnq9odihOtWZpVWOgueOj927iLUqdukVT_0MCnjdcWce/exec";
+
+        // Створюємо унікальний ідентифікатор пристрою
+        function getVisitorId() {
+            let id = localStorage.getItem('ghi_visitor_id');
+            if (!id) {
+                id = 'v_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+                localStorage.setItem('ghi_visitor_id', id);
+            }
+            return id;
+        }
 
         function validateEmail(email) {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -703,7 +714,7 @@
             event.preventDefault();
 
             // --- ПЕРЕВІРКА HONEYPOT ---
-            const honeypot = document.getElementById('website_url');
+            const honeypot = document.getElementById('hp_sub_qr');
             if (honeypot && honeypot.value !== '') {
                 console.warn('🤖 Бот виявлений');
                 alert('Дякуємо за підписку!'); // Обманюємо бота, показуючи успіх
@@ -728,7 +739,8 @@
                 email: email,
                 orderType: "ПІДПИСКА_МАРКЕТИНГ",
                 details: "Підписка з QR-коду (Certified Heat Survivor)",
-                secret_token: "summerof26"
+                secret_token: "summerof26",
+                client_id: getVisitorId() // Надсилаємо ID для Rate Limiting
             });
 
             // Візуальний фідбек для користувача
