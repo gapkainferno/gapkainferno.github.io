@@ -959,7 +959,7 @@ const blogPosts = [
                     <p><em>Чи може випадкова помилка стати секретом ідеального куща?</em></p>
                 </div>
 
-                <p class="article-intro">На нашому <strong>Small Batch Homestead</strong> трагедії трапляються так само часто, як і перемоги. Цього разу жертвою обставин став <strong>Aji Melocoton</strong> — один із найбільш очікуваних сортів сезону. Одна необережна дія під час перестановки розсади, і... головний пагін залишився в руках.</p>
+                <p class="article-intro">На нашому <strong>Gapka Homestead Inferno</strong> трагедії трапляються так само часто, як і перемоги. Цього разу жертвою обставин став <strong>Aji Melocoton</strong> — один із найбільш очікуваних сортів сезону. Одна необережна дія під час перестановки розсади, і... головний пагін залишився в руках.</p>
 
                 <div class="case-study-box" style="display: flex; gap: 20px; background: #1a1a1a; padding: 20px; border-radius: 5px; margin: 30px 0; border: 1px solid #333;">
                     <div style="flex: 1;">
