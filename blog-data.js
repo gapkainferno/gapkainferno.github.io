@@ -810,7 +810,7 @@ const blogPosts = [
         date: '2026-04-28',
         author: 'Gapka',
         readTime: '8 хв',
-        image: 'images/blog/fire-and-spirit.jpg',
+        image: 'fire-and-spirit.jpg',
         featured: true,
         excerpt: 'Гострота — це не смак. Це дотик до межі. Розбираємося, чому чиліхеди всього світу шукають не просто перець, а ту саму секунду, коли світ зникає у вогні.',
         content: `
@@ -845,7 +845,7 @@ const blogPosts = [
         date: '2026-05-05',
         author: 'Gapka',
         readTime: '9 хв',
-        image: 'images/blog/winter-grow-struggle.jpg',
+        image: 'winter-grow-struggle.jpg',
         featured: true,
         excerpt: 'Січень, блекаути та тропічні джунглі на підвіконні. Розповідаємо без прикрас, як ми шукали генетику по всьому світу та рятували розсаду, коли навколо був лише холод.',
         content: `
