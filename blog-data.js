@@ -939,6 +939,64 @@ const blogPosts = [
         `,
         tags: ['історія бренду', 'суперхоти', 'досвід', 'виживання', 'scotch bonnet']
     },
+  {
+        id: 'broken-seedling-secret',
+        title: 'Чи може випадкова помилка стати секретом ідеального куща?',
+        slug: 'broken-seedling-secret',
+        category: 'homestead',
+        categoryLabel: 'Ферма',
+        date: '2026-04-19', // Дата вашого фото
+        author: 'Gapka',
+        readTime: '9 хв',
+        image: 'AjiMelocoton19.04.png', // Використовуємо фото вашого героя
+        featured: true,
+        excerpt: 'Коли головний пагін залишається в руках — це не фінал, а початок експерименту. Розповідаємо, як випадковий "топпінг" Aji Melocoton вплине на розвиток куща.',
+        content: `
+            <article>
+                <div class="article-header" style="text-align: center; border-bottom: 2px solid #d4af37; padding-bottom: 20px; margin-bottom: 30px;">
+                    <span style="text-transform: uppercase; letter-spacing: 2px; color: #d4af37;">Експериментальна лабораторія Inferno</span>
+                    <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5em; margin: 10px 0;">Проект «Фенікс»: Життя після зламу</h2>
+                    <p><em>Чи може випадкова помилка стати секретом ідеального куща?</em></p>
+                </div>
+
+                <p class="article-intro">На нашому <strong>Small Batch Homestead</strong> трагедії трапляються так само часто, як і перемоги. Цього разу жертвою обставин став <strong>Aji Melocoton</strong> — один із найбільш очікуваних сортів сезону. Одна необережна дія під час перестановки розсади, і... головний пагін залишився в руках.</p>
+
+                <div class="case-study-box" style="display: flex; gap: 20px; background: #1a1a1a; padding: 20px; border-radius: 5px; margin: 30px 0; border: 1px solid #333;">
+                    <div style="flex: 1;">
+                        <img src="AjiMelocoton19.04.jpg" alt="Зламаний Aji Melocoton" style="width: 100%; border: 1px solid #444; border-radius: 4px;">
+                        <p style="font-size: 0.8em; color: #888; text-align: center; margin-top: 10px;">Стан на 19.04.2026: Точка зламу.</p>
+                    </div>
+                    <div style="flex: 1.5;">
+                        <h3 style="color: #d4af37; margin-top: 0;">Протокол експерименту:</h3>
+                        <p>Замість того, щоб утилізувати рослину, ми вирішили провести спостереження за "вимушеним топпінгом".</p>
+                        <ul style="line-height: 1.6;">
+                            <li><strong>Об'єкт:</strong> Aji Melocoton (Capsicum Baccatum).</li>
+                            <li><strong>Подія:</strong> Повна втрата верхівки на стадії активного росту.</li>
+                            <li><strong>Гіпотеза:</strong> Втрата центрального домінування змусить рослину активувати сплячі бруньки в пазухах листків, що призведе до формування кулястого, розлогого куща.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Чому ми не панікуємо?</h3>
+                <p>Для багатьох сортів <em>Capsicum Chinense</em> та <em>Baccatum</em> примусове видалення верхівки є стандартною агротехнікою. Це стимулює:</p>
+                <ul>
+                    <li><strong>Укріплення стовбура:</strong> Рослина перенаправляє ресурси на потовщення основи.</li>
+                    <li><strong>Кущення:</strong> Замість одного високого стебла ми отримуємо 3-5 потужних бічних гілок.</li>
+                    <li><strong>Стійкість:</strong> Нижчий, але ширший кущ краще протистоїть вітру на відкритому ґрунті.</li>
+                </ul>
+
+                <div class="diary-note" style="border-left: 4px solid #10b981; padding: 15px; background: rgba(16, 185, 129, 0.05); margin: 25px 0;">
+                    <strong>Замітка фермера:</strong> Зараз головне — не переливати нашого "Фенікса". Площа випаровування через листя різко зменшилася, тому коріння потребує спокою та стабільного тепла. Наш вірний <strong>Wi-Fi роутер</strong> продовжує чергування, підтримуючи необхідні +28°C для відновлення тканин.
+                </div>
+
+                <h3>Що далі?</h3>
+                <p>Ми будемо оновлювати цю статтю кожні два тижні. Слідкуйте за прогресом у нашому блозі! Чи зможе цей "герой" наздогнати своїх побратимів і видати той самий легендарний персиковий аромат? Побачимо зовсім скоро.</p>
+                
+                <p style="text-align: right; font-style: italic; margin-top: 40px; color: #d4af37;">— Ваш персонал Homestead Inferno 🔥</p>
+            </article>
+        `,
+        tags: ['експеримент', 'Aji Melocoton', 'досвід', 'вирощування', 'топпінг']
+    },
 
     {
         id: 'seed-germination-hacks',
