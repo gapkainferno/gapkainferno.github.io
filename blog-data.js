@@ -963,7 +963,7 @@ const blogPosts = [
 
                 <div class="case-study-box" style="display: flex; gap: 20px; background: #1a1a1a; padding: 20px; border-radius: 5px; margin: 30px 0; border: 1px solid #333;">
                     <div style="flex: 1;">
-                        <img src="AjiMelocoton19.04.jpg" alt="Зламаний Aji Melocoton" style="width: 100%; border: 1px solid #444; border-radius: 4px;">
+                        <img src="AjiMelocoton19.04.png" alt="Зламаний Aji Melocoton" style="width: 100%; border: 1px solid #444; border-radius: 4px;">
                         <p style="font-size: 0.8em; color: #888; text-align: center; margin-top: 10px;">Стан на 19.04.2026: Точка зламу.</p>
                     </div>
                     <div style="flex: 1.5;">
