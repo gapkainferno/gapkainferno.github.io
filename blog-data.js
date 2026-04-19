@@ -993,7 +993,7 @@ const blogPosts = [
                 <h3>Що далі?</h3>
                 <p>Ми будемо оновлювати цю статтю кожні два тижні. Слідкуйте за прогресом у нашому блозі! Чи зможе цей "герой" наздогнати своїх побратимів і видати той самий легендарний персиковий аромат? Побачимо зовсім скоро.</p>
                 
-                <p style="text-align: right; font-style: italic; margin-top: 40px; color: #d4af37;">— Ваш персонал Homestead Inferno 🔥</p>
+                <p style="text-align: right; font-style: italic; margin-top: 40px; color: #d4af37;">— Gapka Homestead Inferno🔥</p>
             </article>
         `,
         tags: ['експеримент', 'Aji Melocoton', 'досвід', 'вирощування', 'топпінг']
