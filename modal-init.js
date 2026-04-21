@@ -35,6 +35,17 @@ document.addEventListener("DOMContentLoaded", function() {
                     </div>
 
                     <div class="form-group">
+                        <label>Спосіб оплати</label>
+                        <select id="cust-payment">
+                            <option value="Онлайн оплата">Онлайн оплата (на Конверт)</option>
+                            <option value="Накладений платіж">Накладений платіж (післяплата)</option>
+                        </select>
+                        <div id="payment-hint" style="display:none; color: var(--primary-orange); font-size: 12px; margin-top: 5px; font-style: italic; line-height: 1.3;">
+                            ℹ️ Пошта бере комісію за переказ коштів (~2% від суми + 20 грн).
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label>Місто (почніть вводити...)</label>
                         <div style="position: relative;">
                             <input type="text" id="cust-city" placeholder="Наприклад: Київ" autocomplete="off">
@@ -87,6 +98,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <h2 style="color: var(--primary-orange);">🌿 Замовлення прийнято!</h2>
                 <p>Номер: <strong id="orderNumberDisplay"></strong></p>
                 <p>Дякуємо! Ми скоро зв'яжемося з вами.</p>
+                <div id="payment-details-success" style="display:none; margin-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;"></div>
                 <button class="order-btn" style="max-width: 200px; margin: 20px auto 0;" onclick="closeCheckout()">Закрити</button>
             </div>
         </div>
@@ -139,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // ВСТАВ СЮДИ СВОЄ ПОСИЛАННЯ З cart.js
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZDg25gW5P5gIaqLTfU_BNgTw4st8UnuR7rMxOWVTf7bIkcWu2fiCUAosAloeKhpdY/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw7-HRsLd8fPPJxWe4zcaamlFuoHXQ_2XnMv_85ftOUcsOO-nMGzFkhT9uFmAVc10Ow/exec";
 
 let currentNotifyCategory = '';
 

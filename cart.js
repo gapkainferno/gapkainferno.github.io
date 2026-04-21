@@ -300,7 +300,7 @@ window.openCheckout = function() {
         document.getElementById('success-msg').style.display = 'none';
         
         // Автозаповнення збережених даних
-        const fields = ['name', 'phone', 'city', 'branch', 'email', 'delivery', 'city_ref'];
+        const fields = ['name', 'phone', 'city', 'branch', 'email', 'delivery', 'city_ref', 'payment'];
         fields.forEach(f => {
             const val = localStorage.getItem('saved_' + f);
             if (!val) return;
@@ -322,10 +322,12 @@ window.openCheckout = function() {
         });
         updateCartUI();
         initDeliveryOptions(); // Ініціалізація логіки доставки
+        initPaymentLogic();    // Ініціалізація підказки про оплату
     }
 };
 
 let isDeliveryInitialized = false;
+let isPaymentInitialized = false;
 let currentCityBranches = [];
 let lastSelectedCity = "";
 let lastSelectedCityRef = "";
@@ -869,6 +871,22 @@ function initDeliveryOptions() {
     }, 100);
 }
 
+function initPaymentLogic() {
+    const paymentSelect = document.getElementById('cust-payment');
+    const paymentHint = document.getElementById('payment-hint');
+    if (!paymentSelect || !paymentHint) return;
+
+    const updateHint = () => {
+        paymentHint.style.display = (paymentSelect.value === "Накладений платіж") ? 'block' : 'none';
+    };
+
+    if (isPaymentInitialized) { updateHint(); return; }
+
+    paymentSelect.addEventListener('change', updateHint);
+    updateHint();
+    isPaymentInitialized = true;
+}
+
 window.closeCheckout = function() {
     const modal = document.getElementById('checkoutModal');
     if (modal) modal.style.display = 'none';
@@ -1096,6 +1114,7 @@ window.submitOrder = async function() {
         name: document.getElementById('cust-name'),
         phone: document.getElementById('cust-phone'),
         delivery: document.getElementById('cust-delivery'),
+        payment: document.getElementById('cust-payment'),
         city: document.getElementById('cust-city'),
         branch: document.getElementById('cust-branch'), // приховане поле для ID/повного тексту
         branchInput: document.getElementById('cust-branch-input') // видиме текстове поле
@@ -1256,6 +1275,7 @@ function cleanPhone(phone) {
         name: fields.name.value.trim(),
         phone: fields.phone.value.trim(),
         delivery: fields.delivery.value.trim(),
+        payment: fields.payment.value.trim(),
         city: fields.city.value.trim(), // Місто завжди беремо з cust-city
         // Для Укрпошти branch буде повною адресою, для НП - відділенням/адресою
         branch: (deliveryType === "Укрпошта")
@@ -1272,6 +1292,7 @@ function cleanPhone(phone) {
     localStorage.setItem('saved_name', orderData.name);
     localStorage.setItem('saved_phone', orderData.phone);
     localStorage.setItem('saved_delivery', orderData.delivery);
+    localStorage.setItem('saved_payment', orderData.payment);
     localStorage.setItem('saved_city', orderData.city); // Зберігаємо місто
     localStorage.setItem('saved_city_ref', fields.city.dataset.ref || '');
     localStorage.setItem('saved_branch', orderData.branch);
@@ -1280,6 +1301,7 @@ function cleanPhone(phone) {
     let orderText = `🌶️ НОВЕ ЗАМОВЛЕННЯ: ${orderData.id}\n`;
     orderText += `👤 ${orderData.name}\n📞 ${orderData.phone}\n`;
     orderText += `🚚 Доставка: ${orderData.delivery}\n`;
+    orderText += `💳 Оплата: ${orderData.payment}\n`;
     orderText += `📍 ${orderData.city}, ${orderData.branch}\n`;
     if (orderData.email !== "-") orderText += `📧 ${orderData.email}\n`;
     if (orderData.comment) orderText += `💬 Коментар: ${orderData.comment}\n`;
@@ -1288,7 +1310,7 @@ function cleanPhone(phone) {
     orderText += `\n\n💰 РАЗОМ: ${totalSum.toFixed(2)} ₴`;
 
     try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbzZDg25gW5P5gIaqLTfU_BNgTw4st8UnuR7rMxOWVTf7bIkcWu2fiCUAosAloeKhpdY/exec", {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbw7-HRsLd8fPPJxWe4zcaamlFuoHXQ_2XnMv_85ftOUcsOO-nMGzFkhT9uFmAVc10Ow/exec", {
             method: "POST",
             mode: "cors", 
             redirect: "follow",
@@ -1300,6 +1322,7 @@ function cleanPhone(phone) {
                 email: orderData.email,   
                 name: orderData.name,
                 phone: orderData.phone,    // Додав телефон (зайвим не буде)
+                payment: orderData.payment,
                 total: totalSum,           // Додав суму окремим полем для логів
                 cart: cart,                // Передаємо масив товарів для чека в імейлі
                 secret_token: "summerof26"
@@ -1334,6 +1357,35 @@ function cleanPhone(phone) {
             const orderDisplay = document.getElementById('orderNumberDisplay');
             if (orderDisplay) orderDisplay.innerText = orderData.id;
         }
+
+        // Показ реквізитів, якщо обрана онлайн оплата
+        const paymentDetails = document.getElementById('payment-details-success');
+        if (paymentDetails) {
+            if (orderData.payment === "Онлайн оплата") {
+                paymentDetails.innerHTML = `
+                    <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; border: 1px solid var(--primary-color);">
+                        <h3 style="color: #fff; margin-bottom: 15px; font-size: 18px; font-family: var(--font-heading);">💳 Реквізити для оплати</h3>
+                        <div style="background: #fff; padding: 10px; display: inline-block; border-radius: 8px; margin-bottom: 15px;">
+                            <img src="https://gapkainferno.github.io/GHI.jpg" alt="QR" width="140" height="140" style="display: block;">
+                        </div>
+                        <p style="font-size: 14px; color: #ccc; margin-bottom: 15px;">Відскануйте QR-код або натисніть кнопку нижче:</p>
+                        <a href="https://www.privat24.ua/send/jkvgx" target="_blank" class="order-btn" style="display: inline-block; width: auto; padding: 10px 25px; font-size: 14px; margin-bottom: 15px; text-decoration: none;">
+                            Оплатити у Privat24
+                        </a>
+                        <p style="font-size: 13px; color: #888;">
+                            Картка Конверта: <br>
+                            <strong style="color: var(--primary-color); font-family: monospace; font-size: 16px;">5168 7521 5680 2145</strong>
+                        </p>
+                        <p style="font-size: 12px; color: var(--primary-orange); margin-top: 10px; font-style: italic;">
+                            * Будь ласка, надішліть скріншот оплати на імейл homestead.inferno@gmail.com.
+                        </p>
+                    </div>`;
+                paymentDetails.style.display = 'block';
+            } else {
+                paymentDetails.style.display = 'none';
+            }
+        }
+
         saveCart([]);
         updateCartUI();
         console.log("Замовлення відправлено успішно!");
