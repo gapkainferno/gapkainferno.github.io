@@ -873,14 +873,19 @@ function initDeliveryOptions() {
 
 function initPaymentLogic() {
     const paymentSelect = document.getElementById('cust-payment');
-    const paymentHint = document.getElementById('payment-hint');
-    if (!paymentSelect || !paymentHint) return;
+    const codHint = document.getElementById('cod-payment-hint');
+    const onlineHint = document.getElementById('online-payment-hint');
+    if (!paymentSelect || !codHint || !onlineHint) return;
 
     const updateHint = () => {
-        paymentHint.style.display = (paymentSelect.value === "Накладений платіж") ? 'block' : 'none';
+        codHint.style.display = (paymentSelect.value === "Накладений платіж") ? 'block' : 'none';
+        onlineHint.style.display = (paymentSelect.value === "Онлайн оплата") ? 'block' : 'none';
     };
 
-    if (isPaymentInitialized) { updateHint(); return; }
+    if (isPaymentInitialized) {
+        updateHint();
+        return;
+    }
 
     paymentSelect.addEventListener('change', updateHint);
     updateHint();

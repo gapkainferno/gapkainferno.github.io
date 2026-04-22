@@ -37,11 +37,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="form-group">
                         <label>Спосіб оплати</label>
                         <select id="cust-payment">
-                            <option value="Онлайн оплата">Онлайн оплата (на Конверт)</option>
+                            <option value="Онлайн оплата">Онлайн оплата (передоплата)</option>
                             <option value="Накладений платіж">Накладений платіж (післяплата)</option>
                         </select>
-                        <div id="payment-hint" style="display:none; color: var(--primary-orange); font-size: 12px; margin-top: 5px; font-style: italic; line-height: 1.3;">
+                        <div id="cod-payment-hint" style="display:none; color: var(--primary-orange); font-size: 13px; margin-top: 5px; font-style: italic; line-height: 1.3;">
                             ℹ️ Пошта бере комісію за переказ коштів (~2% від суми + 20 грн).
+                        </div>
+                        <div id="online-payment-hint" style="display:none; color: var(--primary-orange); font-size: 13px; margin-top: 5px; font-style: italic; line-height: 1.3;">
+                            ℹ️ Товар буде відправлено тільки після отримання оплати. Реквізити та посилання на оплату з'являться одразу після оформлення замовлення та продублюються на ваш Email.
                         </div>
                     </div>
 
