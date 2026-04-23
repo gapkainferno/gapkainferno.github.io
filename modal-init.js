@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <option value="Накладений платіж">Накладений платіж (післяплата)</option>
                         </select>
                         <div id="cod-payment-hint" style="display:none; color: var(--primary-orange); font-size: 13px; margin-top: 5px; font-style: italic; line-height: 1.3;">
-                            ℹ️ Пошта бере комісію за переказ коштів (~2% від суми + 20 грн).
+                            ℹ️Будь ласка, зверніть увагу, що Нова Пошта бере комісію за переказ коштів (~2% від суми + 20 грн).
                         </div>
                         <div id="online-payment-hint" style="display:none; color: var(--primary-orange); font-size: 13px; margin-top: 5px; font-style: italic; line-height: 1.3;">
                             ℹ️ Товар буде відправлено тільки після отримання оплати. Реквізити та посилання на оплату з'являться одразу після оформлення замовлення та продублюються на ваш Email.
