@@ -51,6 +51,10 @@ const blogPosts = [
                     <img src="images/photo_2026-04-11_17-48-47.jpg" alt="11 квітня">
                     <p><strong>11 квітня:</strong> Вони готові до справжньої землі!</p>
                 </div>
+                <div class="timeline-item">
+                    <img src="images/photo_2026-04-24_13-33-02.jpg" alt="24 квітня">
+                    <p><strong>24 квітня:</strong> Вони вже починають боротися за місце під сонцем.</p>
+                </div>
             </div>
             <blockquote class="article-quote">
                 <strong>Наш секрет успіху:</strong> Ми не просто садимо насіння. Ми стежимо за кожним етапом і відбираємо лише найсильніших "атлетів".
