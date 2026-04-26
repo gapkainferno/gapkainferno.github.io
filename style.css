@@ -342,6 +342,7 @@ header {
 .top-nav span:nth-child(1) { animation-delay: 0s;  }
 .top-nav span:nth-child(2) { animation-delay: 3s;  }
 .top-nav span:nth-child(3) { animation-delay: 6s;  }
+.top-nav span:nth-child(4) { animation-delay: 9s;  }
 
 @keyframes textSlide {
     0%   { opacity: 0; transform: translateY(100%);  }
@@ -2585,6 +2586,7 @@ footer {
     grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 40px;
     margin-bottom: 40px;
+    padding: 0 20px;
 }
 
 /* Брендинг у футері */
@@ -2974,7 +2976,18 @@ footer {
     #modal-main-content { grid-template-columns: 1fr !important; }
 
     /* Футер */
-    .footer-content { grid-template-columns: 1fr; gap: 24px; }
+    .footer-content { 
+        grid-template-columns: 1fr 1fr; 
+        gap: 30px; 
+        padding: 0 20px;
+    }
+    .footer-brand {
+        grid-column: span 2;
+        text-align: center;
+    }
+    .footer-tagline {
+        margin: 0 auto;
+    }
 
     /* FAQ */
     .step-grid { grid-template-columns: 1fr; }
@@ -3012,6 +3025,22 @@ footer {
     /* Ховаємо верхній кошик на мобільних, щоб не перекривав пошук/лого */
     .header-cart-link {
         display: none;
+    }
+
+    /* Футер на маленьких екранах */
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 35px;
+    }
+    .footer-brand {
+        grid-column: span 1;
+    }
+    .footer-logo-img {
+        margin: 0 auto 15px;
+    }
+    .footer-links a:hover, .footer-contacts a:hover, .footer-pp a:hover {
+        padding-left: 0;
     }
 
     /* Product page на крихітному екрані */
@@ -3758,67 +3787,4 @@ body.otherseeds-page header::after {
 
 .card-link.is-locked:hover {
     transform: none !important; /* Прибираємо анімацію при наведенні для заблокованих */
-}
-
-/* 🔒 БЛОКУВАННЯ В ПОШУКУ */
-.search-result-item.is-locked-search {
-    filter: grayscale(0.8) brightness(0.5);
-    cursor: not-allowed !important;
-    position: relative;
-    pointer-events: none; /* Вимикає клік */
-}
-
-.search-result-item.is-locked-search::after {
-    content: "ЗАПУСК ВОСЕНИ";
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%) rotate(-5deg);
-    background: var(--primary-color);
-    color: #fff;
-    padding: 2px 8px;
-    font-family: var(--font-heading);
-    font-size: 10px;
-    font-weight: 700;
-    border: 1px solid #fff;
-    z-index: 5;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-    white-space: nowrap;
-}
-
-/* 🔒 ГЛОБАЛЬНЕ БЛОКУВАННЯ ВСЬОГО ПОШУКУ (БЕЗ ЗМІН У JS) */
-#search-results .search-result-item {
-    pointer-events: none !important; /* Повністю вимикає можливість кліку */
-    filter: grayscale(0.8) brightness(0.6); /* Робить результати сірими */
-    position: relative;
-    cursor: not-allowed !important;
-}
-
-#search-results .search-result-item::before {
-    content: "ЗАПУСК ВОСЕНИ 🌶️";
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--primary-color);
-    color: #fff;
-    padding: 4px 10px;
-    font-family: var(--font-heading);
-    font-size: 11px;
-    font-weight: 700;
-    border: 1px solid #fff;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-    white-space: nowrap;
-}
-
-@keyframes badge-pulse {
-    0%, 100% {
-        transform: translate(-50%, -50%) rotate(-5deg) scale(1);
-        box-shadow: 0 5px 20px rgba(0,0,0,0.7);
-    }
-    50% {
-        transform: translate(-50%, -50%) rotate(-5deg) scale(1.05);
-        box-shadow: 0 8px 30px var(--accent-shadow);
-    }
 }
