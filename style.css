@@ -219,6 +219,24 @@ body.poultry-page {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   §2.1  🖱️ КРАФТОВИЙ СКРОЛБАР
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+    background: #2a1a10; /* surface-2 */
+    border-radius: 10px;
+    border: 2px solid var(--bg-dark);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    §3  🌍  БАЗОВІ СТИЛІ (ОНОВЛЕНО)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 html { scroll-behavior: smooth; }
@@ -318,39 +336,64 @@ header {
     z-index: var(--z-header);
 }
 
-/* Анімований рядок-підказка */
 .top-nav {
-    font-size: 18px;
+    /* Дизайнерський вигляд: плаваюча капсула */
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
     color: var(--text-muted);
-    letter-spacing: 0.5px;
-    position: relative;
-    height: 1.2em; /* Висота підлаштовується під розмір шрифту */
-    line-height: 1.2em;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 30px;
+    padding: 0 25px;
+    height: 34px;
+    line-height: 34px;
     overflow: hidden;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+    width: fit-content;
+    min-width: 320px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 5;
+    backdrop-filter: blur(5px);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.02);
+    transition: all 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+}
+
+.top-nav:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
 .top-nav span {
     position: absolute;
+    left: 0;
     width: 100%;
     text-align: center;
     opacity: 0;
-    transform: translateY(100%); /* Початкова позиція нижче блоку на всю висоту */
-    animation: textSlide 12s infinite ease-in-out; /* Збільшено тривалість анімації до 12 секунд */
+    transform: translateY(15px);
+    animation: modernSlide 12s infinite ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
-.top-nav span:nth-child(1) { animation-delay: 0s;  }
-.top-nav span:nth-child(2) { animation-delay: 3s;  }
-.top-nav span:nth-child(3) { animation-delay: 6s;  }
-.top-nav span:nth-child(4) { animation-delay: 9s;  } /* Затримка для четвертої фрази */
 
-@keyframes textSlide {
-    0%   { opacity: 0; transform: translateY(100%);  }
-    4.16%   { opacity: 1; transform: translateY(0);    } /* 5% від 12с */
-    20.83%  { opacity: 1; transform: translateY(0);    } /* 25% від 12с */
-    25%  { opacity: 0; transform: translateY(-100%); } /* 30% від 12с */
-    100% { opacity: 0; transform: translateY(-100%); }
+.top-nav span:nth-child(1) { animation-delay: 0s; }
+.top-nav span:nth-child(2) { animation-delay: 3s; }
+.top-nav span:nth-child(3) { animation-delay: 6s; }
+.top-nav span:nth-child(4) { animation-delay: 9s; }
+
+@keyframes modernSlide {
+    0%   { opacity: 0; transform: translateY(15px); }
+    4%   { opacity: 1; transform: translateY(0);    }
+    21%  { opacity: 1; transform: translateY(0);    }
+    25%  { opacity: 0; transform: translateY(-15px); }
+    100% { opacity: 0; transform: translateY(-15px); }
 }
 
 /* Логотипи */
@@ -360,7 +403,12 @@ header {
     height: auto;
     display: block;
     filter: drop-shadow(0 0 5px rgba(255, 69, 0, 0.2));
-    align-items: center;
+    transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.main-logo-link:hover .logo-image {
+    filter: drop-shadow(0 0 15px var(--accent-shadow));
+    transform: scale(1.02);
 }
 
 .logo-small {
@@ -1851,10 +1899,31 @@ main.product-page {
     transition: transform var(--transition), box-shadow var(--transition);
     box-shadow: 0 4px 15px var(--accent-shadow);
     margin-left: 15%;
+    position: relative;
+    overflow: hidden;
 }
 .add-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px var(--accent-shadow);
+}
+
+/* Ефект "Бліку" для всіх основних кнопок */
+.add-btn::after, .order-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.15);
+    transform: rotate(30deg);
+    transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    opacity: 0;
+}
+
+.add-btn:hover::after, .order-btn:hover::after {
+    left: 120%;
+    opacity: 1;
 }
 
 .add-btn-aside{
@@ -2383,6 +2452,7 @@ main.product-page {
     box-shadow: 0 4px 18px var(--accent-shadow, rgba(200,90,42,0.35));
     position: relative;
     overflow: hidden;
+    animation: fire-pulse 2.5s infinite;
 }
 /* Блиск при наведенні */
 .order-btn::after {
@@ -2402,6 +2472,22 @@ main.product-page {
 .order-btn:active {
     transform: translateY(0);
     filter: brightness(0.92);
+}
+
+/* Анімація Вогняного Пульсу */
+@keyframes fire-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(200, 90, 42, 0.4), 
+                    0 4px 18px var(--accent-shadow);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgba(200, 90, 42, 0), 
+                    0 8px 24px var(--accent-shadow);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(200, 90, 42, 0), 
+                    0 4px 18px var(--accent-shadow);
+    }
 }
 
 /* Стан завантаження */
@@ -2434,6 +2520,25 @@ main.product-page {
 @keyframes btn-spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   §16.1  ✨ ЕФЕКТ ПОЯВИ ПРИ СКРОЛІ
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Покращуємо контрастність для Coming Soon */
+.coming-soon-overlay {
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ═══════════════════════════════════════════
@@ -3780,7 +3885,70 @@ body.otherseeds-page header::after {
    ║  КІНЕЦЬ — v6.0 · 23 секції · динамічні теми                ║
    ╚══════════════════════════════════════════════════════════════╝ */
  /* ПРИБРТИИ НА СТАРТІ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 🔒 СИСТЕМА БЛОКУВАННЯ (COMING SOON) */
-.card-link.is-locked {
+/* 🔒 БЛОКУВАННЯ В ПОШУКУ */
+.search-result-item.is-locked-search {
+    filter: grayscale(0.8) brightness(0.5);
+    cursor: not-allowed !important;
+    position: relative;
+    pointer-events: none; /* Вимикає клік */
+}
+
+.search-result-item.is-locked-search::after {
+    content: "ЗАПУСК ВОСЕНИ";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-5deg);
+    background: var(--primary-color);
+    color: #fff;
+    padding: 2px 8px;
+    font-family: var(--font-heading);
+    font-size: 10px;
+    font-weight: 700;
+    border: 1px solid #fff;
+    z-index: 5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    white-space: nowrap;
+}
+
+/* 🔒 ГЛОБАЛЬНЕ БЛОКУВАННЯ ВСЬОГО ПОШУКУ (БЕЗ ЗМІН У JS) */
+#search-results .search-result-item {
+    pointer-events: none !important; /* Повністю вимикає можливість кліку */
+    filter: grayscale(0.8) brightness(0.6); /* Робить результати сірими */
+    position: relative;
+    cursor: not-allowed !important;
+}
+
+#search-results .search-result-item::before {
+    content: "ЗАПУСК ВОСЕНИ 🌶️";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-color);
+    color: #fff;
+    padding: 4px 10px;
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid #fff;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    white-space: nowrap;
+}
+
+@keyframes badge-pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) rotate(-5deg) scale(1);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(-5deg) scale(1.05);
+        box-shadow: 0 8px 30px var(--accent-shadow);
+    }
+}
+
+ .card-link.is-locked {
     filter: grayscale(0.8) brightness(0.6);
     cursor: not-allowed !important;
     pointer-events: none; /* Вимикає кліки */
