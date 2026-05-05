@@ -497,7 +497,7 @@ heatScore:"1",
         price: 45,
         heatLevel: "🔥+ ПОМІРНА (10,000 – 25,000 SHU)",
         metaDescription: "Купити насіння Peter Pepper — найкумеднішого перцю у світі з анатомічною формою. Середня гострота та чудовий смак. Оригінальний поданок.",
-heatScore:"3",
+heatScore:"1",
         images: ["peter-pepper.webp", "", ""],
         specs: {
             maturity: "80–90 днів",
