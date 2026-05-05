@@ -248,7 +248,7 @@ heatScore:"3",
 heatScore:"1",
         images: ["monkey-face-yellow-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
         specs: {
-            maturity: "75-85 днів (досить швидкий хлопець)",
+            maturity: "75-85 днів (досить швидкий)",
             height: "60-80 см",
             species: "Capsicum annuum",
             yield: ""
@@ -333,7 +333,7 @@ heatScore:"3",
 heatScore:"4",
         images: ["carolina-reaper-chocolate-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
         specs: {
-            maturity: "110-130 днів (дуже довгий шлях до фінішу)",
+            maturity: "110-130 днів (довгий шлях до фінішу)",
             height: "До 120 см",
             species: "Capsicum chinense",
             yield: ""
@@ -420,7 +420,7 @@ heatScore:"1",
         images: ["starfish-main.webp", "", ""],
         specs: {
             maturity: "90–100 днів",
-            height: "Може вимахати до 1.5 - 2 метрів (справжнє дерево!)",
+            height: "до 1.5 - 2 метрів",
             species: "Capsicum baccatum (Ягідний перець)",
             yield: ""
         },
@@ -498,7 +498,7 @@ heatScore:"1",
         heatLevel: "🔥+ ПОМІРНА (10,000 – 25,000 SHU)",
         metaDescription: "Купити насіння Peter Pepper — найкумеднішого перцю у світі з анатомічною формою. Середня гострота та чудовий смак. Оригінальний поданок.",
 heatScore:"3",
-        images: ["", "", ""],
+        images: ["peter-pepper.webp", "", ""],
         specs: {
             maturity: "80–90 днів",
             height: "60–90 см",
@@ -583,7 +583,7 @@ heatScore:"1",
         images: ["lemon-drop-main.webp", "", ""],
         specs: {
             maturity: "80–90 днів",
-            height: "90–120 см (дуже гіллястий, нагадує ліану)",
+            height: "90–120 см (дуже гіллястий)",
             species: "Capsicum baccatum",
             yield: ""
         },
@@ -612,7 +612,7 @@ heatScore:"2",
             maturity: "110–130 днів (Потребує терпіння)",
             height: "100–150 см",
             species: "Capsicum pubescens",
-            yield: "1500–2500 г з куща (Завдяки дуже товстим і важким стінкам плоду (1 плід 50-100г))"
+            yield: "1500–2500 г з куща"
         },
         description: "<b>Giant Rocoto Red</b> — це «альфа» серед перців. Насіння Рокото відкриє вам світ унікального виду <b>Pubescens</b>. <br><br>Його фішки: <b>чорне насіння</b>, фіолетові квіти та оксамитове листя. Плоди м'ясисті та соковиті, наче яблука. Це єдиний перець, який обожнює прохолоду та може жити до 15 років, перетворюючись на розкішне дерево. Смак насичений, із потужною, але приємною гостротою.",
         growTip: "Рокото — гірський мешканець. Він обожнює прохолодні українські ночі та ненавидить екстремальну спеку. Дайте йому трохи тіні вдень, і він буде плодоносити до самих заморозків.",
@@ -823,7 +823,7 @@ heatScore:"2",
 
     // Твої соуси...
 "sauceCoreHeat": {
-        name: "Core Heat Sauce",
+        name: "Соус Core Heat",
         searchName: "gapka соуси, гапка соуси, Соус гострий класика, кор хіт, база",
         category: "sauces",
         price: 219,
@@ -865,7 +865,7 @@ heatScore:"2",
         allowSale: true, 
     },
 "sauceNeonVibe": {
-        name: "Neon Vibe Sauce",
+        name: "Соус Neon Vibe",
         searchName: "Соус гострий неон, хабанеро соус",
         category: "sauces",
         price: 219,
@@ -905,7 +905,7 @@ heatScore:"2",
         allowSale: true, 
     },
 "sauceMildForest": {
-        name: "Mild Forest Sauce",
+        name: "Соус Mild Forest",
         searchName: "Соус , майлд соус, халопеньо, лемон, лимон дроп соус",
         category: "sauces",
         price: 219,
@@ -946,7 +946,7 @@ heatScore:"2",
     },
 
 "sauceHotHoney": {
-        name: "Honey Sting",
+        name: "Соус Honey Sting",
         searchName: "Соус , гострий мед",
         category: "sauces",
         price: 219,
@@ -989,7 +989,7 @@ heatScore:"2",
 
 // інше насіння...
 "opal_gem_120": {
-    name: "GHI Opal Gem (Опаловий Самоцвіт)",
+    name: "Насіння томату GHI Opal Gem (Опаловий Самоцвіт)",
     searchName: "опалова таємниця, опаловий томат, болотний томат, синій томат, якравий самоцвіт, lucid gem",
     category: "otherseeds",
     price: 27, // Екзотика з антоціаном завжди дорожча
@@ -1012,7 +1012,7 @@ heatScore:"2",
 },
 
 "brandywine_pink": {
-    name: "Brandywine Pink (Лінія GHI)",
+    name: "Насіння томату Brandywine Pink (Лінія GHI)",
     searchName: "брендивайн, брендивайн розовый, найкращий смак, рожевий томат, heirloom tomato",
     category: "otherseeds",
     price: 27,
@@ -1036,7 +1036,7 @@ heatScore:"2",
 },
 
 "stupice_early": {
-    name: "Stupice Early (Контейнерний)",
+    name: "Насіння томату Stupice Early (Контейнерний)",
     searchName: "ступиче, ступице, ранній томат, томат для горщиків, холодостійкий помідор",
     category: "otherseeds",
     price: 25,
@@ -1056,7 +1056,7 @@ heatScore:"2",
 },
 
 "titan_red_814": {
-    name: "GHI Titan Red (Лінія 814)",
+    name: "Насіння томату GHI Titan Red (Лінія 814)",
     searchName: "великий томат, помідор гігант",
     category: "otherseeds",
     price: 25, // Можна трохи дорожче, бо це підтверджений рекорд!
@@ -1079,7 +1079,7 @@ heatScore:"2",
 },
 
 "white_186": {
-    name: "White GHI (Лінія 186)",
+    name: "Насіння томату White GHI (Лінія 186)",
     searchName: "білий томат, білий віск, великий білий томат, гіпоалергенний помідор",
     category: "otherseeds",
     price: 25, // Трохи піднімемо ціну за "лінію GHI" та підтверджену вагу
@@ -1103,7 +1103,7 @@ heatScore:"2",
 },
 
 "emerald_honey_97": {
-    name: "GHI 97 Emerald Honey",
+    name: "Насіння томату GHI 97 Emerald Honey",
     searchName: "зелений томат, зелений солодкий, зеленый сладкий, зеленый помідор, зелене диво",
     category: "otherseeds",
     price: 25, // Трохи піднімемо ціну за "лінію GHI" та підтверджену вагу
@@ -1127,7 +1127,7 @@ heatScore:"2",
 },
 
 "zagadka": {
-    name: "Загадка",
+    name: "Насіння томату Загадка",
     searchName: "загадка, томат загадка, ультраранній помідор, низкорослий томат",
     category: "otherseeds",
     price: 25,
@@ -1150,7 +1150,7 @@ heatScore:"2",
 },
 
 "pinkgiant": {
-    name: "Рожевий Велетень",
+    name: "Насіння томату Рожевий Велетень",
     searchName: "рожевий велетень, розовый гігант, солодкий томат, великий помідор",
     category: "otherseeds",
     price: 25,
@@ -1173,7 +1173,7 @@ heatScore:"2",
 },
 
 "ghi_medvezha_lapa": {
-    name: "GHI Медвежа Лапа",
+    name: "Насіння томату GHI Медвежа Лапа",
     searchName: "ведмежа лапа, солодкий томат, великий помідор",
     category: "otherseeds",
     price: 25,
@@ -1196,7 +1196,7 @@ heatScore:"2",
 },
 
 "mongol_dwarf": {
-    name: "Монгольський Карлик",
+    name: "Насіння томату Монгольський Карлик",
     searchName: "монгольський карлик, монгольский карлик, низькорослий томат, томат для ледачих",
     category: "otherseeds",
     price: 30,
@@ -1218,7 +1218,7 @@ heatScore:"2",
     allowSale: true
 },
 "red_chief": {
-    name: "Early Red Chief",
+    name: "Насіння томату Early Red Chief",
     searchName: "ерлі ред чіф, ранній червоний вождь, американский томат, ранній помідор",
     category: "otherseeds",
     price: 30,
@@ -1244,7 +1244,7 @@ heatScore:"2",
 // 🌶️ ВРОЖАЙ ПЕКЛА (СВІЖІ ТА СУШЕНІ)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 "fresh_reaper_red": {
-    name: "Carolina Reaper Chocolate (Свіжий плід)",
+    name: "Перець свіжийCarolina Reaper Chocolate",
     searchName: "свіжий перець, кароліна ріпер свіжа, fresh pepper",
     category: "fresh-peppers",
     price: 0,
@@ -1257,7 +1257,7 @@ heatScore:"2",
 },
 
 "dried_reaper_slices": {
-    name: "Carolina Reaper (Сушені слайси)",
+    name: "Перець сушений Carolina Reaper (Сушені слайси)",
     searchName: "сушений перець, кароліна сушена, dried pepper",
     category: "fresh-peppers",
     price: 0,
