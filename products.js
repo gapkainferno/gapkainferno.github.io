@@ -1359,14 +1359,14 @@ heatScore:"2",
 // 🌶️ ВРОЖАЙ ПЕКЛА (СВІЖІ ТА СУШЕНІ)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 "fresh_reaper_red": {
-    name: "Перець свіжийCarolina Reaper Chocolate",
+    name: "Перець свіжий Carolina Reaper Chocolate",
     searchName: "свіжий перець, кароліна ріпер свіжа, fresh pepper",
     category: "fresh-peppers",
     price: 0,
     heatLevel: "☠️ ЕКСТРЕМАЛЬНА",
     heatScore: "1", // Фільтр: Свіжі
     images: ["carolina-reaper-chocolate-main.webp"],
-    description: "Свіжі плоди найгострішого перцю у світі. Зібрані в день відправки.",
+    description: "Свіжі плоди найгострішого перцю у світі.",
     inStock: false,
     allowSale: false
 },

@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <button class="close-btn" onclick="closeEmptyCartModal()">&times;</button>
             
             <div class="empty-cart-header">
-                <h2 class="modal-title">Ваш кошик ще <span>порожній</span> 🌶️</h2>
+                <h2 class="modal-title">Ваш кошик ще <span>порожній</span></h2>
                 <p class="empty-cart-subtitle">Відкрийте світ гострих смаків! Виберіть категорію товарів:</p>
             </div>
 
@@ -152,6 +152,21 @@ document.addEventListener("DOMContentLoaded", function() {
                     <p>Томати та інші овочі</p>
                     <span class="card-arrow">→</span>
                 </a>
+
+                <a href="fresh-peppers.html" class="empty-cart-card">
+                    <div class="card-emoji">🌶️</div>
+                    <h3>Врожай Пекла</h3>
+                    <p>Свіжі та Сушені Перці</p>
+                    <span class="card-arrow">→</span>
+                </a>
+
+                <a href="javascript:void(0)" style="opacity: 0.5; cursor: not-allowed;" class="empty-cart-card">
+                    <div class="card-emoji">🥚</div>
+                    <h3>Інкубаційні Яйця</h3>
+                    <p></p>
+                    <span class="card-arrow">→</span>
+                </a>
+
             </div>
 
             <div class="empty-cart-footer">
