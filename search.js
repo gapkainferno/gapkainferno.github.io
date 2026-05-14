@@ -118,6 +118,7 @@ function displaySearchResults(results, container) {
     // Санітізуємо дані перед вставкою
     const sanitizedResults = results.map(item => ({
         ...item,
+        rawCategory: item.category,
         name: typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(item.name, { ALLOWED_TAGS: [] }) : item.name, // Видаляємо всі теги
         category: typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(categoryNames[item.category] || item.category, { ALLOWED_TAGS: [] }) : categoryNames[item.category] || item.category,
         price: isNaN(item.price) ? 0 : item.price // Перевіряємо, що ціна - число
@@ -130,22 +131,40 @@ function displaySearchResults(results, container) {
         // Санітізуємо URL для безпеки
         const safeId = encodeURIComponent(item.id);
         const safeImageSrc = item.images && item.images[0] ? encodeURI(item.images[0]) : '';
+        const isLocked = typeof window.isProductLocked === 'function' && window.isProductLocked(item);
+        const itemHref = isLocked ? '#' : `product.html?id=${safeId}`;
+        const itemClass = isLocked ? 'search-result-item is-locked-search' : 'search-result-item';
+        const lockedStyle = isLocked ? 'opacity: 0.72; cursor: not-allowed;' : '';
+        const lockedBadge = isLocked ? '<span style="color: #ffaa33; font-size: 10px; margin-left: 5px;">(НЕЗАБАРОМ)</span>' : '';
         
         return `
-    <a href="product.html?id=${safeId}" class="search-result-item">
-        <div class="search-result-img" style="${isInStock ? '' : 'filter: grayscale(1); opacity: 0.7;'}">
+    <a href="${itemHref}" class="${itemClass}" data-locked="${isLocked ? 'true' : 'false'}" style="${lockedStyle}">
+        <div class="search-result-img" style="${isInStock && !isLocked ? '' : 'filter: grayscale(1); opacity: 0.7;'}">
             <img src="${safeImageSrc}" alt="${item.name}">
         </div>
         <div class="search-result-info">
             <div class="search-result-name">
                 ${item.name} ${isInStock ? '' : '<span style="color: #ff4444; font-size: 10px; margin-left: 5px;">(ОЧІКУЄТЬСЯ)</span>'}
             </div>
+            ${lockedBadge ? `<div class="search-result-category" style="color: #ffaa33;">${lockedBadge}</div>` : ''}
             <div class="search-result-category">${item.category}</div>
         </div>
         <div class="search-result-price">${item.price} ₴</div>
     </a>
 `;
     }).join('');
+
+    container.querySelectorAll('.search-result-item[data-locked="true"]').forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            const message = typeof window.getLockedCategoryAlert === 'function'
+                ? window.getLockedCategoryAlert()
+                : 'Цей розділ тимчасово недоступний.';
+
+            alert(message);
+        });
+    });
     
     container.style.display = 'block';
 }

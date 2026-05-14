@@ -107,6 +107,11 @@ class ImageLazyLoader {
         };
         tempImg.src = src;
     }
+
+    observeImage(img) {
+        if (!img || !this.observer) return;
+        this.observer.observe(img);
+    }
     
     fallback() {
         // Фолбек для старих браузерів
@@ -121,16 +126,35 @@ class ImageLazyLoader {
  * Конвертує динамічні src у data-src для lazy loading
  */
 function enableLazyLoadingForDynamicImages() {
+    const lazyLoader = window.imageLazyLoader;
+    const placeholderSrc = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3C/svg%3E';
+
+    function prepareDynamicImage(img) {
+        if (!img || !img.src || img.dataset.lazy) return;
+
+        img.dataset.lazy = img.src;
+        img.src = placeholderSrc;
+
+        if (lazyLoader && typeof lazyLoader.observeImage === 'function') {
+            lazyLoader.observeImage(img);
+        } else if (!('IntersectionObserver' in window)) {
+            img.src = img.dataset.lazy;
+        }
+    }
+
     // Спостерігаємо за новими елементами, що додаються в DOM
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             mutation.addedNodes.forEach((node) => {
                 if (node.nodeType === 1) { // Element node
+                    if (node.matches && node.matches('img')) {
+                        prepareDynamicImage(node);
+                    }
+
                     const imgs = node.querySelectorAll ? node.querySelectorAll('img') : [];
                     imgs.forEach(img => {
                         if (img.src && !img.dataset.lazy) {
-                            img.dataset.lazy = img.src;
-                            img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3C/svg%3E';
+                            prepareDynamicImage(img);
                         }
                     });
                 }
@@ -243,7 +267,7 @@ class PerformanceMonitor {
  */
 document.addEventListener('DOMContentLoaded', () => {
     // Активуємо lazy loading для зображень
-    new ImageLazyLoader({
+    window.imageLazyLoader = new ImageLazyLoader({
         threshold: 0.1,
         rootMargin: '50px'
     });

@@ -1090,7 +1090,7 @@ heatScore:"2",
     images: ["ghi-opal-gem-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"], 
     specs: {
         maturity: "115-125 днів (середньоранній)",
-        height: "170-190 см (індетермінантний)",
+        height: "70-100 см (детермінантний)",
         species: "Solanum lycopersicum",
         yield: "Висока (5-8 кг з куща)"
     },
@@ -1353,33 +1353,7 @@ heatScore:"2",
     inStock: true,
     allowSale: true
 },
-"red_chief": {
-    name: "Насіння томату Early Red Chief",
-    searchName: "ерлі ред чіф, ранній червоний вождь, американский томат, ранній помідор, насіння томатів",
-    category: "otherseeds",
-    price: 30,
-    heatLevel: "Томат",
-    metaDescription: "Купити насіння томата Early Red Chief. Рання американська генетика зі стійкістю до хвороб та ідеальним товарним виглядом. Смачні та щільні плоди.",
-    heatScore: "1",
-    images: ["early-red-chief-tomato-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
-    specs: {
-        maturity: "90-95 днів",
-        height: "50-70 см",
-        species: "Solanum lycopersicum",
-        yield: "дуже висока"
-    },
-    description: `<b>Early Red Chief</b> — це надійна американська генетика, ранній та здоровий сорт томата.
-    <br><br>
-    Має <b>чудовий товарний вигляд</b> та стійкість до більшості хвороб. Ідеальний баланс між ранньостиглістю та класичним смаком червоного томата. Плоди середнього розміру, дуже красиві та щільні. Має відмінний смак, який рідко зустрічається серед таких ранніх сортів. Стійкий до більшості хвороб томатів.
-    <br><br>
-    Насіння томата Early Red Chief від Gapka Homestead Inferno — це ваш шлях до раннього та надійного врожаю.`,
-    metaDescription: "Early Red Chief: ранній томат, американська генетика зі стійкістю до хвороб та ідеальним товарним виглядом. Смачні та щільні плоди. Насіння від Gapka Homestead Inferno.",
-    growTip: "Попри низький зріст, обов'язково підв'язуйте гілки, щоб вони не зламалися під масою плодів, яких буде дуже багато. Забезпечте йому багато сонця та регулярний полив.",
-    meta: { count: "15 насінин", pack: "Zip", year: "2026" },
-    isFlavor: "🛡️ Надійний та стійкий",
-    inStock: false,
-    allowSale: true
-},
+
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // 🌶️ ВРОЖАЙ ПЕКЛА (СВІЖІ ТА СУШЕНІ)

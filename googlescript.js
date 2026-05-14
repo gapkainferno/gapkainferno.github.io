@@ -2,9 +2,10 @@
 // HOMESTEAD INFERNO — ORDER PROCESSING SCRIPT
 // Google Apps Script для обробки замовлень з сайту
 // ════════════════════════════════════════════════════════════════
-const BOT_TOKEN = '8532849974:AAG-JfB6E6_XfNggptnpygCrr0JqutvRhgA'; // Токен від @BotFather
-const CHAT_IDS = ['457261010', '593171782']; 
-const API_SECRET = "summerof26";    // Пароль для захисту (як у cart.js)
+const SCRIPT_PROPS = PropertiesService.getScriptProperties();
+const BOT_TOKEN = SCRIPT_PROPS.getProperty('BOT_TOKEN');
+const CHAT_IDS = (SCRIPT_PROPS.getProperty('CHAT_IDS') || '').split(',').map(id => id.trim()).filter(Boolean);
+const API_SECRET = SCRIPT_PROPS.getProperty('API_SECRET');
 const CONTACT_EMAIL = "homestead.inferno@gmail.com";
 const PAYMENT_IBAN = "UA000000000000000000000000000";
 const PAYMENT_RECIPIENT = "ПІБ Отримувача";
@@ -23,6 +24,10 @@ function doPost(e) {
   try {
     if (!e || !e.postData || !e.postData.contents) return errorResponse("No data");
     let data = JSON.parse(e.postData.contents);
+
+    if (!BOT_TOKEN || CHAT_IDS.length === 0 || !API_SECRET) {
+      return errorResponse("Server configuration missing");
+    }
 
     // 1. ОБРОБКА КНОПКИ З TELEGRAM (Callback)
     if (data.callback_query) {
@@ -99,15 +104,18 @@ function doPost(e) {
     const customerEmail = data.email || "-";
     const customerName = data.name || "Друже";
     const customerPhone = data.phone || "-";
-    const fullMessage = data.message || "";
     const customerPayment = data.payment || "-";
     
     // Фіксація точного часу (день.місяць.рік години:хвилини:секунди)
     const timestamp = Utilities.formatDate(new Date(), "Europe/Kiev", "dd.MM.yyyy HH:mm:ss");
 
     // Витягуємо суму
-    let orderTotal = parseFloat(data.total) || 0;
+    const safeCart = normalizeCart(data.cart);
+    if (safeCart.error) return errorResponse(safeCart.error);
+
+    let orderTotal = safeCart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
     const formattedTotal = orderTotal.toFixed(2);
+    const fullMessage = buildOrderDetails(data, safeCart.items);
 
     // Запис у таблицю
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -143,7 +151,7 @@ function doPost(e) {
 
     // Відправка підтвердження клієнту на імейл
     if (customerEmail !== "-" && customerEmail.includes("@")) {
-      sendConfirmationEmail(customerEmail, customerName, orderId, formattedTotal, data.cart, customerPayment);
+      sendConfirmationEmail(customerEmail, customerName, orderId, formattedTotal, safeCart.items, customerPayment);
     }
 
     return ContentService.createTextOutput(JSON.stringify({status: "success", orderId: orderId})).setMimeType(ContentService.MimeType.JSON);
@@ -363,6 +371,58 @@ function generateOrderId() {
   const random = Math.random().toString(36).substring(2, 6).toUpperCase();
   
   return `HS-${day}${month}${year}-${random}`;
+}
+
+function normalizeCart(cartItems) {
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
+    return { error: "Cart is empty", items: [] };
+  }
+
+  if (cartItems.length > 50) {
+    return { error: "Too many cart items", items: [] };
+  }
+
+  const items = [];
+
+  for (let i = 0; i < cartItems.length; i++) {
+    const item = cartItems[i] || {};
+    const name = String(item.name || '').trim().slice(0, 200);
+    const productId = String(item.productId || '').trim().slice(0, 100);
+    const price = Number(item.price);
+    const qty = Math.max(1, Math.min(100, parseInt(item.qty, 10) || 1));
+
+    if (!name || !Number.isFinite(price) || price < 0 || price > 100000) {
+      return { error: "Invalid cart item", items: [] };
+    }
+
+    items.push({
+      productId: productId,
+      name: name,
+      price: Math.round(price * 100) / 100,
+      qty: qty
+    });
+  }
+
+  return { items: items };
+}
+
+function buildOrderDetails(data, cartItems) {
+  const delivery = String(data.delivery || '-').trim().slice(0, 100);
+  const city = String(data.city || '-').trim().slice(0, 100);
+  const branch = String(data.branch || '-').trim().slice(0, 200);
+  const comment = String(data.comment || '').trim().slice(0, 500);
+  const itemsText = cartItems.map(item =>
+    `- ${item.name} (${item.price.toFixed(2)} грн) x ${item.qty}`
+  ).join('\n');
+
+  return [
+    `Доставка: ${delivery}`,
+    `Адреса: ${city}, ${branch}`,
+    comment ? `Коментар: ${comment}` : '',
+    '',
+    'Товари:',
+    itemsText
+  ].filter(line => line !== '').join('\n');
 }
 
 function formatTelegramMessage(orderId, name, email, phone, total, fullMessage, payment) {
