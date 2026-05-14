@@ -2,18 +2,6 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-        <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self'; 
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
-    font-src 'self' https://fonts.gstatic.com; 
-    script-src 'self' 'unsafe-inline' https://script.google.com https://www.googletagmanager.com https://www.gstatic.com https://*.firebasedatabase.app; 
-    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://*.firebasedatabase.app https://*.googleapis.com wss://*.firebasedatabase.app wss://*.firebaseio.com https://api.novaposhta.ua; 
-    img-src 'self' data: https://gapkainferno.github.io https://*.gstatic.com; 
-    frame-src 'self' https://*.firebasedatabase.app;
-    frame-ancestors 'none'; 
-    base-uri 'self'; 
-    form-action 'self'; 
-    upgrade-insecure-requests;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Врожай Пекла 2025 — Свіжі суперхоти | Gapka Homestead</title>
     <link rel="stylesheet" href="style.css">
@@ -90,7 +78,7 @@
             <div class="footer-section">
                 <h4>Зв'язок</h4>
                 <div class="footer-contacts">
-                    <!-- <span>+00000000000</span>-->
+                    <span>+00000000000</span>
                     <a href="mailto:homestead.inferno@gmail.com">homestead.inferno@gmail.com</a>
                 </div>
             </div>
@@ -107,11 +95,15 @@
         </div>
     </footer>
 
+    <a href="#" class="floating-cart" onclick="openCheckout(); return false;">
+        <span class="cart-icon">🛒</span>
+        <span id="cart-count">0</span>
+    </a>
+
     <script src="products.js"></script>
     <script src="search.js"></script>
     <script src="modal-init.js"></script>
-    <script src="security-enhancements.js"></script>
-<script src="cart.js"></script>
+    <script src="cart.js"></script>
     <script src="catalog.js"></script>
-<script type="module" src="analytics.js"></script></body>
+</body>
 </html>

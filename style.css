@@ -439,30 +439,6 @@ header {
 
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   §4.5  📢  БАНЕР АКЦІЙ
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-#sale-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 9500; /* Нижче модалок (10000+), але вище всього іншого */
-    box-sizing: border-box;
-}
-
-/* Коли банер є — зсуваємо весь вміст вниз */
-body.has-sale-banner .overlay,
-body.has-sale-banner > header {
-    padding-top: 42px;
-}
-
-/* На головній overlay не є першим елементом body, тому ловимо через клас */
-body.has-sale-banner {
-    padding-top: 42px;
-}
-
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    §5  🔍  ПОШУК
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .search-container {
@@ -1198,8 +1174,8 @@ body.has-sale-banner {
 /* ── Базова картка ── */
 .product-card {
     background: var(--surface);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -1209,10 +1185,10 @@ body.has-sale-banner {
     width: 100%;
     cursor: pointer;
 
-    /* М'яка, органічна тінь без різкості */
+    /* Плавна тінь — не різка */
     box-shadow:
-        0 2px 8px rgba(0,0,0,0.25),
-        0 8px 24px rgba(0,0,0,0.12);
+        0 4px 16px rgba(0,0,0,0.45),
+        0 1px 3px rgba(0,0,0,0.3);
 
     transition:
         transform 0.38s cubic-bezier(0.34,1.56,0.64,1),
@@ -1237,19 +1213,18 @@ body.has-sale-banner {
 
 /* Свічення при наведенні — органічне, м'яке */
 .product-card:hover {
-    transform: translateY(-6px) scale(1.008);
+    transform: translateY(-8px) scale(1.012);
     border-color: rgba(255,255,255,0.12);
     box-shadow:
-        0 8px 24px rgba(0,0,0,0.35),
-        0 12px 40px rgba(200,90,42,0.08),
-        0 0 0 1px rgba(255,255,255,0.08);
+        0 20px 50px rgba(0,0,0,0.6),
+        0 0 0 1px var(--primary-color),
+        0 0 40px var(--card-glow, rgba(200,90,42,0.08));
 }
 
 /* Контейнер для зображення (базовий для оверлею) */
 .img-container {
     position: relative;
     overflow: hidden;
-    border-radius: 12px 12px 0 0;
 }
 
 /* Оверлей зі шкалою Сковілла */
@@ -1388,70 +1363,56 @@ body.has-sale-banner {
 @keyframes fire-move   { 0%,100%{ background-position:0% 50% } 50%{ background-position:100% 50% } }
 @keyframes flavor-glow { 0%,100%{ background-position:0% 50% } 50%{ background-position:100% 50% } }
 
-/* ── Фото-зона ──
-   Єдиний темний фон маскує різні фони оригінальних фото.
-   object-fit: cover гарантує що кожне фото рівномірно заповнює
-   квадрат — незалежно від орієнтації чи розміру оригіналу. */
+/* ── Фото-зона ── */
 .img-container {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1 / 1; /* Квадратний формат для ідеальної уніфікації сітки */
     overflow: hidden;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
-    /* Глибокий темний фон — нейтральний для будь-якого фото */
-    background: #0f0804;
+
+    /* Темний фон з текстурою глибини */
+    background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 75%),
+        var(--surface);
 }
 
-/* Тонке підсвічення по центру — відчуття студійного світла */
-.img-container::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.04) 0%, transparent 65%);
-    pointer-events: none;
-    z-index: 2;
-}
-
-/* Ореол під фото */
+/* Ореол під фото — відчуття продукту на поверхні */
 .img-container::after {
     content: '';
     position: absolute;
-    bottom: 8%;
+    bottom: 15%; 
     left: 50%;
     transform: translateX(-50%);
-    width: 55%;
-    height: 12px;
+    width: 60%;
+    height: 15px;
     background: var(--primary-color);
     filter: blur(20px);
-    opacity: 0.12;
+    opacity: 0.15;
     pointer-events: none;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    z-index: 0;
+    transition: all 0.5s ease;
 }
 
 .img-container img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    /* cover — рівномірно заповнює квадрат, відрізаючи зайвий фон по краях */
-    object-fit: cover;
-    object-position: center;
-    /* Легке затемнення по краях через scale — дає відчуття об'єму */
-    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), filter 0.4s ease;
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+    filter:
+        drop-shadow(0 15px 30px rgba(0,0,0,0.6))
+        drop-shadow(0 5px 10px rgba(0,0,0,0.4));
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
     z-index: 1;
 }
 
 .product-card:hover .img-container img {
-    transform: scale(1.07);
-    filter: brightness(1.08) contrast(1.04);
+    transform: scale(1.12) translateY(-10px);
 }
 
 .product-card:hover .img-container::after {
-    opacity: 0.28;
+    opacity: 0.4;
     transform: translateX(-50%) scale(1.3);
 }
 
@@ -1519,83 +1480,6 @@ body.has-sale-banner {
     line-height: 1;
     /* Тонке підсвічення ціни кольором теми */
     text-shadow: 0 0 20px var(--card-glow, transparent);
-}
-
-/* ─── НОВИЙ: Короткий опис товару на картці ─── */
-.product-description-short {
-    font-family: var(--font-body);
-    font-size: 13px;
-    line-height: 1.5;
-    color: rgba(252, 239, 225, 0.72);
-    padding: 0 14px 12px;
-    margin: 0;
-    
-    /* Початково 2 рядки */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    
-    /* Плавна анімація розширення */
-    transition: -webkit-line-clamp 0.4s ease, max-height 0.4s ease;
-    max-height: 48px;
-}
-
-/* При наведенні на картку — розширюємо опис */
-.product-card:hover .product-description-short {
-    -webkit-line-clamp: unset;
-    max-height: 200px;
-    overflow: visible;
-}
-
-/* ─── НОВИЙ: Властивості товару (висота, врожайність, гострота) ─── */
-.product-specs-mini {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    padding: 8px 12px;
-    margin-bottom: 8px;
-    
-    background: rgba(0, 0, 0, 0.4) !important; /* Робимо фон темнішим та стабільним */
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 4px;
-    
-    /* Анімуємо лише колір фону, щоб уникнути мерехтіння прозорості при русі */
-    transition: background 0.4s ease;
-    opacity: 1 !important;
-}
-
-/* Гарантуємо чіткість фону при наведенні на будь-яку картку */
-.product-card:hover .product-specs-mini {
-    background: rgba(0, 0, 0, 0.6) !important;
-    opacity: 1 !important;
-}
-
-
-.spec-item {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    text-align: center;
-    font-size: 11px;
-}
-
-.spec-label {
-    color: rgba(255, 255, 255, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 10px;
-}
-
-.spec-value {
-    color: var(--text-color);
-    font-weight: 500;
-    font-size: 12px;
-    font-family: var(--font-heading);
 }
 
 /* Кнопка "+ В кошик" */
@@ -2011,10 +1895,10 @@ main.product-page {
     border-radius: var(--radius-sm);
     cursor: pointer;
     font-family: inherit;
-    width: 100%;
+    width: 50%;
     transition: transform var(--transition), box-shadow var(--transition);
     box-shadow: 0 4px 15px var(--accent-shadow);
-    margin: 0 auto;
+    margin-left: 15%;
     position: relative;
     overflow: hidden;
 }
@@ -2052,7 +1936,7 @@ main.product-page {
     border-radius: var(--radius-sm);
     cursor: pointer;
     font-family: inherit;
-    width: 100%;
+    width: 50%;
     transition: transform var(--transition), box-shadow var(--transition);
     box-shadow: 0 4px 15px var(--accent-shadow);
 }
@@ -2072,11 +1956,12 @@ main.product-page {
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
-    margin: 20px 0;
+    margin-bottom: 20px;
     /* точна ширина = sidebar, кнопка вирівняна по його лівому краю */
     width: var(--sidebar-width);
     transition: transform var(--transition), box-shadow var(--transition);
     box-shadow: 0 4px 12px var(--accent-shadow);
+    margin-top: 20px;
 }
 .back-btn:hover { transform: translateX(-3px); }
 .back-btn svg   { width: 16px; height: 16px; fill: currentColor; }
@@ -2368,118 +2253,6 @@ main.product-page {
     font-size: 14px;
     padding: 30px 0;
     margin: 0;
-}
-
-/* ═══════════════════════════════════════════
-   МОДАЛЬ ПОРОЖНЬОГО КОШИКА
-═══════════════════════════════════════════ */
-.empty-cart-header {
-    padding: 40px;
-    background: linear-gradient(135deg, rgba(200, 90, 42, 0.08) 0%, rgba(200, 90, 42, 0.02) 100%);
-    border-bottom: 1px solid rgba(200, 90, 42, 0.15);
-    text-align: center;
-}
-
-.empty-cart-subtitle {
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.7);
-    margin: 12px 0 0 0;
-    line-height: 1.5;
-}
-
-.empty-cart-categories {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    padding: 40px;
-    min-height: 300px;
-}
-
-.empty-cart-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 32px 24px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
-    border: 1.5px solid rgba(255, 255, 255, 0.08);
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.empty-cart-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(600px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(200, 90, 42, 0.1), transparent);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-}
-
-.empty-cart-card:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.03) 100%);
-    border-color: rgba(200, 90, 42, 0.4);
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(200, 90, 42, 0.15);
-}
-
-.empty-cart-card:hover::before {
-    opacity: 1;
-}
-
-.card-emoji {
-    font-size: 48px;
-    margin-bottom: 16px;
-    display: inline-block;
-    transition: transform 0.3s ease;
-}
-
-.empty-cart-card:hover .card-emoji {
-    transform: scale(1.15) rotate(5deg);
-}
-
-.empty-cart-card h3 {
-    font-size: 20px;
-    font-weight: 700;
-    margin: 0 0 8px 0;
-    color: var(--text-color);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.empty-cart-card p {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
-    margin: 0;
-    line-height: 1.4;
-}
-
-.card-arrow {
-    display: inline-block;
-    font-size: 20px;
-    margin-top: 16px;
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: all 0.3s ease;
-    color: var(--primary-color);
-}
-
-.empty-cart-card:hover .card-arrow {
-    opacity: 1;
-    transform: translateX(4px);
-}
-
-.empty-cart-footer {
-    padding: 20px 40px 40px;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Рядок товару */
@@ -2821,34 +2594,6 @@ main.product-page {
     .modal { padding: 0; }
     .modal-box { margin: 0; border-radius: 0; min-height: 100dvh; }
     .form-row { grid-template-columns: 1fr; gap: 0; }
-    
-    /* Empty cart modal responsive */
-    .empty-cart-categories {
-        grid-template-columns: 1fr;
-        gap: 16px;
-        padding: 20px;
-    }
-    
-    .empty-cart-card {
-        padding: 24px 16px;
-    }
-    
-    .empty-cart-header {
-        padding: 24px 16px;
-    }
-    
-    .empty-cart-footer {
-        padding: 16px 20px 24px;
-    }
-    
-    .card-emoji {
-        font-size: 40px;
-        margin-bottom: 12px;
-    }
-    
-    .empty-cart-card h3 {
-        font-size: 18px;
-    }
 }
 
 
@@ -3030,31 +2775,14 @@ footer {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    §20  🎁  ДОПОМІЖНІ КЛАСИ
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.out-of-stock { filter: grayscale(0.75); opacity: 0.55; position: relative; transition: filter 0.3s ease, opacity 0.3s ease; }
-.out-of-stock .img-container::after {
+.out-of-stock { filter: grayscale(0.75); opacity: 0.55; position: relative; }
+.out-of-stock::after {
     content: "ОЧІКУЄТЬСЯ";
     position: absolute; top: 50%; left: 50%;
-    bottom: auto; width: auto; height: auto; /* Скидаємо розміри ореолу */
-    filter: none; /* Прибираємо розмиття, яке робило текст невидимим */
-    transform: translate(-50%, -50%) translateY(55px) rotate(-15deg); /* Порядок змінено для ідеального центрування */
+    transform: translate(-50%,-50%) rotate(-15deg);
     background: #f44; color: #fff;
-    padding: 8px 22px; border-radius: var(--radius-sm); /* Збільшено відступи */
-    font-size: 20px; font-weight: 800; /* Збільшено шрифт */
-    line-height: 1;
-    z-index: 9999;
-    opacity: 1 !important;
-    pointer-events: none; /* Щоб плашка не блокувала кліки по фото */
-}
-
-/* Повертаємо колір при наведенні та фіксуємо плашку у нижчому положенні */
-.product-card.out-of-stock:hover .img-container::after {
-    transform: translate(-50%, -50%) translateY(55px) rotate(-15deg) !important;
-    opacity: 1 !important;
-}
-
-.product-card.out-of-stock:hover {
-    filter: grayscale(0);
-    opacity: 1;
+    padding: 5px 14px; border-radius: var(--radius-sm);
+    font-size: var(--fs-sm); font-weight: 800; z-index: 10;
 }
 
 .out-of-stock-container {
@@ -3187,7 +2915,6 @@ footer {
     font-family: var(--font-accent);
     font-style: italic; /* Playfair Display в італіку — це чистий секс */
     font-weight: 700;
-    z-index: 10;
 }
 
 .sale-price {
@@ -3607,57 +3334,39 @@ body.otherseeds-page header::after {
 
 .thermometer-container {
     display: flex;
-    height: 220px;
+    height: 250px; /* Висота приладу */
     align-items: center;
     justify-content: space-around;
     padding: 10px 0;
 }
 
-/* writing-mode: vertical-lr + direction: rtl — єдиний надійний спосіб
-   зробити вертикальний range що реально перетягується в усіх браузерах.
-   На відміну від rotate(), цей підхід змінює справжній напрямок взаємодії. */
+/* Вертикальний повзунок */
 #scoville-slider {
-    -webkit-appearance: slider-vertical;
-    appearance: auto;
-    writing-mode: vertical-lr;
-    direction: rtl;          /* низ = мін, верх = макс */
-    width: 10px;
-    height: 190px;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 200px;
     background: linear-gradient(to top, #4C9900, #99cc33, #ffcc00, #ff4d00, #8b0000);
     outline: none;
     border-radius: 6px;
-    cursor: pointer;
-    touch-action: none;
-    flex-shrink: 0;
+    touch-action: none; /* Критично: вимикає жест скролу під час взаємодії з повзунком */
+    will-change: transform; /* Готує відеокарту до оновлень */
+    /* Повертаємо для вертикального вигляду */
+    writing-mode: bt-lr; 
+    -webkit-appearance: slider-vertical;
 }
 
-/* Бігунок */
+/* Стиль "бігунка" (крутилки) */
 #scoville-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 24px;
     height: 24px;
     background: #fff;
-    border: 3px solid #ff4d00;
+    border: 4px solid #ff4d00;
     border-radius: 50%;
-    cursor: grab;
-    box-shadow: 0 0 12px rgba(255,77,0,0.8), 0 2px 6px rgba(0,0,0,0.5);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    margin-left: -7px; /* центрує бігунок на треку */
-}
-#scoville-slider::-webkit-slider-thumb:active {
-    cursor: grabbing;
-    transform: scale(1.25);
-    box-shadow: 0 0 20px rgba(255,77,0,1);
-}
-#scoville-slider::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
-    background: #fff;
-    border: 3px solid #ff4d00;
-    border-radius: 50%;
-    cursor: grab;
-    box-shadow: 0 0 12px rgba(255,77,0,0.8);
+    cursor: pointer;
+    box-shadow: 0 0 15px #ff4d00;
 }
 
 .thermometer-display {
@@ -3865,35 +3574,6 @@ body.otherseeds-page header::after {
     justify-content: center; /* Центруємо ціну */
 }
 
-/* --- СТИЛІ ДЛЯ ЗОБРАЖЕНЬ БАНДЛІВ --- */
-.bundle-image-wrapper {
-    width: 100%;
-    height: 180px; /* Фіксована висота для всіх зображень бандлів */
-    overflow: hidden;
-    position: relative;
-    border-radius: 12px 12px 0 0; /* Закруглені тільки верхні кути */
-    margin-bottom: 15px; /* Відступ від назви бандлу */
-    background: #0f0804; /* Темний фон, як у product-card */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.bundle-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Зображення покриває всю область, обрізаючи зайве */
-    object-position: center;
-    display: block;
-    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), filter 0.4s ease;
-}
-
-.bundle-card:hover .bundle-image {
-    transform: scale(1.07);
-    filter: brightness(1.08) contrast(1.04);
-}
-
-
 .bundle-descr {
     font-size: 13px;
     line-height: 1.4;
@@ -3991,8 +3671,8 @@ body.otherseeds-page header::after {
 .coming-soon-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4008,14 +3688,14 @@ body.otherseeds-page header::after {
 }
 
 .coming-soon-content h3 {
-    font-size: 2.8rem;
+    font-size: 1.2rem;
     color: var(--primary-color);
     margin-bottom: 10px;
     text-transform: uppercase;
 }
 
 .coming-soon-content p {
-    font-size: 1.5rem;
+    font-size: 0.9rem;
     color: var(--text-muted);
     line-height: 1.4;
     margin-bottom: 15px;
@@ -4204,3 +3884,97 @@ body.otherseeds-page header::after {
 /* ╔══════════════════════════════════════════════════════════════╗
    ║  КІНЕЦЬ — v6.0 · 23 секції · динамічні теми                ║
    ╚══════════════════════════════════════════════════════════════╝ */
+ /* ПРИБРТИИ НА СТАРТІ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 🔒 СИСТЕМА БЛОКУВАННЯ (COMING SOON) */
+/* 🔒 БЛОКУВАННЯ В ПОШУКУ */
+.search-result-item.is-locked-search {
+    filter: grayscale(0.8) brightness(0.5);
+    cursor: not-allowed !important;
+    position: relative;
+    pointer-events: none; /* Вимикає клік */
+}
+
+.search-result-item.is-locked-search::after {
+    content: "ЗАПУСК ВОСЕНИ";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-5deg);
+    background: var(--primary-color);
+    color: #fff;
+    padding: 2px 8px;
+    font-family: var(--font-heading);
+    font-size: 10px;
+    font-weight: 700;
+    border: 1px solid #fff;
+    z-index: 5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    white-space: nowrap;
+}
+
+/* 🔒 ГЛОБАЛЬНЕ БЛОКУВАННЯ ВСЬОГО ПОШУКУ (БЕЗ ЗМІН У JS) */
+#search-results .search-result-item {
+    pointer-events: none !important; /* Повністю вимикає можливість кліку */
+    filter: grayscale(0.8) brightness(0.6); /* Робить результати сірими */
+    position: relative;
+    cursor: not-allowed !important;
+}
+
+#search-results .search-result-item::before {
+    content: "ЗАПУСК ВОСЕНИ 🌶️";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-color);
+    color: #fff;
+    padding: 4px 10px;
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid #fff;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    white-space: nowrap;
+}
+
+@keyframes badge-pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) rotate(-5deg) scale(1);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(-5deg) scale(1.05);
+        box-shadow: 0 8px 30px var(--accent-shadow);
+    }
+}
+
+ .card-link.is-locked {
+    filter: grayscale(0.8) brightness(0.6);
+    cursor: not-allowed !important;
+    pointer-events: none; /* Вимикає кліки */
+    position: relative;
+}
+
+.card-link.is-locked::before {
+    content: "ЗАПУСК ВОСЕНИ 🌶️";
+    position: absolute;
+    top: 82%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-5deg);
+    background: var(--primary-color);
+    color: #fff;
+    padding: 10px 20px;
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    z-index: 100;
+    border: 3px solid #fff;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+    white-space: nowrap;
+    letter-spacing: 1px;
+    animation: badge-pulse 2s infinite ease-in-out;
+}
+
+.card-link.is-locked:hover {
+    transform: none !important; /* Прибираємо анімацію при наведенні для заблокованих */
+}

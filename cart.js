@@ -1,11 +1,11 @@
-﻿//БЛОК КЕРУВАННЯ АКЦІЯМИ.
+﻿﻿//БЛОК КЕРУВАННЯ АКЦІЯМИ.
 const GLOBAL_SETTINGS = {
-    isSaleActive: false, 
-    discountPercent: 0, 
-    saleDeadline: "", 
+    isSaleActive: true, 
+    discountPercent: 10, 
+    saleDeadline: "2026-02-05", 
     promoText: "🔥 ГОТУЄМОСЯ ДО ВЕЛИКОГО ЗАПУСКУ ВОСЕНИ 2026!",
     // Щоб розблокувати — просто зробіть масив порожнім: lockedCategories: []  ЗАМІСТь "ГОТУЄМОСЯ..." promoText: "ПЕКЕЛЬНИЙ ТИЖДЕНЬ: -10% НА НАСІННЯ ТА СОУСИ!"
-     lockedCategories: ['sauces', 'seeds', 'otherseeds']  
+    lockedCategories: ['sauces', 'seeds', 'otherseeds'] 
 };
 
 const CART_CONSTANTS = {
@@ -88,130 +88,94 @@ function validatePrice(productId, price) {
 }
 
 function applyGlobalSale() {
-    if (GLOBAL_SETTINGS && GLOBAL_SETTINGS.isSaleActive) {
-        const discount = GLOBAL_SETTINGS.discountPercent;
+    if (!GLOBAL_SETTINGS || !GLOBAL_SETTINGS.isSaleActive) return;
+    const discount = GLOBAL_SETTINGS.discountPercent;
 
-        const cardPrices = document.querySelectorAll('.card-price');
-        cardPrices.forEach(el => {
-            const isSaleAllowed = el.getAttribute('data-allow-sale') === 'true';
-            if (isSaleAllowed) {
-                const basePrice = parseFloat(el.getAttribute('data-base-price'));
-                if (!basePrice) return;
-                const newPrice = Math.round(basePrice * (1 - discount / 100));
-                el.innerHTML = `
-                    <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em;">${basePrice} ₴</span> 
-                    <span class="sale-price">${newPrice} ₴</span>
-                `;
-                const card = el.closest('.product-card'); 
-                if (card) {
-                    const cardBtn = card.querySelector('.quick-add-btn');
-                    if (cardBtn) cardBtn.setAttribute('data-price', newPrice);
-                    if (!card.querySelector('.sale-badge')) {
-                        const badge = document.createElement('div');
-                        badge.className = 'sale-badge';
-                        badge.innerText = 'АКЦІЯ';
-                        card.style.position = 'relative';
-                        card.appendChild(badge);
-                    }
+    const cardPrices = document.querySelectorAll('.card-price');
+    cardPrices.forEach(el => {
+        const isSaleAllowed = el.getAttribute('data-allow-sale') === 'true';
+        if (isSaleAllowed) {
+            const basePrice = parseFloat(el.getAttribute('data-base-price'));
+            if (!basePrice) return;
+            const newPrice = Math.round(basePrice * (1 - discount / 100));
+            el.innerHTML = `
+                <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em;">${basePrice} ₴</span> 
+                <span class="sale-price">${newPrice} ₴</span>
+            `;
+            const card = el.closest('.product-card'); 
+            if (card) {
+                const cardBtn = card.querySelector('.add-btn');
+                if (cardBtn) cardBtn.setAttribute('data-price', newPrice);
+                if (!card.querySelector('.sale-badge')) {
+                    const badge = document.createElement('div');
+                    badge.className = 'sale-badge';
+                    badge.innerText = 'АКЦІЯ';
+                    card.style.position = 'relative';
+                    card.appendChild(badge);
                 }
             }
-        });
-    }
+        }
+    });
 
-    // Логіка акцій для сторінки товару (product.html)
-    const mainPriceContainer = document.getElementById('p-price');
-    const isProductPage = window.location.pathname.includes('product.html');
-
-    if (mainPriceContainer && isProductPage && !document.getElementById('seed-version-selector')) {
-        const discount = GLOBAL_SETTINGS.discountPercent;
+    // Застосовуємо знижку до головної сторінки товару ТІЛЬКИ якщо ми не на сторінці товару
+    // (логіка сторінки товару обробляє знижки самостійно через product-page.js)
+    if (typeof currentProductId === 'undefined' || currentProductId === null) {
+        const mainPriceContainer = document.getElementById('p-price');
         const mainAddToCartBtn = document.querySelector('.add-btn');
-        const isSaleAllowed = GLOBAL_SETTINGS.isSaleActive && mainPriceContainer.getAttribute('data-allow-sale') === 'true';
-        const basePrice = parseFloat(mainPriceContainer.getAttribute('data-val') || mainPriceContainer.innerText);
-        
-        if (isSaleAllowed && basePrice) {
-            const newPrice = Math.round(basePrice * (1 - discount / 100));
-            mainPriceContainer.innerHTML = `
-                <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.8em; margin-right: 10px;">${basePrice.toFixed(2)} ₴</span>
-                <span class="sale-price">${newPrice.toFixed(2)} ₴</span>
-            `;
-            if (mainAddToCartBtn) mainAddToCartBtn.setAttribute('data-price', newPrice);
+        if (mainPriceContainer) {
+            const isSaleAllowed = mainPriceContainer.getAttribute('data-allow-sale') === 'true';
+            if (isSaleAllowed) {
+                const basePrice = parseFloat(mainPriceContainer.getAttribute('data-val'));
+                const newPrice = Math.round(basePrice * (1 - discount / 100));
+                mainPriceContainer.innerHTML = `
+                    <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.8em; margin-right: 10px; color: white;">${basePrice.toFixed(2)} ₴</span>
+                    <span class="sale-price">${newPrice.toFixed(2)} ₴</span>
+                    <span style="font-size: 16px; opacity: 0.6; font-weight: normal;">/ 5 шт.</span>
+                `;
+                if (mainAddToCartBtn) mainAddToCartBtn.setAttribute('data-price', newPrice);
+            } else if (mainAddToCartBtn) {
+                mainAddToCartBtn.setAttribute('data-price', mainPriceContainer.getAttribute('data-val'));
+            }
         }
     }
 
-    if (GLOBAL_SETTINGS && GLOBAL_SETTINGS.isSaleActive && GLOBAL_SETTINGS.promoText && !document.getElementById('sale-banner')) {
+    if (GLOBAL_SETTINGS.promoText && !document.getElementById('sale-banner')) {
         const banner = document.createElement('div');
         banner.id = "sale-banner";
-        banner.style.cssText = "background: #e74c3c; color: white; text-align: center; padding: 12px 20px; font-weight: bold; position: fixed; top: 0; left: 0; width: 100%; z-index: 10000; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); font-size: 14px;";
+        banner.style.cssText = "background: #e74c3c; color: white; text-align: center; padding: 10px; font-weight: bold; position: sticky; top: 0; z-index: 1000; font-family: sans-serif;";
         banner.innerText = GLOBAL_SETTINGS.promoText;
         document.body.prepend(banner);
-        document.body.classList.add('has-sale-banner');
     }
 }
+document.addEventListener('DOMContentLoaded', applyGlobalSale);
 
 // Функція для блокування категорій "Скоро у продажу"
 function applyCategoryLock() {
-    if (!GLOBAL_SETTINGS.lockedCategories || GLOBAL_SETTINGS.lockedCategories.length === 0) {
-        return;
-    }
+    if (!GLOBAL_SETTINGS.lockedCategories || GLOBAL_SETTINGS.lockedCategories.length === 0) return;
 
     // 1. Блокуємо картки на головній сторінці
     GLOBAL_SETTINGS.lockedCategories.forEach(cat => {
         const links = document.querySelectorAll(`.card-link.${cat}`);
-        console.log(`📦 Категорія "${cat}": знайдено ${links.length} елементів`);
-        
         links.forEach(link => {
             link.classList.add('is-locked');
-
-            // Додаємо візуальний оверлей "Незабаром", якщо його ще немає
-            if (!link.querySelector('.coming-soon-overlay')) {
-                const overlay = document.createElement('div');
-                overlay.className = 'coming-soon-overlay';
-                overlay.style.opacity = '1'; // Робимо його видимим одразу
-                overlay.innerHTML = `
-                    <div class="coming-soon-content">
-                        <h3>Незабаром</h3>
-                        <p>Розділ готується до старту восени 2026 🔥</p>
-                    </div>
-                `;
-                link.appendChild(overlay);
-            }
-
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                alert('🌶️ Цей розділ ще в розробці. Чекаємо на вас восени 2026!');
-            });
-            console.log(`✅ Заблоковано посилання:`, link.href);
+            link.addEventListener('click', (e) => e.preventDefault());
         });
     });
 
     // 2. Перевіряємо, чи не зайшов користувач на заблоковану сторінку через URL
-    const currentPath = window.location.pathname.toLowerCase();
-    const isLockedPage = (currentPath.match(/sauces(\.html)?$/) && GLOBAL_SETTINGS.lockedCategories.includes('sauces')) ||
-                         (currentPath.match(/seedsandseedlings(\.html)?$/) && GLOBAL_SETTINGS.lockedCategories.includes('seeds')) ||
-                         (currentPath.match(/otherseeds(\.html)?$/) && GLOBAL_SETTINGS.lockedCategories.includes('otherseeds'));
+    const currentPath = window.location.pathname;
+    const isLockedPage = (currentPath.includes('sauces.html') && GLOBAL_SETTINGS.lockedCategories.includes('sauces')) ||
+                         (currentPath.includes('seedsandseedlings.html') && GLOBAL_SETTINGS.lockedCategories.includes('seeds')) ||
+                         (currentPath.includes('otherseeds.html') && GLOBAL_SETTINGS.lockedCategories.includes('otherseeds'));
 
     if (isLockedPage) {
-        console.warn('⛔ Користувач спробував зайти на заблоковану сторінку:', currentPath);
         window.location.href = 'index.html'; // Редирект на головну
-    } else {
-        console.log('✅ Сторінка не заблокована:', currentPath);
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('📍 DOMContentLoaded: Запущення функцій акцій та блокування');
-    console.log('🎯 GLOBAL_SETTINGS:', GLOBAL_SETTINGS);
     applyGlobalSale();
     applyCategoryLock();
-    
-    // Діагностика: Перевірити, чи елементи були заблоковані
-    setTimeout(() => {
-        const lockedElements = document.querySelectorAll('.card-link.is-locked');
-        console.log(`🔍 Заблокованих елементів на сторінці: ${lockedElements.length}`);
-        lockedElements.forEach(el => {
-            console.log('   - Заблокований:', el.className, el.href);
-        });
-    }, 100);
 });
 
 // === 1. РОБОТА З ПАМ'ЯТТЮ ===
@@ -252,12 +216,7 @@ function updateCartUI() {
     const listContainers = document.querySelectorAll('#final-list, .cart-items-container');
     listContainers.forEach(container => {
         if (cart.length === 0) {
-            container.innerHTML = `
-                <div style="text-align: center; padding: 30px 10px;">
-                    <p class="empty-cart-msg" style="margin-bottom: 20px;">Ваш кошик ще порожній 🌶️</p>
-                    <a href="index.html" class="add-btn" style="display: inline-block; width: auto; margin: 0 !important; text-decoration: none;" onclick="closeCheckout()">Перейти до каталогу</a>
-                </div>
-            `;
+            container.innerHTML = '<p class="empty-cart-msg">Кошик порожній</p>';
         } else {
             const fragment = document.createDocumentFragment(); // Використовуємо фрагмент для продуктивності
             cart.forEach((item, index) => {
@@ -272,13 +231,9 @@ function updateCartUI() {
                                     ? allProducts[item.productId] 
                                     : null;
 
-                // Пріоритет:
-                // 1. Пряме посилання збережене в об'єкті товару (item.image)
-                // 2. Фото з бази allProducts (якщо знайдено по ID)
-                // 3. Заглушка (логотип)
-                let imageUrl = item.image || (productData && productData.images && productData.images[0]) || 'GapkaLogo.png';
-                
-                if (!imageUrl || imageUrl === 'null') imageUrl = 'GapkaLogo.png';
+                const imageUrl = (productData && productData.images && productData.images.length > 0) 
+                                 ? productData.images[0] 
+                                 : 'placeholder.webp'; // Запасне зображення
 
                 // Використовуємо збережену назву з кошика (вона містить версію), 
                 // або беремо з бази, або ставимо дефолтну заглушку
@@ -333,15 +288,9 @@ function updateCartUI() {
 
 // === 3. КЕРУВАННЯ КОШИКОМ ===
 window.openCheckout = function() {
-    // ✅ RATE LIMITING: Перевіряємо чи не надто часто клікають на оформлення
-    if (typeof RateLimiter !== 'undefined' && !RateLimiter.check('checkout')) {
-        alert('⏱️ Чекайте кілька секунд перед наступним кліком...');
-        return;
-    }
-
     const cart = getFreshCart();
     if (cart.length === 0) {
-        openEmptyCartModal();
+        alert("Ваш кошик ще порожній! 🌶️");
         return;
     }
     const modal = document.getElementById('checkoutModal');
@@ -592,13 +541,18 @@ function initDeliveryOptions() {
         if (isLocked) return;
         
         const val = cityInput.value.trim();
-
-        // Якщо місто вже обрано (є data-ref) і значення в полі не змінилося,
-        // не показуємо підказки знову. Користувач вже зробив вибір.
-        if (cityInput.dataset.ref && val === lastSelectedCity) {
-            citySuggestions.style.display = 'none';
-            return;
-        } else if (val.length >= 1) { // Якщо є текст і місто не обрано або змінилося — шукаємо
+        const cleanedVal = cleanForSearch(val);
+        const cleanedLast = cleanForSearch(lastSelectedCity);
+        
+        // Якщо вже є вибране місто — показуємо підказку
+        if (cleanedVal.length >= 1 && cleanedVal === cleanedLast && cityInput.dataset.ref) {
+            citySuggestions.innerHTML = `<div class="np-item np-info">✅ Обрано: ${escapeHtml(lastSelectedCity)}</div>`;
+            citySuggestions.style.display = 'block';
+            setTimeout(() => {
+                citySuggestions.style.display = 'none';
+            }, 2000);
+        } else if (val.length >= 1) {
+            // Якщо є текст але не вибране — шукаємо
             triggerCitySearch(val);
         }
     });
@@ -972,13 +926,7 @@ window.changeQty = function(index, delta) {
 };
 
 // Універсальна функція додавання
-window.addToCart = function(productId, price, name, qty = 1, originalPrice = null, image = null) {
-    // ✅ RATE LIMITING: Перевіряємо частоту клавіш
-    if (typeof RateLimiter !== 'undefined' && !RateLimiter.check('addToCart')) {
-        console.warn('⏱️ Надто швидке додавання товарів. Чекайте...');
-        return;
-    }
-
+window.addToCart = function(productId, price, name, qty = 1, originalPrice = null) {
     let cart = getFreshCart();
     
     // ✅ НОВЕ: Sanitize назви
@@ -1001,7 +949,6 @@ window.addToCart = function(productId, price, name, qty = 1, originalPrice = nul
         existing.qty = Math.min(existing.qty + validatedQty, CART_CONSTANTS.MAX_QTY);
         existing.price = validatedPrice;
         existing.originalPrice = originalPrice;
-        if (image) existing.image = image;
         if (productId && !existing.productId) {
             existing.productId = productId;
         }
@@ -1011,8 +958,7 @@ window.addToCart = function(productId, price, name, qty = 1, originalPrice = nul
             name: safeName,
             price: validatedPrice, 
             originalPrice: originalPrice,
-            qty: validatedQty,
-            image: image
+            qty: validatedQty 
         });
     }
     
@@ -1071,12 +1017,8 @@ window.pushToCart = function() {
                   : originalPrice;
     
     const qty = parseInt(qtyEl.value) || 1;
-
-    // Отримуємо URL зображення зі сторінки
-    const mainImg = document.getElementById('main-view');
-    const image = mainImg ? mainImg.src : null;
     
-    addToCart(productId, price, name, qty, originalPrice, image);
+    addToCart(productId, price, name, qty, originalPrice);
     alert("Додано у кошик! 🌶️");
 };
 
@@ -1094,21 +1036,17 @@ window.addToCartDirectly = function(productId, buttonElement) {
         const priceElement = card.querySelector('.card-price');
         if (!priceElement) throw new Error("Ціну на картці не знайдено");
 
-        // Безпечно отримуємо актуальну ціну, ігноруючи закреслену стару ціну
-        const salePriceEl = priceElement.querySelector('.sale-price');
-        const priceText = salePriceEl ? salePriceEl.innerText : priceElement.innerText;
-        const cleanPrice = parseFloat(priceText.replace(/[^\d.,]/g, '').replace(',', '.'));
-        
+        const rawText = priceElement.innerText;
+        // Шукаємо число з можливим десятковим знаком (125 або 125.50)
+        const priceMatch = rawText.match(/[\d]+(?:[.,][\d]{1,2})?(?=\s*₴)/);
+        const cleanPrice = priceMatch ? parseFloat(priceMatch[0].replace(',', '.')) : 0;
+
         if (isNaN(cleanPrice)) throw new Error("Не вдалося розпізнати ціну");
         // Отримуємо базову ціну для закреслення
         const basePrice = parseFloat(priceElement.getAttribute('data-base-price'));
-
-        // Отримуємо URL зображення з картки
-        const imgEl = card.querySelector('.img-container img');
-        const image = imgEl ? imgEl.src : null;
-
         // 3. ДОДАЄМО В КОШИК через універсальну функцію
-        addToCart(productId, cleanPrice, actualName, 1, basePrice, image);
+        // Це гарантує правильний пошук і об'єднання товарів
+        addToCart(productId, cleanPrice, actualName, 1, basePrice);
         
         alert(`🌶️ ${actualName} додано!`);
 
@@ -1135,7 +1073,7 @@ function generateOrderNumber() {
     const unique = Math.random().toString(36).substring(2, 6).toUpperCase();
     return `HS-${day}${month}${year}-${unique}`;
 }
-const orderRateLimiter = {
+const rateLimiter = {
     attempts: [],
     
     canSubmit() {
@@ -1162,7 +1100,7 @@ const orderRateLimiter = {
 // === 4. ВІДПРАВКА ЗАМОВЛЕННЯ ===
 window.submitOrder = async function() {
     // ✅ НОВЕ: Rate limiting
-    if (!orderRateLimiter.canSubmit()) {
+    if (!rateLimiter.canSubmit()) {
         alert("Забагато спроб відправки. Зачекайте хвилину.");
         return;
     }
@@ -1235,7 +1173,7 @@ window.submitOrder = async function() {
     // 1. Очищаємо від усіх зайвих символів
     const cleaned = phone.replace(/[\s\(\)\-]/g, '');
     
-    // 2. Перевіряємо формат: <!-- <span>+00000000000</span>--> або 0XXXXXXXXX
+    // 2. Перевіряємо формат: +380XXXXXXXXX або 0XXXXXXXXX
     // Дозволяємо +380, 380, 80 або просто 0 на початку
     const phoneRegex = /^(?:\+?38)?(?:0|80)\d{9}$/;
     
@@ -1245,7 +1183,7 @@ window.submitOrder = async function() {
 function cleanPhone(phone) {
     if (!phone) return '';
     
-    // Очищаємо і повертаємо у форматі <!-- <span>+00000000000</span>-->
+    // Очищаємо і повертаємо у форматі +380XXXXXXXXX
     const cleaned = phone.replace(/[\s\(\)\-]/g, '');
     
     // Якщо починається з 0 — додаємо +38
@@ -1326,7 +1264,7 @@ function cleanPhone(phone) {
     // --- Далі йде ваш код відправки (він робочий) ---
     const submitBtn = document.querySelector('.checkout-summary .order-btn');
     if (!submitBtn) { console.error('submitOrder: кнопку order-btn не знайдено'); return; }
-    const originalText = submitBtn.textContent;
+    const originalText = submitBtn.innerHTML;
     // 🔥 ГЕНЕРАТОР КРАСИВИЙ НОМЕР
     const orderID = generateOrderNumber();
     const cart = getFreshCart();
@@ -1334,7 +1272,7 @@ function cleanPhone(phone) {
 
     submitBtn.disabled = true;
     submitBtn.classList.add('btn-loading'); // Додаємо клас для стилів
-    submitBtn.textContent = `Відправляємо...`;
+    submitBtn.innerHTML = `Відправляємо...`;
 
     // Збір даних
     const orderData = {
@@ -1468,7 +1406,7 @@ function cleanPhone(phone) {
     } finally {
         submitBtn.disabled = false;
         submitBtn.classList.remove('btn-loading'); // Прибираємо клас затухання
-        submitBtn.textContent = originalText;
+        submitBtn.innerHTML = originalText;
     }
 };
 
@@ -1564,7 +1502,6 @@ window.sendReview = async function() {
 
 document.addEventListener('DOMContentLoaded', updateCartUI);
 window.addEventListener('pageshow', updateCartUI);
-window.updateCartUI = updateCartUI;
 
 function goBack() {
     if (window.history.length > 1) {

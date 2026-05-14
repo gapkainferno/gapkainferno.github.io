@@ -27,36 +27,6 @@ const currentHeat = heatLevels[product.heatScore] || { shu: "Unknown", width: "0
 
                // Оновлений блок зображення в cardHTML:
 // === ОНОВЛЕНИЙ БЛОК ЗОБРАЖЕННЯ В cardHTML ===
-// Витяг короткого опису (перші ~120 символів, без HTML)
-const descriptionText = product.description 
-    ? product.description.replace(/<[^>]*>/g, '').substring(0, 130) + '...' 
-    : '';
-
-// Визначення властивостей для показу в залежності від категорії
-let specsHTML = '';
-if (product.specs) {
-    const spec1 = product.specs.height || 'N/A';
-    const spec2 = product.specs.yield || (product.category === 'vegetables' ? product.specs.color : 'N/A');
-    const spec3 = product.heatLevel ? product.heatLevel.split('(')[0].trim() : 'N/A';
-    
-    specsHTML = `
-        <div class="product-specs-mini">
-            <div class="spec-item">
-                <span class="spec-label">Висота</span>
-                <span class="spec-value">${spec1}</span>
-            </div>
-            <div class="spec-item">
-                <span class="spec-label">${product.category === 'vegetables' ? 'Колір' : 'Врожайність'}</span>
-                <span class="spec-value">${spec2}</span>
-            </div>
-            <div class="spec-item">
-                <span class="spec-label">Гострота</span>
-                <span class="spec-value">${spec3}</span>
-            </div>
-        </div>
-    `;
-}
-
 const cardHTML = `
     <a href="product.html?id=${id}" class="product-card ${isInStock ? '' : 'out-of-stock'}" data-id="${id}">
         <div class="product-tags">${tagsHTML}</div>
@@ -80,8 +50,6 @@ const cardHTML = `
 
         <div class="product-label">
             <h3 class="p-name">${product.name}</h3>
-            ${descriptionText ? `<p class="product-description-short">${descriptionText}</p>` : ''}
-            ${specsHTML}
                             <div class="price-row">
                                 <p class="card-price" data-base-price="${product.price}" 
                                    data-allow-sale="${product.allowSale === true ? 'true' : 'false'}"
@@ -93,7 +61,9 @@ const cardHTML = `
                                             onclick="event.stopPropagation(); event.preventDefault(); addToCartDirectly('${id}', this); return false;">
                                         🛒
                                     </button>
-                                ` : ''}
+                                ` : `
+                                    <span style="font-size: 11px; color: var(--primary-orange); border: 1px solid rgba(214, 96, 58, 0.3); padding: 2px 6px; border-radius: 4px;">ОЧІКУЄТЬСЯ</span>
+                                `}
                             </div>
                         </div>
                     </a>
@@ -196,12 +166,11 @@ if (resetBtn) {
         if (allBtn) allBtn.classList.add('active');
     });
 }
-            // ОНОВЛЕННЯ ДИСПЛЕЯ ПРИ РУСІ (легко)
             slider.addEventListener('input', function() {
                 const val = this.value;
                 const data = scovilleData[val];
                 
-                // Тільки оновлюємо ВИДИМІСТЬ дисплею, без перефільтрування
+                // Оновлюємо дисплей
                 if (pepperName) pepperName.innerText = data.name;
                 if (pepperShu) pepperShu.innerText = data.shu + " SHU";
                 if (heatStatus) heatStatus.innerText = "Рівень: " + data.status;
@@ -209,12 +178,7 @@ if (resetBtn) {
                     display.style.borderColor = data.color;
                     display.style.boxShadow = `inset 0 0 10px ${data.color}`;
                 }
-            });
 
-            // ФІЛЬТРАЦІЯ ТОЛЬКО КОЛИ КОРИСТУВАЧ ВІДПУСТИВ МИШКУ (дорога операція)
-            slider.addEventListener('change', function() {
-                const val = this.value;
-                
                 // Синхронізуємо з кнопками фільтрів
                 const targetBtn = document.querySelector(`.filter-btn[data-heat="${val}"]`);
                 if (targetBtn) {
@@ -222,7 +186,7 @@ if (resetBtn) {
                     targetBtn.classList.add('active');
                 }
 
-                // Викликаємо фільтрацію ТІ́ЛЬ КИ ОДИН РАЗ
+                // Викликаємо фільтрацію
                 applyFilter(val);
             });
         }

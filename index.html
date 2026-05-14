@@ -7,25 +7,24 @@
     default-src 'self'; 
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
     font-src 'self' https://fonts.gstatic.com; 
-    script-src 'self' 'unsafe-inline' https://script.google.com https://www.googletagmanager.com https://www.gstatic.com https://*.firebasedatabase.app; 
-    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://*.firebasedatabase.app https://*.googleapis.com wss://*.firebasedatabase.app wss://*.firebaseio.com; 
-    img-src 'self' data: https://gapkainferno.github.io https://*.gstatic.com; 
-    frame-src 'self' https://*.firebasedatabase.app;
-    frame-ancestors 'none'; 
-    base-uri 'self'; 
-    form-action 'self'; 
-    upgrade-insecure-requests;">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
-<meta http-equiv="X-Frame-Options" content="DENY">
-<meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    script-src 'self' 'unsafe-inline' https://script.google.com https://www.googletagmanager.com; 
+    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com; 
+    img-src 'self' data: https://gapkainferno.github.io;">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9CL9XT7H4D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9CL9XT7H4D');
+</script>
 
 <!-- Primary Meta Tags -->
 <title>Gapka Homestead Inferno — Крафтові соуси та насіння суперхотів, овочів та томатів | Дніпро, Україна</title>
 <meta name="title" content="Gapka Homestead Inferno — Крафтові соуси та насіння суперхотів | Дніпро">
-<meta name="description" content="Відкрийте світ Gapka Homestead Inferno: авторські гострі соуси та насіння суперхотів та овочів. Замовляйте крафтові соуси та насіння з доставкою по всій Україні. 100% натурально.">
+<meta name="description" content="Відкрийте світ Gapka Homestead Inferno: авторські гострі соуси та насіння суперхотів, овочів. Замовляйте крафтові соуси та насіння з доставкою по всій Україні. 100% натурально.">
 <meta name="keywords" content="gapka соуси, gapka насіння, гапка соуси, гапка насіння, гострий соус україна, насіння carolina reaper, насіння Кароліна, насіння суперхот, купити ghost pepper, гострий перець дніпро, крафтові соуси, homestead inferno, gapka inferno, гапка інферно, насіння суперхотів, соуси суперхотів, крафтові гострі соуси, насіння перців, вирощування перців, гострі соуси без консервантів, насіння томатів та овочів гапка инферно, насіння купити, купити соуси">
 
 <!-- Author & Site Info -->
@@ -59,7 +58,7 @@
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:url" content="https://gapkainferno.github.io/index.html">
 <meta property="twitter:title" content="Gapka Homestead Inferno — Гострі соуси без консервантів">
-<meta property="twitter:description" content="Крафтові гострі соуси та насіння суперхотів, овочів. Вирощено власноруч в Україні 🔥">
+<meta property="twitter:description" content="Крафтові гострі соуси та насіння суперхотів. Вирощено власноруч в Україні 🔥">
 <meta property="twitter:image" content="https://gapkainferno.github.io/GapkaLogo.png">
 
 <!-- ═══════════════════════════════════════════════════════════════
@@ -503,14 +502,6 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="style.css">
 <meta name="google-site-verification" content="ZHWp3dDyPfgW63HqbmKizw4DOSzIvlCrq7mUrW8wDro" />
-<!-- ═══════════════════════════════════════════════════════════════
-     Security & Performance Optimizations v2.0
-     ═══════════════════════════════════════════════════════════════ -->
-<script src="security-config.js"></script>
-<script src="performance.js"></script>
-<link rel="preconnect" href="https://script.google.com">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 
 <body class="homepage">
@@ -534,11 +525,11 @@
         <div class="ember" style="--left:85%; --duration:6s; --delay:0s; --size:3px; --color:#ffd700;"></div>
     </div>
 
-    <div class="top-nav">
-        <span>🚀 Швидке відправлення замовлень</span>
-        <span>🤝 Є післяплата та онлайн оплата</span>
-        <span>📦 Без мінімальної суми замовлення</span>
-        <span>✨ Замовляйте без реєстрації</span>
+    <div class="top-nav" style="position: relative; z-index: 5;">
+        <span>ШВИДКЕ ВІДПРАВЛЕННЯ</span>
+        <span>ПІСЛЯПЛАТА</span>
+        <span>БЕЗ МІНІМАЛЬНОЇ СУМИ ЗАМОВЛЕННЯ</span>
+        <span>ЗАМОВЛЯЙТЕ БЕЗ РЕЄСТРАЦІЇ</span>
     </div>
 
     <div class="logo-wrapper" style="position: relative; z-index: 10; margin-top: 20px;">
@@ -561,7 +552,7 @@
 
 <main>
             <section class="hero-text">
-                <h1>Фермерський онлайн-магазинчик незабаром відкриється. Щоб час пробіг швидше, завітайте у наші <a href="https://gapkainferno.github.io/blog.html"><span class="fire-text">INFERNO Нотатки</span></a>! Ми будемо раді, а Ви - підготовлені. <br><br>Gapka Homestead Inferno — це Ваша перепустка у світ гостроти. Вирощуйте врожай, яким хочеться хвалитися. Спробуйте крафтові соуси, що наділяють звичайну їжу <a href="sauces.html"><span class="fire-text">INFERNO</span></a> здібностями.</h1>
+                <h1>Фермерський онлайн-магазинчик відкриється восени. А щоб час пробіг швидше, завітайте у наші <a href="https://gapkainferno.github.io/blog.html"><span class="fire-text">INFERNO Нотатки</span></a>! Ми будемо раді, а Ви - підготовлені. <br><br>Gapka Homestead Inferno — це Ваша перепустка у світ гостроти. Вирощуйте врожай, яким хочеться хвалитися. Спробуйте крафтові соуси, що наділяють звичайну їжу <a href="sauces.html"><span class="fire-text">INFERNO</span></a> здібностями.</h1>
             </section>
 
     <!-- 📧 СЕКЦІЯ ПІДПИСКИ (ПЕРЕНЕСЕНО ВИЩЕ ДЛЯ МАКСИМАЛЬНОЇ ВИДИМОСТІ) -->
@@ -617,17 +608,17 @@
 
     <!-- ════════════════════════════════════════════════════════
          🌶️ НОВА КАТЕГОРІЯ: СВІЖІ ТА СУШЕНІ ПЕРЦІ (доступно восени)
-         ════════════════════════════════════════════════════════ 
-     <a href="javascript:void(0)" class="card-link fresh-peppers coming-soon" data-launch="autumn">
+         ════════════════════════════════════════════════════════ -->
+    <!-- <a href="javascript:void(0)" class="card-link fresh-peppers coming-soon" data-launch="autumn">
         <img src="fresh-dried-peppers.webp" 
              alt="Свіжі та сушені гострі перці" 
              class="card-image" 
              width="400" 
              height="300">
-        <div class="card-label">Врожай Пекла:<br>Свіжі та Сушені Перці</div>
+        <div class="card-label">Врожай Пекла:<br>Свіжі та Сушені Перці</div>-->
         
-        
-      <div class="coming-soon-overlay">
+        <!-- Оверлей "Скоро" -->
+       <!-- <div class="coming-soon-overlay">
             <div class="coming-soon-content">
                 <div class="fire-emoji">🔥</div>
                 <h3>Вогонь народжується восени</h3>
@@ -643,17 +634,21 @@
                 </button>
             </div>
         </div>
-    </a>
+    </a>-->
 
-    <a href="javascript:void(0)" class="card-link poultry coming-soon" data-launch="future">
+    <!-- ════════════════════════════════════════════════════════
+         🐓 НОВА КАТЕГОРІЯ: ІНКУБАЦІЙНІ ЯЙЦЯ (закрита, планується)
+         ════════════════════════════════════════════════════════ -->
+   <!--  <a href="javascript:void(0)" class="card-link poultry coming-soon" data-launch="future">
         <img src="orpington-eggs.webp" 
              alt="Інкубаційні яйця курей породи Орпінгтон" 
              class="card-image blurred" 
              width="400" 
              height="300">
-        <div class="card-label">Інкубаційні Яйця<br>🐓</div>
+        <div class="card-label">Інкубаційні Яйця<br>🐓</div>-->
         
-         <div class="coming-soon-overlay">
+        <!-- Оверлей "Незабаром" -->
+        <!-- <div class="coming-soon-overlay">
             <div class="coming-soon-content">
                 <div class="fire-emoji">🥚</div>
                 <h3>Незабаром на фермі</h3>
@@ -682,17 +677,14 @@
     <br><br>
     Це не промислове виробництво — це справжній фермерський відбір на вагу, колір та автентичний смак. Ми пропонуємо не просто насіння, а результат наших щоденних експериментів на садибі. Вирощування, що стає пристрастю.
     </p>
-           <!-- <section class="bundles-section container">
+            <!--<section class="bundles-section container">
     <h2 class="section-title" style="text-align: center; margin-bottom: 10px;">🎁 Пекельні Сюрприз-Бокси</h2>
     <p style="text-align: center; margin-bottom: 30px; opacity: 0.8;">Не знаєте, що обрати? Довіртеся долі! Ми зберемо найкраще насіння на наш смак.</p>
     <div class="bundle-grid">
         <div class="bundle-card">
     <div class="bundle-badge">СЮРПРИЗ</div>
-    <div class="bundle-image-wrapper">
-        <img src="random-bundle.png" alt="Box Городній Рандом" class="bundle-image">
-    </div>
     <div class="bundle-name">Box "Городній Рандом"</div>
-    <div class="bundle-price">149 ₴</div>
+    <div class="bundle-price">146 ₴</div>
     <ul class="bundle-list">
         <li>🌶️ 2 сорти солодкого перцю (по 5 нас.)</li>
         <li>🍅 3 сорти унікальних томатів (по 15 нас.)</li>
@@ -700,75 +692,63 @@
         <li>✨ Секретний бонус</li>
     </ul>
     <p class="bundle-descr">Ідеальний спосіб засіяти базовий город без мук вибору. Все необхідне в одному пакунку!</p>
-    <button class="bundle-btn" onclick="addToCart('bundle_random', 149, 'Box Городній Рандом', 1, null, 'random-bundle.png'); alert('🎁 Box Городній Рандом додано у кошик!');">
+    <button class="bundle-btn" onclick="addToCart('bundle_random', 146, 'Box Горodній Рандом', 1); alert('🎁 Box Горodній Рандом додано у кошик!');">
         Випробувати вдачу
     </button>
 </div>
         
         <div class="bundle-card special-signature">
     <div class="bundle-badge">ЕКСКЛЮЗИВ</div>
-    <div class="bundle-image-wrapper">
-        <img src="bundle-signature.png" alt="Box Homestead Signature" class="bundle-image">
-    </div>
     <div class="bundle-name">Box "Homestead Signature"</div>
     <div class="bundle-price">179 ₴</div>
     
     <ul class="bundle-list">
-        <li>🎨 3 сорти перців-красенів (найбільш естетичні плоди з колекції, по 5 насінин)</li>
+        <li>🎨 3 сорти перців-красенів (найбільш естетичні плоди з колекції, 15 насінин)</li>
         <li>🎁 Набір стікерів (секретний пак з авторськими ілюстраціями)</li>
         <li>✨ Таємничий пакет насіння</li>
     </ul>
     
-    <p class="bundle-descr">Особистий вибір: баланс краси та врожайності. Все, що потрібно для естетичного городу, в одному боксі.</p>
+    <p class="bundle-descr">Мій особистий вибір: баланс краси та врожайності. Все, що потрібно для естетичного городу, в одному боксі.</p>
     
-    <button class="bundle-btn btn-signature" onclick="addToCart('bundle_signature', 179, 'Box Homestead Signature', 1, null, 'bundle-signature.png'); alert('✨ Box Signature додано у кошик!');">
+    <button class="bundle-btn btn-signature" onclick="addToCart('bundle_signature', 179, 'Box Homestead Signature', 1); alert('✨ Box Signature додано у кошик!');">
         Отримати ексклюзив
     </button>
 </div>
 
         <div class="bundle-card special-inferno">
     <div class="bundle-badge">RANDOM HEAT</div>
-    <div class="bundle-image-wrapper">
-        <img src="bundle-heat.png" alt="Box Пекельна Рулетка" class="bundle-image">
-    </div>
     <div class="bundle-name">Box "Пекельна Рулетка"</div>
-    <div class="bundle-price">188 ₴</div>
+    <div class="bundle-price">175 ₴</div>
     <ul class="bundle-list">
         <li>🔥 3 пакети Суперхотів 1,000,000 + SHU (по 5 нас. у кожному)</li>
         <li>🌶️ 1 сорт середньої гостроти (5-10 нас.)</li>
         <li>🧪 Сюрприз від Гапки</li>
     </ul>
     <p class="bundle-descr">Тільки для сміливих! Ви не знаєте рівня пекучості, поки не з’явиться перший плід. Приймайте виклик!</p>
-    <button class="bundle-btn btn-hot" onclick="addToCart('bundle_roulette', 188, 'Box Пекельна Рулетка', 1, null, 'bundle-heat.png'); alert('🔥 Box Пекельна Рулетка додано у кошик!');">
+    <button class="bundle-btn btn-hot" onclick="addToCart('bundle_roulette', 175, 'Box Пекельна Рулетка', 1); alert('🔥 Box Пекельна Рулетка додано у кошик!');">
         Прийняти виклик!
     </button>
 </div>
 <div class="bundle-card special-sauce">
     <div class="bundle-badge">СЮРПРИЗ</div>
-    <div class="bundle-image-wrapper">
-        <img src="bundle-sauce.png" alt="Box Sauce Mystery" class="bundle-image">
-    </div>
     <div class="bundle-name">Box "Sauce Mystery"</div>
-    <div class="bundle-price">200 ₴</div>
+    <div class="bundle-price">290 ₴ <span class="old-price">350 ₴</span></div>
     
     <ul class="bundle-list">
-        <li>🌿 1 Смак "Лагідний старт" (свіжий фруктовий або трав'яний смак, мінімум гостроти, 45мл)</li>
-        <li>🌴 1 Смак "Тропічна спека"(середній рівень: екзотичний мікс та відчутний вогонь, 45мл)</li>
-        <li>🔥 1 Смак "Ядро Інферно" (максимальна концентрація суперхотів для профі 45мл)</li>
+        <li>🌿 1 баночка "Лагідний старт" (свіжий фруктовий або трав'яний смак, мінімум гостроти, 100мл)</li>
+        <li>🌴 1 баночка "Тропічна спека"(середній рівень: екзотичний мікс та відчутний вогонь, 100мл)</li>
+        <li>🔥 1 баночка "Ядро Інферно" (максимальна концентрація суперхотів для профі 100мл)</li>
         <li>✨ Секретний бонус від Гапки</li>
     </ul>
     
     <p class="bundle-descr">Три унікальні рецептури — три різні рівні вогню. Відкрийте для себе повний спектр Inferno в одному боксі.</p>
     
-    <button class="bundle-btn btn-sauce" onclick="addToCart('bundle_sauce_mystery', 200, 'Box Sauce Mystery', 1, null, 'bundle-sauce.png'); alert('🎁 Таємничий набір соусів у кошику!');">
+    <button class="bundle-btn btn-sauce" onclick="addToCart('bundle_sauce_mystery', 290, 'Box Sauce Mystery', 1); alert('🎁 Таємничий набір соусів у кошику!');">
         Відкрити палітру смаків
     </button>
 </div>
 <div class="bundle-card special-grow">
     <div class="bundle-badge">ЦИКЛ ВОГНЮ</div>
-    <div class="bundle-image-wrapper">
-        <img src="bundle-secret.png" alt="Box Grow Your Own Heat" class="bundle-image">
-    </div>
     <div class="bundle-name">Box "Grow Your Own Heat"</div>
     <div class="bundle-price">245 ₴</div>
     
@@ -781,7 +761,7 @@
     
     <p class="bundle-descr">Спробуйте вогонь на смак та отримайте його генетичний код. Ви не дізнаєтесь назву сорту, поки не виростите його власноруч.</p>
     
-    <button class="bundle-btn btn-grow" onclick="addToCart('bundle_grow_heat', 245, 'Box Grow Your Own Heat', 1, null, 'bundle-secret.png'); alert('🌱 Секретна генетика додана у кошик!');">
+    <button class="bundle-btn btn-grow" onclick="addToCart('bundle_grow_heat', 245, 'Box Grow Your Own Heat', 1); alert('🌱 Секретна генетика додана у кошик!');">
         Повторити цикл
     </button>
 </div>
@@ -872,14 +852,17 @@
     </div>
 </footer>
 
+<button class="floating-cart" onclick="openCheckout()" aria-label="Відкрити кошик">
+    <span class="cart-icon">🛒</span>
+    <span id="cart-count">0</span>
+</button>
+
 
 
 <script src="products.js"></script>
-<script type="module" src="analytics.js"></script>
 <script src="search.js"></script>
-<script src="security-enhancements.js"></script>
 <script src="modal-init.js"></script>
 <script src="cart.js"></script>
-<script defer src="optimization-module.js"></script>
+
 </body>
 </html>
