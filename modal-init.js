@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <div id="success-msg" style="display:none; text-align: center; padding: 50px 20px;">
                 <h2 style="color: var(--primary-orange);">🌿 Замовлення прийнято!</h2>
                 <p>Номер: <strong id="orderNumberDisplay"></strong></p>
-                <p>Дякуємо! Ми скоро зв'яжемося з вами.</p>
+                <p>Дякуємо! Якщо ви обрали онлайн оплату, будь ласка, сплатіть за реквізитами нижче, щоб ми почали відправку. При оплаті вкажіть номер замовлення. Якщо Ви обрали післяплату - ми скоро зв'яжемося з вами.</p>
                 <div id="payment-details-success" style="display:none; margin-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;"></div>
                 <button class="order-btn" style="max-width: 200px; margin: 20px auto 0;" onclick="closeCheckout()">Закрити</button>
             </div>
@@ -118,6 +118,44 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
             <div id="notify-success" style="display:none; color: var(--primary-color); margin-top: 20px; font-weight: bold;">
                 Записано! Чекайте на вогонь у поштовій скриньці 🌶️
+            </div>
+        </div>
+    </div>
+
+    <div id="emptyCartModal" class="modal">
+        <div class="modal-box" style="max-width: 700px; padding: 0; overflow: hidden;">
+            <button class="close-btn" onclick="closeEmptyCartModal()">&times;</button>
+            
+            <div class="empty-cart-header">
+                <h2 class="modal-title">Ваш кошик ще <span>порожній</span> 🌶️</h2>
+                <p class="empty-cart-subtitle">Відкрийте світ гострих смаків! Виберіть категорію товарів:</p>
+            </div>
+
+            <div class="empty-cart-categories">
+                <a href="sauces.html" class="empty-cart-card">
+                    <div class="card-emoji">🔥</div>
+                    <h3>Крафтові соуси</h3>
+                    <p>Авторські гострі соуси без консервантів</p>
+                    <span class="card-arrow">→</span>
+                </a>
+                
+                <a href="seedsandseedlings.html" class="empty-cart-card">
+                    <div class="card-emoji">🌱</div>
+                    <h3>Насіння суперхотів</h3>
+                    <p>Насіння супер гострих перців</p>
+                    <span class="card-arrow">→</span>
+                </a>
+                
+                <a href="otherseeds.html" class="empty-cart-card">
+                    <div class="card-emoji">🌿</div>
+                    <h3>Насіння овочів</h3>
+                    <p>Томати та інші овочі</p>
+                    <span class="card-arrow">→</span>
+                </a>
+            </div>
+
+            <div class="empty-cart-footer">
+                <button class="order-btn" onclick="closeEmptyCartModal()" style="width: auto; padding: 12px 30px;">Закрити</button>
             </div>
         </div>
     </div>`;
@@ -147,6 +185,16 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+
+    // Закриття emptyCartModal при кліку на оверлей (тут — бо елемент вже в DOM)
+    const emptyCartModal = document.getElementById('emptyCartModal');
+    if (emptyCartModal) {
+        emptyCartModal.addEventListener('click', function(event) {
+            if (event.target === emptyCartModal) {
+                closeEmptyCartModal();
+            }
+        });
+    }
     // Оновлюємо інтерфейс кошика відразу після додавання, якщо функція доступна
     if (typeof updateCartUI === 'function') {
         updateCartUI();
@@ -224,12 +272,26 @@ async function submitNotification() {
     setTimeout(() => {
         document.getElementById('notifyModal').style.display = 'none';
         document.getElementById('notify-success').style.display = 'none';
+        emailInput.value = '';
         btn.disabled = false;
         btn.innerText = "Хочу дізнатися першим";
-        emailInput.value = '';
-    }, 2500);
+    }, 2000);
 }
 
+// Функції для управління модалю порожнього кошика
+function openEmptyCartModal() {
+    const modal = document.getElementById('emptyCartModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+function closeEmptyCartModal() {
+    const modal = document.getElementById('emptyCartModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
 async function handleGeneralSubscribe(event) {
     event.preventDefault();
     const emailInput = document.getElementById('sub-email');
