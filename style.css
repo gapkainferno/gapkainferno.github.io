@@ -334,6 +334,7 @@ header {
     position: relative;
     z-index: 1000;
     z-index: var(--z-header);
+    
 }
 
 .top-nav {
@@ -453,7 +454,7 @@ header {
 /* Коли банер є — зсуваємо весь вміст вниз */
 body.has-sale-banner .overlay,
 body.has-sale-banner > header {
-    padding-top: 42px;
+    padding-top: 0px;
 }
 
 /* На головній overlay не є першим елементом body, тому ловимо через клас */
@@ -660,6 +661,7 @@ body.has-sale-banner {
     align-items: center;
     gap: 10px;
     padding: 8px 16px;
+    margin-top: 2%;
     background: var(--surface);
     border: 1px solid var(--primary-color);
     border-radius: 30px;
