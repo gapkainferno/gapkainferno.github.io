@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-        <meta http-equiv="Content-Security-Policy" content="
+    <meta http-equiv="Content-Security-Policy" content="
     default-src 'self'; 
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
     font-src 'self' https://fonts.gstatic.com; 
@@ -15,10 +15,17 @@
     form-action 'self'; 
     upgrade-insecure-requests;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Врожай Пекла 2025 — Свіжі суперхоти | Gapka Homestead</title>
+    <title>Інкубаційні яйця та яйця для вживання | Gapka Homestead</title>
+    <meta name="description" content="Майбутня сторінка фермерських яєць Gapka Homestead: інкубаційні яйця Buff Orpington та курячі яйця для вживання.">
+    <meta property="og:title" content="Інкубаційні яйця та яйця для вживання — Gapka Homestead">
+    <meta property="og:description" content="Інкубаційні яйця породистої птиці та фермерські яйця для кухні. Невеликі партії від Gapka Homestead.">
+    <meta property="og:image" content="https://gapkainferno.github.io/orpington-eggs.webp">
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a100a">
 </head>
-<body class="fresh-peppers-page product-page-layout">
+<body class="poultry-page product-page-layout">
     <div class="overlay">
         <div class="container">
             <header>
@@ -45,25 +52,25 @@
                             <li><a href="seedsandseedlings.html">🌶️ Насіння суперхотів</a></li>
                             <li><a href="sauces.html">🔥 Крафтові Соуси</a></li>
                             <li><a href="otherseeds.html">🌱 Насіння овочів</a></li>
-                            <li><a href="fresh-peppers.html" class="theme-active">🌶️ Врожай Пекла</a></li>
-                            <li><a href="orpington-eggs.html">🥚 Яйця ферми</a></li>
+                            <li><a href="fresh-peppers.html">🌶️ Врожай Пекла</a></li>
+                            <li><a href="orpington-eggs.html" class="theme-active">🥚 Яйця ферми</a></li>
                         </ul>
                     </nav>
                 </aside>
 
-                <main class="products-grid" data-category="fresh-peppers">
-                    <h1 class="page-title">Врожай Пекла: Свіжі та Сушені Перці</h1>
+                <main class="products-grid" data-category="poultry">
+                    <h1 class="page-title">Інкубаційні яйця та яйця для вживання</h1>
                     <p class="description" style="margin-top: -10px; margin-bottom: 30px;">
-                        Тут з'являться плоди, які ми збираємо на власних грядках. <br>
-                        Свіжі суперхоти будуть доступні <b>восени 2026</b>.
+                        Тут з'являтимуться невеликі фермерські партії: інкубаційні яйця породистої птиці та свіжі яйця для кухні.
+                        Категорія готується до запуску, тож товари поки позначені як недоступні.
                     </p>
 
                     <div class="filter-section">
-                        <span class="filter-title">Тип продукту:</span>
+                        <span class="filter-title">Тип яєць:</span>
                         <div class="filter-buttons">
                             <button class="filter-btn active" data-heat="all">Всі</button>
-                            <button class="filter-btn" data-heat="1">🥗 Свіжі</button>
-                            <button class="filter-btn" data-heat="2">💨 Сушені</button>
+                            <button class="filter-btn" data-heat="1">🐣 Інкубаційні</button>
+                            <button class="filter-btn" data-heat="2">🍳 Для вживання</button>
                         </div>
                     </div>
 
@@ -82,15 +89,14 @@
             <div class="footer-section">
                 <h4>Клієнтам</h4>
                 <div class="footer-links">
-                    <a href="blog.html">🗞 Нотатки Gapka Homestead Inferno</a>
-                    <a href="faq.html">Питання та відповіді (FAQ)</a> 
+                    <a href="blog.html">Inferno Нотатки</a>
+                    <a href="faq.html">Питання та відповіді (FAQ)</a>
                     <a href="shipping.html">Доставка та оплата</a>
                 </div>
             </div>
             <div class="footer-section">
                 <h4>Зв'язок</h4>
                 <div class="footer-contacts">
-                    <!-- <span>+00000000000</span>-->
                     <a href="mailto:homestead.inferno@gmail.com">homestead.inferno@gmail.com</a>
                 </div>
             </div>
@@ -102,7 +108,7 @@
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">
+        <div class="footer-bottom container">
             <p>&copy; 2026 Gapka Homestead Inferno. Farm to Bottle & Seed to Harvest 🔥</p>
         </div>
     </footer>
@@ -111,8 +117,25 @@
     <script type="module" src="search.js"></script>
     <script src="modal-init.js"></script>
     <script src="security-enhancements.js"></script>
-<script src="cart.js"></script>
+    <script src="cart.js"></script>
     <script type="module" src="catalog.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var container = document.getElementById('catalog-container');
+            if (!container) return;
+            var observer = new MutationObserver(function() {
+                if (container.querySelector('.product-card')) {
+                    container.classList.add('catalog-loaded');
+                    observer.disconnect();
+                }
+            });
+            observer.observe(container, { childList: true });
+            setTimeout(function() {
+                if (container.querySelector('.product-card'))
+                    container.classList.add('catalog-loaded');
+            }, 500);
+        });
+    </script>
 <script type="module" src="analytics.js"></script></body>
 <script type="module" src="modules/init.js"></script>
 </html>

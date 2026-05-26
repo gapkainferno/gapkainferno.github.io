@@ -77,10 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Якщо товар має варіанти (наприклад, насіння), використовуємо AggregateOffer
         if (product.seedVersions && Object.keys(product.seedVersions).length > 1) {
             const prices = Object.values(product.seedVersions).map(v => v.price);
-            let finalPrices = prices;
-            if (typeof GLOBAL_SETTINGS !== 'undefined' && GLOBAL_SETTINGS.isSaleActive && product.allowSale) {
-                finalPrices = prices.map(p => Math.round(p * (1 - GLOBAL_SETTINGS.discountPercent / 100)));
-            }
+            const finalPrices = prices.map(price => 
+                typeof getDiscountedPrice === 'function' ? getDiscountedPrice(price, product) : price
+            );
             offers = {
                 "@type": "AggregateOffer",
                 "url": window.location.href,
@@ -96,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 "@type": "Offer",
                 "url": window.location.href,
                 "priceCurrency": "UAH",
-                "price": product.price,
+                "price": typeof getDiscountedPrice === 'function' ? getDiscountedPrice(product.price, product) : product.price,
                 "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
                 "itemCondition": "https://schema.org/NewCondition"
             };
@@ -421,16 +420,12 @@ function renderSeedVersionSelector(product, productId) {
         const isDisabled = !version.inStock ? 'disabled' : '';
         const stockLabel = !version.inStock ? '<span class="out-badge">Немає</span>' : '';
         
-        // Розрахунок акційної ціни для кнопки
-        let displayPriceHtml = `${version.price} ₴`;
-        if (typeof GLOBAL_SETTINGS !== 'undefined' && GLOBAL_SETTINGS.isSaleActive && product.allowSale) {
-            const discount = GLOBAL_SETTINGS.discountPercent;
-            const salePrice = Math.round(version.price * (1 - discount / 100));
-            displayPriceHtml = `
-                <span style="text-decoration: line-through; opacity: 0.6; font-size: 0.7em; margin-right: 5px;">${version.price}</span>
-                <span>${salePrice} ₴</span>
-            `;
-        }
+        const salePrice = typeof getDiscountedPrice === 'function'
+            ? getDiscountedPrice(version.price, product)
+            : version.price;
+        const displayPriceHtml = typeof renderSalePriceHTML === 'function'
+            ? renderSalePriceHTML(version.price, salePrice)
+            : `${version.price} ₴`;
 
         html += `
             <button 
@@ -522,30 +517,17 @@ function updatePriceDisplay(product, version) {
     else if (product.category === 'otherseeds') priceLabel = '/ 15 шт.';
     else if (product.category === 'sauces') priceLabel = '/ пляшка';
 
-    let finalPrice = version.price;
-    
-    // Якщо є знижка
-    if (typeof GLOBAL_SETTINGS !== 'undefined' && GLOBAL_SETTINGS.isSaleActive && product.allowSale) {
-        const discount = GLOBAL_SETTINGS.discountPercent;
-        finalPrice = Math.round(version.price * (1 - discount / 100));
-        
-        // Оновлюємо прихований атрибут data-val з БАЗОВОЮ ціною версії
-        priceEl.setAttribute('data-val', version.price); 
-        priceEl.innerHTML = `
-            <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.8em; margin-right: 10px;">
-                ${version.price.toFixed(2)} ₴
-            </span>
-            <span class="sale-price">${finalPrice.toFixed(2)} ₴</span>
-            <span style="font-size: 16px; opacity: 0.6; font-weight: normal;">${priceLabel}</span>
-        `;
-    } else {
-        priceEl.setAttribute('data-val', version.price);
-        priceEl.innerHTML = `
-            ${version.price.toFixed(2)} ₴ 
-            <span style="font-size: 16px; opacity: 0.6; font-weight: normal;">${priceLabel}</span>
-        `;
-    }
-    return finalPrice; // Повертаємо фінальну ціну (зі знижкою або без)
+    const finalPrice = typeof getDiscountedPrice === 'function'
+        ? getDiscountedPrice(version.price, product)
+        : version.price;
+    const priceSuffix = ` <span style="font-size: 16px; opacity: 0.6; font-weight: normal;">${priceLabel}</span>`;
+
+    priceEl.setAttribute('data-val', version.price);
+    priceEl.innerHTML = typeof renderSalePriceHTML === 'function'
+        ? renderSalePriceHTML(version.price, finalPrice, priceSuffix)
+        : `${version.price.toFixed(2)} ₴${priceSuffix}`;
+
+    return finalPrice;
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -553,7 +535,7 @@ function updatePriceDisplay(product, version) {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 function updateAddToCartButton(priceForCart, versionKey) {
-    const addBtn = document.querySelector('.add-btn');
+    const addBtn = document.querySelector('.add-btn[onclick*="pushToCart"]');
     if (!addBtn) return;
     
     // Оновлюємо ціну

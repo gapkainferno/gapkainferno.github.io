@@ -74,10 +74,30 @@
                             <li><a href="seedsandseedlings.html">🌶️ Насіння суперхотів</a></li>
                             <li><a href="sauces.html" class="theme-active">🔥 Крафтові Соуси</a></li>
                             <li><a href="otherseeds.html">🌱 Насіння овочів</a></li>
-                            <li><a href="javascript:void(0)" style="opacity: 0.5; cursor: not-allowed;"> Врожай Пекла 🔒</a></li>
-                            <li><a href="javascript:void(0)" style="opacity: 0.5; cursor: not-allowed;">🥚 Яйця Орпінгтон 🔒</a></li>
+                            <li><a href="fresh-peppers.html">🌶️ Врожай Пекла</a></li>
+                            <li><a href="orpington-eggs.html">🥚 Яйця ферми</a></li>
                         </ul>
                     </nav>
+                    <div class="scoville-thermometer-widget">
+    <h3 class="widget-title">Термометр вогню</h3>
+    
+    <div class="thermometer-container">
+        <input type="range" min="1" max="4" step="1" value="1" id="scoville-slider" orient="vertical">
+        
+        <div class="thermometer-display" id="thermometer-display" style="border-color: #4C9900;">
+            <div class="display-content">
+                <span id="pepper-name">Ancho, Aji Melocoton</span>
+                <span id="pepper-shu">~1,000-50,000</span>
+                <div id="heat-status">Рівень: Пряний аромат 🌿</div>
+            </div>
+        </div>
+    </div>
+    
+    <p class="scoville-disclaimer">Тягни вгору, давай знайомитися!</p>
+    <button id="reset-scoville" class="reset-btn">
+    🔄 Скинути фільтр
+</button>
+</div>
                 </aside>
 
                 <main class="products-grid" data-category="sauces">
@@ -148,11 +168,11 @@
 </footer>
 
     <script src="products.js"></script>
-    <script src="search.js"></script>
+    <script type="module" src="search.js"></script>
     <script src="modal-init.js"></script>
     <script src="security-enhancements.js"></script>
 <script src="cart.js"></script>
-    <script src="catalog.js"></script>
+    <script type="module" src="catalog.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var container = document.getElementById('catalog-container');
@@ -171,4 +191,5 @@
         });
     </script>
 <script type="module" src="analytics.js"></script></body>
+<script type="module" src="modules/init.js"></script>
 </html>

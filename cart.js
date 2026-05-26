@@ -1,16 +1,40 @@
-﻿//БЛОК КЕРУВАННЯ АКЦІЯМИ.
+﻿
+// ✅ RATE LIMITING - Запобігаємо спаму на оформлення замовлення
+const orderRateLimiter = {
+    lastSubmit: 0,
+    minInterval: 30000,  // Мінімум 30 секунд між спробами
+    canSubmit() {
+        const now = Date.now();
+        if (now - this.lastSubmit < this.minInterval) {
+            console.warn('⏱️ Rate limit: спроба реєстрації замовлення занадто часто');
+            return false;
+        }
+        this.lastSubmit = now;
+        return true;
+    }
+};
+
 const GLOBAL_SETTINGS = {
-    isSaleActive: false, 
-    discountPercent: 10, 
-    saleDeadline: "",
-    isPromoBannerActive: true,
-    promoText: "🔥 ГОТУЄМОСЯ ДО ВЕЛИКОГО ЗАПУСКУ ВОСЕНИ 2026!",
     // Щоб відкрити магазин: isCategoryLockActive: false або lockedCategories: []
     isCategoryLockActive: true,
     lockedCategories: ['sauces', 'seeds', 'otherseeds', 'fresh-peppers', 'poultry'],
     lockedCategoryTitle: 'Незабаром',
     lockedCategoryText: 'Розділ готується до старту восени 2026 🔥',
     lockedCategoryAlert: '🌶️ Цей розділ ще в розробці. Чекаємо на вас восени 2026!'
+};
+
+// ===== ЄДИНИЙ ПУЛЬТ АКЦІЙ =====
+// Щоб запустити акцію: isActive: true і потрібний discountPercent.
+// Щоб вимкнути банер, але лишити знижки: banner.isActive: false.
+const SALE_SETTINGS = {
+    isActive: false,
+    discountPercent: 10,
+    deadline: "", // Наприклад: "2026-09-30T23:59:59+03:00"
+    badgeText: "АКЦІЯ",
+    banner: {
+        isActive: true,
+        text: "🔥 ГОТУЄМОСЯ ДО ВЕЛИКОГО ЗАПУСКУ ВОСЕНИ 2026!"
+    }
 };
 
 const CATEGORY_LOCK_CONFIG = {
@@ -144,6 +168,133 @@ function sanitizeInput(text, maxLength = 100) {
 
 
 // ===== ВАЛІДАЦІЯ ЦІН (ЗАХИСТ ВІД МАНІПУЛЯЦІЙ) =====
+function getSaleConfig() {
+    const discount = Number(SALE_SETTINGS.discountPercent) || 0;
+    const deadline = SALE_SETTINGS.deadline ? new Date(SALE_SETTINGS.deadline) : null;
+    const hasDeadlinePassed = deadline instanceof Date && !Number.isNaN(deadline.getTime()) && Date.now() > deadline.getTime();
+
+    return {
+        isActive: SALE_SETTINGS.isActive === true && discount > 0 && !hasDeadlinePassed,
+        discountPercent: Math.min(Math.max(discount, 0), 90),
+        badgeText: SALE_SETTINGS.badgeText || "АКЦІЯ",
+        bannerText: SALE_SETTINGS.banner?.text || "",
+        isBannerActive: SALE_SETTINGS.banner?.isActive === true
+    };
+}
+
+function isSaleAllowed(product) {
+    return getSaleConfig().isActive && !!product && product.allowSale === true;
+}
+
+function getDiscountedPrice(basePrice, product) {
+    const price = Number(basePrice);
+    if (!Number.isFinite(price)) return 0;
+
+    const sale = getSaleConfig();
+    if (!sale.isActive || !product || product.allowSale !== true) {
+        return price;
+    }
+
+    return Math.round(price * (1 - sale.discountPercent / 100));
+}
+
+function getPriceVariants(product) {
+    if (!product) return [];
+
+    const basePrices = [product.price];
+    if (product.seedVersions) {
+        Object.values(product.seedVersions).forEach(version => basePrices.push(version.price));
+    }
+
+    return basePrices
+        .map(price => getDiscountedPrice(price, product))
+        .filter(price => Number.isFinite(price));
+}
+
+function getCartItemBasePrice(item, product) {
+    if (!item || !product) return 0;
+
+    if (item.versionKey && product.seedVersions?.[item.versionKey]) {
+        return Number(product.seedVersions[item.versionKey].price) || 0;
+    }
+
+    if (product.seedVersions) {
+        const itemName = String(item.name || '').toLowerCase();
+        const matchedVersion = Object.entries(product.seedVersions).find(([, version]) => {
+            return version.label && itemName.includes(String(version.label).toLowerCase());
+        });
+
+        if (matchedVersion) {
+            item.versionKey = matchedVersion[0];
+            return Number(matchedVersion[1].price) || 0;
+        }
+    }
+
+    return Number(product.price) || 0;
+}
+
+function syncCartPrices(cart, options = {}) {
+    if (!Array.isArray(cart) || typeof allProducts === 'undefined') {
+        return { cart: Array.isArray(cart) ? cart : [], changed: false };
+    }
+
+    let changed = false;
+
+    const syncedCart = cart.map(item => {
+        if (!item?.productId || item.productId.startsWith('bundle_')) {
+            return item;
+        }
+
+        const product = allProducts[item.productId];
+        if (!product) return item;
+
+        const previousVersionKey = item.versionKey || null;
+        const basePrice = getCartItemBasePrice(item, product);
+        const currentPrice = getDiscountedPrice(basePrice, product);
+        const normalizedOriginalPrice = basePrice || item.originalPrice || item.price;
+
+        if ((item.versionKey || null) !== previousVersionKey) {
+            changed = true;
+        }
+
+        if (Math.abs(Number(item.price) - currentPrice) > 0.01) {
+            item.price = currentPrice;
+            changed = true;
+        }
+
+        if (Math.abs(Number(item.originalPrice || 0) - normalizedOriginalPrice) > 0.01) {
+            item.originalPrice = normalizedOriginalPrice;
+            changed = true;
+        }
+
+        return item;
+    });
+
+    if (changed && options.save) {
+        saveCart(syncedCart);
+        console.log('🛒 Кошик синхронізовано з актуальними цінами та акціями.');
+    }
+
+    return { cart: syncedCart, changed };
+}
+
+function renderSalePriceHTML(basePrice, salePrice, suffix = "") {
+    if (salePrice < basePrice) {
+        return `
+            <span class="old-price">${Number(basePrice).toFixed(2)} ₴</span>
+            <span class="sale-price">${Number(salePrice).toFixed(2)} ₴</span>${suffix}
+        `;
+    }
+
+    return `${Number(basePrice).toFixed(2)} ₴${suffix}`;
+}
+
+window.getSaleConfig = getSaleConfig;
+window.isSaleAllowed = isSaleAllowed;
+window.getDiscountedPrice = getDiscountedPrice;
+window.renderSalePriceHTML = renderSalePriceHTML;
+window.syncCartPrices = syncCartPrices;
+
 function validatePrice(productId, price) {
     if (typeof allProducts === 'undefined' || !allProducts[productId]) {
         console.warn('⚠️ Товар не знайдено:', productId);
@@ -151,20 +302,7 @@ function validatePrice(productId, price) {
     }
     
     const product = allProducts[productId];
-    const isSaleActive = GLOBAL_SETTINGS && GLOBAL_SETTINGS.isSaleActive && product.allowSale;
-    const discount = isSaleActive ? GLOBAL_SETTINGS.discountPercent : 0;
-
-    // Функція для розрахунку точної очікуваної ціни
-    const calculateExpected = (base) => isSaleActive ? Math.round(base * (1 - discount / 100)) : base;
-
-    let expectedPrices = [calculateExpected(product.price)];
-
-    // Додаємо ціни версій насіння
-    if (product.seedVersions) {
-        Object.values(product.seedVersions).forEach(v => {
-            expectedPrices.push(calculateExpected(v.price));
-        });
-    }
+    const expectedPrices = getPriceVariants(product);
 
     // Тепер порівнюємо з точністю до 1 гривні (на випадок нюансів округлення)
     const isValid = expectedPrices.some(ep => Math.abs(price - ep) <= 1);
@@ -173,69 +311,47 @@ function validatePrice(productId, price) {
         console.warn('⚠️ Підозріла ціна для', productId);
         console.warn('   Дозволені варіанти:', expectedPrices);
         console.warn('   Отримано:', price);
-        // Повертаємо стандартну акційну ціну, якщо валідація не пройшла
-        return calculateExpected(product.price);
+        return getDiscountedPrice(product.price, product);
     }
 
     return price;
 }
 
 function applyGlobalSale() {
-    if (GLOBAL_SETTINGS && GLOBAL_SETTINGS.isSaleActive) {
-        const discount = GLOBAL_SETTINGS.discountPercent;
+    const sale = getSaleConfig();
 
-        const cardPrices = document.querySelectorAll('.card-price');
-        cardPrices.forEach(el => {
-            const isSaleAllowed = el.getAttribute('data-allow-sale') === 'true';
-            if (isSaleAllowed) {
-                const basePrice = parseFloat(el.getAttribute('data-base-price'));
-                if (!basePrice) return;
-                const newPrice = Math.round(basePrice * (1 - discount / 100));
-                el.innerHTML = `
-                    <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em;">${basePrice} ₴</span> 
-                    <span class="sale-price">${newPrice} ₴</span>
-                `;
-                const card = el.closest('.product-card'); 
-                if (card) {
-                    const cardBtn = card.querySelector('.quick-add-btn');
-                    if (cardBtn) cardBtn.setAttribute('data-price', newPrice);
-                    if (!card.querySelector('.sale-badge')) {
-                        const badge = document.createElement('div');
-                        badge.className = 'sale-badge';
-                        badge.innerText = 'АКЦІЯ';
-                        card.style.position = 'relative';
-                        card.appendChild(badge);
-                    }
-                }
+    document.querySelectorAll('.card-price').forEach(el => {
+        const basePrice = parseFloat(el.getAttribute('data-base-price'));
+        const productId = el.closest('.product-card')?.getAttribute('data-id');
+        const product = productId && typeof allProducts !== 'undefined' ? allProducts[productId] : null;
+        const salePrice = getDiscountedPrice(basePrice, product);
+        const card = el.closest('.product-card');
+        const cardBtn = card?.querySelector('.quick-add-btn');
+        const existingBadge = card?.querySelector('.sale-badge');
+
+        el.innerHTML = renderSalePriceHTML(basePrice, salePrice);
+        if (cardBtn) cardBtn.setAttribute('data-price', salePrice);
+
+        if (card && salePrice < basePrice) {
+            card.style.position = 'relative';
+            if (!existingBadge) {
+                const badge = document.createElement('div');
+                badge.className = 'sale-badge';
+                badge.innerText = sale.badgeText;
+                card.appendChild(badge);
+            } else {
+                existingBadge.innerText = sale.badgeText;
             }
-        });
-    }
-
-    // Логіка акцій для сторінки товару (product.html)
-    const mainPriceContainer = document.getElementById('p-price');
-    const isProductPage = window.location.pathname.includes('product.html');
-
-    if (mainPriceContainer && isProductPage && !document.getElementById('seed-version-selector')) {
-        const discount = GLOBAL_SETTINGS.discountPercent;
-        const mainAddToCartBtn = document.querySelector('.add-btn');
-        const isSaleAllowed = GLOBAL_SETTINGS.isSaleActive && mainPriceContainer.getAttribute('data-allow-sale') === 'true';
-        const basePrice = parseFloat(mainPriceContainer.getAttribute('data-val') || mainPriceContainer.innerText);
-        
-        if (isSaleAllowed && basePrice) {
-            const newPrice = Math.round(basePrice * (1 - discount / 100));
-            mainPriceContainer.innerHTML = `
-                <span style="text-decoration: line-through; opacity: 0.5; font-size: 0.8em; margin-right: 10px;">${basePrice.toFixed(2)} ₴</span>
-                <span class="sale-price">${newPrice.toFixed(2)} ₴</span>
-            `;
-            if (mainAddToCartBtn) mainAddToCartBtn.setAttribute('data-price', newPrice);
+        } else if (existingBadge) {
+            existingBadge.remove();
         }
-    }
+    });
 
-    if (GLOBAL_SETTINGS && GLOBAL_SETTINGS.isPromoBannerActive && GLOBAL_SETTINGS.promoText && !document.getElementById('sale-banner')) {
+    if (sale.isBannerActive && sale.bannerText && !document.getElementById('sale-banner')) {
         const banner = document.createElement('div');
         banner.id = "sale-banner";
         banner.style.cssText = "background: #e74c3c; color: white; text-align: center; padding: 12px 20px; font-weight: bold; position: fixed; top: 0; left: 0; width: 100%; z-index: 10000; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); font-size: 14px;";
-        banner.innerText = GLOBAL_SETTINGS.promoText;
+        banner.innerText = sale.bannerText;
         document.body.prepend(banner);
         document.body.classList.add('has-sale-banner');
     }
@@ -343,6 +459,8 @@ function updateCartUI() {
             saveCart(cart);
             console.log('🛒 Кошик синхронізовано: видалено застарілі товари, яких немає в базі');
         }
+
+        cart = syncCartPrices(cart, { save: true }).cart;
     }
 
     const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
@@ -403,6 +521,8 @@ function updateCartUI() {
                                     ? '/ шт.' 
                                     : (item.name.toLowerCase().includes('box') || item.name.toLowerCase().includes('набір'))
                                     ? '/ за набір' 
+                                    : (item.name.toLowerCase().includes('яйц') || item.name.toLowerCase().includes('egg'))
+                                    ? '/ за позицію'
                                     : '/ за пакет з насінням'
                                 }
                             </span>
@@ -442,7 +562,11 @@ window.openCheckout = function() {
         return;
     }
 
-    const cart = getFreshCart();
+    const cartSync = syncCartPrices(getFreshCart(), { save: true });
+    const cart = cartSync.cart;
+    if (cartSync.changed) {
+        updateCartUI();
+    }
     if (cart.length === 0) {
         openEmptyCartModal();
         return;
@@ -1075,7 +1199,7 @@ window.changeQty = function(index, delta) {
 };
 
 // Універсальна функція додавання
-window.addToCart = function(productId, price, name, qty = 1, originalPrice = null, image = null) {
+window.addToCart = function(productId, price, name, qty = 1, originalPrice = null, image = null, versionKey = null) {
     // ✅ RATE LIMITING: Перевіряємо частоту клавіш
     if (typeof RateLimiter !== 'undefined' && !RateLimiter.check('addToCart')) {
         console.warn('⏱️ Надто швидке додавання товарів. Чекайте...');
@@ -1099,6 +1223,8 @@ window.addToCart = function(productId, price, name, qty = 1, originalPrice = nul
     // ✅ НОВЕ: Використання константи
     const validatedPrice = validatePrice(productId, parseFloat(price));
     const validatedQty = Math.max(1, Math.min(CART_CONSTANTS.MAX_QTY, parseInt(qty)));
+    const productBasePrice = productData ? getCartItemBasePrice({ name: safeName, versionKey, originalPrice, price }, productData) : originalPrice;
+    const normalizedOriginalPrice = productBasePrice || originalPrice || validatedPrice;
     
     // Шукаємо існуючий товар
     const existing = cart.find(item => {
@@ -1112,7 +1238,8 @@ window.addToCart = function(productId, price, name, qty = 1, originalPrice = nul
         // ✅ НОВЕ: Використання константи
         existing.qty = Math.min(existing.qty + validatedQty, CART_CONSTANTS.MAX_QTY);
         existing.price = validatedPrice;
-        existing.originalPrice = originalPrice;
+        existing.originalPrice = normalizedOriginalPrice;
+        existing.versionKey = versionKey || existing.versionKey || null;
         if (image) existing.image = image;
         if (productId && !existing.productId) {
             existing.productId = productId;
@@ -1122,9 +1249,10 @@ window.addToCart = function(productId, price, name, qty = 1, originalPrice = nul
             productId: productId, 
             name: safeName,
             price: validatedPrice, 
-            originalPrice: originalPrice,
+            originalPrice: normalizedOriginalPrice,
             qty: validatedQty,
-            image: image
+            image: image,
+            versionKey: versionKey
         });
     }
     
@@ -1152,7 +1280,7 @@ window.pushToCart = function() {
         return;
     }
     const priceContainer = document.getElementById('p-price');
-    const addBtn = document.querySelector('.add-btn');
+    const addBtn = document.querySelector('.add-btn[onclick*="pushToCart"]');
     const qtyEl = document.getElementById('p-qty');
 
     if (!priceContainer) return;
@@ -1188,12 +1316,20 @@ window.pushToCart = function() {
     const mainImg = document.getElementById('main-view');
     const image = mainImg ? mainImg.src : null;
     
-    addToCart(productId, price, name, qty, originalPrice, image);
+    addToCart(productId, price, name, qty, originalPrice, image, versionKey);
     alert("Додано у кошик! 🌶️");
 };
 
 window.addToCartDirectly = function(productId, buttonElement) {
     try {
+        // ✅ RATE LIMITING для запобігання спаму
+        if (window.RateLimiter && !window.RateLimiter.check('addToCart')) {
+            console.warn('⏱️ Забагато спроб добавлення в кошик');
+            // Жахнемо кнопку
+            buttonElement?.style?.setProperty('animation', 'pulse 0.3s ease-in-out');
+            return;
+        }
+
         const card = buttonElement.closest('.product-card');
         if (!card) throw new Error("Картку товару не знайдено");
 
@@ -1206,10 +1342,12 @@ window.addToCartDirectly = function(productId, buttonElement) {
         const priceElement = card.querySelector('.card-price');
         if (!priceElement) throw new Error("Ціну на картці не знайдено");
 
-        // Безпечно отримуємо актуальну ціну, ігноруючи закреслену стару ціну
+        const buttonPrice = parseFloat(buttonElement?.getAttribute('data-price'));
         const salePriceEl = priceElement.querySelector('.sale-price');
         const priceText = salePriceEl ? salePriceEl.innerText : priceElement.innerText;
-        const cleanPrice = parseFloat(priceText.replace(/[^\d.,]/g, '').replace(',', '.'));
+        const cleanPrice = Number.isFinite(buttonPrice)
+            ? buttonPrice
+            : parseFloat(priceText.replace(/[^\d.,]/g, '').replace(',', '.'));
         
         if (isNaN(cleanPrice)) throw new Error("Не вдалося розпізнати ціну");
         // Отримуємо базову ціну для закреслення
@@ -1247,30 +1385,7 @@ function generateOrderNumber() {
     const unique = Math.random().toString(36).substring(2, 6).toUpperCase();
     return `HS-${day}${month}${year}-${unique}`;
 }
-const orderRateLimiter = {
-    attempts: [],
-    
-    canSubmit() {
-        const now = Date.now();
-        const oneMinuteAgo = now - 60000; // 60 секунд
-        
-        // Видаляємо старі спроби
-        this.attempts = this.attempts.filter(time => time > oneMinuteAgo);
-        
-        // Перевіряємо ліміт
-        if (this.attempts.length >= CART_CONSTANTS.MAX_ORDERS_PER_MINUTE) {
-            return false;
-        }
-        
-        // Додаємо нову спробу
-        this.attempts.push(now);
-        return true;
-    },
-    
-    reset() {
-        this.attempts = [];
-    }
-};
+
 // === 4. ВІДПРАВКА ЗАМОВЛЕННЯ ===
 window.submitOrder = async function() {
     // ✅ НОВЕ: Rate limiting
@@ -1441,7 +1556,11 @@ function cleanPhone(phone) {
     const originalText = submitBtn.textContent;
     // 🔥 ГЕНЕРАТОР КРАСИВИЙ НОМЕР
     const orderID = generateOrderNumber();
-    const cart = getFreshCart();
+    const cartSync = syncCartPrices(getFreshCart(), { save: true });
+    const cart = cartSync.cart;
+    if (cartSync.changed) {
+        updateCartUI();
+    }
     const cartError = getCartValidationError(cart);
     if (cartError) {
         alert(cartError);

@@ -228,12 +228,13 @@ body.poultry-page {
     background: var(--bg-dark);
 }
 ::-webkit-scrollbar-thumb {
-    background: #2a1a10; /* surface-2 */
+    background: linear-gradient(180deg, var(--primary-color), var(--primary-hover));
     border-radius: 10px;
     border: 2px solid var(--bg-dark);
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-color);
+    background: linear-gradient(180deg, var(--primary-hover), var(--primary-color));
+    box-shadow: 0 0 6px var(--accent-shadow);
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -245,6 +246,9 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     line-height: var(--lh-heading);
     font-weight: 700;
+    letter-spacing: var(--ls-caps);
+    color: var(--text-color);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 body {
@@ -312,13 +316,20 @@ a, a:visited, a:active, a:focus {
     text-decoration: none !important; /* Ніяких ліній під текстом */
     color: inherit;                   /* Посилання копіює колір тексту навколо нього */
     outline: none;                    /* Прибираємо синю рамку при кліку */
-    transition: color var(--transition);
+    transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 /* Ефект тільки при наведенні, щоб користувач розумів, що це посилання */
 a:hover {
     color: var(--primary-color) !important; /* Світиться твоїм акцентним кольором */
     text-decoration: none;
+    text-shadow: 0 0 8px var(--accent-shadow);
+}
+
+a:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: 2px;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -479,20 +490,28 @@ body.has-sale-banner {
     width: 100%;
     padding: 12px 44px 12px 20px;
     background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.12);
     border-radius: 30px;
     color: var(--text-color);
     font-family: inherit;
     font-size: var(--fs-base);
     outline: none;
-    transition: border-color var(--transition), box-shadow var(--transition);
+    transition: border-color var(--transition), box-shadow var(--transition), background 0.3s ease;
 }
 
-#search-input::placeholder { color: var(--text-muted); }
+#search-input::placeholder { 
+    color: var(--text-muted); 
+}
 
 #search-input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--accent-shadow);
+    background: rgba(255,255,255,0.12);
+    box-shadow: 0 0 0 3px var(--accent-shadow), inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+#search-input:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 .search-icon {
@@ -741,10 +760,11 @@ body.has-sale-banner {
     overflow: hidden;
     border-radius: var(--radius-lg);
     aspect-ratio: 1 / 1;
-    box-shadow: 0 6px 22px rgba(0,0,0,0.4);
+    box-shadow: 0 6px 22px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,255,255,0.02);
     display: block;
-    transition: transform var(--transition), box-shadow var(--transition);
+    transition: transform 0.35s cubic-bezier(0.23, 1, 0.320, 1), box-shadow 0.35s ease, border 0.3s ease;
     z-index: 1;
+    border: 1px solid rgba(255,255,255,0.05);
 }
 
 /* Глибокий градієнт знизу для ідеальної читабельності тексту */
@@ -758,18 +778,19 @@ body.has-sale-banner {
 }
 
 .card-link:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 14px 36px rgba(0,0,0,0.6);
+    transform: translateY(-12px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.7), inset 0 0 20px rgba(255,255,255,0.03);
+    border-color: var(--primary-color);
 }
 
 .card-image {
     position: relative;
     width: 100%; height: 100%;
     object-fit: cover; display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.320, 1);
 }
-.card-link:hover .card-image { transform: scale(1.05); }
-.card-link:hover::after { opacity: 0.6; }
+.card-link:hover .card-image { transform: scale(1.08); }
+.card-link:hover::after { opacity: 0.5; }
 
 .card-label {
     position: absolute;
@@ -817,6 +838,9 @@ body.has-sale-banner {
 
 .card-link.otherseeds:hover .card-label { color: #4a8c50; }
 .card-link.otherseeds:hover .card-label::before { background: #4a8c50; }
+
+.card-link.poultry:hover .card-label { color: #d4a373; }
+.card-link.poultry:hover .card-label::before { background: #d4a373; }
 
 .card-link:hover .card-label::before { width: 60px; }
 
@@ -1180,6 +1204,11 @@ body.has-sale-banner {
     box-shadow: 0 2px 12px var(--accent-shadow), inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
+/* Приховування відфільтрованих товарів */
+.product-card.is-filtered-out {
+    display: none;
+}
+
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    §13  🃏  КАРТКИ ТОВАРІВ — ARTISAN REDESIGN  v8.0
@@ -1267,6 +1296,7 @@ body.has-sale-banner {
     transition: opacity 0.3s ease;
     padding: 15px;
     z-index: 2;
+    pointer-events: none;
 }
 
 .product-card:hover .scoville-overlay {
@@ -1491,8 +1521,9 @@ body.has-sale-banner {
     line-height: 1.3;
     color: var(--text-color);
     margin: 0;
-    padding: 14px 14px 10px;
+    padding: 0;
     text-align: left;
+    flex: 1;
 
     /* Обрізання довгих назв */
     display: -webkit-box;
@@ -1501,14 +1532,14 @@ body.has-sale-banner {
     overflow: hidden;
 }
 
-/* ── Рядок ціни ── */
-.price-row {
+/* Рядок з назвою і ціною поруч */
+.name-price-row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 8px;
-    padding: 10px 14px 14px;
-    margin-top: auto;
+    padding: 12px 14px 8px;
+    margin-bottom: 4px;
 }
 
 /* Ціна */
@@ -1518,7 +1549,10 @@ body.has-sale-banner {
     font-weight: 800;
     color: var(--price-color);
     margin: 0;
+    padding: 0;
     line-height: 1;
+    white-space: nowrap;
+    flex-shrink: 0;
     /* Тонке підсвічення ціни кольором теми */
     text-shadow: 0 0 20px var(--card-glow, transparent);
 }
@@ -1529,25 +1563,20 @@ body.has-sale-banner {
     font-size: 13px;
     line-height: 1.5;
     color: rgba(252, 239, 225, 0.72);
-    padding: 0 14px 12px;
+    padding: 0 14px 8px;
     margin: 0;
     
-    /* Початково 2 рядки */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    
-    /* Плавна анімація розширення */
-    transition: -webkit-line-clamp 0.4s ease, max-height 0.4s ease;
+    /* Показуємо 2-3 рядки за замовчуванням */
     max-height: 48px;
+    overflow: hidden;
+    
+    /* Плавна, яка анімація розширення */
+    transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* При наведенні на картку — розширюємо опис */
+/* При наведенні на картку — розширюємо опис плавно */
 .product-card:hover .product-description-short {
-    -webkit-line-clamp: unset;
-    max-height: 200px;
+    max-height: 90px;
     overflow: visible;
 }
 
@@ -1567,6 +1596,8 @@ body.has-sale-banner {
     /* Анімуємо лише колір фону, щоб уникнути мерехтіння прозорості при русі */
     transition: background 0.4s ease;
     opacity: 1 !important;
+    max-height: 60px;
+    overflow: hidden;
 }
 
 /* Гарантуємо чіткість фону при наведенні на будь-яку картку */
@@ -1600,17 +1631,17 @@ body.has-sale-banner {
     font-family: var(--font-heading);
 }
 
-/* Кнопка "+ В кошик" */
+/* Кнопка "🛒 В кошик" — розміщена на зображенні (нижній правий кут) */
 .quick-add-btn {
-    width: 36px;
-    height: 36px;
+    width: 48px;
+    height: 48px;
     border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.15);
     background: linear-gradient(135deg,
         var(--primary-color) 0%,
         var(--primary-hover) 100%);
     color: #fff;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 300;
     line-height: 1;
     cursor: pointer;
@@ -1619,10 +1650,13 @@ body.has-sale-banner {
     justify-content: center;
     flex-shrink: 0;
     box-shadow:
-        0 4px 12px rgba(0,0,0,0.4),
+        0 4px 16px rgba(0,0,0,0.5),
         inset 0 1px 0 rgba(255,255,255,0.2);
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    z-index: 10;
     overflow: hidden;
 }
 
@@ -1638,7 +1672,7 @@ body.has-sale-banner {
 .quick-add-btn:hover::after { opacity: 1; }
 
 .quick-add-btn:hover {
-    transform: translateY(-2px) scale(1.08);
+    transform: translateY(-2px) scale(1.05);
     box-shadow:
         0 8px 20px rgba(0,0,0,0.5),
         0 0 12px var(--accent-shadow, rgba(200,90,42,0.4));
@@ -2006,7 +2040,7 @@ main.product-page {
 .add-btn {
     background: linear-gradient(to bottom, var(--primary-color), var(--primary-hover));
     color: #fff;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.15);
     padding: 14px 32px;
     font-size: 16px;
     font-weight: 600;
@@ -2014,15 +2048,25 @@ main.product-page {
     cursor: pointer;
     font-family: inherit;
     width: 100%;
-    transition: transform var(--transition), box-shadow var(--transition);
-    box-shadow: 0 4px 15px var(--accent-shadow);
+    transition: transform var(--transition), box-shadow var(--transition), border-color 0.3s ease, background 0.3s ease;
+    box-shadow: 0 4px 15px var(--accent-shadow), inset 0 1px 0 rgba(255,255,255,0.2);
     margin: 0 auto;
     position: relative;
     overflow: hidden;
+    letter-spacing: 0.5px;
 }
 .add-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px var(--accent-shadow);
+    box-shadow: 0 8px 28px var(--accent-shadow), inset 0 1px 0 rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.25);
+}
+.add-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px var(--accent-shadow), inset 0 2px 5px rgba(0,0,0,0.3);
+}
+.add-btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 /* Ефект "Бліку" для всіх основних кнопок */
@@ -2065,7 +2109,7 @@ main.product-page {
     justify-content: center;
     gap: 9px;
     padding: 11px 22px;
-    border: 1.5px solid var(--primary-color);
+    border: 2px solid var(--primary-color);
     border-radius: var(--radius-sm);
     background: linear-gradient(to bottom, var(--primary-color), var(--primary-hover));
     color: #fff;
@@ -2077,10 +2121,18 @@ main.product-page {
     margin: 20px 0;
     /* точна ширина = sidebar, кнопка вирівняна по його лівому краю */
     width: var(--sidebar-width);
-    transition: transform var(--transition), box-shadow var(--transition);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
     box-shadow: 0 4px 12px var(--accent-shadow);
 }
-.back-btn:hover { transform: translateX(-3px); }
+.back-btn:hover { 
+    transform: translateX(-3px);
+    box-shadow: 0 8px 20px var(--accent-shadow);
+    background: linear-gradient(to bottom, var(--primary-hover), var(--primary-color));
+}
+.back-btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
 .back-btn svg   { width: 16px; height: 16px; fill: currentColor; }
 
 .back-to-top {
@@ -2090,15 +2142,22 @@ main.product-page {
     z-index: 99;
     width: 42px; height: 42px;
     border-radius: 50%;
-    border: none;
-    background: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
     color: #fff;
     font-size: 18px;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    transition: transform var(--transition);
+    box-shadow: 0 4px 16px var(--accent-shadow);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-.back-to-top:hover { transform: scale(1.1) rotate(-15deg); }
+.back-to-top:hover { 
+    transform: scale(1.12) rotate(-15deg);
+    box-shadow: 0 8px 24px var(--accent-shadow);
+}
+.back-to-top:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
 
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2151,7 +2210,7 @@ main.product-page {
     height: 36px;
     border-radius: 50%;
     background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1.5px solid rgba(255,255,255,0.1);
     color: rgba(255,255,255,0.55);
     font-size: 20px;
     line-height: 1;
@@ -2163,9 +2222,14 @@ main.product-page {
     transition: all 0.2s ease;
 }
 .close-btn:hover {
-    background: rgba(255,255,255,0.12);
+    background: rgba(var(--primary-color), 0.12);
     color: #fff;
-    border-color: rgba(255,255,255,0.25);
+    border-color: var(--primary-color);
+    transform: rotate(90deg) scale(1.1);
+}
+.close-btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 /* ── Заголовок ── */
@@ -2248,8 +2312,24 @@ main.product-page {
     line-height: 1.4;
     transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
     appearance: none;
-    -webkit-appearance: none;
 }
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    background: rgba(255,255,255,0.08);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--accent-shadow), inset 0 0 0 1px rgba(255,255,255,0.1);
+    outline: none;
+}
+
+.form-group input:focus-visible,
+.form-group select:focus-visible,
+.form-group textarea:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 0px;
+}
+
 .form-group select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -2820,24 +2900,84 @@ main.product-page {
 }
 
 @media (max-width: 540px) {
-    .modal { padding: 0; }
-    .modal-box { margin: 0; border-radius: 0; min-height: 100dvh; }
-    .form-row { grid-template-columns: 1fr; gap: 0; }
+    .modal { 
+        padding: 0; 
+        background: rgba(0,0,0,0.95);
+    }
+    .modal-box { 
+        margin: 0; 
+        border-radius: 12px 12px 0 0;
+        min-height: auto;
+        max-width: 100%;
+        max-height: 90dvh;
+        overflow-y: auto;
+    }
+    .form-row { 
+        grid-template-columns: 1fr; 
+        gap: 0; 
+    }
+    
+    .checkout-header {
+        padding: 16px;
+        flex-wrap: wrap;
+    }
+    
+    .modal-title {
+        font-size: 20px;
+    }
+    
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .checkout-form {
+        padding: 16px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    
+    .checkout-summary {
+        padding: 16px;
+    }
+    
+    .form-group {
+        margin-bottom: 14px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 16px;
+        padding: 10px 12px;
+    }
+    
+    .add-btn,
+    .order-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
     
     /* Empty cart modal responsive */
     .empty-cart-categories {
         grid-template-columns: 1fr;
-        gap: 16px;
-        padding: 20px;
+        gap: 12px;
+        padding: 16px;
     }
     
     .empty-cart-card {
-        padding: 24px 16px;
+        padding: 20px 14px;
     }
     
     .empty-cart-header {
-        padding: 24px 16px;
+        padding: 20px 16px;
     }
+    
+    .close-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+    }
+}
     
     .empty-cart-footer {
         padding: 16px 20px 24px;
@@ -2851,7 +2991,7 @@ main.product-page {
     .empty-cart-card h3 {
         font-size: 18px;
     }
-}
+
 
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3200,6 +3340,13 @@ footer {
     font-weight: 700;
 }
 
+.old-price {
+    text-decoration: line-through;
+    opacity: 0.5;
+    font-size: 0.85em;
+    margin-right: 6px;
+}
+
 .product-price,
 .price-tag { color: var(--price-color); }
 
@@ -3343,7 +3490,7 @@ footer {
         top: auto;
     }
 
-    #catalog-container { grid-template-columns: 1fr; }
+    #catalog-container { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 
     .filter-section {
         flex-direction: column;
@@ -3397,6 +3544,9 @@ footer {
 /* ── Маленькі мобільні до 480px ── */
 @media (max-width: 480px) {
     :root { --fs-h1: 28px; }
+
+    /* Каталог на дуже маленьких екранах - 2 стовпця */
+    #catalog-container { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 
     /* extreme-heat-warning на мобілці */
     .extreme-heat-warning {
@@ -3516,7 +3666,9 @@ header::after {
 }
 body.seeds-page header::after,
 body.sauces-page header::after,
-body.otherseeds-page header::after {
+body.otherseeds-page header::after,
+body.fresh-peppers-page header::after,
+body.poultry-page header::after {
     width: 220px;
     opacity: 0.85;
 }
@@ -3905,10 +4057,10 @@ body.otherseeds-page header::after {
 
 /* Клас для закресленої ціни */
 .old-price {
-    font-size: 16px;
-    text-decoration: line-through; /* 🪄 Ось ця магія закреслює текст! */
-    color: #888; /* Робимо сірою, щоб вона "відійшла" на задній план */
-    margin-left: 12px;
+    font-size: 0.85em;
+    text-decoration: line-through;
+    color: #888;
+    margin-right: 6px;
     font-weight: normal;
     opacity: 0.7;
 }

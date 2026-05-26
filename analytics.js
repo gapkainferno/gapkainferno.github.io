@@ -9,25 +9,16 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-9CL9XT7H4D');
 
-// 2. Firebase Configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBoScvps08gY0fGPNNi-Ms_6J3uCRoh_6U",
-  authDomain: "gapkas-homestead-inferno.firebaseapp.com",
-  databaseURL: "https://gapkas-homestead-inferno-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "gapkas-homestead-inferno",
-  storageBucket: "gapkas-homestead-inferno.firebasestorage.app",
-  messagingSenderId: "598710636413",
-  appId: "1:598710636413:web:b8edf854d8e8ba2a274614",
-  measurementId: "G-9CL9XT7H4D"
-};
+// 2. Централізована Firebase конфігурація
+import { FIREBASE_CONFIG } from './config/firebase-config.js';
 
 // 3. Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 
 try {
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
+  // Initialize Firebase with centralized config
+  const app = initializeApp(FIREBASE_CONFIG);
   const analytics = getAnalytics(app);
   
   console.log('✅ Firebase Analytics initialized');

@@ -1,7 +1,7 @@
 ﻿﻿const allProducts = {
     // ID товару (використовується в посиланні: product.html?id=habaneroredsavina)
 "habaneroredsavina": {
-        name: "Habanero Red Savina",
+        name: "Насіння суперхоту Habanero Red Savina",
         searchName: "gapka насіння, гапка насіння, Хабанеро Савіна Ред, хабанеро ред савіна, хабанеро червоний, ред, савіна",
         category: "seeds", 
         price: 50,
@@ -43,7 +43,7 @@ heatScore: "2",
     },
 
 "carolinareaperred": {
-        name: "Carolina Reaper Red",
+        name: "Насіння суперхоту Carolina Reaper Red",
         searchName: "gapka насіння, гапка насіння, Кароліна Ріпер, ріпер, кароліна, рипер, Carolina Reaper",
         category: "seeds", 
         price: 70,
@@ -75,7 +75,7 @@ heatScore:"4",
 
     // ПРИКЛАД третього ТОВАРУ (використовується в посиланні: product.html?id=habanerodominicared)
 "habanerodominicared": {
-        name: "Habanero Dominica Red",
+        name: "Насіння суперхоту Habanero Dominica Red",
         searchName: "Хабанеро Домініка, хабанеро домініка, хабанеро червоний, ред",
         category: "seeds", 
         price: 45,
@@ -114,7 +114,7 @@ heatScore:"4",
     },
 
 "7potbubblegumchocolate": {
-        name: "7 Pot Bubblegum Chocolate",
+        name: "Насіння суперхоту 7 Pot Bubblegum Chocolate",
         searchName: "Сім пот шоколадний, 7 pot, 7-pot, Севен Пот, Севен Піт, Бабблгам, 7 pot bubblegum chocolate, насіння суперхотів",
         category: "seeds",
         price: 50,
@@ -145,7 +145,7 @@ heatScore:"3",
     },
 
 "bhutjolokiared": {
-        name: "Bhut Jolokia Red",
+        name: "Насіння суперхоту Bhut Jolokia Red",
         searchName: "Bhut Jolokia Red, Бхут Жолокіа, Ghost, Гост",
         category: "seeds", 
         price: 50,
@@ -177,7 +177,7 @@ heatScore:"3",
     },
 
 "ajimelocoton": {
-        name: "Aji Melocoton",
+        name: "Насіння перцю Aji Melocoton",
         searchName: "Аджі Мелокотон, Аджі, Аджі персиковий, Aji Melocoton ",
         category: "seeds", 
         price: 40,
@@ -206,7 +206,7 @@ heatScore:"1",
     },
 
 "7PotBrainStrainYellow": {
-        name: "7 Pot Brain Strain Yellow",
+        name: "Насіння суперхоту 7 Pot Brain Strain Yellow",
         searchName: "Сім пот брейн жовтий, Севен пот брейн, Сім-пот брейн, Жовтий Севен пот, 7 Pot Brain Strain Yellow, насіння суперхотів",
         category: "seeds",
         price: 50,
@@ -239,7 +239,7 @@ heatScore:"3",
 
 
 "monkeyfaceyellow": {
-        name: "Monkey Face Yellow",
+        name: "Насіння перцю Monkey Face Yellow",
         searchName: "Манкі Фейс Жовтий, Monkey Face Yellow, насіння перцю",
         category: "seeds",
         price: 40,
@@ -269,7 +269,7 @@ heatScore:"1",
     },
 
 "shishito": {
-        name: "Shishito",
+        name: "Насіння перцю Shishito",
         searchName: "Шишито, Шішіто, Shishito, насіння перцю",
         category: "seeds",
         price: 40,
@@ -299,7 +299,7 @@ heatScore:"1",
     },
 
 "nagajolokia": {
-        name: "Naga Jolokia Red",
+        name: "Насіння суперхоту Naga Jolokia Red",
         searchName: "Червона Нага, Нага Жолокіа, Нага, насіння суперхотів",
         category: "seeds",
         price: 55,
@@ -331,7 +331,7 @@ heatScore:"3",
     },
 
 "carolinareaperchocolate": {
-        name: "Carolina Reaper Chocolate",
+        name: "Насіння суперхоту Carolina Reaper Chocolate",
         searchName: "Кароліна шоколадна, Рипер, Ріпер, Кароліна, Жнець, Carolina Reaper Chocolate, насіння суперхотів",
         category: "seeds",
         price: 60,
@@ -364,7 +364,7 @@ heatScore:"4",
 
 
 "7potbrainstrainred": {
-        name: "7 Pot Brain Strain Red",
+        name: "Насіння суперхоту 7 Pot Brain Strain Red",
         searchName: "7 Pot Brain Strain Red, 7 пот, Севен пот, Червоний пот, Брейн Стрейн, насіння суперхотів",
         category: "seeds",
         price: 55,
@@ -396,7 +396,7 @@ heatScore:"3",
     },
 
 "anchosanluis": {
-        name: "Ancho San Luis (Poblano)",
+        name: "Насіння перцю Ancho San Luis (Poblano)",
         searchName: "Анчо, Поблано, Ancho San Luis (Poblano), насіння перцю",
         category: "seeds",
         price: 30,
@@ -428,7 +428,7 @@ heatScore:"1",
     },
 
 "starfishred": {
-        name: "Brazilian Starfish Red",
+        name: "Насіння перцю Brazilian Starfish Red",
         searchName: "Старфіш, Зірка, Starfish Red, насіння перцю",
         category: "seeds",
         price: 35,
@@ -460,7 +460,7 @@ heatScore:"1",
     },
 
 "padron": {
-        name: "Padrón",
+        name: "Насіння перцю Padrón",
         searchName: "Падрон, Padron, насіння перцю",
         category: "seeds",
         price: 30,
@@ -492,7 +492,7 @@ heatScore:"1",
     },
 
 "zebrange": {
-        name: "Zebrange",
+        name: "Насіння перцю Zebrange",
         searchName: "Зебранж, Смугастий, Zebrange, насіння перцю",
         category: "seeds",
         price: 40,
@@ -524,7 +524,7 @@ heatScore:"1",
     },
 
 "peterpepper": {
-        name: "Peter Pepper",
+        name: "Насіння перцю Peter Pepper",
         searchName: "Пітер, Пеппер Пітер, насіння перцю",
         category: "seeds",
         price: 45,
@@ -556,7 +556,7 @@ heatScore:"1",
     },
 
 "tabasco": {
-        name: "Tabasco",
+        name: "Насіння перцю Tabasco",
         searchName: "Табаско, насіння перцю",
         category: "seeds",
         price: 35,
@@ -589,7 +589,7 @@ heatScore:"1",
 
 
 "sugarrushstripey": {
-        name: "Sugar Rush Stripey",
+        name: "Насіння суперхоту Sugar Rush Stripey",
         searchName: "Шугар Раш, Цукровий Раш, насіння перцю",
         category: "seeds",
         price: 40,
@@ -621,7 +621,7 @@ heatScore:"2",
     },
 
 "lemondrop": {
-        name: "Lemon Drop",
+        name: "Насіння перцю Lemon Drop",
         searchName: "Лемон дроп, лимон дроп, лимонна крапля, насіння перцю",
         category: "seeds",
         price: 35,
@@ -653,7 +653,7 @@ heatScore:"1",
     },
 
 "giantrocotored": {
-        name: "Giant Rocoto Red",
+        name: "Насіння суперхоту Giant Rocoto Red",
         searchName: "Рокото Гігант, насіння перцю",
         category: "seeds",
         price: 50,
@@ -685,7 +685,7 @@ heatScore:"2",
     },
 
 "fataliiRed": {
-        name: "Fatalii Red",
+        name: "Насіння суперхоту Fatalii Red",
         searchName: "Фаталі Червоний, насіння перцю",
         category: "seeds",
         price: 40,
@@ -717,7 +717,7 @@ heatScore:"2",
     },
 
 "fataliiYellow": {
-        name: "Fatalii Yellow",
+        name: "Насіння суперхоту Fatalii Yellow",
         searchName: "Фаталі Жовтий, насіння перцю",
         category: "seeds",
         price: 40,
@@ -747,7 +747,7 @@ heatScore:"2",
     },
 
 "habanerochocolate": {
-        name: "Habanero Chocolate",
+        name: "Насіння суперхоту Habanero Chocolate",
         searchName: "Хабанеро шоколадний, насіння перцю",
         category: "seeds",
         price: 40,
@@ -779,7 +779,7 @@ heatScore:"2",
     },
 
 "scotchbonnetyellow": {
-        name: "Scotch Bonnet Yellow ",
+        name: "Насіння суперхоту Scotch Bonnet Yellow ",
         searchName: "Скотч Бонет, скотч, насіння перцю",
         category: "seeds",
         price: 50,
@@ -811,7 +811,7 @@ heatScore:"2",
     },
 
 "morugascorpionred": {
-        name: "Moruga Scorpion Red",
+        name: "Насіння суперхоту Moruga Scorpion Red",
         searchName: "Моруга Скорпіон, Скорп, Тринідад, насіння суперхотів",
         category: "seeds",
         price: 50,
@@ -843,7 +843,7 @@ heatScore:"4",
     },
 
 "jalapeno": {
-        name: "Jalapeno",
+        name: "Насіння перцю Jalapeno",
         searchName: "Халопеньо, насіння перцю",
         category: "seeds",
         price: 30,
@@ -875,7 +875,7 @@ heatScore:"1",
     },
 
 "habaneroBigSun": {
-        name: "Habanero Big Sun",
+        name: "Насіння суперхоту Habanero Big Sun",
         searchName: "Хабанеро сонячний, насіння перцю",
         category: "seeds",
         price: 50,
@@ -910,7 +910,7 @@ heatScore:"2",
 
     // Твої соуси...
 "sauceCoreHeat": {
-        name: "Соус Core Heat",
+        name: "Крафтовий соус Core Heat",
         searchName: "gapka соуси, гапка соуси, Соус гострий класика, кор хіт, база",
         category: "sauces",
         price: 219,
@@ -953,7 +953,7 @@ heatScore:"2",
         allowSale: true, 
     },
 "sauceNeonVibe": {
-        name: "Соус Neon Vibe",
+        name: "Крафтовий соус Neon Vibe",
         searchName: "Соус гострий неон, хабанеро соус, крафтовий соус",
         category: "sauces",
         price: 219,
@@ -994,7 +994,7 @@ heatScore:"2",
         allowSale: true, 
     },
 "sauceMildForest": {
-        name: "Соус Mild Forest",
+        name: "Крафтовий соус Mild Forest",
         searchName: "Соус, майлд соус, халопеньо, лемон, лимон дроп соус, крафтовий соус",
         category: "sauces",
         price: 219,
@@ -1036,7 +1036,7 @@ heatScore:"2",
     },
 
 "sauceHotHoney": {
-        name: "Соус Honey Sting",
+        name: "Гострий мед Honey Sting",
         searchName: "Соус , гострий мед",
         category: "sauces",
         price: 219,
@@ -1056,7 +1056,7 @@ heatScore:"2",
             species: "Соус"
         },
         
-        description: `<b>Гострий мед Honey Sting</b> — гордість нашої ферми. Ми поєднали натуральний мед із власної пасіки з пекучим характером перців Gapka Homestead Inferno.
+        description: `<b>Гострий мед HONEY STING</b> — гордість нашої ферми. Ми поєднали натуральний мед із власної пасіки з пекучим характером перців Gapka Homestead Inferno.
         <br><br>
         Ми гарантуємо чистоту та натуральність нашого меду. Солодкість м’яко огортає, а потім приходить «sting» — фірмова гострота. Спробуйте з м’якими сирами, піцою або качкою. Honey Sting від Gapka Homestead Inferno — це унікальне поєднання смаків.`,
         metaDescription: "Honey Sting: гострий мед власного виробництва. Поєднання натурального меду та пекучих перців. Ідеально до сирів та піци від Gapka Homestead Inferno.",
@@ -1083,8 +1083,8 @@ heatScore:"2",
     name: "Насіння томату GHI Opal Gem (Опаловий Самоцвіт)",
     searchName: "опалова таємниця, опаловий томат, болотний томат, синій томат, якравий самоцвіт, lucid gem, насіння томатів",
     category: "otherseeds",
-    price: 27, // Екзотика з антоціаном завжди дорожча
-    heatLevel: "Томат",
+    price: 25,
+    heatLevel: "Томат, 15шт. в упаковці",
     metaDescription: "Купити насіння томата GHI Opal Gem. Екзотичний сорт з антоціаном та смаком ківі й дині. Смарагдова м'якоть та оранжева зірка всередині.",
     heatScore: "1",
     images: ["ghi-opal-gem-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"], 
@@ -1110,7 +1110,8 @@ heatScore:"2",
     name: "Насіння томату Brandywine Pink (Лінія GHI)",
     searchName: "брендивайн, брендивайн розовый, найкращий смак, рожевий томат, heirloom tomato, насіння томатів",
     category: "otherseeds",
-    price: 27,
+    price: 25,
+    heatLevel: "Томат, 15шт. в упаковці",
     metaDescription: "Насіння легендарного томата Brandywine Pink. Еталон смаку з винним ароматом та ідеальним балансом. Елітна лінія від ферми Homestead.",
     images: ["brandywine-tomato.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
     specs: {
@@ -1135,6 +1136,7 @@ heatScore:"2",
     name: "Насіння томату Stupice Early (Контейнерний)",
     searchName: "ступиче, ступице, ранній томат, томат для горщиків, холодостійкий помідор, насіння томатів",
     category: "otherseeds",
+    heatLevel: "Томат, 15шт. в упаковці",
     price: 25,
     metaDescription: "Купити насіння ультрараннього томата Stupice Early. Чеська реліквія для вирощування в горщиках та на балконах. Стійкий до холодів та врожайний.",
     images: ["Stupice-Early-tomato.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
@@ -1160,6 +1162,7 @@ heatScore:"2",
     name: "Насіння томату GHI Titan Red (Лінія 814)",
     searchName: "великий томат, помідор гігант, насіння томатів",
     category: "otherseeds",
+    heatLevel: "Томат, 15шт. в упаковці",
     price: 25, // Можна трохи дорожче, бо це підтверджений рекорд!
     heatLevel: "Томат",
     metaDescription: "Насіння томата-велетня GHI Titan Red. Наша лінія для вирощування плодів-монстрів вагою 800г+. Класичний м'ясистий смак червоного томата від ферми Gapka Homestead Inferno.",
@@ -1184,28 +1187,29 @@ heatScore:"2",
     allowSale: true
 },
 
-"white_186": {
-    name: "Насіння томату White GHI (Лінія 186)",
+"whitewax_186": {
+    name: "Насіння томату White Wax GHI (Лінія 186)",
     searchName: "білий томат, білий віск, великий білий томат, гіпоалергенний помідор, насіння томатів",
     category: "otherseeds",
-    price: 25, // Трохи піднімемо ціну за "лінію GHI" та підтверджену вагу
+    price: 25,
+    heatLevel: "Томат, 15шт. в упаковці", // Трохи піднімемо ціну за "лінію GHI" та підтверджену вагу
     heatLevel: "Томат",
-    metaDescription: "Купити насіння білого томата White GHI. Гіпоалергенний дієтичний сорт із ніжним фруктовим смаком. Кремово-білі плоди для вишуканої нарізки.",
+    metaDescription: "Купити насіння білого томата White Wax GHI. Гіпоалергенний дієтичний сорт із ніжним фруктовим смаком. Кремово-білі плоди для вишуканої нарізки.",
     heatScore: "1",
     images: ["white-ghi-186-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"], 
     specs: {
         maturity: "115-125 днів (пізньостиглий)",
-        height: "170-190 см (індетермінантний)",
+        height: "~100",
         species: "Solanum lycopersicum",
         yield: "Висока (4-6 кг з куща)"
     },
-    description: `<b>White GHI (Лінія 186)</b> — це гіпоалергенний білий томат з унікальним кремово-білим кольором та ніжною м'якоттю.
+    description: `<b>White Wax GHI (Лінія 186)</b> — це гіпоалергенний білий томат з унікальним кремово-білим кольором та ніжною м'якоттю.
     <br><br>
     Смак дуже тонкий, із <b>легкими фруктовими нотками</b>. Ідеально підходить для дієтичного харчування та незвичних кулінарних презентацій. Головна фішка цього томата — його гіпоалергенність. Його смак не класичний томатний, а дуже тонкий, ніжний, з легкими фруктовими нотками. Він ідеально підходить для тих, хто шукає дієтичний продукт або хоче здивувати гостей незвичною нарізкою.
     <br><br>
     Насіння томата White GHI від Gapka Homestead Inferno — це ваш шлях до здорового та оригінального врожаю.`,
     metaDescription: "White GHI: гіпоалергенний білий томат з ніжним фруктовим смаком. Кремово-білі плоди для дієтичного харчування. Насіння від Gapka Homestead Inferno.",
-    growTip: "Обов'язково підв'язуйте та пасинкуйте. Щоб відчути справжній смак, дайте плодам добре дозріти — вони повинні набути легкого кремового відтінку. Забезпечте йому багато сонця та регулярний полив.",
+    growTip: "Обов'язково підв'язуйте та прибирайте нижні пасинки. Щоб відчути справжній смак, дайте плодам добре дозріти — вони повинні набути легкого кремового відтінку. Забезпечте йому багато сонця та регулярний полив.",
     meta: { count: "15 насінин", pack: "Zip", year: "2026" },
     isHot: false,
     isFlavor: "🌿 Гіпоалергенний десерт",
@@ -1217,7 +1221,8 @@ heatScore:"2",
     name: "Насіння томату GHI 97 Emerald Honey",
     searchName: "зелений томат, зелений солодкий, зеленый сладкий, зеленый помідор, зелене диво, насіння томатів",
     category: "otherseeds",
-    price: 25, // Трохи піднімемо ціну за "лінію GHI" та підтверджену вагу
+    price: 25,
+    heatLevel: "Томат, 15шт. в упаковці", // Трохи піднімемо ціну за "лінію GHI" та підтверджену вагу
     heatLevel: "Томат",
     metaDescription: "Насіння зеленого томата GHI Emerald Honey. Неймовірна медова солодкість із нотками ківі. Тропічний десерт на вашому городі.",
     heatScore: "1",
@@ -1246,7 +1251,8 @@ heatScore:"2",
     name: "Насіння томату Загадка",
     searchName: "загадка, томат загадка, ультраранній помідор, низкорослий томат, насіння томатів",
     category: "otherseeds",
-    price: 25,
+    price: 22,
+    heatLevel: "Томат, 15шт. в упаковці",
     heatLevel: "Томат",
     metaDescription: "Купити насіння ультрараннього томата Загадка. Врожайний та компактний сорт, що встигає віддати плоди до фітофтори. Ідеально для консервування.",
     heatScore: "1",
@@ -1274,7 +1280,8 @@ heatScore:"2",
     name: "Насіння томату Рожевий Велетень",
     searchName: "рожевий велетень, розовый гігант, солодкий томат, великий помідор, насіння томатів",
     category: "otherseeds",
-    price: 25,
+    price: 22,
+    heatLevel: "Томат, 15шт. в упаковці",
     heatLevel: "Томат",
     metaDescription: "Насіння томата Рожевий Велетень. Цукрова м'якоть та гігантські плоди вагою до 1 кг. Класика для солодких салатів та соків.",
     heatScore: "1",
@@ -1302,7 +1309,8 @@ heatScore:"2",
     name: "Насіння томату GHI Ведмежа Лапа",
     searchName: "ведмежа лапа, солодкий томат, великий помідор, насіння томатів",
     category: "otherseeds",
-    price: 25,
+    price: 22,
+    heatLevel: "Томат, 15шт. в упаковці",
     heatLevel: "Томат",
     metaDescription: "Купити насіння томата GHI Ведмежа Лапа. Масивні м'ясисті плоди зі справжнім помідорним смаком. Стійкий старовинний сорт для будь-якого літа.",
     heatScore: "1",
@@ -1330,7 +1338,8 @@ heatScore:"2",
     name: "Насіння томату Монгольський Карлик",
     searchName: "монгольський карлик, монгольский карлик, низькорослий томат, томат для ледачих, насіння томатів",
     category: "otherseeds",
-    price: 30,
+    price: 25,
+    heatLevel: "Томат, 15шт. в упаковці",
     heatLevel: "Томат",
     metaDescription: "Насіння томата Монгольський Карлик. Сорт для лінивих: не потребує підв'язки та пасинкування. Стійкий до стресів та дуже врожайний.",
     heatScore: "1",
@@ -1354,12 +1363,40 @@ heatScore:"2",
     allowSale: true
 },
 
+"sgt_pepper_tomato": {
+    name: "Насіння томату Sgt. Pepper",
+    searchName: "sgt pepper, sergeant pepper, сержант пеппер, антоціановий томат, серцеподібний томат, насіння томатів",
+    category: "otherseeds",
+    price: 28,
+    heatLevel: "Томат",
+    metaDescription: "Насіння томата Sgt. Pepper. Ефектний антоціановий сорт із серцеподібними плодами, солодким смаком та темними плечиками.",
+    heatScore: "1",
+    images: ["sgt-pepper-tomato-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
+    specs: {
+        maturity: "80-90 днів",
+        height: "160-200 см (індетермінантний)",
+        species: "Solanum lycopersicum",
+        yield: "4-6 кг з куща"
+    },
+    description: `<b>Sgt. Pepper</b> — це томат, який виглядає так, ніби сам вирішив стати рок-зіркою грядки. Серцеподібні плоди поєднують рожево-малинову м'якоть із темними антоціановими плечиками, що на сонці стають майже фіолетовими.
+    <br><br>
+    Смак у Sgt. Pepper солодкий, насичений, з легкою фруктовою глибиною. Це сорт для свіжих салатів, красивої нарізки та тих моментів, коли помідор має бути не просто їжею, а маленькою подією на столі.
+    <br><br>
+    Насіння томата Sgt. Pepper від Gapka Homestead Inferno — для тих, хто любить вирощувати не тільки врожай, а й характер.`,
+    growTip: "Щоб темні плечики проявилися максимально красиво, дайте рослині багато сонця. Ведіть кущ у 1-2 стебла, регулярно підв'язуйте та не зловживайте азотом після початку цвітіння.",
+    meta: { count: "15 насінин", pack: "Zip", year: "2026" },
+    isNew: true,
+    isFlavor: "🍅 Антоціанове серце",
+    inStock: true,
+    allowSale: true
+},
+
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // 🌶️ ВРОЖАЙ ПЕКЛА (СВІЖІ ТА СУШЕНІ)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 "fresh_reaper_red": {
-    name: "Перець свіжий Carolina Reaper Chocolate",
+    name: "Свіжий перець Carolina Reaper Chocolate",
     searchName: "свіжий перець, кароліна ріпер свіжа, fresh pepper",
     category: "fresh-peppers",
     price: 0,
@@ -1372,7 +1409,7 @@ heatScore:"2",
 },
 
 "dried_reaper_slices": {
-    name: "Перець сушений Carolina Reaper (Сушені слайси)",
+    name: "Сушений перець Carolina Reaper (слайси)",
     searchName: "сушений перець, кароліна сушена, dried pepper",
     category: "fresh-peppers",
     price: 0,
@@ -1385,7 +1422,7 @@ heatScore:"2",
 },
 
 "fresh_habanero_savina": {
-    name: "Habanero Red Savina (Свіжий плід)",
+    name: "Свіжий перець Habanero Red Savina",
     searchName: "свіжий хабанеро, хабанеро савіна свіжа",
     category: "fresh-peppers",
     price: 0,
@@ -1405,8 +1442,10 @@ heatScore:"2",
     searchName: "яйце, орпінгтон, палевий орпінгтон, інкубаційне яйце, poultry, eggs",
     category: "poultry",
     price: 40,
+    heatLevel: "Інкубаційні яйця",
+    heatScore: "1",
     metaDescription: "Купити інкубаційні яйця курей породи Buff Orpington. Елітна генетика, висока заплідненість. Птиця вільного вигулу від Gapka Homestead.",
-    images: ["orpington-eggs.webp"],
+    images: ["orpington-photo.webp"],
     specs: {
         maturity: "21 день (інкубація)",
         height: "Вага птиці: 3.5-4.5 кг",
@@ -1421,6 +1460,32 @@ heatScore:"2",
     metaDescription: "Інкубаційні яйця Buff Orpington: елітна генетика, висока заплідненість. Птиця вільного вигулу. Насіння від Gapka Homestead Inferno.",
     growTip: "Для успішного виводу рекомендуємо використовувати перевірені інкубатори. Оптимальна температура — 37.7°C. Перші 18 днів вологість має бути на рівні 45-50%. Забезпечте стабільну температуру та вологість для успішної інкубації.",
     meta: { count: "1 шт.", pack: "Спеціальний бокс", year: "2026" },
+    inStock: false,
+    allowSale: false
+},
+
+"farm_table_eggs": {
+    name: "Яйця курячі для вживання",
+    searchName: "яйця, курячі яйця, домашні яйця, яйця для вживання, столові яйця, фермерські яйця",
+    category: "poultry",
+    price: 0,
+    heatLevel: "Харчові яйця",
+    heatScore: "2",
+    metaDescription: "Фермерські курячі яйця для вживання від Gapka Homestead. Свіжі яйця від птиці з домашнього утримання.",
+    images: ["orpington-eggs.webp", "orpington-eggs.webp"],
+    specs: {
+        maturity: "Щоденний збір у сезон",
+        height: "Домашня птиця",
+        species: "Gallus gallus domesticus",
+        yield: "10 шт. в лотку"
+    },
+    description: `<b>Курячі яйця для вживання</b> — майбутня фермерська позиція Gapka Homestead для тих, хто цінує просту, чесну їжу з маленького господарства.
+    <br><br>
+    Яйця збираються свіжими, сортуються вручну та будуть доступні невеликими партіями, коли пташиний двір вийде на стабільний сезонний ритм.
+    <br><br>
+    Це не інкубаційний матеріал, а яйця саме для кухні: сніданків, випічки, домашньої пасти та всього, де смак починається з якісної бази.`,
+    meta: { count: "10 шт.", pack: "Лоток", year: "2026" },
+    isFlavor: "🍳 Для кухні",
     inStock: false,
     allowSale: false
 },

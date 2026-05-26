@@ -1,4 +1,4 @@
-// ===== СИСТЕМА ПОШУКУ ТОВАРІВ =====
+import { sanitize } from './utils/sanitizer.js';
 
 // Додаємо DOMPurify для санітізації (якщо не підключено глобально)
 if (typeof DOMPurify === 'undefined') {
@@ -115,12 +115,12 @@ function displaySearchResults(results, container) {
         'seedlings': '🌱 Розсада'
     };
     
-    // Санітізуємо дані перед вставкою
+    // ✅ IMPROVED: Безпечна санітізація результатів за допомогою нашого модуля
     const sanitizedResults = results.map(item => ({
         ...item,
         rawCategory: item.category,
-        name: typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(item.name, { ALLOWED_TAGS: [] }) : item.name, // Видаляємо всі теги
-        category: typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(categoryNames[item.category] || item.category, { ALLOWED_TAGS: [] }) : categoryNames[item.category] || item.category,
+        name: sanitize.text(item.name),  // Повна XSS защита
+        category: sanitize.text(categoryNames[item.category] || item.category),
         price: isNaN(item.price) ? 0 : item.price // Перевіряємо, що ціна - число
     }));
     
@@ -149,7 +149,7 @@ function displaySearchResults(results, container) {
             ${lockedBadge ? `<div class="search-result-category" style="color: #ffaa33;">${lockedBadge}</div>` : ''}
             <div class="search-result-category">${item.category}</div>
         </div>
-        <div class="search-result-price">${item.price} ₴</div>
+        ${isLocked ? '' : `<div class="search-result-price">${item.price} ₴</div>`}
     </a>
 `;
     }).join('');

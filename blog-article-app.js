@@ -2,7 +2,7 @@
 // 🔥 BLOG ARTICLE APP — HOMESTEAD INFERNO
 // JavaScript для відображення окремої статті
 // ═══════════════════════════════════════════════════════════════
-// Import the functions you need from the SDKs you need
+// Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { 
     getDatabase, 
@@ -11,19 +11,11 @@ import {
     runTransaction 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBoScvps08gY0fGPNNi-Ms_6J3uCRoh_6U",
-  authDomain: "gapkas-homestead-inferno.firebaseapp.com",
-  databaseURL: "https://gapkas-homestead-inferno-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "gapkas-homestead-inferno",
-  storageBucket: "gapkas-homestead-inferno.firebasestorage.app",
-  messagingSenderId: "598710636413",
-  appId: "1:598710636413:web:b8edf854d8e8ba2a274614",
-  measurementId: "G-9CL9XT7H4D"
-};
+// Централізована конфігурація Firebase
+import { FIREBASE_CONFIG } from './config/firebase-config.js';
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(FIREBASE_CONFIG);
 const db = getDatabase(app);
 class ArticleApp {
     constructor() {

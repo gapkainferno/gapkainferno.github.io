@@ -53,6 +53,14 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- Яйця ферми -->
+  <url>
+    <loc>https://gapkainferno.github.io/orpington-eggs.html</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
   <!-- ═══════════════════════════════════════════════════════════════
        ТОВАРИ (СОУСИ)
   ═══════════════════════════════════════════════════════════════ -->
@@ -289,6 +297,11 @@
   </url>
 
   <url>
+    <loc>https://gapkainferno.github.io/product.html?id=sgt_pepper_tomato</loc>
+    <lastmod>2026-05-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://gapkainferno.github.io/product.html?id=red_chief</loc>
     <lastmod>2026-04-11</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
   </url>
@@ -319,6 +332,11 @@
   <url>
     <loc>https://gapkainferno.github.io/product.html?id=orpington_buff_egg</loc>
     <lastmod>2026-04-11</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://gapkainferno.github.io/product.html?id=farm_table_eggs</loc>
+    <lastmod>2026-05-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority>
   </url>
 
   <!-- ═══════════════════════════════════════════════════════════════
