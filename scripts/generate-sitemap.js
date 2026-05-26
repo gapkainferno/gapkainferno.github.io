@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Налаштування
-const BASE_URL = 'https://homesteadinferno.github.io/homestead-sauces-and-seeds';
+const BASE_URL = 'https://gapkainferno.github.io';
 const PRODUCTS_FILE = path.join(__dirname, '../products.js');
 const SITEMAP_FILE = path.join(__dirname, '../sitemap.xml');
 const DATE = new Date().toISOString().split('T')[0];
@@ -16,15 +16,16 @@ const regex = /"([^"]+)"\s*:\s*\{/g;
 let match;
 while ((match = regex.exec(content)) !== null) {
     // Ігноруємо мета-інфо або вкладені об'єкти, якщо вони не є товарами першого рівня
-    if (!['specs', 'meta', 'seedVersions'].includes(match[1])) {
+    if (!['specs', 'meta', 'seedVersions', 'openPollinated', 'isolated'].includes(match[1])) {
         productIds.push(match[1]);
     }
 }
 
 // 2. Шаблон XML
 let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <!-- СТАТИЧНІ СТОРІНКИ -->
   <url>
@@ -50,6 +51,12 @@ let xml = `<?xml version="1.0" encoding="UTF-8"?>
     <lastmod>${DATE}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${BASE_URL}/fresh-peppers.html</loc>
+    <lastmod>${DATE}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>${BASE_URL}/blog.html</loc>
