@@ -288,8 +288,7 @@ body {
 /* Виняток: Головна сторінка має картинку, тому перезаписуємо змінну */
 
 body.homepage {
-    --bg-gradient: url('peppers-bg.webp'); 
-    --bg-gradient: url('peppers-bg.webp');
+    --bg-gradient: url('images/peppers-bg.webp'); 
 }
 
 /* Сторінка товару: якщо теми немає, даємо дефолтний градієнт */
