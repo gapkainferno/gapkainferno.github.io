@@ -16,7 +16,7 @@ const blogPosts = [
         date: '2026-04-24',
         author: 'Gapka',
         readTime: '5 хв',
-        image: 'images/peppers-bg1.webp',
+        image: 'images/photo_2026-04-24_13-33-02.jpg',
         featured: true,
         excerpt: 'Тропічні рослини — це не просто біологія, це ціла драма. Від насіння до першого листка, від пікіровки до вибухового росту. Ми ділимося нашим архівом пророщування суперхотів цього сезону.',
         content: `
