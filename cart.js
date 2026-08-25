@@ -16,11 +16,11 @@ const orderRateLimiter = {
 
 const GLOBAL_SETTINGS = {
     // Щоб відкрити магазин: isCategoryLockActive: false або lockedCategories: []
-    isCategoryLockActive: false,
-    lockedCategories: [],
+    isCategoryLockActive: true,
+    lockedCategories: ['sauces', 'seeds', 'otherseeds', 'fresh-peppers', 'poultry'   ],
     lockedCategoryTitle: 'Незабаром',
     lockedCategoryText: 'Розділ готується до старту 🔥',
-    lockedCategoryAlert: '🌶️ Цей розділ ще в розробці. Чекаємо на вас восени 2026!'
+    lockedCategoryAlert: '🌶️ Цей розділ ще в розробці. Чекаємо на вас незабаром!'
 };
 
 // ===== ЄДИНИЙ ПУЛЬТ АКЦІЙ =====
