@@ -17,7 +17,7 @@ const orderRateLimiter = {
 const GLOBAL_SETTINGS = {
     // Щоб відкрити магазин: isCategoryLockActive: false або lockedCategories: []
     isCategoryLockActive: false,
-    lockedCategories: ['sauces', 'seeds', 'otherseeds', 'fresh-peppers', 'poultry'],
+    lockedCategories: [],
     lockedCategoryTitle: 'Незабаром',
     lockedCategoryText: 'Розділ готується до старту 🔥',
     lockedCategoryAlert: '🌶️ Цей розділ ще в розробці. Чекаємо на вас восени 2026!'
