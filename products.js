@@ -1,7 +1,7 @@
 ﻿﻿const allProducts = {
     // ID товару (використовується в посиланні: product.html?id=habaneroredsavina)
 "habaneroredsavina": {
-        name: "Насіння суперхоту Habanero Red Savina",
+        name: "Насіння Habanero Red Savina",
         searchName: "gapka насіння, гапка насіння, Хабанеро Савіна Ред, хабанеро ред савіна, хабанеро червоний, ред, савіна",
         category: "seeds", 
         price: 50,
@@ -11,8 +11,8 @@ heatScore: "2",
         // Масив фото. Перше - головне.
         images: [
             "habanero-savina-red-main.webp", 
-            "product-secondary-placeholder.webp", 
-            "product-secondary-placeholder.webp" // Третє фото
+            "habanero-savina-red1.webp", 
+            "habanero-savina-red2.webp" // Третє фото
         ],
         // Характеристики для таблиці
         specs: {
@@ -43,7 +43,7 @@ heatScore: "2",
     },
 
 "carolinareaperred": {
-        name: "Насіння суперхоту Carolina Reaper Red",
+        name: "Насіння Carolina Reaper Red",
         searchName: "gapka насіння, гапка насіння, Кароліна Ріпер, ріпер, кароліна, рипер, Carolina Reaper",
         category: "seeds", 
         price: 70,
@@ -64,7 +64,7 @@ heatScore:"4",
         Насіння Carolina Reaper Red від Gapka Homestead Inferno допоможе вам виростити міцні рослини, які стануть гордістю вашої колекції. Reaper любить сонце, стабільне тепло та якісний догляд, віддячуючи врожаєм плодів, що змушують світ здригатися. Готові до зустрічі з легендою?`,
         growTip: "Жнець росте повільно, як справжня аристократія. Сійте його ще тоді, коли за вікном лежить сніг (січень), інакше побачите врожай, коли знову випаде сніг. Обов'язково одягніть рукавички. Ні, серйозно. Якщо ви вирішите потерти око або (не дай Боже) піти в туалет після нарізки Женця — ви дізнаєтеся про життя багато нового та болючого.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -74,47 +74,47 @@ heatScore:"4",
     },
 
     // ПРИКЛАД третього ТОВАРУ (використовується в посиланні: product.html?id=habanerodominicared)
-"habanerodominicared": {
-        name: "Насіння суперхоту Habanero Dominica Red",
-        searchName: "Хабанеро Домініка, хабанеро домініка, хабанеро червоний, ред",
-        category: "seeds", 
-        price: 45,
-        heatLevel: "🔥 🔥  Висока (100,000- 250,000 SHU)",
-        metaDescription: "Купити насіння Dominica Red. Класичний Хабанеро з Карибським характером та фруктово-димним профілем. Висока врожайність та відмінний смак від Gapka Homestead Inferno.",
-        heatScore: "2",
-        // Масив фото. Перше - головне.
-        images: [
-            "habanero-dominica-red-main.webp", 
-            "product-secondary-placeholder.webp", 
-            "product-secondary-placeholder.webp" // Третє фото
-        ],
-        // Характеристики для таблиці
-        specs: {
-            maturity: "85–100 днів",
-            height: "50–70 см",
-            species: "Capsicum Chinense",
-            yield: ""
-        },
-        description: `<b>Habanero Dominica Red</b> — справжній скарб Карибського басейну, що пропонує класичний смак Хабанеро з глибоким, багатогранним ароматом.
-        <br><br>
-        Цей сорт вирізняється потужним <b>фруктово-димним профілем</b>, який ідеально підходить для створення ферментованих соусів завдяки своїм товстим стінкам. Рослина надзвичайно врожайна, а плоди мають характерну форму «ліхтарика», що додає естетики вашому городу. Насіння Habanero Dominica Red від Gapka Homestead Inferno — це ваш квиток до автентичних карибських смаків.`,
-        growTip: "Dominica Red дуже любить сонячні місця. Щоб отримати максимальну концентрацію капсаїцину та той самий димний аромат, намагайтеся не переливати рослину в момент, коли плоди починають змінювати колір із зеленого на червоний. Забезпечте їй добре дренований ґрунт.",
-        meta: {
-            count: "5 насінин (+ бонус від ферми)",
-            pack: "Zip-пакет з маркуванням",
-            year: "2026"
-        },
-        isolatedAvailable: false,
-         //ТЕГИ
-        //isNew: true,  // З'явиться тег NEW
-        //isHot: true,  // З'явиться тег 🔥 HOT
-        //isFlavor:"🍋💨 Цитрус & Дим", //Вписуй будь-який смак
-        inStock: true, 
-        allowSale: true
-    },
+//"habanerodominicared": {
+ //       name: "Насіння Habanero Dominica Red",
+  //      searchName: "Хабанеро Домініка, хабанеро домініка, хабанеро червоний, ред",
+ //       category: "seeds", 
+ //       price: 45,
+ //       heatLevel: "🔥 🔥  Висока (100,000- 250,000 SHU)",
+ //       metaDescription: "Купити насіння Dominica Red. Класичний Хабанеро з Карибським характером та фруктово-димним профілем. Висока врожайність та відмінний смак від Gapka Homestead Inferno.",
+ //       heatScore: "2",
+ //       // Масив фото. Перше - головне.
+ //       images: [
+ //          "habanero-dominica-red-main.webp", 
+  //          "product-secondary-placeholder.webp", 
+  //          "product-secondary-placeholder.webp" // Третє фото
+  //      ],
+  //      // Характеристики для таблиці
+ //       specs: {
+//            maturity: "85–100 днів",
+ //           height: "50–70 см",
+ //           species: "Capsicum Chinense",
+ //           yield: ""
+ //       },
+ //       description: `<b>Habanero Dominica Red</b> — справжній скарб Карибського басейну, що пропонує класичний смак Хабанеро з глибоким, багатогранним ароматом.
+ //       <br><br>
+  //      Цей сорт вирізняється потужним <b>фруктово-димним профілем</b>, який ідеально підходить для створення ферментованих соусів завдяки своїм товстим стінкам. Рослина надзвичайно врожайна, а плоди мають характерну форму «ліхтарика», що додає естетики вашому городу. Насіння Habanero Dominica Red від Gapka Homestead Inferno — це ваш квиток до автентичних карибських смаків.`,
+  //      growTip: "Dominica Red дуже любить сонячні місця. Щоб отримати максимальну концентрацію капсаїцину та той самий димний аромат, намагайтеся не переливати рослину в момент, коли плоди починають змінювати колір із зеленого на червоний. Забезпечте їй добре дренований ґрунт.",
+  //      meta: {
+  //          count: "5 насінин (+ бонус від ферми)",
+  //          pack: "Zip-пакет з маркуванням",
+  //          year: "2026"
+  //      },
+   //     isolatedAvailable: true,
+   //      //ТЕГИ
+   //     //isNew: true,  // З'явиться тег NEW
+   //     //isHot: true,  // З'явиться тег 🔥 HOT
+  //      //isFlavor:"🍋💨 Цитрус & Дим", //Вписуй будь-який смак
+  //      inStock: true, 
+  //      allowSale: true
+ //   },
 
 "7potbubblegumchocolate": {
-        name: "Насіння суперхоту 7 Pot Bubblegum Chocolate",
+        name: "Насіння 7 Pot Bubblegum Chocolate",
         searchName: "Сім пот шоколадний, 7 pot, 7-pot, Севен Пот, Севен Піт, Бабблгам, 7 pot bubblegum chocolate, насіння суперхотів",
         category: "seeds",
         price: 50,
@@ -135,7 +135,7 @@ heatScore:"3",
         Насіння 7 Pot Bubblegum Chocolate від Gapka Homestead Inferno гарантує автентичну генетику. Рослина формує міцний, розлогий кущ, який у період плодоношення стає зіркою теплиці. Ідеальний вибір для створення авторських BBQ-соусів, де потрібна не лише екстремальна гострота, а й благородний темний колір та димний аромат.`,
         growTip: "Слідкуйте за «сльозами диявола» — краплями капсаїцинової олії на внутрішніх стінках. Це ознака того, що перець набрав максимальну силу. Обов’язково використовуйте рукавички при роботі з плодами, адже це справжній важковаговик.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -145,7 +145,7 @@ heatScore:"3",
     },
 
 "bhutjolokiared": {
-        name: "Насіння суперхоту Bhut Jolokia Red",
+        name: "Насіння Bhut Jolokia Red",
         searchName: "Bhut Jolokia Red, Бхут Жолокіа, Ghost, Гост",
         category: "seeds", 
         price: 50,
@@ -167,7 +167,7 @@ heatScore:"3",
         metaDescription: "Bhut Jolokia Red (Ghost Pepper): легендарний перець-мільйонник з примарною гостротою та квітково-тропічним ароматом. Насіння для соусів та приправ від Gapka Homestead Inferno.",
         growTip: "Bhut Jolokia обожнює вологість та стабільне тепло. Якщо ви забезпечите йому «тропічні» умови, він віддячить вам величезною кількістю плодів.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -196,7 +196,7 @@ heatScore:"1",
         Це один із найкращих представників виду Capsicum baccatum, що має делікатну, «сонячну» гостроту, яка не обпікає, а приємно зігріває. Ідеально підходить для літніх салатів, рибних страв, екзотичних джемів та соусів, де потрібен фруктовий акцент. Насіння Aji Melocoton від Gapka Homestead Inferno — це гарантія унікального смакового досвіду.`,
         growTip: "Цей перець росте як справжнє дерево — високим та розлогим. Забезпечте йому місце у теплиці або великий контейнер (від 20 літрів), і ви отримаєте сотні ароматних «персиків». Регулярно підживлюйте для максимального плодоношення.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: false,  // З'явиться тег 🔥 HOT
@@ -206,14 +206,14 @@ heatScore:"1",
     },
 
 "7PotBrainStrainYellow": {
-        name: "Насіння суперхоту 7 Pot Brain Strain Yellow",
+        name: "Насіння 7 Pot Brain Strain Yellow",
         searchName: "Сім пот брейн жовтий, Севен пот брейн, Сім-пот брейн, Жовтий Севен пот, 7 Pot Brain Strain Yellow, насіння суперхотів",
         category: "seeds",
         price: 50,
         heatLevel: "🔥🔥🔥 ДУЖЕ ВИСОКА (1,000,000 – 1,400,000+ SHU)",
         metaDescription: "Купити насіння 7 Pot Brain Strain Yellow. Екстремальна гострота та інтенсивний лимонний аромат. Справжній виклик для професійних чиліхедів.",
 heatScore:"3",
-        images: ["7-pot-brain-strain-yellow-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
+        images: ["7-pot-brain-strain-yellow-main.webp", "7-pot-brain-strain (2).webp", "7-pot-brain-strain.webp"],
         specs: {
             maturity: "110-120 днів",
             height: "90-120 см (сильний, розлогий)",
@@ -228,7 +228,7 @@ heatScore:"3",
         metaDescription: "7 Pot Brain Strain Yellow: екстремальна гострота (1M+ SHU) та інтенсивний лимонно-цитрусовий аромат. Насіння для професійних чиліхедів від Gapka Homestead Inferno.",
         growTip: "Будьте обережні: жовті суперхоти часто здаються «лагіднішими» на вигляд, але Brain Strain б’є миттєво і дуже боляче. Працюйте тільки в рукавичках та уникайте контакту з очима.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -246,7 +246,7 @@ heatScore:"3",
         heatLevel: "🔥 НИЗЬКА (2,500 - 5,000 SHU)",
         metaDescription: "Насіння Monkey Face Yellow. Унікальна форма та солодкий фруктовий смак з нотками манго. Ідеальний перець для щоденного вживання.",
 heatScore:"1",
-        images: ["monkey-face-yellow-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
+        images: ["monkey-face-yellow-main.webp", "monkey-face (2).webp", "monkey-face.webp"],
         specs: {
             maturity: "75-85 днів (досить швидкий)",
             height: "60-80 см",
@@ -259,7 +259,7 @@ heatScore:"1",
         metaDescription: "Monkey Face Yellow: перець з унікальною формою, солодким фруктовим смаком манго та помірною гостротою. Насіння для щоденного вживання від Gapka Homestead Inferno.",
         growTip: "Сорт дуже врожайний і дозріває швидше за багатьох побратимів. Якщо ви новачок у світі перців — почніть саме з Monkey Face, він прощає помилки догляду та дарує стабільний урожай.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: false,  // З'явиться тег 🔥 HOT
@@ -289,17 +289,17 @@ heatScore:"1",
         metaDescription: "Shishito: японський делікатес та закуска-рулетка. Дев'ять плодів солодкі, один — пікантний. Насіння для кулінарних експериментів від Gapka Homestead Inferno.",
         growTip: "Секрет Шишито: збирайте плоди виключно зеленими! Коли вони червоніють, вони стають просто гострими, і та сама магія сюрпризу зникає. Регулярний збір стимулює нове плодоношення.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: false,  // З'явиться тег 🔥 HOT
          //isFlavor:"" , //Вписуй будь-який смак
-        inStock: true, 
+        inStock: false, 
         allowSale: true
     },
 
 "nagajolokia": {
-        name: "Насіння суперхоту Naga Jolokia Red",
+        name: "Насіння Naga Jolokia Red",
         searchName: "Червона Нага, Нага Жолокіа, Нага, насіння суперхотів",
         category: "seeds",
         price: 55,
@@ -321,7 +321,7 @@ heatScore:"3",
         metaDescription: "Naga Jolokia Red: дика індійська гострота з повільним запалом та фруктовим ароматом. Стійкий та врожайний суперхот. Насіння від Gapka Homestead Inferno.",
         growTip: "Naga росте як потужний кущ із великою кількістю зав'язі. Обов'язково забезпечте йому хороше підживлення в період цвітіння, щоб плоди були великими та соковитими. Регулярний полив та сонце — запорука успіху.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -331,7 +331,7 @@ heatScore:"3",
     },
 
 "carolinareaperchocolate": {
-        name: "Насіння суперхоту Carolina Reaper Chocolate",
+        name: "Насіння Carolina Reaper Chocolate",
         searchName: "Кароліна шоколадна, Рипер, Ріпер, Кароліна, Жнець, Carolina Reaper Chocolate, насіння суперхотів",
         category: "seeds",
         price: 60,
@@ -353,7 +353,7 @@ heatScore:"4",
         metaDescription: "Carolina Reaper Chocolate: шоколадна версія найгострішого перцю у світі з димно-землистим профілем та екстремальною гостротою. Насіння для естетів від Gapka Homestead Inferno.",
         growTip: "Шоколадні сорти потребують більше часу для дозрівання. Не поспішайте зривати плід — дайте йому стати рівномірно коричневим і зморшкуватим, щоб накопичити максимум капсаїцину. Забезпечте стабільне тепло та багато світла.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -364,7 +364,7 @@ heatScore:"4",
 
 
 "7potbrainstrainred": {
-        name: "Насіння суперхоту 7 Pot Brain Strain Red",
+        name: "Насіння 7 Pot Brain Strain Red",
         searchName: "7 Pot Brain Strain Red, 7 пот, Севен пот, Червоний пот, Брейн Стрейн, насіння суперхотів",
         category: "seeds",
         price: 55,
@@ -386,7 +386,7 @@ heatScore:"3",
         metaDescription: "7 Pot Brain Strain Red: важковаговик серед суперхотів з агресивною пекучістю (1.4M SHU) та унікальною формою мозку. Насіння для ультра-гострих соусів від Gapka Homestead Inferno.",
         growTip: "Чому він гостріший за жовтого брата? Червоний пігмент у Capsicum chinense часто корелює з вищою концентрацією капсаїцину. Це вибір для професійних чиліхедів, які шукають максимальний жар. Забезпечте йому багато сонця та тепла.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -418,7 +418,7 @@ heatScore:"1",
         metaDescription: "Ancho San Luis (Poblano): серце мексиканської кухні з помірною гостротою. Ідеальний для запікання, фарширування та соусів Моле. Насіння від Gapka Homestead Inferno.",
         growTip: "Плоди у San Luis великі та важкі. Якщо ви не підв'яжете кущ, під власною вагою він може просто лягти на землю. Допоможіть йому встояти, і він віддячить королівським врожаєм. Забезпечте йому багато сонця та регулярний полив.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: false,  // З'явиться тег 🔥 HOT
@@ -435,7 +435,7 @@ heatScore:"1",
         heatLevel: "🔥+ ПОМІРНА (5,000 – 30,000 SHU)",
         metaDescription: "Насіння Brazilian Starfish Red. Декоративний перець у формі морської зірки з фруктовим смаком та помірною гостротою. Врожайний сорт Baccatum.",
 heatScore:"1",
-        images: ["starfish-main.webp", "", ""],
+        images: ["Starfish (2).webp", "starfish-main.webp", ""],
         specs: {
             maturity: "90–100 днів",
             height: "до 1.5 - 2 метрів",
@@ -450,7 +450,7 @@ heatScore:"1",
         metaDescription: "Brazilian Starfish Red: декоративний перець у формі морської зірки з фруктовим смаком та помірною гостротою. Врожайний сорт Baccatum. Насіння від Gapka Homestead Inferno.",
         growTip: "Brazilian Starfish — справжнє перцеве дерево, яке може вирости вище людини. Обов'язково забезпечте йому простір та хорошу опору. Регулярне підживлення та сонце сприятимуть рясному плодоношенню.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -467,7 +467,7 @@ heatScore:"1",
         heatLevel: "🔥 НИЗЬКА (500 – 2,500 SHU (Зазвичай лагідний, але обраний плід може бути дуже сердитим))",
         metaDescription: "Купити насіння Padron — легендарної гастрономічної рулетки з Галісії. Ідеальна закуска тапас до вашого столу. Швидка доставка по Україні.",
 heatScore:"1",
-        images: ["padron-main.webp", "", ""],
+        images: ["padron-main.webp", "padron-sub.jpg", "padron-sub2.jpg"],
         specs: {
             maturity: "60–75 днів",
             height: "60–80 см",
@@ -482,7 +482,7 @@ heatScore:"1",
         metaDescription: "Padrón: легендарний іспанський перець-рулетка. Дев'ять плодів ніжні, один — гострий. Ідеальна закуска тапас. Насіння від Gapka Homestead Inferno.",
         growTip: "Головний секрет: збирайте врожай, коли плоди не довші за 5 см. Саме в цьому розмірі зберігається той самий делікатний баланс, за який Падрон обожнюють у всьому світі. Регулярний збір стимулює нове плодоношення.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: false,  // З'явиться тег 🔥 HOT
@@ -499,7 +499,7 @@ heatScore:"1",
         heatLevel: "🔥 НИЗЬКА (5,000 – 15,000 SHU)",
         metaDescription: "Насіння Zebrange — смугаста екзотика у формі дзвіночка. Солодкий смак із цитрусовими нотками. Унікальний крос для вашої колекції.",
 heatScore:"1",
-        images: ["zebrange-main.webp", "", ""],
+        images: ["zebrange-main.webp", "Zebrange (2).webp", "zebrange (4).webp", "Zebrange.webp"],
         specs: {
             maturity: "85–95 днів",
             height: "80–120 см",
@@ -514,7 +514,7 @@ heatScore:"1",
         metaDescription: "Zebrange: смугаста екзотика у формі дзвіночка. Солодкий смак з цитрусовими нотками. Унікальний крос для колекції. Насіння від Gapka Homestead Inferno.",
         growTip: "Сорт дуже врожайний та стійкий. Смужки на плодах стають чіткими саме на етапі повного дозрівання, тому не поспішайте зі збором — дайте малюнку проявитися на повну. Забезпечте йому багато сонця для яскравого забарвлення.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -546,7 +546,7 @@ heatScore:"1",
         metaDescription: "Peter Pepper: найкумедніший перець у світі з анатомічною формою. Середня гострота та чудовий смак. Насіння для оригінального подарунка від Gapka Homestead Inferno.",
         growTip: "Це старовинний сорт (Heirloom), перевірений поколіннями. Він досить невибагливий, але для отримання максимально «характерних» плодів йому потрібно багато сонця та регулярний полив. Забезпечте йому опору, щоб гілки не ламалися під вагою плодів.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -578,7 +578,7 @@ heatScore:"1",
         metaDescription: "Tabasco: легенда Луїзіани з неймовірною соковитістю та чистою гостротою. Ідеальний для ферментованих соусів. Насіння від Gapka Homestead Inferno.",
         growTip: "Табаско п’є воду як марафонець! Не допускайте пересихання ґрунту, особливо в період цвітіння, щоб плоди були налиті соком, а не порожніми всередині. Забезпечте йому багато сонця та тепла.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -589,7 +589,7 @@ heatScore:"1",
 
 
 "sugarrushstripey": {
-        name: "Насіння суперхоту Sugar Rush Stripey",
+        name: "Насіння Sugar Rush Stripey",
         searchName: "Шугар Раш, Цукровий Раш, насіння перцю",
         category: "seeds",
         price: 40,
@@ -611,7 +611,7 @@ heatScore:"2",
         metaDescription: "Sugar Rush Stripey: смугастий персиковий перець з цукровою солодкістю та фруктовим вибухом. Ексклюзивна селекція. Насіння від Gapka Homestead Inferno.",
         growTip: "Головний секрет: смужки з’являються лише в самому кінці дозрівання. Наберіться терпіння і не зривайте плоди, поки вони просто персикові — справжня магія смаку приходить разом із візерунком. Забезпечте йому багато сонця та регулярний полив.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -643,7 +643,7 @@ heatScore:"1",
         metaDescription: "Lemon Drop: цитрусова візитівка Перу з дзвінкою гостротою та лимонним ароматом. Врожайний сорт для салатів та риби. Насіння від Gapka Homestead Inferno.",
         growTip: "Якщо врожаю забагато — висушіть плоди та зробіть пудру. Ви отримаєте унікальну лимонну приправу, яка зберігає свій аромат навіть через пів року. Забезпечте йому багато сонця та регулярний полив.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -653,7 +653,7 @@ heatScore:"1",
     },
 
 "giantrocotored": {
-        name: "Насіння суперхоту Giant Rocoto Red",
+        name: "Насіння Giant Rocoto Red",
         searchName: "Рокото Гігант, насіння перцю",
         category: "seeds",
         price: 50,
@@ -675,7 +675,7 @@ heatScore:"2",
         metaDescription: "Giant Rocoto Red: унікальний перець з чорним насінням, фіолетовими квітами та оксамитовим листям. Обожнює прохолоду, плодоносить до морозів. Насіння від Gapka Homestead Inferno.",
         growTip: "Рокото — гірський мешканець. Він обожнює прохолодні українські ночі та ненавидить екстремальну спеку. Дайте йому трохи тіні вдень, і він буде плодоносити до самих заморозків. Забезпечте йому добре дренований ґрунт та регулярний полив.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -685,7 +685,7 @@ heatScore:"2",
     },
 
 "fataliiRed": {
-        name: "Насіння суперхоту Fatalii Red",
+        name: "Насіння Fatalii Red",
         searchName: "Фаталі Червоний, насіння перцю",
         category: "seeds",
         price: 40,
@@ -707,7 +707,7 @@ heatScore:"2",
         metaDescription: "Fatalii Red: африканський перець з миттєвою різкою гостротою та фруктовим підтоном. Ідеальний для сушки та гострих порошків. Насіння від Gapka Homestead Inferno.",
         growTip: "Дуже чутливий до температури на старті. Забезпечте насінню стабільні +28°C для проростання. Як тільки кущ зміцніє, він стає надзвичайно врожайним. Регулярно підживлюйте для максимального плодоношення.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -717,14 +717,14 @@ heatScore:"2",
     },
 
 "fataliiYellow": {
-        name: "Насіння суперхоту Fatalii Yellow",
+        name: "Насіння Fatalii Yellow",
         searchName: "Фаталі Жовтий, насіння перцю",
         category: "seeds",
         price: 40,
         heatLevel: "🔥🔥 ВИСОКА (125,000 – 400,000 SHU)",
         metaDescription: "Купити насіння Fatalii Yellow — найароматнішого перцю Африки. Інтенсивний лимонний аромат та сонячна гострота. Ідеально для цитрусових сальс.",
 heatScore:"2",
-        images: ["fatalii-yellow-main.webp", "", ""],
+        images: ["fatalii-yellow-main.webp", "fatalii (2).webp", ""],
         specs: {
             maturity: "90–110 днів",
             height: "60–90 см",
@@ -737,7 +737,7 @@ heatScore:"2",
         metaDescription: "Fatalii Yellow: найароматніший перець Африки з інтенсивним лимонним ароматом та сонячною гостротою. Ідеальний для цитрусових сальс. Насіння від Gapka Homestead Inferno.",
         growTip: "Уникайте переливів на етапі розсади — коріння Фаталі любить дихати. Використовуйте легкий субстрат, і ви побачите, наскільки потужно може рости цей африканець. Забезпечте йому багато сонця та тепла.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -747,14 +747,14 @@ heatScore:"2",
     },
 
 "habanerochocolate": {
-        name: "Насіння суперхоту Habanero Chocolate",
+        name: "Насіння Habanero Chocolate",
         searchName: "Хабанеро шоколадний, насіння перцю",
         category: "seeds",
         price: 40,
         heatLevel: "🔥🔥 ВИСОКА (300,000 – 450,000 SHU)",
         metaDescription: "Насіння Habanero Chocolate. Аристократичний сорт із димно-землистим профілем та глянцевою шкіркою. Найкращий вибір для BBQ-соусів.",
 heatScore:"2",
-        images: ["habanero-chocolate-main.webp", "", ""],
+        images: ["habanero-chocolate-main.webp", "habanero-chocolate2.webp", "habanero-chocolate1.webp"],
         specs: {
             maturity: "90–100 днів",
             height: "80–100 см",
@@ -769,7 +769,7 @@ heatScore:"2",
         metaDescription: "Habanero Chocolate: аристократичний сорт з димно-землистим профілем та глянцевою шкіркою. Ідеальний для BBQ-соусів. Насіння від Gapka Homestead Inferno.",
         growTip: "Будьте уважні при зборі: через темний колір важко помітити стиглість. Плід готовий, коли зелений відтінок повністю зникає, а шкірка набуває рівномірного «кавового» блиску. Забезпечте йому багато сонця та регулярний полив.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -779,7 +779,7 @@ heatScore:"2",
     },
 
 "scotchbonnetyellow": {
-        name: "Насіння суперхоту Scotch Bonnet Yellow ",
+        name: "Насіння Scotch Bonnet Yellow ",
         searchName: "Скотч Бонет, скотч, насіння перцю",
         category: "seeds",
         price: 50,
@@ -801,7 +801,7 @@ heatScore:"2",
         metaDescription: "Scotch Bonnet Yellow: золотий стандарт смаку з Ямайки з медовим ароматом тропіків. Ідеальний для карибських маринадів. Насіння від Gapka Homestead Inferno.",
         growTip: "Scotch Bonnet обожнює калійні підживлення. Це допомагає йому сформувати ту саму пишну форму «берета» та набрати максимальну солодкість м'якоті. Забезпечте йому багато сонця та регулярний полив.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -811,7 +811,7 @@ heatScore:"2",
     },
 
 "morugascorpionred": {
-        name: "Насіння суперхоту Moruga Scorpion Red",
+        name: "Насіння Moruga Scorpion Red",
         searchName: "Моруга Скорпіон, Скорп, Тринідад, насіння суперхотів",
         category: "seeds",
         price: 50,
@@ -833,7 +833,7 @@ heatScore:"4",
         metaDescription: "Moruga Scorpion Red: пекельний шторм гостроти (2M+ SHU) з Тринідаду. Насіння для екстремальних кулінарних експериментів від Gapka Homestead Inferno.",
         growTip: "Працюйте ТІЛЬКИ в рукавичках! Концентрація капсаїцину в Скорпіоні така висока, що він може викликати опіки шкіри через звичайний дотик до розрізаного плоду. Будьте обережні та забезпечте йому багато сонця.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -865,7 +865,7 @@ heatScore:"1",
         metaDescription: "Jalapeno: класичний мексиканський перець для маринування та гриля. Соковиті стінки, фірмовий хрускіт та свіжий смак. Насіння від Gapka Homestead Inferno.",
         growTip: "Халапеньо готовий до збору, коли на шкірці з'являються дрібні «тріщинки» (коркування). Це ознака того, що плід набрав максимальний аромат і солодкість. Регулярний збір стимулює нове плодоношення.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
         //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -875,7 +875,7 @@ heatScore:"1",
     },
 
 "habaneroBigSun": {
-        name: "Насіння суперхоту Habanero Big Sun",
+        name: "Насіння Habanero Big Sun",
         searchName: "Хабанеро сонячний, насіння перцю",
         category: "seeds",
         price: 50,
@@ -897,7 +897,7 @@ heatScore:"2",
         metaDescription: "Habanero Big Sun: великі плоди з інтенсивним ароматом абрикоса та дині. Яскрава сонячна гострота для фруктових сальс. Насіння від Gapka Homestead Inferno.",
         growTip: "Цей сорт обожнює сонце та калійні добрива в період цвітіння. Чим більше світла він отримає, тим більшими та ароматнішими будуть плоди-ліхтарики. Забезпечте йому добре дренований ґрунт.",
         meta: { count: "5 насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
+        isolatedAvailable: true,
         //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -1521,7 +1521,7 @@ heatScore:"2",
                     p.seedVersions.isolated = {
                         label: "Ізольоване",
                         price: isolatedPrice,
-                        description: "Контрольоване запилення. Гарантована чистота сорту 🛡️",
+                        description: "Контрольоване запилення.",
                         inStock: p.inStock
                     };
                 }
