@@ -1,4 +1,4 @@
-﻿﻿const allProducts = {
+﻿const allProducts = {
     // ID товару (використовується в посиланні: product.html?id=habaneroredsavina)
 "habaneroredsavina": {
         name: "Насіння Habanero Red Savina",
@@ -759,7 +759,7 @@ heatScore:"2",
             maturity: "90–100 днів",
             height: "80–100 см",
             species: "Capsicum chinense",
-            yield: "600–1000 г з куща"
+            yield: "600–700 г з куща"
         },
         description: `<b>Habanero Chocolate</b> — це аристократ у родині Хабанеро, що обирається поціновувачами складних ароматів.
         <br><br>
@@ -1051,7 +1051,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         
         meta: {
             count: "200 мл",
-            pack: "Пет-Пляшечка",
+            pack: "PET упаковка",
             year: "2026"
         },
         
@@ -1092,7 +1092,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         
         meta: {
             count: "200 мл",
-            pack: "Пет-Пляшечка",
+            pack: "PET упаковка",
             year: "2026"
         },
         
@@ -1133,7 +1133,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         
         meta: {
             count: "200 мл",
-            pack: "Пет-Пляшечка",
+            pack: "PET упаковка",
             year: "2026"
         },
         
@@ -1175,7 +1175,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         
         meta: {
             count: "200 мл",
-            pack: "Пет-Пляшечка",
+            pack: "PET упаковка",
             year: "2026"
         },
         
@@ -2216,62 +2216,6 @@ isHot: true,  // З'явиться тег 🔥 HOT
     allowSale: false
 },
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 🥚 ІНКУБАЦІЙНІ ЯЙЦЯ (POULTRY)
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-"orpington_buff_egg": {
-    name: "Інкубаційне яйце Buff Orpington",
-    searchName: "яйце, орпінгтон, палевий орпінгтон, інкубаційне яйце, poultry, eggs",
-    category: "poultry",
-    price: 40,
-    heatLevel: "Інкубаційні яйця",
-    heatScore: "1",
-    metaDescription: "Купити інкубаційні яйця курей породи Buff Orpington. Елітна генетика, висока заплідненість. Птиця вільного вигулу від Gapka Homestead.",
-    images: ["orpington-photo.webp"],
-    specs: {
-        maturity: "21 день (інкубація)",
-        height: "Вага птиці: 3.5-4.5 кг",
-        species: "Buff Orpington",
-        yield: "150-180 яєць/рік"
-    },
-    description: `<b>Buff Orpington</b> — це аристократія на пташиному дворі, легендарна порода, що поєднує в собі величний вигляд та надзвичайну спокійну вдачу. Наша лінія вирізняється насиченим «палевим» кольором оперення та міцним імунітетом.
-    <br><br>
-    Яйця збираються від добірних батьківських сімей, що утримуються на вільному вигулі. Ми гарантуємо професійне пакування в спеціальні захисні бокси для безпечного пересилання по Україні.
-    <br><br>
-    Інкубаційні яйця Buff Orpington від Gapka Homestead Inferno — це ваш шлях до елітної птиці.`,
-    metaDescription: "Інкубаційні яйця Buff Orpington: елітна генетика, висока заплідненість. Птиця вільного вигулу. Насіння від Gapka Homestead Inferno.",
-    growTip: "Для успішного виводу рекомендуємо використовувати перевірені інкубатори. Оптимальна температура — 37.7°C. Перші 18 днів вологість має бути на рівні 45-50%. Забезпечте стабільну температуру та вологість для успішної інкубації.",
-    meta: { count: "1 шт.", pack: "Спеціальний бокс", year: "2026" },
-    inStock: false,
-    allowSale: false
-},
-
-"farm_table_eggs": {
-    name: "Яйця курячі для вживання",
-    searchName: "яйця, курячі яйця, домашні яйця, яйця для вживання, столові яйця, фермерські яйця",
-    category: "poultry",
-    price: 0,
-    heatLevel: "Харчові яйця",
-    heatScore: "2",
-    metaDescription: "Фермерські курячі яйця для вживання від Gapka Homestead. Свіжі яйця від птиці з домашнього утримання.",
-    images: ["orpington-eggs.webp", "orpington-eggs.webp"],
-    specs: {
-        maturity: "Щоденний збір у сезон",
-        height: "Домашня птиця",
-        species: "Gallus gallus domesticus",
-        yield: "10 шт. в лотку"
-    },
-    description: `<b>Курячі яйця для вживання</b> — майбутня фермерська позиція Gapka Homestead для тих, хто цінує просту, чесну їжу з маленького господарства.
-    <br><br>
-    Яйця збираються свіжими, сортуються вручну та будуть доступні невеликими партіями, коли пташиний двір вийде на стабільний сезонний ритм.
-    <br><br>
-    Це не інкубаційний матеріал, а яйця саме для кухні: сніданків, випічки, домашньої пасти та всього, де смак починається з якісної бази.`,
-    meta: { count: "10 шт.", pack: "Лоток", year: "2026" },
-    isFlavor: "🍳 Для кухні",
-    inStock: false,
-    allowSale: false
-},
-  
 };
 
 
@@ -2337,7 +2281,6 @@ isHot: true,  // З'явиться тег 🔥 HOT
                         else if (nameLower.includes("суперхотів")) targetCategory = "seeds";
                         else if (nameLower.includes("інше насіння")) targetCategory = "otherseeds";
                         else if (nameLower.includes("врожай пекла")) targetCategory = "fresh-peppers";
-                        else if (nameLower.includes("інкубаційні яйця")) targetCategory = "poultry";
 
                         if (targetCategory) {
                             const allPrices = [];

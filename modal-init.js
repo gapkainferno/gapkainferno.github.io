@@ -275,17 +275,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const cartText = window.IS_ENGLISH ? 'Cart' : 'Кошик';
 
     const floatingCartHTML = `
-    <a href="javascript:void(0)" class="floating-cart" onclick="openCheckout()" title="${window.IS_ENGLISH ? 'Open cart' : 'Відкрити кошик'}">
+    <button type="button" class="floating-cart" onclick="openCheckout()" title="${window.IS_ENGLISH ? 'Open cart' : 'Відкрити кошик'}">
         <span class="cart-icon">${cartIcon}</span>
         <span id="cart-count">0</span>
-    </a>`;
+    </button>`;
 
     const headerCartHTML = `
-    <a href="javascript:void(0)" class="header-cart-link" onclick="openCheckout()" title="${window.IS_ENGLISH ? 'Go to cart' : 'Перейти до кошика'}">
+    <button type="button" class="header-cart-link" onclick="openCheckout()" title="${window.IS_ENGLISH ? 'Go to cart' : 'Перейти до кошика'}">
         <span class="cart-text">${cartText}</span>
         <span class="cart-icon">${cartIcon}</span>
         <span class="cart-count">0</span>
-    </a>`;
+    </button>`;
 
     document.body.insertAdjacentHTML('beforeend', floatingCartHTML + headerCartHTML);
 
@@ -333,10 +333,7 @@ function openNotifyModal(category) {
     const messages = {
         'fresh-peppers': window.IS_ENGLISH
             ? "We'll email you as soon as we harvest our first crop of fresh superhots this fall! 🍂"
-            : "Ми напишемо вам, як тільки зберемо перший врожай свіжих суперхотів восени 2026! 🍂",
-        'poultry': window.IS_ENGLISH
-            ? "Our flock is getting ready! We'll notify you when incubation eggs become available. 🐣"
-            : "Наш флок готується до виходу! Ми сповістимо вас про старт продажів інкубаційних яєць. 🐣"
+            : "Ми напишемо вам, як тільки зберемо перший врожай свіжих суперхотів восени 2026! 🍂"
     };
     
     if (messages[category]) {
@@ -431,26 +428,34 @@ async function submitNotification() {
 
 // Функції для управління модалкою порожнього кошика
 function openEmptyCartModal() {
-    const modal = document.getElementById('emptyCartModal');
+    let modal = document.getElementById('emptyCartModal');
     
     if (modal) {
         modal.style.display = 'flex';
         return;
     }
     
-    // Для англійської версії створюємо на льоту
-    if (window.IS_ENGLISH) {
-        const emptyModalHTML = `
-        <div id="emptyCartModal" class="modal" style="display: flex;">
-            <div class="modal-box" style="max-width: 600px; padding: 40px; text-align: center;">
-                <button class="close-btn" onclick="closeEmptyCartModal()">&times;</button>
-                <h2 class="modal-title">Your cart is <span>empty</span></h2>
-                <p style="margin: 15px 0; font-size: 16px; opacity: 0.8;">Discover the world of spicy flavors! Browse our catalog:</p>
-                <a href="sauces.html" class="order-btn" style="display: inline-block; width: auto; text-decoration: none; margin-top: 20px;">🔥 Hot Sauces</a>
-                <a href="seedsandseedlings.html" class="order-btn" style="display: inline-block; width: auto; text-decoration: none; margin-top: 10px;">🌱 Superhot Seeds</a>
-            </div>
-        </div>`;
-        document.body.insertAdjacentHTML('beforeend', emptyModalHTML);
+    // Створюємо модалку на льоту
+    const emptyModalHTML = `
+    <div id="emptyCartModal" class="modal" style="display: flex;">
+        <div class="modal-box" style="max-width: 600px; padding: 40px; text-align: center;">
+            <button class="close-btn" onclick="closeEmptyCartModal()">&times;</button>
+            <h2 class="modal-title">${window.IS_ENGLISH ? 'Your cart is <span>empty</span>' : 'Кошик <span>порожній</span>'}</h2>
+            <p style="margin: 15px 0; font-size: 16px; opacity: 0.8;">${window.IS_ENGLISH ? 'Discover the world of spicy flavors! Browse our catalog:' : 'Відкрийте для себе світ гострих смаків! Перегляньте наш каталог:'}</p>
+            <a href="sauces.html" class="order-btn" style="display: inline-block; width: auto; text-decoration: none; margin-top: 20px;">🔥 ${window.IS_ENGLISH ? 'Hot Sauces' : 'Гострі соуси'}</a>
+            <a href="seedsandseedlings.html" class="order-btn" style="display: inline-block; width: auto; text-decoration: none; margin-top: 10px;">🌱 ${window.IS_ENGLISH ? 'Superhot Seeds' : 'Насіння суперхотів'}</a>
+        </div>
+    </div>`;
+    document.body.insertAdjacentHTML('beforeend', emptyModalHTML);
+    
+    // Додаємо обробник для закриття модалки
+    modal = document.getElementById('emptyCartModal');
+    if (modal) {
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeEmptyCartModal();
+            }
+        });
     }
 }
 

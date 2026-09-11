@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
 
     // Очищуємо старі класи тем, щоб вони не змішувалися
-    body.classList.remove('seeds-page', 'sauces-page', 'otherseeds-page', 'fresh-peppers-page', 'poultry-page', 'theme-fire');
+    body.classList.remove('seeds-page', 'sauces-page', 'otherseeds-page', 'fresh-peppers-page', 'theme-fire');
 
     // Встановлюємо тему залежно від категорії товару
     const themeClass = `${product.category}-page`;
@@ -283,10 +283,44 @@ document.addEventListener('DOMContentLoaded', () => {
             const specSpecies = document.getElementById('spec-species');
             const specYield = document.getElementById('spec-yield');
             
-            if (specMaturity) specMaturity.innerText = product.specs.maturity || "-";
-            if (specHeight) specHeight.innerText = product.specs.height || "-";
-            if (specSpecies) specSpecies.innerText = product.specs.species || "-";
-            if (specYield) specYield.innerText = product.specs.yield || "-";
+            // Функція для перевірки чи значення заповнене
+            const isValid = (val) => val && val.trim() !== '' && val.trim() !== '-';
+            
+            // Термін дозрівання
+            const maturityRow = specMaturity?.closest('tr');
+            if (specMaturity && isValid(product.specs.maturity)) {
+                specMaturity.innerText = product.specs.maturity;
+                if (maturityRow) maturityRow.style.display = '';
+            } else {
+                if (maturityRow) maturityRow.style.display = 'none';
+            }
+            
+            // Висота рослини
+            const heightRow = specHeight?.closest('tr');
+            if (specHeight && isValid(product.specs.height)) {
+                specHeight.innerText = product.specs.height;
+                if (heightRow) heightRow.style.display = '';
+            } else {
+                if (heightRow) heightRow.style.display = 'none';
+            }
+            
+            // Вид
+            const speciesRow = specSpecies?.closest('tr');
+            if (specSpecies && isValid(product.specs.species)) {
+                specSpecies.innerText = product.specs.species;
+                if (speciesRow) speciesRow.style.display = '';
+            } else {
+                if (speciesRow) speciesRow.style.display = 'none';
+            }
+            
+            // Врожайність
+            const yieldRow = specYield?.closest('tr');
+            if (specYield && isValid(product.specs.yield)) {
+                specYield.innerText = product.specs.yield;
+                if (yieldRow) yieldRow.style.display = '';
+            } else {
+                if (yieldRow) yieldRow.style.display = 'none';
+            }
         }
 
         // ===== 5. МЕТА-ДАНІ (кількість, пакування, рік) =====
@@ -295,9 +329,31 @@ document.addEventListener('DOMContentLoaded', () => {
             const metaPack = document.getElementById('meta-pack');
             const metaYear = document.getElementById('meta-year');
             
-            if (metaCount) metaCount.innerText = product.meta.count || "5 шт.";
-            if (metaPack) metaPack.innerText = product.meta.pack || "Zip-lock";
-            if (metaYear) metaYear.innerText = product.meta.year || "2026";
+            // Показуємо тільки заповнені поля
+            const metaCountEl = metaCount?.closest('p');
+            const metaPackEl = metaPack?.closest('p');
+            const metaYearEl = metaYear?.closest('p');
+            
+            if (metaCount && product.meta.count && product.meta.count.trim() !== '' && product.meta.count.trim() !== '-') {
+                metaCount.innerText = product.meta.count;
+                if (metaCountEl) metaCountEl.style.display = '';
+            } else {
+                if (metaCountEl) metaCountEl.style.display = 'none';
+            }
+            
+            if (metaPack && product.meta.pack && product.meta.pack.trim() !== '' && product.meta.pack.trim() !== '-') {
+                metaPack.innerText = product.meta.pack;
+                if (metaPackEl) metaPackEl.style.display = '';
+            } else {
+                if (metaPackEl) metaPackEl.style.display = 'none';
+            }
+            
+            if (metaYear && product.meta.year && product.meta.year.trim() !== '' && product.meta.year.trim() !== '-') {
+                metaYear.innerText = product.meta.year;
+                if (metaYearEl) metaYearEl.style.display = '';
+            } else {
+                if (metaYearEl) metaYearEl.style.display = 'none';
+            }
         }
 
         // ===== 6. ПОРАДА ПО ВИРОЩУВАННЮ (якщо є) =====

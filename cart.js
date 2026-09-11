@@ -17,10 +17,10 @@ const orderRateLimiter = {
 const GLOBAL_SETTINGS = {
     // Щоб відкрити магазин: isCategoryLockActive: false або lockedCategories: []
     isCategoryLockActive: true,
-    lockedCategories: ['sauces', 'seeds', 'otherseeds', 'fresh-peppers', 'poultry'],
+    lockedCategories: ['sauces', 'seeds', 'otherseeds', 'fresh-peppers'],
     lockedCategoryTitle: 'Незабаром',
-    lockedCategoryText: 'Розділ готується до старту 🔥',
-    lockedCategoryAlert: '🌶️ Цей розділ ще в розробці. Чекаємо на вас пізніше!'
+    lockedCategoryText: 'Розділ готується до старту восени 2026 🔥',
+    lockedCategoryAlert: '🌶️ Цей розділ ще в розробці. Чекаємо на вас восени 2026!'
 };
 
 // ===== ЄДИНИЙ ПУЛЬТ АКЦІЙ =====
@@ -57,11 +57,6 @@ const CATEGORY_LOCK_CONFIG = {
         cardSelector: '.card-link.fresh-peppers',
         pagePattern: /fresh-peppers(\.html)?$/,
         productCategories: ['fresh-peppers']
-    },
-    poultry: {
-        cardSelector: '.card-link.poultry',
-        pagePattern: /orpington-eggs(\.html)?$/,
-        productCategories: ['poultry']
     }
 };
 
@@ -532,8 +527,6 @@ function updateCartUI() {
                                     ? '/ шт.' 
                                     : (item.name.toLowerCase().includes('box') || item.name.toLowerCase().includes('набір'))
                                     ? '/ за набір' 
-                                    : (item.name.toLowerCase().includes('яйц') || item.name.toLowerCase().includes('egg'))
-                                    ? '/ за позицію'
                                     : '/ за пакет з насінням'
                                 }
                             </span>
@@ -1896,9 +1889,7 @@ window.submitOrder = async function() {
                             Картка Конверта: <br>
                             <strong style="color: var(--primary-color); font-family: monospace; font-size: 16px;">5168 7521 5680 2145</strong>
                         </p>
-                        <p style="font-size: 12px; color: var(--primary-orange); margin-top: 10px; font-style: italic;">
-                            * Будь ласка, надішліть скріншот оплати на імейл homestead.inferno@gmail.com.
-                        </p>
+                        
                     </div>`;
                 paymentDetails.style.display = 'block';
             } else {

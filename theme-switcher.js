@@ -8,8 +8,7 @@
         seeds:      'seeds-page',
         sauces:     'sauces-page',
         otherseeds: 'otherseeds-page',
-        'fresh-peppers': 'fresh-peppers-page',
-        poultry:    'poultry-page'
+        'fresh-peppers': 'fresh-peppers-page'
     };
 
     const URL_MAP = {
@@ -17,8 +16,7 @@
         'sauces':            'sauces',
         'otherseeds':        'otherseeds',
         'superhots':         'seeds',
-        'fresh-peppers':     'fresh-peppers',
-        'poultry':           'poultry'
+        'fresh-peppers':     'fresh-peppers'
     };
 
     function getThemeFromUrl() {

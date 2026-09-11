@@ -77,7 +77,9 @@ function searchProducts(query) {
             const categoryNames = {
                 'seeds': 'насіння, seeds',
                 'sauces': 'соус, соуси, sauces',
-                'seedlings': 'розсада'
+                'seedlings': 'розсада',
+                'otherseeds': 'овочі, овочі, томати, насіння овочів, otherseeds',
+                'fresh-peppers': 'врожай пекла, свіжий перець, сушений перець, свіжі перці, fresh peppers'
             };
             const categoryName = categoryNames[product.category] || product.category;
             categoryMatch = categoryName.toLowerCase().includes(query);
@@ -112,7 +114,9 @@ function displaySearchResults(results, container) {
     const categoryNames = {
         'seeds': '🌶️ Насіння',
         'sauces': '🔥 Соус',
-        'seedlings': '🌱 Розсада'
+        'seedlings': '🌱 Розсада',
+        'otherseeds': '🍅 Насіння овочів',
+        'fresh-peppers': '🌶️ Врожай Пекла'
     };
     
     // ✅ IMPROVED: Безпечна санітізація результатів за допомогою нашого модуля

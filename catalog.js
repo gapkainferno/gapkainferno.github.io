@@ -7,7 +7,7 @@ const isEnglishCatalog = Boolean(window.IS_ENGLISH);
 const CATEGORY_PAGES = {
     seeds: {
         url: 'seedsandseedlings.html',
-        navLabel: isEnglishCatalog ? '🌶️ Superhot seeds' : '🌶️ Насіння суперхотів',
+        navLabel: isEnglishCatalog ? '🌶️ Superhot peppers' : '🌶️ Супергострі перці',
         title: isEnglishCatalog ? 'Hot pepper seeds (Superhots)' : 'Насіння гострих перців (Superhots)',
         description: '',
         filterTitle: isEnglishCatalog ? 'Heat level:' : 'Рівень вогню:',
@@ -45,7 +45,7 @@ const CATEGORY_PAGES = {
     },
     otherseeds: {
         url: 'otherseeds.html',
-        navLabel: isEnglishCatalog ? '🌱 Vegetable seeds' : '🌱 Насіння овочів',
+        navLabel: isEnglishCatalog ? '🍅 Tomatoes & other vegetables' : '🍅 Томати та інші овочі',
         title: isEnglishCatalog ? 'Vegetable seeds' : 'Насіння овочів',
         description: '',
         filterTitle: isEnglishCatalog ? 'Vegetable type:' : 'Тип овочів:',
@@ -66,38 +66,46 @@ const CATEGORY_PAGES = {
     'fresh-peppers': {
         url: 'fresh-peppers.html',
         navLabel: isEnglishCatalog ? '🌶️ Inferno harvest' : '🌶️ Врожай Пекла',
-        title: isEnglishCatalog ? 'Inferno harvest: fresh and dried peppers' : 'Врожай Пекла: свіжі та сушені перці',
-        description: isEnglishCatalog ? 'Fresh produce from our own beds will appear here. Fresh superhots will be available in autumn 2026.' : 'Тут з\'являтимуться плоди, які ми збираємо на власних грядках. Свіжі суперхоти будуть доступні восени 2026.',
+        title: isEnglishCatalog ? 'Inferno harvest: fresh, dried peppers & pepper products' : 'Врожай Пекла: свіжі, сушені перці та продукти з перців',
+        description: isEnglishCatalog ? 'Everything from our beds and workshop: fresh superhots, dried peppers and pepper products (powder, flakes, pastes). Fresh superhots will be available in autumn 2026.' : 'Тут з\'являтимуться плоди, які ми збираємо на власних грядках, і продукти з перців: свіжі та сушені перці, порошки, пластівці, пасти. Свіжі суперхоти будуть доступні восени 2026.',
         filterTitle: isEnglishCatalog ? 'Product type:' : 'Тип продукту:',
         filters: isEnglishCatalog ? [
             ['all', 'All'],
             ['1', '🥗 Fresh'],
-            ['2', '💨 Dried']
+            ['2', '💨 Dried'],
+            ['3', '🔥 Pepper products']
         ] : [
             ['all', 'Всі'],
             ['1', '🥗 Свіжі'],
-            ['2', '💨 Сушені']
+            ['2', '💨 Сушені'],
+            ['3', '🔥 Продукти з перців']
         ]
     },
-    poultry: {
-        url: 'orpington-eggs.html',
-        navLabel: isEnglishCatalog ? '🥚 Farm eggs' : '🥚 Яйця ферми',
-        title: isEnglishCatalog ? 'Incubation eggs and table eggs' : 'Інкубаційні яйця та яйця для вживання',
-        description: isEnglishCatalog ? 'Small farm batches: hatching eggs and fresh eggs for the kitchen.' : 'Невеликі фермерські партії: інкубаційні яйця породистої птиці та свіжі яйця для кухні.',
-        filterTitle: isEnglishCatalog ? 'Egg type:' : 'Тип яєць:',
-        filters: isEnglishCatalog ? [
-            ['all', 'All'],
-            ['1', '🐣 Hatching'],
-            ['2', '🍳 Table eggs']
-        ] : [
-            ['all', 'Всі'],
-            ['1', '🐣 Інкубаційні'],
-            ['2', '🍳 Для вживання']
-        ]
-    }
-};
+    };
 
-const CATEGORY_ORDER = ['seeds', 'sauces', 'otherseeds', 'fresh-peppers', 'poultry'];
+const CATEGORY_NAV = isEnglishCatalog ? [
+    {
+        key: 'seeds-group',
+        label: '🌱 Seeds',
+        children: [
+            { key: 'seeds', url: 'seedsandseedlings.html', label: '🌶️ Superhot peppers' },
+            { key: 'otherseeds', url: 'otherseeds.html', label: '🍅 Tomatoes & other vegetables' }
+        ]
+    },
+    { key: 'sauces', url: 'sauces.html', label: '🔥 Craft sauces' },
+    { key: 'fresh-peppers', url: 'fresh-peppers.html', label: '🌶️ Inferno harvest' }
+] : [
+    {
+        key: 'seeds-group',
+        label: '🌱 Насіння',
+        children: [
+            { key: 'seeds', url: 'seedsandseedlings.html', label: '🌶️ Супергострі перці' },
+            { key: 'otherseeds', url: 'otherseeds.html', label: '🍅 Томати та інші овочі' }
+        ]
+    },
+    { key: 'sauces', url: 'sauces.html', label: '🔥 Крафтові соуси' },
+    { key: 'fresh-peppers', url: 'fresh-peppers.html', label: '🌶️ Врожай Пекла' }
+];
 
 const HEAT_LEVELS = {
     "1": { shu: "1k-50k", width: "25%" },
@@ -132,11 +140,35 @@ const SCOVILLE_DATA = isEnglishCatalog ? {
 
 function buildCategorySidebar(activeCategory) {
     document.querySelectorAll('.main-layout > .sidebar nav ul').forEach(list => {
-        list.innerHTML = CATEGORY_ORDER.map(categoryKey => {
-            const category = CATEGORY_PAGES[categoryKey];
-            const activeClass = categoryKey === activeCategory ? ' class="theme-active active"' : '';
-            return `<li><a href="${category.url}"${activeClass}>${safeText(category.navLabel)}</a></li>`;
+        list.innerHTML = CATEGORY_NAV.map(group => {
+            const activeLeafClass = group.key === activeCategory ? ' class="theme-active active"' : '';
+
+            if (group.children) {
+                const groupHasActive = group.children.some(child => child.key === activeCategory);
+                return `
+                    <li class="sidebar-group${groupHasActive ? ' is-open' : ''}">
+                        <span class="sidebar-group-label">${safeText(group.label)}</span>
+                        <ul class="sidebar-submenu">
+                            ${group.children.map(child => {
+                                const childActiveClass = child.key === activeCategory ? ' class="theme-active active"' : '';
+                                return `<li><a href="${child.url}"${childActiveClass}>${safeText(child.label)}</a></li>`;
+                            }).join('')}
+                        </ul>
+                    </li>`;
+            }
+
+            return `<li><a href="${group.url}"${activeLeafClass}>${safeText(group.label)}</a></li>`;
         }).join('');
+    });
+
+    // Додаємо клік для перемикання підменю
+    document.querySelectorAll('.sidebar-group-label').forEach(label => {
+        label.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const group = label.parentElement;
+            group.classList.toggle('is-open');
+        });
     });
 }
 
@@ -198,29 +230,49 @@ function getDescriptionText(product) {
 function getMiniSpecsHTML(product) {
     if (!product.specs) return '';
 
-    const spec1 = product.specs.height || 'N/A';
-    const spec2 = product.specs.yield || (product.category === 'vegetables' ? product.specs.color : 'N/A');
-    const spec3 = product.heatLevel ? product.heatLevel.split('(')[0].trim() : 'N/A';
-    const label1 = product.category === 'poultry' ? 'Походження' : 'Висота';
-    const label2 = product.category === 'vegetables' ? 'Колір' : product.category === 'poultry' ? 'Формат' : 'Врожайність';
-    const label3 = product.category === 'poultry' ? 'Тип' : 'Гострота';
+    const specs = [];
+    const s = product.specs;
 
-    return `
-        <div class="product-specs-mini">
-            <div class="spec-item">
-                <span class="spec-label">${safeText(label1)}</span>
-                <span class="spec-value">${safeText(spec1)}</span>
-            </div>
-            <div class="spec-item">
-                <span class="spec-label">${safeText(label2)}</span>
-                <span class="spec-value">${safeText(spec2)}</span>
-            </div>
-            <div class="spec-item">
-                <span class="spec-label">${safeText(label3)}</span>
-                <span class="spec-value">${safeText(spec3)}</span>
-            </div>
+    // Дозрівання (maturity) - показуємо якщо не порожнє і не "-"
+    if (s.maturity && s.maturity.trim() !== '' && s.maturity.trim() !== '-') {
+        specs.push({ label: 'Дозрівання', value: s.maturity });
+    }
+
+    // Висота (height) - показуємо якщо не порожнє і не "-"
+    if (s.height && s.height.trim() !== '' && s.height.trim() !== '-') {
+        specs.push({ label: 'Висота', value: s.height });
+    }
+
+    // Врожайність (yield) - показуємо якщо не порожнє і не "-"
+    if (s.yield && s.yield.trim() !== '' && s.yield.trim() !== '-') {
+        specs.push({ label: 'Врожайність', value: s.yield });
+    }
+
+    // Для перців показуємо гострота
+    if (product.category === 'seeds' && product.heatLevel) {
+        const heat = product.heatLevel.split('(')[0].trim();
+        if (heat && heat !== '-' && heat !== 'N/A') {
+            specs.push({ label: 'Гострота', value: heat });
+        }
+    }
+
+    // Для овочів показуємо колір (якщо є)
+    if (product.category === 'vegetables' && s.color && s.color.trim() !== '' && s.color.trim() !== '-') {
+        specs.push({ label: 'Колір', value: s.color });
+    }
+
+    // Якщо немає характеристик - не показуємо блок
+    if (specs.length === 0) return '';
+
+    // Генеруємо HTML для характеристик
+    const specsHTML = specs.map(spec => `
+        <div class="spec-item">
+            <span class="spec-label">${safeText(spec.label)}</span>
+            <span class="spec-value">${safeText(spec.value)}</span>
         </div>
-    `;
+    `).join('');
+
+    return `<div class="product-specs-mini">${specsHTML}</div>`;
 }
 
 function hasScovilleInfo(product) {
