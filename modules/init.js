@@ -8,12 +8,12 @@
  * ВИКОРИСТАННЯ: <script type="module" src="modules/init.js"></script>
  */
 
-import { FIREBASE_CONFIG } from '/config/firebase-config.js';
-import { CONFIG } from '/config/constants.js';
-import { sanitize } from '/utils/sanitizer.js';
-import { errorHandler } from '/utils/error-handler.js';
-import { themeManager } from '/modules/theme-manager.js';
-import { cartService } from '/services/cart-service.js';
+import { FIREBASE_CONFIG } from '../config/firebase-config.js';
+import { CONFIG } from '../config/constants.js';
+import { sanitize } from '../utils/sanitizer.js';
+import { errorHandler } from '../utils/error-handler.js';
+import { themeManager } from './theme-manager.js';
+import { cartService } from '../services/cart-service.js';
 
 console.log('═══════════════════════════════════════════════════════════════');
 console.log('🚀 GAPKA HOMESTEAD INFERNO - INITIALIZATION');

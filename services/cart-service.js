@@ -6,7 +6,7 @@
  * Замінює розпорошену глобальну логіку з cart.js
  */
 
-import { STORAGE_KEYS, RATE_LIMITS } from '/config/constants.js';
+import { STORAGE_KEYS, RATE_LIMITS } from '../config/constants.js';
 
 class CartService {
   constructor(storage = localStorage) {
