@@ -19,8 +19,8 @@ const GLOBAL_SETTINGS = {
     isCategoryLockActive: true,
     lockedCategories: ['sauces', 'seeds', 'otherseeds', 'fresh-peppers', 'poultry'],
     lockedCategoryTitle: 'Незабаром',
-    lockedCategoryText: 'Розділ готується до старту восени 2026 🔥',
-    lockedCategoryAlert: '🌶️ Цей розділ ще в розробці. Чекаємо на вас восени 2026!'
+    lockedCategoryText: 'Розділ готується до старту 🔥',
+    lockedCategoryAlert: '🌶️ Цей розділ ще в розробці. Чекаємо на вас пізніше!'
 };
 
 // ===== ЄДИНИЙ ПУЛЬТ АКЦІЙ =====
@@ -33,7 +33,7 @@ const SALE_SETTINGS = {
     badgeText: "АКЦІЯ",
     banner: {
         isActive: true,
-        text: "🔥 ГОТУЄМОСЯ ДО ВЕЛИКОГО ЗАПУСКУ ВОСЕНИ 2026!"
+        text: "🔥 ГОТУЄМОСЯ ДО ВЕЛИКОГО ЗАПУСКУ!"
     }
 };
 
