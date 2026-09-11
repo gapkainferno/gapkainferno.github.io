@@ -1,0 +1,761 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gapka Homestead Inferno | Certified Heat Survivor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Zilla Slab for headings + Courier Prime for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=Courier+Prime:wght@400,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --flame-orange: #ff4500;
+            --burnt-sienna: #d84315;
+            --charcoal: #1a0f0a;
+            --cream: #f5e6d3;
+            --gold-seal: #ffd700;
+            --smoke: rgba(255,255,255,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: 
+                radial-gradient(ellipse 800px 400px at 50% -10%, rgba(255,69,0,0.15), transparent),
+                radial-gradient(ellipse at 80% 120%, rgba(216,67,21,0.12), transparent),
+                linear-gradient(180deg, #0d0806 0%, #1a0f0a 40%, #0d0806 100%);
+            background-attachment: fixed;
+            color: var(--cream);
+            font-family: 'Courier Prime', monospace;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated grain texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px);
+            pointer-events: none;
+            opacity: 0.4;
+            animation: grain 8s steps(10) infinite;
+        }
+
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -10%); }
+            30% { transform: translate(3%, 5%); }
+            50% { transform: translate(-8%, 3%); }
+            70% { transform: translate(4%, -8%); }
+            90% { transform: translate(-3%, 6%); }
+        }
+
+        /* Floating embers effect */
+        .ember {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: var(--flame-orange);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            filter: blur(1px);
+            animation: float-up 6s ease-in infinite;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Main certificate container */
+        .certificate {
+            max-width: 520px;
+            width: 100%;
+            background: 
+                linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 100%),
+                #0d0806;
+            border: 3px solid var(--burnt-sienna);
+            border-radius: 0;
+            padding: 0;
+            box-shadow: 
+                0 30px 80px rgba(0,0,0,0.9),
+                inset 0 0 0 1px rgba(255,255,255,0.05),
+                inset 0 0 80px rgba(255,69,0,0.08);
+            position: relative;
+            animation: fadeIn 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Decorative corner brackets */
+        .certificate::before,
+        .certificate::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--gold-seal);
+        }
+        .certificate::before {
+            top: 12px;
+            left: 12px;
+            border-right: none;
+            border-bottom: none;
+        }
+        .certificate::after {
+            bottom: 12px;
+            right: 12px;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Header section */
+        .cert-header {
+            background: linear-gradient(to bottom, var(--burnt-sienna), #a02f1a);
+            padding: 32px 20px 28px;
+            text-align: center;
+            position: relative;
+            border-bottom: 2px solid var(--gold-seal);
+        }
+
+        .flame-icon {
+            font-size: 48px;
+            display: inline-block;
+            animation: flicker 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px var(--flame-orange));
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.05); }
+        }
+
+        .cert-title {
+            font-family: 'Zilla Slab', serif;
+            font-size: 38px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #fff;
+            text-shadow: 
+                2px 2px 0 rgba(0,0,0,0.5),
+                0 0 20px rgba(255,69,0,0.6);
+            margin: 12px 0 8px;
+            line-height: 1.1;
+        }
+
+        .cert-subtitle {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--cream);
+            opacity: 0.9;
+            font-weight: 700;
+        }
+
+        /* Badge/Seal */
+        .seal {
+            position: absolute;
+            top: -25px;
+            right: 30px;
+            width: 80px;
+            height: 80px;
+            background: 
+                radial-gradient(circle, var(--gold-seal) 0%, #b8860b 100%);
+            border-radius: 50%;
+            border: 3px solid var(--charcoal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Zilla Slab', serif;
+            font-size: 11px;
+            text-align: center;
+            color: var(--charcoal);
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.2;
+            box-shadow: 
+                0 8px 20px rgba(0,0,0,0.6),
+                inset 0 2px 4px rgba(255,255,255,0.4);
+            animation: seal-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes seal-pulse {
+            0%, 100% { transform: rotate(-5deg) scale(1); }
+            50% { transform: rotate(5deg) scale(1.05); }
+        }
+
+        /* Body content */
+        .cert-body {
+            padding: 40px 30px 30px;
+            text-align: center;
+        }
+
+        .cert-message {
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: rgba(245,230,211,0.85);
+        }
+
+        .cert-message strong {
+            color: var(--flame-orange);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--gold-seal), transparent);
+            margin: 25px auto;
+        }
+
+        /* Recipe section */
+        .inferno-guide {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 4px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .inferno-guide h3 {
+            font-family: 'Zilla Slab', serif;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gold-seal);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .recipe-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .recipe-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .recipe-emoji {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .recipe-label {
+            font-weight: 700;
+            color: var(--cream);
+        }
+
+        /* Buttons */
+        .cta-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .cta-btn {
+            display: block;
+            padding: 16px 24px;
+            text-align: center;
+            text-decoration: none;
+            font-family: 'Zilla Slab', serif;
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-radius: 2px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-primary {
+            background: linear-gradient(to bottom, var(--flame-orange), var(--burnt-sienna));
+            color: #fff;
+            border: 2px solid var(--flame-orange);
+            box-shadow: 
+                0 4px 15px rgba(255,69,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .cta-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .cta-primary:hover::before {
+            opacity: 1;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,69,0,0.6);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: var(--gold-seal);
+            border: 2px solid rgba(255,215,0,0.3);
+        }
+
+        .cta-secondary:hover {
+            background: rgba(255,215,0,0.08);
+            border-color: var(--gold-seal);
+        }
+
+        /* Footer */
+        
+.footer-logo-link {
+    display: inline-block;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.footer-logo-link:hover {
+    transform: scale(1.05);
+}
+
+.footer-logo {
+    width: 200px;
+    max-width: 80vw;
+    height: auto;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+}
+
+.cert-footer {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding: 20px;
+            text-align: center;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: rgba(245,230,211,0.4);
+        }
+
+        .cert-footer strong {
+            color: var(--gold-seal);
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .certificate {
+                border-width: 2px;
+            }
+
+            .cert-title {
+                font-size: 32px;
+            }
+
+            .seal {
+                width: 70px;
+                height: 70px;
+                top: -20px;
+                right: 20px;
+                font-size: 10px;
+            }
+
+            .cert-body {
+                padding: 30px 20px 20px;
+            }
+
+            .flame-icon {
+                font-size: 40px;
+            }
+        }
+
+        /* Generate random floating embers */
+        .ember:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 8s; }
+        .ember:nth-child(2) { left: 25%; animation-delay: 2s; animation-duration: 7s; }
+        .ember:nth-child(3) { left: 45%; animation-delay: 4s; animation-duration: 9s; }
+        .ember:nth-child(4) { left: 60%; animation-delay: 1s; animation-duration: 6s; }
+        .ember:nth-child(5) { left: 80%; animation-delay: 3s; animation-duration: 7.5s; }
+        .ember:nth-child(6) { left: 90%; animation-delay: 5s; animation-duration: 8.5s; }
+        .logo-image {
+    width: 400px;
+    max-width: 90vw;
+    height: auto;
+    filter: drop-shadow(0 0 5px rgba(255, 69, 0, 0.2));
+    align-items: center;
+}
+/* Adjusted styles for bottom logo */
+/* --- SUBSCRIBE SECTION FOR QR PAGE --- */
+        .club-subscribe {
+            margin-top: 40px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed rgba(216, 67, 21, 0.5); /* burnt sienna with transparency */
+            padding: 25px 20px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .club-title {
+            font-family: 'Zilla Slab', serif;
+            font-size: 20px;
+            color: var(--flame-orange);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
+        }
+
+        .club-desc {
+            font-size: 13px;
+            line-height: 1.6;
+            color: rgba(245,230,211,0.8);
+            margin-bottom: 20px;
+        }
+
+        .subscribe-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .sub-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 69, 0, 0.3);
+            color: var(--cream);
+            font-family: 'Courier Prime', monospace;
+            font-size: 14px;
+            border-radius: 2px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .sub-input:focus {
+            outline: none;
+            border-color: var(--flame-orange);
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.2);
+        }
+
+        .sub-input::placeholder {
+            color: rgba(245,230,211,0.3);
+        }
+
+        .sub-btn {
+            width: 100%;
+            padding: 12px 20px;
+            background: transparent;
+            color: var(--gold-seal);
+            border: 1px solid var(--gold-seal);
+            font-family: 'Zilla Slab', serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sub-btn:hover {
+            background: rgba(255, 215, 0, 0.1);
+            box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .club-micro {
+            font-size: 10px;
+            color: rgba(245,230,211,0.4);
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+/* Updated footer centering */
+.footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 25px 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+    border: 1px solid var(--border-warm);
+    /* Add these lines */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Updated logo link */
+.main-logo-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-decoration: none;
+    margin-bottom: 15px;
+}
+
+/* Updated logo image */
+.logo-image {
+    width: 400px;
+    max-width: 90vw;
+    height: auto;
+    /* Change grid to block so margin works */
+    display: block; 
+    margin: 0 auto;
+    filter: drop-shadow(0 0 12px rgba(255, 69, 0, 0.3));
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Floating embers background effect -->
+    <div class="ember"></div>
+    <div class="ember"></div>
+    <div class="ember"></div>
+    <div class="ember"></div>
+    <div class="ember"></div>
+    <div class="ember"></div>
+
+    <!-- Main certificate -->
+    <div class="certificate">
+        
+        <!-- Header -->
+        <div class="cert-header">
+            <div class="seal">HEAT<br>SURVIVOR<br></div>
+            <div class="flame-icon">FIRE</div>
+            <div class="logo-wrapper" style="position: relative; z-index: 10; margin-top: 20px;">
+    <a href="https://gapkainferno.github.io/index.html" class="main-logo-link">
+        <img src="../GapkaLogo.png" alt="Homestead" class="logo-image">
+    </a>
+</div>
+            <p class="cert-subtitle">Certified Heat Warrior</p>
+        </div>
+
+        <!-- Body -->
+        <div class="cert-body">
+            
+            <p class="cert-message">
+                Congratulations! You are holding more than a sauce; this is <strong>concentrated fire</strong>.
+                If you made it here, you walked through the heat and survived.
+                You are now part of the elite club of people who do not fear the extreme.
+            </p>
+
+            <div class="divider"></div>
+
+            <div class="inferno-guide">
+                <h3>Survival instructions</h3>
+                
+                <div class="recipe-item">
+                    <span class="recipe-emoji">Meat</span>
+                    <div>
+                        <span class="recipe-label">Meat:</span>
+                        Use as a marinade or glaze. One drop means maximum flavor.
+                    </div>
+                </div>
+
+                <div class="recipe-item">
+                    <span class="recipe-emoji">Burger</span>
+                    <div>
+                        <span class="recipe-label">Burgers:</span>
+                        Mix with mayo at 1:10. Your guests will remember it.
+                    </div>
+                </div>
+
+                <div class="recipe-item">
+                    <span class="recipe-emoji">Pizza</span>
+                    <div>
+                        <span class="recipe-label">Pizza:</span>
+                        Add 2-3 drops to pizza. Heat on a plate.
+                    </div>
+                </div>
+
+                <div class="recipe-item">
+                    <span class="recipe-emoji">Extreme</span>
+                    <div>
+                        <span class="recipe-label">Extreme:</span>
+                        Vanilla ice cream + 1 drop of sauce. Only for the brave.
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-container">
+                <a href="https://gapkainferno.github.io/en/sauces.html" class="cta-btn cta-primary">Order more heat</a>
+                <a href="https://gapkainferno.github.io/en/seedsandseedlings.html" class="cta-btn cta-secondary">Grow it yourself</a>
+            </div>
+            <div class="divider" style="margin-top: 40px; opacity: 0.5;"></div>
+
+            <div class="club-subscribe">
+                <h3 class="club-title">Join the Gapka Homestead Inferno club</h3>
+                <p class="club-desc">
+                    Leave your email to be first to receive farm news and useful secrets.
+                </p>
+                <form class="subscribe-form" onsubmit="handleGeneralSubscribe(event)">
+                    <input type="email" id="sub-email" placeholder="Your contact email" required class="sub-input">
+                    <button type="submit" id="sub-btn" class="sub-btn">Join</button>
+                </form>
+                <!-- Honeypot field for bot protection, as in modal-init -->
+                <div style="position: absolute; left: -9999px; opacity: 0;">
+                    <input type="text" id="hp_sub_qr" tabindex="-1" autocomplete="off">
+                </div>
+                <p class="club-micro">No spam. Only farm news, heat notes and useful updates.</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+         <div class="footer">
+    <a href="https://gapkainferno.github.io/index.html" class="main-logo-link"> 
+        <img src="../GapkaLogo.png" alt="Homestead" class="logo-image"></a>
+            <div class="footer-text">
+                2026 Gapka Homestead Inferno. Farm to Bottle & Seed to Harvest<br>
+                <strong>Need help?</strong> Write to us:<br>
+                <a href="mailto:homestead.inferno@gmail.com" style="color: var(--accent-orange); text-decoration: none;">homestead.inferno@gmail.com</a>
+              <!-- @homesteadinferno -->
+            </div>
+            <div class="container" style="text-align: center; margin-top: 20px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;">
+        <p style="font-size: 14px; opacity: 0.8; font-style: italic;">
+            Latest post: <a href="blog.html" style="color: var(--accent-orange); text-decoration: underline;">How to grow strong plants from seed without stress. Read INFERNO Notes.</a>
+        </p>
+    </div>
+    </div>
+
+    </div>
+
+    <script>
+        // Animated counter on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const cert = document.querySelector('.certificate');
+            setTimeout(() => {
+                cert.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    cert.style.transform = 'scale(1)';
+                }, 200);
+            }, 600);
+        });
+
+        // --- SUBSCRIPTION LOGIC (GOOGLE SHEETS) ---
+        
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyL5WKFxLfStcgOQHasZ4QYi5wh1jxNVKhis495gjd6BGAlhex8e1b6607fUV4Y0zUA/exec";
+
+        // Create a unique device identifier
+        function getVisitorId() {
+            let id = localStorage.getItem('ghi_visitor_id');
+            if (!id) {
+                id = 'v_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+                localStorage.setItem('ghi_visitor_id', id);
+            }
+            return id;
+        }
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        async function sendToGoogleSheet(data) {
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Important for Google Scripts
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                return true;
+            } catch (error) {
+                console.error('Send error:', error);
+                return false;
+            }
+        }
+
+        async function handleGeneralSubscribe(event) {
+            event.preventDefault();
+
+            // --- HONEYPOT CHECK ---
+            const honeypot = document.getElementById('hp_sub_qr');
+            if (honeypot && honeypot.value !== '') {
+                console.warn('Bot detected');
+                alert('Thank you for subscribing!'); // Show success to bots
+                return;
+            }
+
+            const emailInput = document.getElementById('sub-email');
+            const email = emailInput.value.trim();
+            const btn = document.getElementById('sub-btn');
+            
+            if (!validateEmail(email)) {
+                alert('Please enter a valid email address!');
+                return;
+            }
+
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "SAVING...";
+
+            await sendToGoogleSheet({
+                date: new Date().toLocaleString("uk-UA"),
+                email: email,
+                orderType: "MARKETING_SUBSCRIPTION",
+                details: "Subscription from QR code (Certified Heat Survivor)",
+                secret_token: "summerof26",
+                client_id: getVisitorId() // Send ID for rate limiting
+            });
+
+            // Visual feedback for the user
+            btn.textContent = "YOU ARE IN!";
+            btn.style.borderColor = "#4caf50";
+            btn.style.color = "#4caf50";
+            emailInput.value = "";
+            
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.textContent = originalText;
+                btn.style.borderColor = ""; // return to CSS styles
+                btn.style.color = "";
+            }, 4000);
+        }
+    </script>
+<script type="module" src="../analytics.js"></script><script src="../language-switcher.js"></script>
+</body>
+</html>

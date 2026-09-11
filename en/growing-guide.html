@@ -1,0 +1,1728 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growing Guide - Gapka Homestead Inferno</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            
+        }
+
+        :root {
+            --flame-red: #ff4500;
+            --deep-red: #a30000;
+            --dark-bg: #0a0a0a;
+            --card-bg: #141414;
+            --border-warm: rgba(214, 96, 58, 0.3);
+            --text-primary: #eaddcf;
+            --text-secondary: #a89584;
+            --accent-green: #81c995;
+            --accent-orange: #d6603a;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0f0a 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px 10px;
+            min-height: 100vh;
+            
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, var(--flame-red) 0%, var(--deep-red) 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 69, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(255, 69, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+
+        .pepper-icon {
+            font-size: 56px;
+            margin-bottom: 10px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-family: 'Zilla Slab', serif;
+            font-size: 28px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ffffff;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        
+        .header-logo-link {
+            display: inline-block;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo-link:hover {
+            transform: scale(1.05);
+        }
+
+        .header-logo {
+            width: 380px;
+            max-width: 70vw;
+            height: auto;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.8);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* SPECIES SELECTOR */
+        .species-selector {
+            background: var(--card-bg);
+            border: 1px solid var(--border-warm);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .selector-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        .species-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .species-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid var(--border-warm);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .species-btn:hover {
+            background: rgba(214, 96, 58, 0.1);
+            border-color: var(--accent-orange);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .species-btn.active {
+            background: linear-gradient(135deg, var(--flame-red), var(--deep-red));
+            border-color: var(--flame-red);
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(255, 69, 0, 0.3);
+        }
+
+        /* SPECIES CONTENT */
+        .species-content {
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        .species-content.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SPECIES INFO */
+        .species-info {
+            background: var(--card-bg);
+            border: 1px solid var(--border-warm);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .species-name {
+            font-family: 'Zilla Slab', serif;
+            font-size: 24px;
+            color: var(--accent-orange);
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .species-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .species-examples {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .examples-label {
+            font-size: 12px;
+            color: var(--accent-green);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .examples-list {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* CHARACTERISTICS */
+        .characteristics {
+            background: var(--card-bg);
+            border: 1px solid var(--border-warm);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .char-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .char-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(214, 96, 58, 0.2);
+        }
+
+        .char-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .char-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+
+        /* SECTION TITLE */
+        .section-title {
+            font-family: 'Zilla Slab', serif;
+            font-size: 20px;
+            color: var(--accent-orange);
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-warm);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* STEPS */
+        .step {
+            background: var(--card-bg);
+            border: 1px solid var(--border-warm);
+            border-left: 4px solid var(--accent-orange);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateX(5px);
+            border-left-width: 6px;
+            box-shadow: 0 4px 16px rgba(214, 96, 58, 0.2);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--flame-red), var(--deep-red));
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 16px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(255, 69, 0, 0.3);
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .step-content {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            padding-left: 44px;
+        }
+
+        /* TIPS/WARNING BOXES */
+        .info-box {
+            border-radius: 10px;
+            padding: 18px;
+            margin: 20px 0;
+        }
+
+        .info-box.tips {
+            background: rgba(129, 201, 149, 0.1);
+            border: 1px solid var(--accent-green);
+        }
+
+        .info-box.warning {
+            background: rgba(255, 69, 0, 0.1);
+            border: 1px solid var(--flame-red);
+        }
+
+        .info-box-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .info-box.tips .info-box-title {
+            color: var(--accent-green);
+        }
+
+        .info-box.warning .info-box-title {
+            color: var(--flame-red);
+        }
+
+        .info-box-content {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* SUBSCRIPTION SECTION STYLES */
+        .sub-form-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-warm);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        .sub-input-guide {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-warm);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+        .sub-input-guide:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+        }
+
+        .cta-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .cta-btn {
+            display: block;
+            padding: 16px 24px;
+            text-align: center;
+            text-decoration: none;
+            font-family: 'Zilla Slab', serif;
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-radius: 2px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-primary {
+            background: linear-gradient(to bottom, var(--flame-orange), var(--burnt-sienna));
+            color: #fff;
+            border: 2px solid var(--flame-orange);
+            box-shadow: 
+                0 4px 15px rgba(255,69,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .cta-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .cta-primary:hover::before {
+            opacity: 1;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,69,0,0.6);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: var(--gold-seal);
+            border: 2px solid rgba(255,215,0,0.3);
+        }
+
+        .cta-secondary:hover {
+            background: rgba(255,215,0,0.08);
+            border-color: var(--gold-seal);
+        }
+
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            border: 1px solid var(--border-warm);
+            
+        }
+
+        .footer-brand {
+            font-family: 'Zilla Slab', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-orange);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            text-decoration: none;
+        }
+
+        /* Logos */
+.logo-image {
+    width: 400px;
+    max-width: 90vw;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 0 5px rgba(255, 69, 0, 0.2));
+}
+
+.logo-small {
+    max-width: 400px;
+    height: auto;
+    display: block;
+    margin: 16px auto;
+    filter: drop-shadow(0 0 5px rgba(255, 69, 0, 0.2));
+}
+
+.main-logo-link {
+    display: block;
+    text-align: center;
+    margin: 0 auto 15px;
+    text-decoration: none;
+}
+        
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            h1 { font-size: 24px; }
+            .pepper-icon { font-size: 48px; }
+            .species-buttons { grid-template-columns: 1fr; }
+            .step-content { padding-left: 0; margin-top: 8px; }
+            .char-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- HEADER -->
+        <div class="header">
+            <div class="pepper-icon"></div>
+            <h1>Growing Guide</h1>
+            <a href="index.html" class="header-logo-link">
+                <img src="../GapkaLogo.png" alt="Homestead Inferno" class="header-logo" width="400" height="100">
+            </a>
+                </div>
+
+        <!-- MAIN CONTENT -->
+        <main>
+        
+        <!-- SPECIES SELECTOR -->
+        <div class="species-selector">
+            <div class="selector-label">Choose the species of your pepper listed on your seed packet, or choose the relevant vegetable.</div>
+            <div class="species-buttons">
+                <button class="species-btn active" data-species="chinense">
+                    Capsicum<br><em>Chinense</em>
+                </button>
+                <button class="species-btn" data-species="annuum">
+                    Capsicum<br><em>Annuum</em>
+                </button>
+                <button class="species-btn" data-species="baccatum">
+                    Capsicum<br><em>Baccatum</em>
+                </button>
+                <button class="species-btn" data-species="pubescens">
+                    Capsicum<br><em>Pubescens</em>
+                </button>
+                <button class="species-btn" data-species="frutescens">
+                    Capsicum<br><em>Frutescens</em>
+                </button>
+                <button class="species-btn" data-species="tomato">
+                    Tomatoes<br><em>Solanum Lycopersicum</em>
+                </button>
+                <button class="species-btn" data-species="eggplant">
+                    Eggplant<br><em>Solanum Melongena</em>
+                </button>
+                <button class="species-btn" data-species="cucumbers">
+                    Cucumbers<br><em>Cucumis Sativus</em>
+                </button>
+                <button class="species-btn" data-species="pumpkins">
+                    Pumpkins<br><em>Cucurbita</em>
+                </button>
+                
+            </div>
+        </div>
+
+        <!-- CHINENSE CONTENT -->
+        <div class="species-content active" data-species="chinense">
+            
+            <div class="species-info">
+                <div class="species-name">Capsicum Chinense</div>
+                <div class="species-description">
+                    The hottest group of peppers in the world! Originating from the Amazon and Caribbean. They have a fruity-citrus aroma and extreme capsaicin concentration. Plants are tall and spreading with textured leaves.
+                </div>
+                <div class="species-examples">
+                    <div class="examples-label">Example varieties:</div>
+                    <div class="examples-list">
+                        Carolina Reaper, Trinidad Scorpion, Ghost Pepper (Bhut Jolokia), Habanero, Scotch Bonnet, 7 Pot, Chocolate Bhutlah and more
+                    </div>
+                </div>
+            </div>
+
+            <div class="characteristics">
+                <div class="char-grid">
+                    <div class="char-item">
+                        <div class="char-label">Heat</div>
+                        <div class="char-value">100k - 2.2M+ SHU</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Maturity</div>
+                        <div class="char-value">90-120 days</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Germination temp</div>
+                        <div class="char-value">26-30C</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Height</div>
+                        <div class="char-value">80-150 cm</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title">Step-by-step guide</div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Seed preparation</div>
+                </div>
+                <div class="step-content">
+                                    Prepare a warm seedling mat or a heated tray to keep the substrate warm.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Sowing (depth 0.5-1 cm)</div>
+                </div>
+                <div class="step-content">
+                    Use a light seed mix. Temperature 26-30C is critical. Cover with plastic or keep the surface consistently moist. Germination: 7-14 days (Chinense is the slowest among species).
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Seedlings (16+ hours light)</div>
+                </div>
+                <div class="step-content">
+                    After sprouting, provide maximum light: 16-18h/day with supplemental lighting if needed. Water moderately; overwatering is worse than underwatering. Transplant early; Chinense likes root space.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Planting out (after frost, May)</div>
+                </div>
+                <div class="step-content">
+                    Spacing 50-80 cm (plants get large). Full sun and wind protection. Add compost and calcium.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Feeding</div>
+                </div>
+                <div class="step-content">
+                    First 2 months: nitrogen for vegetative growth. During flowering: increase potassium and phosphorus, reduce nitrogen. Feed regularly and stake plants because they get heavy with fruit.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <div class="step-title">Harvest (Aug-Oct)</div>
+                </div>
+                <div class="step-content">
+                    Fruit is ready when color changes fully and texture softens. Always use gloves! Reduce watering two weeks before harvest; heat increases by about 20-30%.
+                </div>
+            </div>
+
+            <div class="info-box tips">
+                <div class="info-box-title">Tips for Chinense</div>
+                <div class="info-box-content">
+                    <strong>Potassium stress:</strong> Reduce watering 10-14 days before harvest to stimulate capsaicin production.
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-title">Important for Chinense</div>
+                <div class="info-box-content">
+                    These are among the hottest peppers, up to 2.2M+ SHU. Always use gloves. Capsaicin oil can form droplets on fruit; do not touch your face.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ANNUUM CONTENT -->
+        <div class="species-content" data-species="annuum">
+            
+            <div class="species-info">
+                <div class="species-name">Capsicum Annuum</div>
+                    <div class="species-description">
+                    The most common pepper species: fast and forgiving, ideal for beginners. Originates from Mexico and Central America. Includes sweet bell peppers and hotter varieties like jalapeno.
+                </div>
+                <div class="species-examples">
+                    <div class="examples-label">Example varieties:</div>
+                        <div class="examples-list">
+                        Jalapeno, Serrano, Cayenne, Hungarian Wax, Shishito, Padron, Bell pepper, Poblano/Ancho and more
+                    </div>
+                </div>
+            </div>
+
+            <div class="characteristics">
+                <div class="char-grid">
+                    <div class="char-item">
+                        <div class="char-label">Heat</div>
+                            <div class="char-value">0 - 50k SHU</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Maturity</div>
+                        <div class="char-value">60-85 days</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Germination temperature</div>
+                        <div class="char-value">20-28C</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Height</div>
+                        <div class="char-value">40-90 cm</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title">Step-by-step guide</div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Preparation</div>
+                </div>
+                <div class="step-content">
+                    Annuum germinates quickly; you can start with the paper-towel method.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Sowing (depth 0.5 cm)</div>
+                </div>
+                <div class="step-content">
+                    Use light seed mix. Temperature 22-28C. Cover until germination. Germination: 3-10 days, the fastest species.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Seedlings (14+ hours light)</div>
+                </div>
+                <div class="step-content">
+                    Provide light from a south window or grow lamp. Water when topsoil dries. Transplant at two true leaves if needed.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Planting (mid-May)</div>
+                </div>
+                <div class="step-content">
+                    Spacing 40-50 cm. Tolerant to soil types but prefer sun. Great in pots on balconies. pH: 6.0-7.0.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Feeding</div>
+                </div>
+                <div class="step-content">
+                    Use a balanced fertilizer regularly. During fruiting, add potassium. Regular watering is the key to large fruit!
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <div class="step-title">Harvest (July-September)</div>
+                </div>
+                <div class="step-content">
+                    They ripen quickly. Jalapeno can be picked green. The longer it stays on the plant, the hotter it gets.
+                </div>
+            </div>
+
+            <div class="info-box tips">
+                <div class="info-box-title">Tips for Annuum</div>
+                <div class="info-box-content">
+                    <strong>Balcony growing:</strong> Annuum peppers are ideal for pots. Jalapeno, Serrano and Shishito grow well in 5-10L containers.<br><br>
+                    <strong>Green harvest:</strong> Jalapeno, Shishito and Padron can be picked green for milder heat or red for a hotter, sweeter flavor.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- BACCATUM CONTENT -->
+        <div class="species-content" data-species="baccatum">
+            
+            <div class="species-info">
+                <div class="species-name">Capsicum Baccatum</div>
+                <div class="species-description">
+                                "Peruvian peppers" are a group with a unique fruity-citrus flavor. Originating from South America (Peru, Bolivia). Flowers often have yellow or green spots inside, a typical trait.
+                            </div>
+                <div class="species-examples">
+                    <div class="examples-label">Example varieties:</div>
+                    <div class="examples-list">
+                        Aji Melocoton, Aji Amarillo, Aji Lemon Drop, Aji Panca, Aji Crystal, Aji Charapita, Bishop's Crown, Peppadew and more
+                    </div>
+                </div>
+            </div>
+
+            <div class="characteristics">
+                <div class="char-grid">
+                    <div class="char-item">
+                        <div class="char-label">Heat</div>
+                            <div class="char-value">500 - 50k SHU</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Maturity</div>
+                        <div class="char-value">75-100 days</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Germination temperature</div>
+                        <div class="char-value">24-28C</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Height</div>
+                        <div class="char-value">80-120 cm</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title">Step-by-step guide</div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Preparation</div>
+                </div>
+                    <div class="step-content">
+                    Can be germinated on a paper towel or sown directly into seed mix.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Sowing (depth 0.5-1 cm)</div>
+                </div>
+                <div class="step-content">
+                    Light soil, 24-28C and high humidity. Germination: 7-14 days. Patience helps: Baccatum does not rush.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Seedlings (16 hours of light)</div>
+                </div>
+                <div class="step-content">
+                    Give them plenty of light. Baccatum stretches in shade and grows quickly after transplanting.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Planting out (May)</div>
+                </div>
+                <div class="step-content">
+                    Spacing 60-70 cm. They love warmth and sun. Add organic matter; Baccatum appreciates fertile soil. pH: 6.0-6.5.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Feeding</div>
+                </div>
+                <div class="step-content">
+                    Moderate feeding. Potassium during fruiting brings out the citrus flavor. Water regularly, but avoid standing water.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <div class="step-title">Harvest (August-September)</div>
+                </div>
+                <div class="step-content">
+                    Fruit is ready when it reaches its characteristic color: yellow, orange or red.
+                </div>
+            </div>
+
+            <div class="info-box tips">
+                <div class="info-box-title">Tips for Baccatum</div>
+                <div class="info-box-content">
+                    <strong>Citrus flavor:</strong> Baccatum is known for a lemony-fruity aroma. Pick fully ripe fruit for maximum flavor.<br><br>
+                    <strong>Freezing:</strong> Aji Amarillo and Lemon Drop freeze beautifully without losing flavor.<br><br>
+                    <strong>Overwintering:</strong> In warm regions Baccatum can grow for several years. Bring it indoors for winter to extend fruiting!
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PUBESCENS CONTENT -->
+        <div class="species-content" data-species="pubescens">
+            
+            <div class="species-info">
+                <div class="species-name">Capsicum Pubescens</div>
+                <div class="species-description">
+                        "Mountain peppers" from the Andes! The only Capsicum with black seeds and pubescent leaves and stems. Cold-hardy, growing naturally at 2000-3000m. Rocoto and Manzano are Latin American legends.
+                    </div>
+                <div class="species-examples">
+                    <div class="examples-label">Example varieties:</div>
+                    <div class="examples-list">
+                        Rocoto (Peru), Manzano (Mexico), Locoto (Bolivia), Canario (yellow Rocoto)
+                    </div>
+                </div>
+            </div>
+
+            <div class="characteristics">
+                <div class="char-grid">
+                    <div class="char-item">
+                        <div class="char-label">Heat</div>
+                            <div class="char-value">30k - 100k SHU</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Maturity</div>
+                        <div class="char-value">120-150 days</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Germination temperature</div>
+                        <div class="char-value">18-24C (cooler!)</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Height</div>
+                        <div class="char-value">100-200 cm</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title">Step-by-step guide</div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Preparation</div>
+                </div>
+                    <div class="step-content">
+                    Pubescens can take a very long time to germinate, so be patient. Seeds have a thick coat and need time to absorb moisture.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Sowing (depth 1 cm)</div>
+                </div>
+                    <div class="step-content">
+                    WARNING: Pubescens does not like high temperatures. Keep 18-24C; at 28C+ seeds may fail. Germination: 7-20 days, the longest among Capsicum.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Seedlings (14+ hours of light)</div>
+                </div>
+                <div class="step-content">
+                    Plenty of light and moderate temperatures around 18-22C. It grows slowly; fuzzy leaves are normal.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Planting out (May)</div>
+                </div>
+                <div class="step-content">
+                    Spacing 80-100 cm for large plants. They can handle cooler climates and may survive +5C. They dislike heat above 30C. pH: 6.0-6.5.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Feeding</div>
+                </div>
+                <div class="step-content">
+                    Give plenty of organic matter: compost and humus. Pubescens is perennial in nature, so it loves rich soil. Water regularly.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <div class="step-title">Harvest (September-October)</div>
+                </div>
+                <div class="step-content">
+                    They ripen slowly, 120-150 days. Fruit is thick-walled, fleshy and juicy, almost apple-like. Red or yellow fruit can overwinter in a cool room.
+                </div>
+            </div>
+
+            <div class="info-box tips">
+                <div class="info-box-title">Tips for Pubescens</div>
+                <div class="info-box-content">
+                    <strong>Do not overheat:</strong> This is the only pepper species that does not like heat. Above 30C, growth suffers. Ideal temperature: 18-25C.<br><br>
+                    <strong>Perennial habit:</strong> You can keep it in a large pot and move it to a cool place for winter (+10-15C). It can live for years.<br><br>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-title">Important for Pubescens</div>
+                <div class="info-box-content">
+                    This is the most challenging pepper species to grow. It germinates slowly, ripens slowly and dislikes heat, but the unique flavor and cold tolerance are worth it.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FRUTESCENS CONTENT -->
+        <div class="species-content" data-species="frutescens">
+            
+            <div class="species-info">
+                <div class="species-name">Capsicum Frutescens</div>
+                <div class="species-description">
+                        Compact, highly productive peppers from Latin America. Plants are small but covered in tiny hot fruits. Fruits often grow vertically, the basis for classic Tabasco sauce.
+                    </div>
+                <div class="species-examples">
+                    <div class="examples-label">Example varieties:</div>
+                    <div class="examples-list">
+                        Tabasco, Thai Chili (Prik Kee Noo), African Bird's Eye, Malagueta, Piri Piri
+                    </div>
+                </div>
+            </div>
+
+            <div class="characteristics">
+                <div class="char-grid">
+                    <div class="char-item">
+                        <div class="char-label">Heat</div>
+                        <div class="char-value">30k - 100k SHU</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Maturity</div>
+                        <div class="char-value">70-95 days</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Germination temperature</div>
+                        <div class="char-value">24-28C</div>
+                    </div>
+                    <div class="char-item">
+                        <div class="char-label">Height</div>
+                        <div class="char-value">50-100 cm</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title">Step-by-step guide</div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Preparation (March)</div>
+                </div>
+                    <div class="step-content">
+                    Frutescens germinates well without pre-soak; either sow directly or use the wet towel method.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Sowing (depth 0.5 cm)</div>
+                </div>
+                <div class="step-content">
+                    Light soil, 24-28C, covered tray. Germination: 7-14 days. Faster than Chinense, slower than Annuum.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Seedlings (14 hours of light)</div>
+                </div>
+                <div class="step-content">
+                    Compact seedlings that do not stretch much. Give plenty of light. Suitable for windowsill growing.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Planting out (May)</div>
+                </div>
+                <div class="step-content">
+                    Spacing 40-50 cm. Great for 5-10L balcony pots, and they can become impressive plants in open ground. They love sun and warmth. pH: 6.0-6.5.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Feeding</div>
+                </div>
+                <div class="step-content">
+                    Moderate regular feeding. More potassium means more fruit. Water regularly, but do not overwater.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <div class="step-title">Harvest (July-October)</div>
+                </div>
+                <div class="step-content">
+                    Very productive: one plant can give 100+ small fruits. Fruit detaches easily and ripens from yellow to red. Pick at any stage.
+                </div>
+            </div>
+
+            <div class="info-box tips">
+                <div class="info-box-title">Tips for Frutescens</div>
+                <div class="info-box-content">
+                    <strong>Container growing:</strong> Frutescens are ideal for pots. Thai Chili and Tabasco grow well on a balcony or windowsill.<br><br>
+                    <strong>Perennial habit:</strong> Bring the plant indoors for winter and it can live for years, fruiting almost year-round.<br><br>
+                    <strong>Decorative habit:</strong> Fruits grow upright and look striking, with red, yellow and green fruit on one plant at the same time.
+                </div>
+            </div>
+        </div>
+
+    <div class="species-content" data-species="tomato">
+    
+    <div class="species-info">
+        <div class="species-name">Solanum Lycopersicum (Tomatoes)</div>
+        <div class="species-description">
+            Kings of the summer garden! From sweet cherries to beefsteak varieties. Tomatoes love sun, space and proper watering, a rewarding crop for true home flavor.
+        </div>
+        <div class="species-examples">
+            <div class="examples-label">Popular types:</div>
+            <div class="examples-list">
+                Cherry, Brandywine Pink, Mystery (heirloom), Pink Giant, Bear Paw, Mongolian Dwarf, yellow and black exotic varieties.
+            </div>
+        </div>
+    </div>
+
+    <div class="characteristics">
+        <div class="char-grid">
+            <div class="char-item">
+                <div class="char-label">Growth type</div>
+                <div class="char-value">Determinate / Indeterminate</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Maturity</div>
+                <div class="char-value">85-120 days</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Germination temperature</div>
+                <div class="char-value">22-26C</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Sowing depth</div>
+                <div class="char-value">1.0 - 1.5 cm</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">Step-by-step guide</div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">1</div>
+            <div class="step-title">Sowing (March - early April)</div>
+        </div>
+            <div class="step-content">
+            Tomatoes dislike surface sowing. Plant 1-1.5 cm deep in nutrient-rich mix. Cover until first true leaves appear. Germination: 4-7 days.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">2</div>
+            <div class="step-title">Light and temperature</div>
+        </div>
+            <div class="step-content">
+            Move to the brightest location after emergence. Tomatoes tend to stretch; aim for 12-14 hours of light. Optimal temps: day 20-22C, night 16-18C.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">3</div>
+            <div class="step-title">Pricking out and potting on</div>
+        </div>
+            <div class="step-content">
+            When two true leaves appear, pot into 0.5L cups. Tomatoes love deep planting; bury to the cotyledons to promote root growth.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">4</div>
+            <div class="step-title">Planting in soil / greenhouse</div>
+        </div>
+            <div class="step-content">
+            In greenhouse: mid-April. Outdoors: after May 15 (frost risk passed). Spacing 40-60 cm depending on variety.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">5</div>
+            <div class="step-title">Care and pruning side shoots</div>
+        </div>
+            <div class="step-content">
+            Indeterminate types need staking and side-shoot removal. Water at the root and avoid wetting foliage.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">6</div>
+            <div class="step-title">Harvest (July - October)</div>
+        </div>
+            <div class="step-content">
+            Harvest fully ripe for best flavor. If frost is forecast, pick mature green fruit; they will ripen indoors.
+        </div>
+    </div>
+    <div class="info-box tips">
+        <div class="info-box-title">Tips for Tomatoes</div>
+        <div class="info-box-content">
+            <strong>Boric acid:</strong> Spraying during flowering helps set fruit in hot weather.<br><br>
+            <strong>Mulching:</strong> Straw or hay conserves moisture and reduces soil-borne pathogens contacting leaves.
+        </div>
+    </div>
+</div>
+
+<div class="species-content" data-species="eggplant">
+    
+        <div class="species-info">
+        <div class="species-name">Solanum Melongena (Eggplant)</div>
+        <div class="species-description">
+            Demanding garden residents that love steady warmth, moisture and rich soil. From classic purple to white and striped types, they make a beautiful and productive crop.
+        </div>
+        <div class="species-examples">
+            <div class="examples-label">Popular types:</div>
+            <div class="examples-list">
+                Long Pop, Almaz, Helios (round), White Night (white), Graffiti, Matrosik (striped), long Japanese types and Black Beauty.
+            </div>
+        </div>
+    </div>
+
+    <div class="characteristics">
+        <div class="char-grid">
+            <div class="char-item">
+                <div class="char-label">Spiciness</div>
+                <div class="char-value">0 SHU (mild)</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Maturity</div>
+                <div class="char-value">100-140 days</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Germination temperature</div>
+                <div class="char-value">25-30C</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Sensitivity</div>
+                <div class="char-value">High sensitivity to cold</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">Step-by-step guide</div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">1</div>
+            <div class="step-title">Sowing (February - March)</div>
+        </div>
+        <div class="step-content">
+            Eggplants have a long season. Sow 0.5-1 cm deep. They love warmth; below 20C they may fail to germinate. Use stimulants or pre-germination on a towel.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">2</div>
+            <div class="step-title">Seedling care</div>
+        </div>
+        <div class="step-content">
+            Eggplants hate root damage. It is better to grow them without pricking out, directly in individual cups. They need 14+ hours of light and stable temperatures without drafts.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">3</div>
+            <div class="step-title">Hardening off (required)</div>
+        </div>
+        <div class="step-content">
+            This is a very tender crop. Before planting out, gradually introduce sun and fresh air. If moved straight into a greenhouse at +10C nights, plants may drop leaves.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">4</div>
+            <div class="step-title">Planting out (late May)</div>
+        </div>
+        <div class="step-content">
+            Plant in greenhouse or open ground only when night temperatures are steadily above +15C. Eggplants love rich soil with humus and plenty of sun. Spacing: 40-50 cm.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">5</div>
+            <div class="step-title">Watering and feeding</div>
+        </div>
+        <div class="step-content">
+            Use warm water only. Cold water can lead to disease. Feed with nitrogen early and potassium during flowering. Watch for Colorado potato beetles; they love eggplants.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">6</div>
+            <div class="step-title">Harvest (August - September)</div>
+        </div>
+        <div class="step-content">
+            Cut fruit with pruners when it has a glossy shine. If the skin turns matte, the eggplant is overripe and may taste bitter. Young fruit is best.
+        </div>
+    </div>
+
+    <div class="info-box tips">
+        <div class="info-box-title">Tips for Eggplant</div>
+        <div class="info-box-content">
+            <strong>Pest protection:</strong> Plant near marigolds or use lightweight row cover early to deter beetles.
+        </div>
+    </div>
+</div>
+
+<div class="species-content" data-species="cucumbers">
+    
+    <div class="species-info">
+        <div class="species-name">Cucumis Sativus (Cucumbers)</div>
+        <div class="species-description">
+            Garden sprinters! Cucumbers produce quickly but need constant care: lots of water, steady warmth and support for their tendrils. From pickling types to exotic long slicers.
+        </div>
+        <div class="species-examples">
+            <div class="examples-label">Farm favorites:</div>
+            <div class="examples-list">
+                Nizhynskyi (classic pickling cucumber), Tianshan (long Chinese type), Arka (reliable and productive).
+            </div>
+        </div>
+    </div>
+
+    <div class="characteristics">
+        <div class="char-grid">
+            <div class="char-item">
+                <div class="char-label">Pollination</div>
+                <div class="char-value">Bee-pollinated / Parthenocarpic</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Maturity</div>
+                <div class="char-value">38-55 days</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Soil temperature</div>
+                <div class="char-value">16-18C minimum</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Water needs</div>
+                <div class="char-value">Very high</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">Step-by-step guide</div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">1</div>
+            <div class="step-title">Sowing (April - May)</div>
+        </div>
+            <div class="step-content">
+            Cucumbers have delicate roots. Sow directly in soil or peat pots to avoid transplant shock. Depth 2 cm. Germination 3-5 days.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">2</div>
+            <div class="step-title">Training vines</div>
+        </div>
+        <div class="step-content">
+            For maximum yield, use trellises or netting. Vertical growing saves space, improves airflow and keeps fruit cleaner and healthier.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">3</div>
+            <div class="step-title">Watering (warm water only)</div>
+        </div>
+        <div class="step-content">
+            Cucumbers are about 95% water. Water regularly in the morning or evening. Cold well water can cause stress and bitterness; use settled warm water at the root.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">4</div>
+            <div class="step-title">Fast feeding</div>
+        </div>
+        <div class="step-content">
+            Cucumbers grow quickly and feed heavily. Start with nitrogen for leaves, then switch to potassium and phosphorus during flowering. They love organic matter and herbal infusions.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">5</div>
+            <div class="step-title">Temperature swings</div>
+        </div>
+        <div class="step-content">
+            If night temperature drops below +10C, cucumber growth stops. At 0C, the plant dies quickly.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">6</div>
+            <div class="step-title">Harvest (June - August)</div>
+        </div>
+        <div class="step-content">
+            The more often you pick, the more fruit grows. Do not let cucumbers overgrow and turn yellow; it drains the plant. For pickling types, 8-10 cm is ideal.
+        </div>
+    </div>
+
+    <div class="info-box tips">
+        <div class="info-box-title">Tips for Cucumbers</div>
+        <div class="info-box-content">
+            <strong>Avoid bitterness:</strong> Bitterness comes from stress (drought, cold, heat). Keep soil evenly moist, not waterlogged.<br><br>
+            <strong>CO2 boost:</strong> In a greenhouse cucumbers appreciate extra CO2; decomposing plant matter in a corner bucket can help.
+        </div>
+    </div>
+</div>
+
+<div class="species-content" data-species="pumpkins">
+    
+    <div class="species-info">
+        <div class="species-name">Cucurbita (Pumpkins)</div>
+        <div class="species-description">
+            Heavy-hitters of the garden, from dessert-sized varieties to real giants. Pumpkins are great for cooking and autumn decor.
+        </div>
+        <div class="species-examples">
+            <div class="examples-label">Farm favorites:</div>
+            <div class="examples-list">
+                Uchiki Kuri (Hokkaido, sweet and edible with skin), Atlanta (potential giant), nutmeg-type pumpkins.
+            </div>
+        </div>
+    </div>
+
+    <div class="characteristics">
+        <div class="char-grid">
+            <div class="char-item">
+                <div class="char-label">Storage life</div>
+                <div class="char-value">4-8 months</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Maturity</div>
+                <div class="char-value">90-120 days</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Area per plant</div>
+                <div class="char-value">2-4 m2</div>
+            </div>
+            <div class="char-item">
+                <div class="char-label">Feeding needs</div>
+                <div class="char-value">Extremely high</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">Step-by-step guide</div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">1</div>
+            <div class="step-title">Sowing (May)</div>
+        </div>
+            <div class="step-content">
+            Pumpkins dislike cold soil. Sow when soil is steadily warm (+12-15C). Depth 3-5 cm. You can transplant seedlings for earlier harvest, using individual pots.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">2</div>
+            <div class="step-title">A place in full sun</div>
+        </div>
+        <div class="step-content">
+            Choose the sunniest spot. Pumpkin is a vine and needs space. It grows beautifully on compost piles or warm beds with lots of organic matter.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">3</div>
+            <div class="step-title">Training and pollination</div>
+        </div>
+        <div class="step-content">
+            For large fruit such as Atlanta, leave 1-2 ovaries per vine. For portion-size pumpkins such as Hokkaido, you can leave more. If pollinators are scarce, hand-pollinate by moving pollen from male to female flowers.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">4</div>
+            <div class="step-title">Watering and support</div>
+        </div>
+        <div class="step-content">
+            Water deeply at the root while fruit is growing. Place small boards or straw under pumpkins so they do not rot on damp soil.
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-header">
+            <div class="step-number">5</div>
+            <div class="step-title">Harvest (before frost)</div>
+        </div>
+        <div class="step-content">
+            The main sign of ripeness is a dry, corky stem. Always cut with the stem attached or the pumpkin will spoil faster. Before storage, let pumpkins cure in the sun for a week.
+        </div>
+    </div>
+
+    <div class="info-box tips">
+        <div class="info-box-title">Tips for pumpkins</div>
+        <div class="info-box-content">
+            <strong>Sugar concentration:</strong> Hokkaido (Uchiki Kuri) becomes sweeter a month or two after harvest. Do not rush to eat it immediately.<br><br>
+        </div>
+    </div>
+        </div>
+        
+        <!-- Subscription block -->
+        <div class="sub-form-container" id="subscribe-section">
+            <h3 class="section-title" style="border:none; margin-top:0; justify-content: center;">Join the Gapka Homestead Inferno club</h3>
+            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px;">
+                Leave your email to receive growing secrets and 2026 harvest news first!
+            </p>
+            <form onsubmit="handleGeneralSubscribe(event)">
+                <input type="email" id="sub-email" placeholder="Your Email" required class="sub-input-guide">
+                <button type="submit" id="sub-btn" class="species-btn active" style="width: 100%; border: none;">Join</button>
+            </form>
+            <!-- Honeypot (bot protection) -->
+            <div style="position: absolute; left: -9999px; opacity: 0;">
+                <input type="text" id="hp_sub_guide" tabindex="-1" autocomplete="off">
+            </div>
+        </div>
+
+        </main>
+        
+        <div class="cta-container">
+                <a href="sauces.html" class="cta-btn cta-primary">Order sauces</a>
+                <a href="seedsandseedlings.html" class="cta-btn cta-secondary">Seed catalog</a>
+            </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+    <a href="https://gapkainferno.github.io/index.html" class="main-logo-link"> 
+        <img src="../GapkaLogo.png" alt="Homestead" class="logo-image" width="400" height="100"></a>
+            <div class="footer-text">
+               2026 Gapka Homestead Inferno. Farm to Bottle & Seed to Harvest
+                <br>
+                <strong>Need help?</strong> Write to us:<br>
+                <a href="mailto:homestead.inferno@gmail.com" style="color: var(--accent-orange); text-decoration: none;">homestead.inferno@gmail.com</a>
+              <!-- @homesteadinferno -->
+            </div>
+            <div style="text-align: center; margin-top: 20px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;">
+        <p style="font-size: 14px; opacity: 0.8; font-style: italic;">
+            Latest post: <a href="blog.html" style="color: var(--accent-orange); text-decoration: underline;">How to grow strong plants from seed without stress - read INFERNO Notes.</a>
+        </p>
+    </div>
+    </div>
+
+    <script>
+        // Switching between species
+        const speciesButtons = document.querySelectorAll('.species-buttons .species-btn');
+        const speciesContents = document.querySelectorAll('.species-content');
+
+        speciesButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const species = btn.getAttribute('data-species');
+                
+                // Update buttons
+                speciesButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update content
+                speciesContents.forEach(content => {
+                    if (content.getAttribute('data-species') === species) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+
+                // Smooth scroll to content
+                setTimeout(() => {
+                    document.querySelector('.species-content.active').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                }, 100);
+            });
+        });
+
+        // Light scroll animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.step, .info-box, .characteristics, .sub-form-container').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- SUBSCRIPTION LOGIC (GOOGLE SHEETS) ---
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyL5WKFxLfStcgOQHasZ4QYi5wh1jxNVKhis495gjd6BGAlhex8e1b6607fUV4Y0zUA/exec";
+
+        function getVisitorId() {
+            let id = localStorage.getItem('ghi_visitor_id');
+            if (!id) {
+                id = 'v_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+                localStorage.setItem('ghi_visitor_id', id);
+            }
+            return id;
+        }
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        async function sendToGoogleSheet(data) {
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                return true;
+            } catch (error) {
+                console.error("Send error:", error);
+                return false;
+            }
+        }
+
+        async function handleGeneralSubscribe(event) {
+            event.preventDefault();
+            const honeypot = document.getElementById('hp_sub_guide');
+            if (honeypot && honeypot.value !== "") return; // Bot detect
+
+            const emailInput = document.getElementById('sub-email');
+            const email = emailInput.value.trim();
+            const btn = document.getElementById('sub-btn');
+            
+            if (!validateEmail(email)) {
+                alert("Please enter a valid email address!");
+                return;
+            }
+
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.textContent = "SAVING...";
+
+            await sendToGoogleSheet({
+                date: new Date().toLocaleString("uk-UA"),
+                email: email,
+                orderType: "MARKETING_SUBSCRIPTION",
+                details: "Subscription from growing guide",
+                secret_token: "summerof26",
+                client_id: getVisitorId()
+            });
+
+            // Visual feedback
+            btn.textContent = "YOU ARE IN!";
+            btn.style.background = "linear-gradient(135deg, #4caf50, #2e7d32)";
+            emailInput.value = "";
+            
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                btn.style.background = "";
+            }, 4000);
+        }
+    </script>
+<script type="module" src="../analytics.js"></script><script src="../language-switcher.js"></script>
+</body>
+</html>
