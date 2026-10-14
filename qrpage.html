@@ -3,759 +3,549 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 Gapka’s Homestead Inferno | Certified Heat Survivor  </title>
+    <meta name="theme-color" content="#1a100a">
+    <meta name="description" content="Дякуємо, що обрали соус Gapka's Homestead Inferno. Познайомтеся з нашими смаками та насінням перців.">
+    <title>Дякуємо за покупку | Gapka Homestead Inferno</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Zilla Slab для заголовків (жирний geometric slab) + Courier Prime для body (typewriter vibe) -->
-    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@700&family=Courier+Prime:wght@400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Roboto+Slab:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --flame-orange: #ff4500;
-            --burnt-sienna: #d84315;
-            --charcoal: #1a0f0a;
-            --cream: #f5e6d3;
-            --gold-seal: #ffd700;
-            --smoke: rgba(255,255,255,0.08);
+            color-scheme: light;
+            --paper: #f7f3e8;
+            --ink: #183d32;
+            --muted: #52645a;
+            --tomato: #d94329;
+            --lime: #d5e681;
+            --line: rgba(24, 61, 50, .2);
+            --mono: 'DM Mono', monospace;
+            --display: 'Fraunces', Georgia, serif;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
-            background: 
-                radial-gradient(ellipse 800px 400px at 50% -10%, rgba(255,69,0,0.15), transparent),
-                radial-gradient(ellipse at 80% 120%, rgba(216,67,21,0.12), transparent),
-                linear-gradient(180deg, #0d0806 0%, #1a0f0a 40%, #0d0806 100%);
-            background-attachment: fixed;
-            color: var(--cream);
-            font-family: 'Courier Prime', monospace;
-            min-height: 100vh;
+            margin: 0;
+            min-width: 320px;
+            color: var(--ink);
+            background-color: var(--paper);
+            background-image: radial-gradient(rgba(24, 61, 50, .1) .7px, transparent .7px);
+            background-size: 16px 16px;
+            font-family: var(--mono);
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: inherit; }
+        button, select { font: inherit; }
+        .site-header, main, .site-footer { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+        .site-header {
+            min-height: 82px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
+            gap: 20px;
+            border-bottom: 1px solid var(--line);
         }
-
-        /* Animated grain texture overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: 
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px);
-            pointer-events: none;
-            opacity: 0.4;
-            animation: grain 8s steps(10) infinite;
-        }
-
-        @keyframes grain {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-5%, -10%); }
-            30% { transform: translate(3%, 5%); }
-            50% { transform: translate(-8%, 3%); }
-            70% { transform: translate(4%, -8%); }
-            90% { transform: translate(-3%, 6%); }
-        }
-
-        /* Floating embers effect */
-        .ember {
-            position: fixed;
-            width: 4px;
-            height: 4px;
-            background: var(--flame-orange);
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0;
-            filter: blur(1px);
-            animation: float-up 6s ease-in infinite;
-        }
-
-        @keyframes float-up {
-            0% {
-                transform: translateY(100vh) translateX(0) scale(1);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) translateX(50px) scale(0);
-                opacity: 0;
-            }
-        }
-
-        /* Main certificate container */
-        .certificate {
-            max-width: 520px;
-            width: 100%;
-            background: 
-                linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 100%),
-                #0d0806;
-            border: 3px solid var(--burnt-sienna);
-            border-radius: 0;
-            padding: 0;
-            box-shadow: 
-                0 30px 80px rgba(0,0,0,0.9),
-                inset 0 0 0 1px rgba(255,255,255,0.05),
-                inset 0 0 80px rgba(255,69,0,0.08);
-            position: relative;
-            animation: fadeIn 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.96);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* Decorative corner brackets */
-        .certificate::before,
-        .certificate::after {
-            content: '';
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--gold-seal);
-        }
-        .certificate::before {
-            top: 12px;
-            left: 12px;
-            border-right: none;
-            border-bottom: none;
-        }
-        .certificate::after {
-            bottom: 12px;
-            right: 12px;
-            border-left: none;
-            border-top: none;
-        }
-
-        /* Header section */
-        .cert-header {
-            background: linear-gradient(to bottom, var(--burnt-sienna), #a02f1a);
-            padding: 32px 20px 28px;
-            text-align: center;
-            position: relative;
-            border-bottom: 2px solid var(--gold-seal);
-        }
-
-        .flame-icon {
-            font-size: 48px;
-            display: inline-block;
-            animation: flicker 2s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px var(--flame-orange));
-        }
-
-        @keyframes flicker {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.85; transform: scale(1.05); }
-        }
-
-        .cert-title {
-            font-family: 'Zilla Slab', serif;
-            font-size: 38px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: #fff;
-            text-shadow: 
-                2px 2px 0 rgba(0,0,0,0.5),
-                0 0 20px rgba(255,69,0,0.6);
-            margin: 12px 0 8px;
-            line-height: 1.1;
-        }
-
-        .cert-subtitle {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.25em;
-            color: var(--cream);
-            opacity: 0.9;
-            font-weight: 700;
-        }
-
-        /* Badge/Seal */
-        .seal {
-            position: absolute;
-            top: -25px;
-            right: 30px;
-            width: 80px;
-            height: 80px;
-            background: 
-                radial-gradient(circle, var(--gold-seal) 0%, #b8860b 100%);
-            border-radius: 50%;
-            border: 3px solid var(--charcoal);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Zilla Slab', serif;
+        .brand { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; }
+        .brand img { display: block; width: 150px; height: auto; }
+        .header-note, .eyebrow, .step-label, .result-kicker, .footer-note {
             font-size: 11px;
-            text-align: center;
-            color: var(--charcoal);
-            font-weight: 700;
-            text-transform: uppercase;
-            line-height: 1.2;
-            box-shadow: 
-                0 8px 20px rgba(0,0,0,0.6),
-                inset 0 2px 4px rgba(255,255,255,0.4);
-            animation: seal-pulse 3s ease-in-out infinite;
-        }
-
-        @keyframes seal-pulse {
-            0%, 100% { transform: rotate(-5deg) scale(1); }
-            50% { transform: rotate(5deg) scale(1.05); }
-        }
-
-        /* Body content */
-        .cert-body {
-            padding: 40px 30px 30px;
-            text-align: center;
-        }
-
-        .cert-message {
-            font-size: 15px;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            color: rgba(245,230,211,0.85);
-        }
-
-        .cert-message strong {
-            color: var(--flame-orange);
-            font-weight: 700;
+            font-weight: 500;
+            letter-spacing: .06em;
             text-transform: uppercase;
         }
-
-        .divider {
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(to right, transparent, var(--gold-seal), transparent);
-            margin: 25px auto;
+            .header-note { color: var(--muted); font-size: 12px; }
+            .header-note { text-align: right; font-size: 12px; }
+            .eyebrow { color: #e17b46; font-size: 13px; }
+        .hero {
+            display: grid;
+            grid-template-columns: 1.03fr .97fr;
+            align-items: center;
+            gap: clamp(32px, 7vw, 90px);
+            padding: 62px 0 72px;
         }
-
-        /* Recipe section */
-        .inferno-guide {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 4px;
-            padding: 20px;
-            margin: 25px 0;
-            text-align: left;
-        }
-
-        .inferno-guide h3 {
-            font-family: 'Zilla Slab', serif;
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--gold-seal);
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .recipe-item {
+        .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--tomato); }
+        .eyebrow::before { content: ''; width: 22px; height: 2px; background: currentColor; }
+        h1, h2, p { margin-top: 0; }
+        h1, h2 { font-family: var(--display); font-weight: 700; letter-spacing: 0; }
+        h1 { max-width: 590px; margin: 17px 0 20px; font-size: clamp(48px, 6vw, 76px); line-height: .99; }
+        h1 em { color: var(--tomato); font-weight: 600; }
+        .hero-copy { max-width: 470px; color: var(--muted); font-size: 15px; line-height: 1.8; }
+        .hero-copy strong { color: var(--ink); font-weight: 500; }
+        .thank-you {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 12px;
-            font-size: 13px;
-            line-height: 1.6;
+            gap: 13px;
+            max-width: 455px;
+            margin-top: 29px;
+            padding-top: 18px;
+            border-top: 1px solid var(--line);
+            font-size: 12px;
+            line-height: 1.7;
         }
-
-        .recipe-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .recipe-emoji {
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .recipe-label {
-            font-weight: 700;
-            color: var(--cream);
-        }
-
-        /* Buttons */
-        .cta-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 30px;
-        }
-
-        .cta-btn {
-            display: block;
-            padding: 16px 24px;
-            text-align: center;
-            text-decoration: none;
-            font-family: 'Zilla Slab', serif;
-            font-size: 15px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            border-radius: 2px;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-primary {
-            background: linear-gradient(to bottom, var(--flame-orange), var(--burnt-sienna));
-            color: #fff;
-            border: 2px solid var(--flame-orange);
-            box-shadow: 
-                0 4px 15px rgba(255,69,0,0.4),
-                inset 0 1px 0 rgba(255,255,255,0.3);
-        }
-
-        .cta-primary::before {
-            content: '';
+        .thank-you-mark { color: var(--tomato); font-size: 19px; line-height: 1; }
+        .photo-wrap { position: relative; min-width: 0; }
+        .photo-wrap img { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border: 1px solid var(--ink); }
+        .photo-caption {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
-            opacity: 0;
-            transition: opacity 0.25s ease;
+            right: -15px;
+            bottom: 18px;
+            max-width: 190px;
+            padding: 12px 15px;
+            color: var(--paper);
+            background: var(--ink);
+            font-size: 11px;
+            line-height: 1.55;
+            transform: rotate(-2deg);
         }
-
-        .cta-primary:hover::before {
-            opacity: 1;
-        }
-
-        .cta-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255,69,0,0.6);
-        }
-
-        .cta-secondary {
+        .game-section { padding: 40px 0 70px; border-top: 1px solid var(--line); }
+        .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 29px; }
+        .section-heading h2 { max-width: 570px; margin: 9px 0 0; font-size: clamp(34px, 4.5vw, 52px); line-height: 1.02; }
+        .section-aside { max-width: 220px; margin: 0 0 4px; color: var(--muted); font-size: 11px; line-height: 1.7; }
+        .game-board { display: grid; grid-template-columns: minmax(0, 1.14fr) minmax(270px, .86fr); border: 1px solid var(--ink); background: var(--paper); }
+        .game-controls { padding: clamp(22px, 4vw, 40px); }
+        .step-label { display: block; margin-bottom: 11px; color: var(--muted); }
+        .field-group + .field-group { margin-top: 25px; }
+        .choice-row { display: flex; flex-wrap: wrap; gap: 9px; }
+        .choice {
+            min-height: 43px;
+            padding: 9px 14px;
+            border: 1px solid var(--line);
+            border-radius: 2px;
+            color: var(--ink);
             background: transparent;
-            color: var(--gold-seal);
-            border: 2px solid rgba(255,215,0,0.3);
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
         }
-
-        .cta-secondary:hover {
-            background: rgba(255,215,0,0.08);
-            border-color: var(--gold-seal);
+        .choice:hover { border-color: var(--ink); transform: translateY(-2px); }
+        .choice[aria-pressed="true"] { border-color: var(--ink); color: var(--paper); background: var(--ink); }
+        .heat-choice[aria-pressed="true"] { border-color: var(--tomato); background: var(--tomato); }
+        .mix-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 50px;
+            margin-top: 29px;
+            padding: 0 20px;
+            border: 1px solid var(--tomato);
+            border-radius: 2px;
+            color: #fff;
+            background: var(--tomato);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: background-color .18s ease, color .18s ease, transform .18s ease;
         }
-
-        /* Footer */
-        
-.footer-logo-link {
-    display: inline-block;
-    margin-bottom: 10px;
-    transition: transform 0.3s ease;
-}
-
-.footer-logo-link:hover {
-    transform: scale(1.05);
-}
-
-.footer-logo {
-    width: 200px;
-    max-width: 80vw;
-    height: auto;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
-}
-
-.cert-footer {
-            border-top: 1px solid rgba(255,255,255,0.08);
-            padding: 20px;
-            text-align: center;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: rgba(245,230,211,0.4);
-        }
-
-        .cert-footer strong {
-            color: var(--gold-seal);
-            font-weight: 700;
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .certificate {
-                border-width: 2px;
-            }
-
-            .cert-title {
-                font-size: 32px;
-            }
-
-            .seal {
-                width: 70px;
-                height: 70px;
-                top: -20px;
-                right: 20px;
-                font-size: 10px;
-            }
-
-            .cert-body {
-                padding: 30px 20px 20px;
-            }
-
-            .flame-icon {
-                font-size: 40px;
-            }
-        }
-
-        /* Generate random floating embers */
-        .ember:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 8s; }
-        .ember:nth-child(2) { left: 25%; animation-delay: 2s; animation-duration: 7s; }
-        .ember:nth-child(3) { left: 45%; animation-delay: 4s; animation-duration: 9s; }
-        .ember:nth-child(4) { left: 60%; animation-delay: 1s; animation-duration: 6s; }
-        .ember:nth-child(5) { left: 80%; animation-delay: 3s; animation-duration: 7.5s; }
-        .ember:nth-child(6) { left: 90%; animation-delay: 5s; animation-duration: 8.5s; }
-        .logo-image {
-    width: 400px;
-    max-width: 90vw;
-    height: auto;
-    filter: drop-shadow(0 0 5px rgba(255, 69, 0, 0.2));
-    align-items: center;
-}
-/* ВІДКОРИГОВАНІ СТИЛІ ДЛЯ ЛОГО ВНИЗУ */
-/* --- SUBSCRIBE SECTION FOR QR PAGE --- */
-        .club-subscribe {
-            margin-top: 40px;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px dashed rgba(216, 67, 21, 0.5); /* колір burnt-sienna з прозорістю */
-            padding: 25px 20px;
-            border-radius: 4px;
-            position: relative;
-        }
-
-        .club-title {
-            font-family: 'Zilla Slab', serif;
-            font-size: 20px;
-            color: var(--flame-orange);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
-        }
-
-        .club-desc {
-            font-size: 13px;
-            line-height: 1.6;
-            color: rgba(245,230,211,0.8);
-            margin-bottom: 20px;
-        }
-
-        .subscribe-form {
+        .mix-button:hover { color: var(--tomato); background: transparent; transform: translateY(-2px); }
+        .mix-button:focus-visible, .choice:focus-visible, a:focus-visible { outline: 3px solid #6d8e39; outline-offset: 3px; }
+        .result-panel {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            justify-content: center;
+            min-height: 315px;
+            padding: clamp(24px, 4vw, 40px);
+            color: var(--paper);
+            background: var(--ink);
+        }
+        .result-kicker { color: var(--lime); }
+        .result-title { margin: 15px 0 11px; font-family: var(--display); font-size: 34px; line-height: 1.07; }
+        .result-description { min-height: 66px; margin-bottom: 22px; color: rgba(247, 243, 232, .78); font-size: 12px; line-height: 1.8; }
+        .result-pairing { padding-top: 15px; border-top: 1px solid rgba(247, 243, 232, .25); color: var(--lime); font-size: 11px; line-height: 1.6; }
+        .game-board.is-revealed .result-title { animation: reveal .45s cubic-bezier(.2,.8,.2,1) both; }
+        @keyframes reveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .more-sauce {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
+            gap: 22px;
+            padding: 24px 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+        .more-sauce p { max-width: 590px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+        .text-link { flex: 0 0 auto; color: var(--tomato); font-size: 12px; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+        .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 24px 0 30px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+        .footer-note { color: var(--ink); }
+        .sauce-section { padding: 58px 0 64px; border-top: 1px solid var(--line); }
+        .section-intro { max-width: 710px; margin-bottom: 30px; }
+        .section-intro h2, .seed-copy h2 { margin: 12px 0 14px; font-size: clamp(36px, 5vw, 58px); line-height: 1.02; }
+        .section-intro p, .seed-copy > p { max-width: 760px; margin-bottom: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
+        .sauce-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+        .sauce-item { display: grid; grid-template-columns: minmax(115px, .72fr) 1.28fr; align-items: center; min-width: 0; border-top: 1px solid rgba(234, 221, 207, .28); border-bottom: 1px solid rgba(234, 221, 207, .28); }
+        .sauce-image { display: block; width: 100%; height: 230px; object-fit: contain; }
+        .sauce-copy { padding: 23px 20px 23px 8px; }
+        .sauce-name { margin: 0 0 7px; color: #eaddcf; font-family: 'Oswald', sans-serif; font-size: clamp(22px, 2.5vw, 30px); line-height: 1.05; }
+        .sauce-profile { margin: 0 0 10px; color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+        .sauce-copy p:not(.sauce-profile) { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+        .sauce-link { display: inline-flex; gap: 8px; margin-top: 16px; color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: .05em; text-decoration: none; text-transform: uppercase; }
+        .sauce-link:hover, .seed-catalog-link:hover { color: #f2e7d9; }
+        .coming-note { margin: 25px 0 0; color: rgba(234, 221, 207, .7); font-size: 11px; line-height: 1.7; text-align: center; }
+        .coming-note span { color: #e17b46; }
+        .or-divider { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: clamp(16px, 5vw, 62px); padding: 25px 0 35px; }
+        .or-divider::before, .or-divider::after { height: 1px; background: var(--line); content: ''; }
+        .or-divider span { color: #e17b46; font-family: 'Oswald', sans-serif; font-size: clamp(68px, 13vw, 132px); font-weight: 700; line-height: .9; }
+        .seed-section { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(30px, 7vw, 86px); align-items: start; padding: 10px 0 72px; }
+        .seed-copy { position: sticky; top: 24px; }
+        .seed-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+        .seed-choice { min-height: 86px; padding: 15px 14px 15px 0; border: 0; border-bottom: 1px solid var(--line); color: var(--ink); background: transparent; cursor: pointer; text-align: left; transition: color .18s ease, padding-left .18s ease; }
+        .seed-choice:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--line); }
+        .seed-choice strong { display: block; font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 600; text-transform: uppercase; }
+        .seed-choice span { display: block; margin-top: 5px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+        .seed-choice:hover, .seed-choice[aria-pressed="true"] { color: #e17b46; }
+        .seed-choice:focus-visible, .sauce-link:focus-visible { outline: 3px solid #e17b46; outline-offset: 3px; }
+        .seed-detail { min-height: 48px; margin: 17px 0 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+        .seed-catalog-link { display: inline-flex; align-items: center; gap: 9px; min-height: 48px; margin-top: 13px; padding: 0 18px; border: 1px solid #e17b46; color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: .05em; text-decoration: none; text-transform: uppercase; transition: color .18s ease, background-color .18s ease; }
+        .seed-catalog-link:hover { color: #1a100a; background: #e17b46; }
+        @media (max-width: 1000px) {
+            .sauce-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 720px) {
+            .site-header, main, .site-footer { width: min(100% - 32px, 540px); }
+            .site-header { min-height: 70px; }
+            .brand img { width: 126px; }
+            .header-note { max-width: 150px; font-size: 9px; }
+            .hero { grid-template-columns: 1fr; gap: 30px; padding: 44px 0 48px; }
+            h1 { max-width: 530px; font-size: clamp(48px, 12vw, 68px); }
+            .hero-copy { font-size: 14px; }
+            .photo-wrap { width: min(100%, 440px); margin-inline: auto; }
+            .photo-caption { right: -6px; }
+            .game-section { padding: 33px 0 48px; }
+            .section-heading { display: block; }
+            .section-aside { margin-top: 14px; }
+            .game-board { grid-template-columns: 1fr; }
+            .result-panel { min-height: 270px; }
+            .more-sauce { align-items: flex-start; flex-direction: column; gap: 13px; }
+        }
+        @media (max-width: 420px) {
+            .site-header, main, .site-footer { width: calc(100% - 28px); }
+            .brand img { width: 112px; }
+            .header-note { max-width: 130px; }
+            .choice { padding-inline: 11px; font-size: 11px; }
+            .site-footer { align-items: flex-start; flex-direction: column; gap: 8px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
         }
 
-        .sub-input {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 69, 0, 0.3);
-            color: var(--cream);
-            font-family: 'Courier Prime', monospace;
-            font-size: 14px;
+        :root {
+            color-scheme: dark;
+            --paper: #1a100a;
+            --ink: #f2e7d9;
+            --muted: rgba(234, 221, 207, .8);
+            --tomato: #c85a2a;
+            --lime: #eaddcf;
+            --line: rgba(255, 255, 255, .12);
+            --mono: 'Oswald', sans-serif;
+            --display: 'Playfair Display', Georgia, serif;
+        }
+        body {
+            color: var(--ink);
+            background-color: var(--paper);
+            background-image: linear-gradient(rgba(26, 16, 10, .86), rgba(26, 16, 10, .94)), url('images/peppers-bg.webp');
+            background-position: center top;
+            background-size: cover;
+            background-attachment: fixed;
+            font-family: 'Roboto Slab', Georgia, serif;
+        }
+        .site-header, main, .site-footer { width: min(1320px, calc(100% - 80px)); }
+        .site-header { min-height: 96px; border-color: var(--line); }
+        .brand img { width: 208px; filter: drop-shadow(0 0 7px rgba(200, 90, 42, .18)); }
+        .header-note, .eyebrow, .step-label, .result-kicker, .footer-note, .text-link, .mix-button, .choice {
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: .08em;
+        }
+        .header-note { color: var(--muted); }
+        .eyebrow { color: #e17b46; }
+        h1, h2, .result-title { font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; }
+        h1 { max-width: 640px; font-size: clamp(52px, 7vw, 86px); line-height: .98; }
+        h1 em { color: #d9c8b1; font-family: 'Playfair Display', Georgia, serif; text-transform: none; }
+        .hero { display: block; width: 100%; max-width: 1100px; min-height: auto; margin-inline: auto; padding: 58px 0 68px; }
+        .hero h1 { max-width: 850px; }
+        .hero-copy { color: var(--muted); font-size: 18px; line-height: 1.75; }
+        .hero-copy strong { color: #f2e7d9; }
+        .thank-you { border-color: rgba(200, 90, 42, .55); font-size: 15px; line-height: 1.75; }
+        .thank-you-mark { color: #e17b46; }
+        .hero-copy, .thank-you { max-width: 920px; }
+        .bottle-guide { max-width: 920px; margin-top: 27px; padding: 22px 0 0; border-top: 1px solid rgba(200, 90, 42, .45); }
+        .bottle-guide-title { margin: 0 0 8px; color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 19px; font-weight: 600; text-transform: uppercase; }
+        .bottle-guide-prompt { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+        .bottle-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+        .bottle-choice { min-height: 48px; padding: 10px 16px; border: 1px solid rgba(234, 221, 207, .28); border-radius: 2px; color: var(--ink); background: rgba(26, 16, 10, .56); cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 14px; transition: border-color .18s ease, color .18s ease, background-color .18s ease; }
+        .bottle-choice:hover, .bottle-choice[aria-pressed="true"] { border-color: #e17b46; color: #fff; background: rgba(125, 38, 48, .72); }
+        .bottle-choice:focus-visible, .bottle-link:focus-visible { outline: 3px solid #e17b46; outline-offset: 3px; }
+        .bottle-story { min-height: 145px; margin-top: 15px; padding: 17px 18px; border-left: 2px solid #e17b46; background: rgba(20, 12, 8, .58); }
+        .bottle-story-kicker { color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+        .bottle-story h3 { margin: 8px 0 10px; color: var(--ink); font-family: 'Playfair Display', Georgia, serif; font-size: 25px; line-height: 1.25; }
+        .bottle-story p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+        .bottle-pairing { margin-top: 9px !important; color: #d9c8b1 !important; }
+        .bottle-link { display: inline-flex; gap: 7px; margin-top: 13px; color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 13px; text-decoration: none; text-transform: uppercase; }
+        .bottle-link:hover { color: #f2e7d9; }
+        .photo-wrap img { aspect-ratio: auto; object-fit: contain; object-position: center; border: 1px solid rgba(200, 90, 42, .55); box-shadow: 0 24px 60px rgba(0, 0, 0, .38); }
+        .photo-caption { position: static; display: block; width: fit-content; max-width: min(100%, 260px); margin: 14px 0 0 auto; color: #f2e7d9; background: #7d2630; font-family: 'Oswald', sans-serif; letter-spacing: .04em; transform: none; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 27px; }
+        .hero-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 11px 18px;
+            border: 1px solid var(--tomato);
             border-radius: 2px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .sub-input:focus {
-            outline: none;
-            border-color: var(--flame-orange);
-            box-shadow: 0 0 15px rgba(255, 69, 0, 0.2);
-        }
-
-        .sub-input::placeholder {
-            color: rgba(245,230,211,0.3);
-        }
-
-        .sub-btn {
-            width: 100%;
-            padding: 12px 20px;
-            background: transparent;
-            color: var(--gold-seal);
-            border: 1px solid var(--gold-seal);
-            font-family: 'Zilla Slab', serif;
-            font-size: 14px;
-            font-weight: 700;
+            color: #fff;
+            background: var(--tomato);
+            font-family: 'Oswald', sans-serif;
+            font-size: 13px;
+            letter-spacing: .08em;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            text-decoration: none;
+            transition: background-color .2s ease, color .2s ease, transform .2s ease;
         }
-
-        .sub-btn:hover {
-            background: rgba(255, 215, 0, 0.1);
-            box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.2);
+        .hero-link:hover { color: #fff; background: #9e4420; transform: translateY(-2px); }
+        .hero-link-secondary { color: var(--ink); border-color: rgba(242, 231, 217, .4); background: rgba(26, 16, 10, .44); }
+        .hero-link-secondary:hover { color: #fff; border-color: var(--tomato); background: rgba(200, 90, 42, .18); }
+        .farm-story { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(26px, 6vw, 76px); padding: 48px 0 68px; border-top: 1px solid var(--line); }
+        .farm-story img { display: block; width: 100%; aspect-ratio: 1.45 / 1; object-fit: cover; border: 1px solid rgba(200, 90, 42, .38); }
+        .farm-story h2 { margin: 12px 0 18px; font-size: clamp(34px, 4.3vw, 52px); line-height: 1.05; }
+        .farm-story p { color: var(--muted); font-size: 14px; line-height: 1.9; }
+        .farm-story p strong { color: var(--ink); font-weight: 600; }
+        .farm-caption { display: block; margin-top: 10px; color: rgba(234, 221, 207, .64); font-size: 10px; }
+        .seed-selector { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 15px; }
+        .seed-choice { min-height: 42px; padding: 9px 13px; border: 1px solid var(--line); border-radius: 2px; color: var(--ink); background: rgba(26, 16, 10, .64); cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 12px; letter-spacing: .04em; transition: border-color .18s ease, background-color .18s ease, transform .18s ease; }
+        .seed-choice:hover { border-color: #e17b46; transform: translateY(-2px); }
+        .seed-choice[aria-pressed="true"] { border-color: #e17b46; color: #fff; background: #7d2630; }
+        .seed-choice:focus-visible { outline: 3px solid #e17b46; outline-offset: 3px; }
+        .seed-detail { min-height: 78px; margin: 0; padding: 13px 15px; border-left: 2px solid #e17b46; color: var(--muted); background: rgba(20, 12, 8, .58); font-size: 12px !important; line-height: 1.75 !important; }
+        .seed-detail strong { color: var(--ink); }
+        .seed-catalog-link { display: inline-flex; align-items: center; gap: 9px; margin-top: 18px; color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; text-underline-offset: 4px; }
+        .next-steps { padding: 36px 0 46px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .next-steps h2 { margin: 10px 0 25px; font-size: clamp(32px, 4vw, 46px); }
+        .next-links { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+        .next-link { display: flex; min-height: 104px; flex-direction: column; justify-content: center; gap: 5px; padding: 16px 20px 16px 0; border-bottom: 1px solid var(--line); font-family: 'Oswald', sans-serif; text-decoration: none; }
+        .next-link + .next-link { padding-left: 20px; border-left: 1px solid var(--line); }
+        .next-link strong { color: var(--ink); font-size: 17px; font-weight: 600; text-transform: uppercase; }
+        .next-link span { color: var(--muted); font-family: 'Roboto Slab', Georgia, serif; font-size: 11px; line-height: 1.6; }
+        .next-link:hover strong { color: #e17b46; }
+        .game-section { padding: 38px 0 56px; border-top: 0; }
+        .section-heading h2 { font-size: clamp(30px, 4vw, 44px); }
+        .section-aside, .more-sauce p { color: var(--muted); }
+        .game-board { border-color: rgba(200, 90, 42, .45); background: rgba(20, 12, 8, .78); }
+        .choice { color: var(--ink); border-color: var(--line); }
+        .choice[aria-pressed="true"] { color: #fff; border-color: #7d2630; background: #7d2630; }
+        .heat-choice[aria-pressed="true"] { border-color: var(--tomato); background: var(--tomato); }
+        .step-label { color: var(--muted); }
+        .result-panel { color: var(--ink); background: #24140f; }
+        .result-kicker, .result-pairing { color: #e17b46; }
+        .result-description { color: var(--muted); }
+        .more-sauce { border-color: var(--line); }
+        .text-link { color: #e17b46; }
+        .site-footer { color: var(--muted); }
+        .footer-note { color: var(--ink); }
+        @media (max-width: 720px) {
+            .site-header, main, .site-footer { width: min(100% - 32px, 600px); }
+            .brand img { width: 164px; }
+            .hero { min-height: auto; }
+            .hero { padding: 34px 0 42px; }
+            h1 { font-size: clamp(38px, 10vw, 52px); }
+            .hero h1 { margin: 12px 0 14px; }
+            .hero-copy { margin-bottom: 14px; font-size: 16px; line-height: 1.65; }
+            .thank-you { font-size: 14px; }
+            .bottle-guide-title { font-size: 17px; }
+            .bottle-guide-prompt { font-size: 14px; }
+            .bottle-choice { min-height: 46px; font-size: 13px; }
+            .bottle-story-kicker { font-size: 12px; }
+            .bottle-story h3 { font-size: 22px; }
+            .bottle-story p { font-size: 14px; }
+            .bottle-link { font-size: 12px; }
+            .section-intro p, .seed-copy > p { font-size: 15px; }
+            .sauce-profile { font-size: 13px; }
+            .sauce-copy p:not(.sauce-profile) { font-size: 14px; }
+            .sauce-link { font-size: 13px; }
+            .seed-choice strong { font-size: 16px; }
+            .seed-choice span { font-size: 13px; }
+            .seed-detail { font-size: 14px; }
+            .seed-catalog-link { font-size: 13px; }
+            .coming-note { font-size: 12px; }
+            .bottle-guide { margin-top: 20px; padding-top: 15px; }
+            .sauce-section { padding: 42px 0 48px; }
+            .sauce-grid { grid-template-columns: 1fr; gap: 25px; }
+            .sauce-item { grid-template-columns: minmax(135px, .8fr) 1.2fr; }
+            .seed-section { grid-template-columns: 1fr; gap: 27px; padding-bottom: 52px; }
+            .seed-copy { position: static; }
         }
-
-        .club-micro {
-            font-size: 10px;
-            color: rgba(245,230,211,0.4);
-            margin-top: 15px;
-            font-style: italic;
+        @media (max-width: 420px) {
+            .site-header, main, .site-footer { width: calc(100% - 28px); }
+            .brand img { width: 136px; }
+            .hero-actions { flex-direction: column; align-items: stretch; }
+            .sauce-item { grid-template-columns: minmax(105px, .72fr) 1.28fr; }
+            .sauce-image { height: 190px; }
+            .sauce-copy { padding: 18px 8px 18px 0; }
+            .seed-list { grid-template-columns: 1fr; }
+            .seed-choice:nth-child(even) { padding-left: 0; border-left: 0; }
         }
-
-/* Оновлений футер для центрування всього */
-.footer {
-    text-align: center;
-    margin-top: 40px;
-    padding: 25px 20px;
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: 10px;
-    border: 1px solid var(--border-warm);
-    /* Додаємо ці рядки */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Оновлене посилання для логотипу */
-.main-logo-link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    text-decoration: none;
-    margin-bottom: 15px;
-}
-
-/* Оновлене зображення логотипу */
-.logo-image {
-    width: 400px;
-    max-width: 90vw;
-    height: auto;
-    /* Змінюємо grid на block, щоб спрацював margin */
-    display: block; 
-    margin: 0 auto;
-    filter: drop-shadow(0 0 12px rgba(255, 69, 0, 0.3));
-}
-
+        @media (max-width: 340px) {
+            body { min-width: 0; }
+        }
     </style>
 </head>
 <body>
+    <header class="site-header">
+        <a class="brand" href="https://gapkainferno.github.io/index.html" aria-label="Gapka's Homestead Inferno — на головну">
+            <img src="GapkaLogo.png" alt="Gapka's Homestead Inferno">
+        </a>
+        <span class="header-note">Невелике господарство,<br>Дніпро, Україна</span>
+    </header>
 
-    <!-- Floating embers background effect -->
-    <div class="ember"></div>
-    <div class="ember"></div>
-    <div class="ember"></div>
-    <div class="ember"></div>
-    <div class="ember"></div>
-    <div class="ember"></div>
+    <main>
+        <section class="hero" aria-labelledby="welcome-title">
+            <div>
+                <span class="eyebrow">Невелика записка до вашої пляшки</span>
+                <h1 id="welcome-title">Дякуємо за покупку!</h1>
+                <p class="hero-copy">Ура, ви тут! 🎉 Ми — маленьке господарство з українського села Дніпропетровщини. Самі вирощуємо перці й овочі та готуємо соуси малими партіями. Так, ті самі перці🌶️ що позують на пляшці. <strong>Погода теж у команді — на власному графіку.</strong></p>
+                <div class="bottle-guide" aria-labelledby="bottle-guide-title">
+                    <h2 class="bottle-guide-title" id="bottle-guide-title">Що саме у вашій пляшці?</h2>
+                    <p class="bottle-guide-prompt">Оберіть назву з етикетки — покажемо характер і пару страв.</p>
+                    <div class="bottle-options" role="group" aria-label="Оберіть назву соусу з етикетки">
+                        <button class="bottle-choice" type="button" data-sauce="core" aria-pressed="false">CORE HEAT</button>
+                        <button class="bottle-choice" type="button" data-sauce="mild" aria-pressed="false">MILD FOREST</button>
+                        <button class="bottle-choice" type="button" data-sauce="honey" aria-pressed="false">HOT HONEY</button>
+                    </div>
+                    <div class="bottle-story" id="bottle-story" aria-live="polite" aria-atomic="true">
+                        <span class="bottle-story-kicker">Записка з нашої кухні</span>
+                        <h3 id="bottle-story-title">Оберіть назву з етикетки</h3>
+                        <p id="bottle-story-copy">Розповімо, що надає йому характеру й з чим він особливо добре знайомиться на тарілці.</p>
+                        <p class="bottle-pairing" id="bottle-story-pairing">Жодних іспитів на хоробрість. Лише смаки, які можна відкрити у своєму темпі.</p>
+                        <a class="bottle-link" id="bottle-story-link" href="https://gapkainferno.github.io/sauces.html">Усі соуси <span aria-hidden="true">↗</span></a>
+                    </div>
+                </div>
+                <div class="thank-you"><span class="thank-you-mark" aria-hidden="true">✳</span><span>Щиро дякуємо за покупку. Ваша пляшка підтримує нашу маленьку справу й допомагає готуватися до наступного сезону. Нам радісно, що частинка нашого городу завітала до вас. Будемо щасливі, якщо захочете познайомитися ще ближче та завітаєте на наш сайт, адже саме для цього він і створений.</span></div>
+                <div class="hero-actions">
+                    <a class="hero-link" href="https://gapkainferno.github.io/index.html">Завітати до нас на сайт <span aria-hidden="true">↗</span></a>
+                    <a class="hero-link hero-link-secondary" href="https://gapkainferno.github.io/seedsandseedlings.html">Почати свій город</a>
+                </div>
+            </div>
+        </section>
 
-    <!-- Main certificate -->
-    <div class="certificate">
-        
-        <!-- Header -->
-        <div class="cert-header">
-            <div class="seal">HEAT<br>SURVIVOR<br></div>
-            <div class="flame-icon">🔥</div>
-            <div class="logo-wrapper" style="position: relative; z-index: 10; margin-top: 20px;">
-    <a href="https://gapkainferno.github.io/index.html" class="main-logo-link">
-        <img src="GapkaLogo.png" alt="Homestead" class="logo-image">
-    </a>
-</div>
-            <p class="cert-subtitle">Certified Heat Warrior</p>
+        <section class="sauce-section" id="sauces" aria-labelledby="sauce-title">
+            <div class="section-intro">
+                <span class="eyebrow">Якщо захочеться продовження</span>
+                <h2 id="sauce-title">У кожного соусу — свій характер.</h2>
+                <p>Наразі доступні три смаки. Ось коротке знайомство — раптом якийсь підморгне першим. Обирати просто зараз зовсім не обов'язково.</p>
+            </div>
+            <div class="sauce-grid">
+                <article class="sauce-item">
+                    <img class="sauce-image" src="Core-heat-sauce.webp" alt="Пляшка соусу CORE HEAT із гострими перцями та овочами" loading="lazy">
+                    <div class="sauce-copy">
+                        <h3 class="sauce-name">CORE HEAT</h3>
+                        <p class="sauce-profile">Гострий і овочевий</p>
+                        <p>Овочева основа й перці-суперхоти. У компанії страв звучить упевнено, але головний тут усе одно ваш смак.</p>
+                        <a class="sauce-link" href="https://gapkainferno.github.io/product.html?id=sauceCoreHeat">Дізнатися більше <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+                <article class="sauce-item">
+                    <img class="sauce-image" src="Mild-forest-sauce.webp" alt="Пляшка зеленого соусу MILD FOREST із перцями" loading="lazy">
+                    <div class="sauce-copy">
+                        <h3 class="sauce-name">MILD FOREST</h3>
+                        <p class="sauce-profile">Зелений, солодкувато-пікантний</p>
+                        <p>Зелений, м'який, із солодкуватим настроєм і свіжою м'ятною ноткою. Чилі теж уміє говорити тихіше.</p>
+                        <a class="sauce-link" href="https://gapkainferno.github.io/product.html?id=sauceMildForest">Дізнатися більше <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+                <article class="sauce-item">
+                    <img class="sauce-image" src="hot-honey-sauce.webp" alt="Пляшка гострого меду HONEY STING із перцями" loading="lazy">
+                    <div class="sauce-copy">
+                        <h3 class="sauce-name">HOT HONEY</h3>
+                        <p class="sauce-profile">Медова солодкість із перцевим теплом</p>
+                        <p>Мед знайомиться першим, а перець залишає приємне тепло на прощання. Добре пасує до м'яких сирів, піци й тостів.</p>
+                        <a class="sauce-link" href="https://gapkainferno.github.io/product.html?id=sauceHotHoney">Дізнатися більше <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+            </div>
+            <p class="coming-note"><span>А четвертий смак поки шукає свій характер.</span> Не квапимо його: хороші знайомства мають свій час.</p>
+        </section>
+
+        <div class="or-divider" role="separator" aria-label="Або">
+            <span aria-hidden="true">АБО</span>
         </div>
 
-        <!-- Body -->
-        <div class="cert-body">
-            
-            <p class="cert-message">
-                Вітаємо! Ви тримаєте в руках не просто соус — це <strong>концентрований вогонь</strong>. 
-                Якщо ви дійшли сюди, значить пройшли крізь пекло і вижили. 
-                Тепер ви — частина елітного клубу тих, хто не боїться екстриму.
-            </p>
-
-            <div class="divider"></div>
-
-            <div class="inferno-guide">
-                <h3>⚠️ Інструкція з виживання</h3>
-                
-                <div class="recipe-item">
-                    <span class="recipe-emoji">🥩</span>
-                    <div>
-                        <span class="recipe-label">М'ясо:</span>
-                        Використовуйте як маринад або глазур. Одна крапля = максимум смаку.
-                    </div>
-                </div>
-
-                <div class="recipe-item">
-                    <span class="recipe-emoji">🍔</span>
-                    <div>
-                        <span class="recipe-label">Бургери:</span>
-                        Змішайте з майонезом (1:10). Ваші гості запам'ятають це назавжди.
-                    </div>
-                </div>
-
-                <div class="recipe-item">
-                    <span class="recipe-emoji">🍕</span>
-                    <div>
-                        <span class="recipe-label">Піца:</span>
-                        Додайте 2-3 краплі на піцу. Пекло на тарілці.
-                    </div>
-                </div>
-
-                <div class="recipe-item">
-                    <span class="recipe-emoji">💀</span>
-                    <div>
-                        <span class="recipe-label">Екстрим:</span>
-                        Ванільний пломбір + 1 крапля соусу. Тільки для божевільних.
-                    </div>
-                </div>
+        <section class="seed-section" aria-labelledby="seed-title">
+            <div class="seed-copy">
+                <span class="eyebrow">Для наступної пригоди — можливо, на підвіконні</span>
+                <h2 id="seed-title">А може, виростити свій перець?</h2>
+                <p>Буває, скуштуєш соус — і вже уявляєш перчик у горщику на підвіконні. Якщо така думка вам знайома, ось кілька відомих сортів для першого знайомства.</p>
+                <p class="seed-detail" id="seed-detail" aria-live="polite">Оберіть сорт — розповімо про його характер. Контрольної наприкінці не буде.</p>
+                <a class="seed-catalog-link" href="https://gapkainferno.github.io/seedsandseedlings.html">Зазирнути до каталогу насіння <span aria-hidden="true">↗</span></a>
             </div>
-
-            <div class="cta-container">
-                <a href="https://gapkainferno.github.io/sauces.html" class="cta-btn cta-primary">🛒 Замовити ще пекла</a>
-                <a href="https://gapkainferno.github.io/seedsandseedlings.html" class="cta-btn cta-secondary">🌶️ Виростити це самому</a>
+            <div class="seed-list" role="group" aria-label="Відомі сорти перцю">
+                <button class="seed-choice" type="button" data-seed="carolina" aria-pressed="false"><strong>Carolina Reaper</strong><span>Знаменита легенда серед суперхотів</span></button>
+                <button class="seed-choice" type="button" data-seed="ghost" aria-pressed="false"><strong>Bhut Jolokia</strong><span>Індійський Ghost Pepper із квітковим ароматом</span></button>
+                <button class="seed-choice" type="button" data-seed="habanero" aria-pressed="false"><strong>Habanero Chocolate</strong><span>Темний колір і насичений аромат. Какао не обіцяємо.</span></button>
+                <button class="seed-choice" type="button" data-seed="aji" aria-pressed="false"><strong>Aji Melocoton</strong><span>Фруктовий аромат і лагідне тепло</span></button>
+                <button class="seed-choice" type="button" data-seed="bubblegum" aria-pressed="false"><strong>7 Pot Bubblegum</strong><span>Назва інтригує; смак жуйки не обіцяємо.</span></button>
+                <button class="seed-choice" type="button" data-seed="naga" aria-pressed="false"><strong>Naga Jolokia</strong><span>Відомий індійський сорт із фруктовими нотами</span></button>
             </div>
-            <div class="divider" style="margin-top: 40px; opacity: 0.5;"></div>
+        </section>
+    </main>
 
-            <div class="club-subscribe">
-                <h3 class="club-title">Вступити до клубу Gapka Homestead Inferno</h3>
-                <p class="club-desc">
-                    Залиште свій email, щоб першими отримувати новини з ферми та цікаві секрети.
-                </p>
-                <form class="subscribe-form" onsubmit="handleGeneralSubscribe(event)">
-                    <input type="email" id="sub-email" placeholder="Ваш Email для зв'язку" required class="sub-input">
-                    <button type="submit" id="sub-btn" class="sub-btn">Приєднатися</button>
-                </form>
-                <!-- Honeypot field (захист від ботів, як у modal-init) -->
-                <div style="position: absolute; left: -9999px; opacity: 0;">
-                    <input type="text" id="hp_sub_qr" tabindex="-1" autocomplete="off">
-                </div>
-                <p class="club-micro">Жодного спаму. Наш головний по безпеці, півень Чилі, особисто це контролює 🐓</p>
-            </div>
-        </div>
-
-        <!-- Footer -->
-         <div class="footer">
-    <a href="https://gapkainferno.github.io/index.html" class="main-logo-link"> 
-        <img src="GapkaLogo.png" alt="Homestead" class="logo-image"></a>
-            <div class="footer-text">
-                2026 Gapka Homestead Inferno. Farm to Bottle & Seed to Harvest 🔥<br>
-                <strong>Потрібна допомога?</strong> Напишіть нам:<br>
-                <a href="mailto:homestead.inferno@gmail.com" style="color: var(--accent-orange); text-decoration: none;">📧 homestead.inferno@gmail.com</a>
-              <!--  📱 @homesteadinferno-->
-            </div>
-            <div class="container" style="text-align: center; margin-top: 20px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;">
-        <p style="font-size: 14px; opacity: 0.8; font-style: italic;">
-            Свіжий випуск: <a href="blog.html" style="color: var(--accent-orange); text-decoration: underline;">Як виростити сильні рослини з насіння без нервів та переживань. Читайте пізнавальні статті ТУТ.</a>
-        </p>
-    </div>
-    </div>
-
-    </div>
+    <footer class="site-footer">
+        <span class="footer-note">З теплом із нашого городу. Дякуємо, що ви з нами.</span>
+        <span>Є питання? <a href="mailto:homestead.inferno@gmail.com">Напишіть нам</a></span>
+        <a href="https://gapkainferno.github.io/index.html">На головну ↗</a>
+    </footer>
 
     <script>
-        // Animated counter on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const cert = document.querySelector('.certificate');
-            setTimeout(() => {
-                cert.style.transform = 'scale(1.02)';
-                setTimeout(() => {
-                    cert.style.transform = 'scale(1)';
-                }, 200);
-            }, 600);
+        const sauceNotes = {
+            core: {
+                title: 'CORE HEAT: знайомство з вогником',
+                copy: 'Овочева основа й суперхоти, у вашій пляшці може бути будь-який набір що включатиме, можливо,  Carolina Reaper або Trinidad Scorpion чи Bhut Jolokia, Ghost, 7 Pot, або й всіх їх разом. Імена гучні, але знайомитися можна у власному темпі.',
+                pairing: 'Спробуйте зі стейком, бургером чи в маринаді. Подавайте до столу — кожен додасть собі до смаку.',
+                href: 'https://gapkainferno.github.io/product.html?id=sauceCoreHeat'
+            },
+            mild: {
+                title: 'MILD FOREST: зелений настрій',
+                copy: 'Padrón, Jalapeño й цитрусовий Lemon Drop, та інші перці середньої гостроти дають зелену свіжість, м’яку гостроту й легку м’ятну асоціацію.',
+                pairing: 'До сніданку, яєць або риби. Свіжо, зелено, кисленько, солоденько.',
+                href: 'https://gapkainferno.github.io/product.html?id=sauceMildForest'
+            },
+            honey: {
+                title: 'HOT HONEY: солодке знайомство',
+                copy: 'Мед із нашої пасіки та перець: спершу солодко, а за мить — приємне тепло.',
+                pairing: 'До м’якого сиру, піци, качки чи тосту. Сир уже подав у розшук цей соус.',
+                href: 'https://gapkainferno.github.io/product.html?id=sauceHotHoney'
+            }
+        };
+
+        document.querySelectorAll('.bottle-choice').forEach((button) => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.bottle-choice').forEach((choice) => choice.setAttribute('aria-pressed', String(choice === button)));
+                const note = sauceNotes[button.dataset.sauce];
+                document.getElementById('bottle-story-title').textContent = note.title;
+                document.getElementById('bottle-story-copy').textContent = note.copy;
+                document.getElementById('bottle-story-pairing').textContent = note.pairing;
+                document.getElementById('bottle-story-link').href = note.href;
+                document.getElementById('bottle-story-link').innerHTML = 'Детальніше про цей соус <span aria-hidden="true">↗</span>';
+                const story = document.getElementById('bottle-story');
+                if (window.matchMedia('(max-width: 720px)').matches && story.getBoundingClientRect().bottom > window.innerHeight) {
+                    story.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'end' });
+                }
+            });
         });
 
-        // --- ЛОГІКА ПІДПИСКИ (GOOGLE SHEETS) ---
-        
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyL5WKFxLfStcgOQHasZ4QYi5wh1jxNVKhis495gjd6BGAlhex8e1b6607fUV4Y0zUA/exec";
+        const seedDescriptions = {
+            carolina: 'Carolina Reaper давно має славу одного з найгостріших перців. Знайомство з ним можна почати з насіння — без жодних випробувань.',
+            ghost: 'Bhut Jolokia, або Ghost Pepper, походить з Індії та має виразний квітково-тропічний аромат.',
+            habanero: 'Habanero Chocolate вирізняється темними плодами й насиченим ароматом. Шоколадна тут назва й колір, не десерт.',
+            aji: 'Aji Melocoton отримав назву від персика: у його ароматі є фруктові ноти, а гострота лагідна.',
+            bubblegum: '7 Pot Bubblegum цікавий своїм забарвленням; назва натякає на вигляд, а не на жуйковий смак.',
+            naga: 'Naga Jolokia — індійський сорт із фруктовими нотами та яскравою гостротою.'
+        };
 
-        // Створюємо унікальний ідентифікатор пристрою
-        function getVisitorId() {
-            let id = localStorage.getItem('ghi_visitor_id');
-            if (!id) {
-                id = 'v_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
-                localStorage.setItem('ghi_visitor_id', id);
-            }
-            return id;
-        }
-
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
-
-        async function sendToGoogleSheet(data) {
-            try {
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors', // Важливо для Google Scripts
-                    cache: 'no-cache',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                return true;
-            } catch (error) {
-                console.error('Помилка відправки:', error);
-                return false;
-            }
-        }
-
-        async function handleGeneralSubscribe(event) {
-            event.preventDefault();
-
-            // --- ПЕРЕВІРКА HONEYPOT ---
-            const honeypot = document.getElementById('hp_sub_qr');
-            if (honeypot && honeypot.value !== '') {
-                console.warn('🤖 Бот виявлений');
-                alert('Дякуємо за підписку!'); // Обманюємо бота, показуючи успіх
-                return;
-            }
-
-            const emailInput = document.getElementById('sub-email');
-            const email = emailInput.value.trim();
-            const btn = document.getElementById('sub-btn');
-            
-            if (!validateEmail(email)) {
-                alert('Будь ласка, введіть коректну адресу електронної пошти! 📧');
-                return;
-            }
-
-            const originalText = btn.textContent;
-            btn.disabled = true;
-            btn.textContent = "ЗАПИСУЄМО...";
-
-            await sendToGoogleSheet({
-                date: new Date().toLocaleString("uk-UA"),
-                email: email,
-                orderType: "ПІДПИСКА_МАРКЕТИНГ",
-                details: "Підписка з QR-коду (Certified Heat Survivor)",
-                secret_token: "summerof26",
-                client_id: getVisitorId() // Надсилаємо ID для Rate Limiting
+        document.querySelectorAll('.seed-choice').forEach((button) => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.seed-choice').forEach((choice) => choice.setAttribute('aria-pressed', String(choice === button)));
+                document.getElementById('seed-detail').textContent = seedDescriptions[button.dataset.seed];
             });
-
-            // Візуальний фідбек для користувача
-            btn.textContent = "✓ ВИ В КЛУБІ!";
-            btn.style.borderColor = "#4caf50";
-            btn.style.color = "#4caf50";
-            emailInput.value = "";
-            
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.textContent = originalText;
-                btn.style.borderColor = ""; // повертаємо до стилів CSS
-                btn.style.color = "";
-            }, 4000);
-        }
+        });
     </script>
-<script type="module" src="analytics.js"></script><script src="language-switcher.js"></script>
+    <script type="module" src="analytics.js"></script>
 </body>
 </html>
