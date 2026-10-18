@@ -178,6 +178,8 @@
         .sauce-name { margin: 0 0 7px; color: #eaddcf; font-family: 'Oswald', sans-serif; font-size: clamp(22px, 2.5vw, 30px); line-height: 1.05; }
         .sauce-profile { margin: 0 0 10px; color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
         .sauce-copy p:not(.sauce-profile) { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+        .sauce-copy .sauce-pairing { margin-top: 12px !important; padding-top: 10px; border-top: 1px solid rgba(234, 221, 207, .18); color: #eaddcf; font-size: 12px; line-height: 1.6; }
+        .sauce-pairing strong { color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; }
         .sauce-link { display: inline-flex; gap: 8px; margin-top: 16px; color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: .05em; text-decoration: none; text-transform: uppercase; }
         .sauce-link:hover, .seed-catalog-link:hover { color: #f2e7d9; }
         .coming-note { margin: 25px 0 0; color: rgba(234, 221, 207, .7); font-size: 11px; line-height: 1.7; text-align: center; }
@@ -458,6 +460,9 @@
                         <button class="bottle-choice" type="button" data-sauce="core" aria-pressed="false">CORE HEAT</button>
                         <button class="bottle-choice" type="button" data-sauce="mild" aria-pressed="false">MILD FOREST</button>
                         <button class="bottle-choice" type="button" data-sauce="honey" aria-pressed="false">HOT HONEY</button>
+                        <button class="bottle-choice" type="button" data-sauce="carrot" aria-pressed="false">CARROT MADNESS</button>
+                        <button class="bottle-choice" type="button" data-sauce="mean" aria-pressed="false">MEAN FOREST</button>
+                        <button class="bottle-choice" type="button" data-sauce="neon" aria-pressed="false">NEON VIBE</button>
                     </div>
                     <div class="bottle-story" id="bottle-story" aria-live="polite" aria-atomic="true">
                         <span class="bottle-story-kicker">Записка з нашої кухні</span>
@@ -483,6 +488,7 @@
                         <h3 class="sauce-name">CORE HEAT</h3>
                         <p class="sauce-profile">Гострий і овочевий</p>
                         <p>Овочева основа й перці-суперхоти. У компанії страв звучить упевнено, але головний тут усе одно ваш смак.</p>
+                        <p class="sauce-pairing"><strong>Смакує з:</strong> стейком, бургером або в маринаді. Додавай потроху.</p>
                         <a class="sauce-link" href="https://gapkainferno.github.io/product.html?id=sauceCoreHeat">Дізнатися більше <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
@@ -492,6 +498,7 @@
                         <h3 class="sauce-name">MILD FOREST</h3>
                         <p class="sauce-profile">Зелений, солодкувато-пікантний</p>
                         <p>Зелений, м'який, із солодкуватим настроєм і свіжою м'ятною ноткою. Чилі теж уміє говорити тихіше.</p>
+                        <p class="sauce-pairing"><strong>Смакує з:</strong> сніданком з авокадо, яйцями або рибою.</p>
                         <a class="sauce-link" href="https://gapkainferno.github.io/product.html?id=sauceMildForest">Дізнатися більше <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
@@ -501,6 +508,7 @@
                         <h3 class="sauce-name">HOT HONEY</h3>
                         <p class="sauce-profile">Медова солодкість із перцевим теплом</p>
                         <p>Мед знайомиться першим, а перець залишає приємне тепло на прощання. Добре пасує до м'яких сирів, піци й тостів.</p>
+                        <p class="sauce-pairing"><strong>Смакує з:</strong> м'якими сирами, піцою, качкою або тостом.</p>
                         <a class="sauce-link" href="https://gapkainferno.github.io/product.html?id=sauceHotHoney">Дізнатися більше <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
@@ -510,6 +518,7 @@
                         <h3 class="sauce-name">CARROT MADNESS</h3>
                         <p class="sauce-profile">Гостра морква</p>
                         <p>Морквяна солодкість зустрічається з характером суперхотів. Овочевий настрій, який не боїться додати вогню.</p>
+                        <p class="sauce-pairing"><strong>Спробуй з:</strong> запеченими овочами, бургером або м'ясом із гриля.</p>
                         <a class="sauce-link" href="mailto:homestead.inferno@gmail.com?subject=Carrot%20Madness">Запитати про смак <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
@@ -519,6 +528,7 @@
                         <h3 class="sauce-name">MEAN FOREST</h3>
                         <p class="sauce-profile">Лісовий характер, серйозний вогник</p>
                         <p>Дика перцева пригода для тих, кому мало просто гострого. Знайомся з лісом, у якого є власна думка про гостроту.</p>
+                        <p class="sauce-pairing"><strong>Спробуй з:</strong> піцою, тако або м'ясом із гриля. Додавай потроху.</p>
                         <a class="sauce-link" href="mailto:homestead.inferno@gmail.com?subject=Mean%20Forest">Запитати про смак <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
@@ -528,6 +538,7 @@
                         <h3 class="sauce-name">NEON VIBE</h3>
                         <p class="sauce-profile">Фруктова солодкість і висока гострота</p>
                         <p>Спершу яскрава фруктова солодкість і свіжа кислинка, а за мить — неоновий жар хабанеро. Спробуй із морепродуктами або локшиною.</p>
+                        <p class="sauce-pairing"><strong>Смакує з:</strong> морепродуктами та азійською локшиною.</p>
                         <a class="sauce-link" href="https://gapkainferno.github.io/product.html?id=sauceNeonVibe">Дізнатися більше <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
@@ -622,6 +633,24 @@
                 copy: 'Мед із нашої пасіки та перець: спершу солодко, а за мить — приємне тепло.',
                 pairing: 'До м’якого сиру, піци, качки чи тосту. Сир уже подав у розшук цей соус.',
                 href: 'https://gapkainferno.github.io/product.html?id=sauceHotHoney'
+            },
+            carrot: {
+                title: 'CARROT MADNESS: морква з вогником',
+                copy: 'Морквяна солодкість зустрічається з характером суперхотів. Овочевий смак із серйозною перцевою іскрою.',
+                pairing: 'Спробуйте із запеченими овочами, бургером або м’ясом із гриля.',
+                href: 'mailto:homestead.inferno@gmail.com?subject=Carrot%20Madness'
+            },
+            mean: {
+                title: 'MEAN FOREST: ліс із характером',
+                copy: 'Дика перцева пригода для тих, кому мало просто гострого. У цього лісу — власна думка про вогник.',
+                pairing: 'Спробуйте з піцою, тако або м’ясом із гриля. Додавайте потроху.',
+                href: 'mailto:homestead.inferno@gmail.com?subject=Mean%20Forest'
+            },
+            neon: {
+                title: 'NEON VIBE: фруктовий спалах',
+                copy: 'Яскрава фруктова солодкість і свіжа кислинка змінюються неоновим жаром хабанеро.',
+                pairing: 'До морепродуктів та азійської локшини.',
+                href: 'https://gapkainferno.github.io/product.html?id=sauceNeonVibe'
             }
         };
 
