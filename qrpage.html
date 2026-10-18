@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#1a100a">
-    <meta name="description" content="Дякуємо, що обрали соус Gapka's Homestead Inferno. Познайомтеся з нашими смаками та насінням перців.">
-    <title>Дякуємо за покупку | Gapka Homestead Inferno</title>
+    <meta name="description" content="Суперхот-перці, томати, мед із власної пасіки, морква, часник і цибуля: дізнайтеся, звідки інгредієнти соусів Gapka's Homestead Inferno.">
+    <title>Від городу до пляшки | Gapka Homestead Inferno</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Roboto+Slab:wght@300;400;600&display=swap" rel="stylesheet">
@@ -171,7 +171,8 @@
         .section-intro h2, .seed-copy h2 { margin: 12px 0 14px; font-size: clamp(36px, 5vw, 58px); line-height: 1.02; }
         .section-intro p, .seed-copy > p { max-width: 760px; margin-bottom: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
         .sauce-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-        .sauce-item { display: grid; grid-template-columns: minmax(115px, .72fr) 1.28fr; align-items: center; min-width: 0; border-top: 1px solid rgba(234, 221, 207, .28); border-bottom: 1px solid rgba(234, 221, 207, .28); }
+        .sauce-item { display: grid; grid-template-columns: minmax(115px, .72fr) 1.28fr; align-items: center; min-width: 0; border-top: 1px solid rgba(234, 221, 207, .28); }
+        .sauce-item:nth-last-child(-n+3) { border-bottom: 1px solid rgba(234, 221, 207, .28); }
         .sauce-image { display: block; width: 100%; height: 230px; object-fit: contain; }
         .sauce-copy { padding: 23px 20px 23px 8px; }
         .sauce-name { margin: 0 0 7px; color: #eaddcf; font-family: 'Oswald', sans-serif; font-size: clamp(22px, 2.5vw, 30px); line-height: 1.05; }
@@ -197,7 +198,9 @@
         .seed-catalog-link { display: inline-flex; align-items: center; gap: 9px; min-height: 48px; margin-top: 13px; padding: 0 18px; border: 1px solid #e17b46; color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: .05em; text-decoration: none; text-transform: uppercase; transition: color .18s ease, background-color .18s ease; }
         .seed-catalog-link:hover { color: #1a100a; background: #e17b46; }
         @media (max-width: 1000px) {
-            .sauce-grid { grid-template-columns: 1fr; }
+            .sauce-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .sauce-item:nth-last-child(-n+3) { border-bottom: 0; }
+            .sauce-item:nth-last-child(-n+2) { border-bottom: 1px solid rgba(234, 221, 207, .28); }
         }
         @media (max-width: 720px) {
             .site-header, main, .site-footer { width: min(100% - 32px, 540px); }
@@ -220,7 +223,6 @@
             .site-header, main, .site-footer { width: calc(100% - 28px); }
             .brand img { width: 112px; }
             .header-note { max-width: 130px; }
-            .choice { padding-inline: 11px; font-size: 11px; }
             .site-footer { align-items: flex-start; flex-direction: column; gap: 8px; }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -259,14 +261,29 @@
         h1, h2, .result-title { font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; }
         h1 { max-width: 640px; font-size: clamp(52px, 7vw, 86px); line-height: .98; }
         h1 em { color: #d9c8b1; font-family: 'Playfair Display', Georgia, serif; text-transform: none; }
-        .hero { display: block; width: 100%; max-width: 1100px; min-height: auto; margin-inline: auto; padding: 58px 0 68px; }
-        .hero h1 { max-width: 850px; }
+        .hero { display: block; width: 100%; max-width: none; min-height: auto; margin-inline: 0; padding: 58px 0 68px; }
+        .hero h1 { max-width: 1100px; }
         .hero-copy { color: var(--muted); font-size: 18px; line-height: 1.75; }
         .hero-copy strong { color: #f2e7d9; }
+        .ingredient-list-heading { max-width: none; margin: 27px 0 0; color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 19px; font-weight: 600; text-transform: uppercase; }
+        .ingredient-game-prompt { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+        .ingredient-game { display: grid; grid-template-columns: 1fr .9fr; align-items: stretch; gap: 24px; max-width: none; margin-top: 14px; }
+        .ingredient-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; border-top: 1px solid var(--line); }
+        .ingredient-choice { display: flex; align-items: center; gap: 10px; min-height: 60px; padding: 10px 10px 10px 0; border: 0; border-bottom: 1px solid var(--line); color: var(--ink); background: transparent; cursor: pointer; text-align: left; transition: color .18s ease, background-color .18s ease; }
+        .ingredient-choice:nth-child(even) { padding-left: 12px; border-left: 1px solid var(--line); }
+        .ingredient-choice:hover, .ingredient-choice[aria-pressed="true"] { color: #e17b46; background: rgba(200, 90, 42, .08); }
+        .ingredient-choice:focus-visible { position: relative; z-index: 1; outline: 3px solid #e17b46; outline-offset: -3px; }
+        .ingredient-choice-number { flex: 0 0 auto; color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 12px; }
+        .ingredient-choice strong { font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600; text-transform: uppercase; }
+        .ingredient-reveal { align-self: stretch; min-height: 190px; padding: 20px 22px; border-left: 2px solid #e17b46; background: rgba(20, 12, 8, .58); }
+        .ingredient-reveal-kicker { color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+        .ingredient-reveal h3 { margin: 12px 0 10px; color: var(--ink); font-family: 'Playfair Display', Georgia, serif; font-size: 25px; line-height: 1.2; }
+        .ingredient-reveal p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+        .ingredient-reveal.is-revealed h3 { animation: reveal .4s cubic-bezier(.2,.8,.2,1) both; }
         .thank-you { border-color: rgba(200, 90, 42, .55); font-size: 15px; line-height: 1.75; }
         .thank-you-mark { color: #e17b46; }
-        .hero-copy, .thank-you { max-width: 920px; }
-        .bottle-guide { max-width: 920px; margin-top: 27px; padding: 22px 0 0; border-top: 1px solid rgba(200, 90, 42, .45); }
+        .hero-copy { max-width: 1080px; }
+        .bottle-guide { max-width: none; margin-top: 27px; padding: 22px 0 0; border-top: 1px solid rgba(200, 90, 42, .45); }
         .bottle-guide-title { margin: 0 0 8px; color: #e17b46; font-family: 'Oswald', sans-serif; font-size: 19px; font-weight: 600; text-transform: uppercase; }
         .bottle-guide-prompt { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
         .bottle-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
@@ -348,7 +365,14 @@
             h1 { font-size: clamp(38px, 10vw, 52px); }
             .hero h1 { margin: 12px 0 14px; }
             .hero-copy { margin-bottom: 14px; font-size: 16px; line-height: 1.65; }
-            .thank-you { font-size: 14px; }
+            .ingredient-list-heading { margin-top: 20px; font-size: 17px; }
+            .ingredient-game { grid-template-columns: 1fr; gap: 14px; margin-top: 10px; }
+            .ingredient-choice { min-height: 52px; gap: 8px; padding-right: 6px; }
+            .ingredient-choice:nth-child(even) { padding-left: 8px; }
+            .ingredient-choice strong { font-size: 13px; }
+            .ingredient-reveal { min-height: 160px; padding: 17px 18px; }
+            .ingredient-reveal h3 { font-size: 22px; }
+            .ingredient-reveal p { font-size: 12px; }
             .bottle-guide-title { font-size: 17px; }
             .bottle-guide-prompt { font-size: 14px; }
             .bottle-choice { min-height: 46px; font-size: 13px; }
@@ -369,6 +393,8 @@
             .sauce-section { padding: 42px 0 48px; }
             .sauce-grid { grid-template-columns: 1fr; gap: 25px; }
             .sauce-item { grid-template-columns: minmax(135px, .8fr) 1.2fr; }
+            .sauce-item:nth-last-child(-n+2) { border-bottom: 0; }
+            .sauce-item:last-child { border-bottom: 1px solid rgba(234, 221, 207, .28); }
             .seed-section { grid-template-columns: 1fr; gap: 27px; padding-bottom: 52px; }
             .seed-copy { position: static; }
         }
@@ -376,6 +402,9 @@
             .site-header, main, .site-footer { width: calc(100% - 28px); }
             .brand img { width: 136px; }
             .hero-actions { flex-direction: column; align-items: stretch; }
+            .ingredient-choice { min-height: 48px; gap: 6px; }
+            .ingredient-choice-number { font-size: 11px; }
+            .ingredient-choice strong { font-size: 12px; }
             .sauce-item { grid-template-columns: minmax(105px, .72fr) 1.28fr; }
             .sauce-image { height: 190px; }
             .sauce-copy { padding: 18px 8px 18px 0; }
@@ -392,18 +421,39 @@
         <a class="brand" href="https://gapkainferno.github.io/index.html" aria-label="Gapka's Homestead Inferno — на головну">
             <img src="GapkaLogo.png" alt="Gapka's Homestead Inferno">
         </a>
-        <span class="header-note">Невелике господарство,<br>Дніпро, Україна</span>
+        <span class="header-note"><br>Дніпро, Україна</span>
     </header>
 
     <main>
         <section class="hero" aria-labelledby="welcome-title">
             <div>
-                <span class="eyebrow">Невелика записка до вашої пляшки</span>
-                <h1 id="welcome-title">Дякуємо за покупку!</h1>
-                <p class="hero-copy">Ура, ви тут! 🎉 Ми — маленьке господарство з українського села Дніпропетровщини. Самі вирощуємо перці й овочі та готуємо соуси малими партіями. Так, ті самі перці🌶️ що позують на пляшці. <strong>Погода теж у команді — на власному графіку.</strong></p>
+                <span class="eyebrow">Від нашого городу — до вашого столу.</span>
+                <h1 id="welcome-title">Ви знайшли нас! <em> Gapka Homestead Inferno</em></h1>
+                <p class="hero-copy">Чи Ви розглядаєте код біля полиці, чи купили пляшечку (за що щиро дякуємо!), ми поки розповімо вам походження наших інгрідієнтів. Кожна пляшка починається з нашої землі в тихому українському селі. Ми готуємо соуси малими партіями і знаємо їхню історію. Ось що додає їм характеру — і звідки це до нас все потрапляє:</p>
+                <h2 class="ingredient-list-heading">Відкриймо історії складників</h2>
+                <p class="ingredient-game-prompt">Обери інгредієнт — і дізнайся, звідки він мандрував до пляшки.</p>
+                <div class="ingredient-game">
+                    <div class="ingredient-choices" role="group" aria-label="Оберіть інгредієнт">
+                        <button class="ingredient-choice" type="button" data-ingredient="peppers" aria-pressed="false"><span class="ingredient-choice-number">01</span><strong>Суперхот-перці</strong></button>
+                        <button class="ingredient-choice" type="button" data-ingredient="tomatoes" aria-pressed="false"><span class="ingredient-choice-number">02</span><strong>Томати</strong></button>
+                        <button class="ingredient-choice" type="button" data-ingredient="honey" aria-pressed="false"><span class="ingredient-choice-number">03</span><strong>Мед</strong></button>
+                        <button class="ingredient-choice" type="button" data-ingredient="carrots" aria-pressed="false"><span class="ingredient-choice-number">04</span><strong>Морква</strong></button>
+                        <button class="ingredient-choice" type="button" data-ingredient="garlic" aria-pressed="false"><span class="ingredient-choice-number">05</span><strong>Часник</strong></button>
+                        <button class="ingredient-choice" type="button" data-ingredient="onion" aria-pressed="false"><span class="ingredient-choice-number">06</span><strong>Цибуля</strong></button>
+                    </div>
+                    <div class="ingredient-reveal" id="ingredient-reveal" aria-live="polite" aria-atomic="true">
+                        <span class="ingredient-reveal-kicker" id="ingredient-reveal-kicker">Твій хід</span>
+                        <h3 id="ingredient-reveal-title">Звідки починається смак?</h3>
+                        <p id="ingredient-reveal-copy">Обери складник — і тут відкриється його шлях від нас до пляшки.</p>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a class="hero-link" href="#sauces">Обрати свій соус <span aria-hidden="true">↘</span></a>
+                    <a class="hero-link hero-link-secondary" href="https://gapkainferno.github.io/product.html?id=sauceHotHoney">Спробувати HOT HONEY <span aria-hidden="true">↗</span></a>
+                </div>
                 <div class="bottle-guide" aria-labelledby="bottle-guide-title">
-                    <h2 class="bottle-guide-title" id="bottle-guide-title">Що саме у вашій пляшці?</h2>
-                    <p class="bottle-guide-prompt">Оберіть назву з етикетки — покажемо характер і пару страв.</p>
+                    <h2 class="bottle-guide-title" id="bottle-guide-title">Вже маєте пляшку?</h2>
+                    <p class="bottle-guide-prompt">Оберіть назву з етикетки — розкажемо про смак і підкажемо, з чим його поєднати.</p>
                     <div class="bottle-options" role="group" aria-label="Оберіть назву соусу з етикетки">
                         <button class="bottle-choice" type="button" data-sauce="core" aria-pressed="false">CORE HEAT</button>
                         <button class="bottle-choice" type="button" data-sauce="mild" aria-pressed="false">MILD FOREST</button>
@@ -417,11 +467,6 @@
                         <a class="bottle-link" id="bottle-story-link" href="https://gapkainferno.github.io/sauces.html">Усі соуси <span aria-hidden="true">↗</span></a>
                     </div>
                 </div>
-                <div class="thank-you"><span class="thank-you-mark" aria-hidden="true">✳</span><span>Щиро дякуємо за покупку. Ваша пляшка підтримує нашу маленьку справу й допомагає готуватися до наступного сезону. Нам радісно, що частинка нашого городу завітала до вас. Будемо щасливі, якщо захочете познайомитися ще ближче та завітаєте на наш сайт, адже саме для цього він і створений.</span></div>
-                <div class="hero-actions">
-                    <a class="hero-link" href="https://gapkainferno.github.io/index.html">Завітати до нас на сайт <span aria-hidden="true">↗</span></a>
-                    <a class="hero-link hero-link-secondary" href="https://gapkainferno.github.io/seedsandseedlings.html">Почати свій город</a>
-                </div>
             </div>
         </section>
 
@@ -429,7 +474,7 @@
             <div class="section-intro">
                 <span class="eyebrow">Якщо захочеться продовження</span>
                 <h2 id="sauce-title">У кожного соусу — свій характер.</h2>
-                <p>Наразі доступні три смаки. Ось коротке знайомство — раптом якийсь підморгне першим. Обирати просто зараз зовсім не обов'язково.</p>
+                <p>Від овочевої солодкості до неонового фруктового вогню — знайомся з нашими смаками й обирай той, що відгукнеться саме тобі.</p>
             </div>
             <div class="sauce-grid">
                 <article class="sauce-item">
@@ -459,8 +504,34 @@
                         <a class="sauce-link" href="https://gapkainferno.github.io/product.html?id=sauceHotHoney">Дізнатися більше <span aria-hidden="true">↗</span></a>
                     </div>
                 </article>
+                <article class="sauce-item">
+                    <img class="sauce-image" src="images/CarrotMadness.png" alt="Етикетка соусу CARROT MADNESS із морквою та перцями" loading="lazy">
+                    <div class="sauce-copy">
+                        <h3 class="sauce-name">CARROT MADNESS</h3>
+                        <p class="sauce-profile">Гостра морква</p>
+                        <p>Морквяна солодкість зустрічається з характером суперхотів. Овочевий настрій, який не боїться додати вогню.</p>
+                        <a class="sauce-link" href="mailto:homestead.inferno@gmail.com?subject=Carrot%20Madness">Запитати про смак <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+                <article class="sauce-item">
+                    <img class="sauce-image" src="images/MeanForest%20(2).png" alt="Етикетка гострого соусу MEAN FOREST із перцями" loading="lazy">
+                    <div class="sauce-copy">
+                        <h3 class="sauce-name">MEAN FOREST</h3>
+                        <p class="sauce-profile">Лісовий характер, серйозний вогник</p>
+                        <p>Дика перцева пригода для тих, кому мало просто гострого. Знайомся з лісом, у якого є власна думка про гостроту.</p>
+                        <a class="sauce-link" href="mailto:homestead.inferno@gmail.com?subject=Mean%20Forest">Запитати про смак <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
+                <article class="sauce-item">
+                    <img class="sauce-image" src="images/NeonVibe.png" alt="Етикетка неонового соусу NEON VIBE з перцями" loading="lazy">
+                    <div class="sauce-copy">
+                        <h3 class="sauce-name">NEON VIBE</h3>
+                        <p class="sauce-profile">Фруктова солодкість і висока гострота</p>
+                        <p>Спершу яскрава фруктова солодкість і свіжа кислинка, а за мить — неоновий жар хабанеро. Спробуй із морепродуктами або локшиною.</p>
+                        <a class="sauce-link" href="https://gapkainferno.github.io/product.html?id=sauceNeonVibe">Дізнатися більше <span aria-hidden="true">↗</span></a>
+                    </div>
+                </article>
             </div>
-            <p class="coming-note"><span>А четвертий смак поки шукає свій характер.</span> Не квапимо його: хороші знайомства мають свій час.</p>
         </section>
 
         <div class="or-divider" role="separator" aria-label="Або">
@@ -493,6 +564,46 @@
     </footer>
 
     <script>
+        const ingredientStories = {
+            peppers: {
+                title: 'Насіння з усієї планети, врожай - з української землі. Десятки сортів і кожен з них міг опинитися у вашій пляшці.',
+                copy: 'Королі наших соусів — суперхот-сорти різноманітних видів Capsicum. Насіння з походженням з різних куточків світу: Carolina Reaper з американської Кароліни, Ghost з Індії, Trinidad Scorpion з спекотних островів Тринідаду, 7-Pot - тропічний гість Карибів, окрім них ще багато інших сортів, а ростуть перці тут, на нашій землі в українському селі.'
+            },
+            tomatoes: {
+                title: 'Десятки сортів — на томатний сік',
+                copy: 'Ми добираємо різні сорти томатів саме для приготування власного соку — насиченої овочевої основи для наших соусів. Від кисленьких до найсолодших, від червоних і карамельних до жовтих і рожевих — у кожній пляшці може бути різний набір томатів, сортів реліктових томатів саме для того, щоб сік смакував насичено і томатно, а соус мав характер.'
+            },
+            honey: {
+                title: 'З нашої пасіки — в кожен соус',
+                copy: 'Мед збираємо на власній пасіці й додаємо до всіх соусів. Його м’яка солодкість зустрічається з перцевим теплом (або жалом)'
+            },
+            carrots: {
+                title: 'З грядки поруч із домом',
+                copy: 'Морква — нашого врожаю. Вирощуємо її на власному городі й додаємо до овочевої основи соусів. Солоденька і насичена вітамінами, вона добре знайомиться з перцевим теплом і медовою солодкістю.'
+            },
+            garlic: {
+                title: 'Виріс на нашому господарстві',
+                copy: 'Часник вирощуємо самі: від грядки на хомстеді — просто до кухні, де народжуються соуси. Ароматний, насичений і гостренький, він ідеально доповнює своїх овочевих сусідів.'
+            },
+            onion: {
+                title: 'Цибуля залежить від сезону і врожаю, але ми стараємося збирати її з власного городу',
+                copy: 'Цибуля додає овочевій основі соусів насиченості й аромату. Вирощуємо її на власному городі, а в сезон збираємо врожай і додаємо до соусів.'
+            }
+        };
+
+        document.querySelectorAll('.ingredient-choice').forEach((button) => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.ingredient-choice').forEach((choice) => choice.setAttribute('aria-pressed', String(choice === button)));
+                const story = ingredientStories[button.dataset.ingredient];
+                document.getElementById('ingredient-reveal-kicker').textContent = `Походження · ${button.querySelector('.ingredient-choice-number').textContent}`;
+                document.getElementById('ingredient-reveal-title').textContent = story.title;
+                document.getElementById('ingredient-reveal-copy').textContent = story.copy;
+                const reveal = document.getElementById('ingredient-reveal');
+                reveal.classList.remove('is-revealed');
+                requestAnimationFrame(() => reveal.classList.add('is-revealed'));
+            });
+        });
+
         const sauceNotes = {
             core: {
                 title: 'CORE HEAT: знайомство з вогником',
