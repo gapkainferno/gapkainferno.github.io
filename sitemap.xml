@@ -53,13 +53,6 @@
     <priority>0.6</priority>
   </url>
 
-  <!-- Яйця ферми -->
-  <url>
-    <loc>https://gapkainferno.github.io/orpington-eggs.html</loc>
-    <lastmod>2026-05-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
 
   <!-- ═══════════════════════════════════════════════════════════════
        ТОВАРИ (СОУСИ)
@@ -73,14 +66,6 @@
     <priority>0.8</priority>
   </url>
   
-  <!-- Neon Vibe Sauce -->
-  <url>
-    <loc>https://gapkainferno.github.io/product.html?id=sauceNeonVibe</loc>
-    <lastmod>2026-04-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
   <!-- Mild Forest Sauce -->
   <url>
     <loc>https://gapkainferno.github.io/product.html?id=sauceMildForest</loc>
@@ -89,10 +74,18 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- Honey Sting -->
+  <!-- Carrot Madness Sauce -->
   <url>
-    <loc>https://gapkainferno.github.io/product.html?id=sauceHotHoney</loc>
-    <lastmod>2026-04-11</lastmod>
+    <loc>https://gapkainferno.github.io/product.html?id=sauceCarrotMadness</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Mean Forest Sauce -->
+  <url>
+    <loc>https://gapkainferno.github.io/product.html?id=sauceMeanForest</loc>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -325,19 +318,6 @@
     <lastmod>2026-04-11</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
   </url>
 
-  <!-- ═══════════════════════════════════════════════════════════════
-       ТОВАРИ (ПТАХІВНИЦТВО)
-  ═══════════════════════════════════════════════════════════════ -->
-
-  <url>
-    <loc>https://gapkainferno.github.io/product.html?id=orpington_buff_egg</loc>
-    <lastmod>2026-04-11</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://gapkainferno.github.io/product.html?id=farm_table_eggs</loc>
-    <lastmod>2026-05-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority>
-  </url>
 
   <!-- ═══════════════════════════════════════════════════════════════
        КОРИСНИЙ КОНТЕНТ

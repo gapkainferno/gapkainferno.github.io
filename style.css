@@ -237,7 +237,7 @@ h1, h2, h3, h4, h5, h6 {
 body {
     margin: 0;
     padding: 0;
-    font-family: var(--font-body);
+    font-family: var(--font-heading);
     font-size: var(--fs-base);
     line-height: var(--lh-body);
     letter-spacing: var(--ls-body);
@@ -1049,6 +1049,10 @@ body.has-sale-banner {
 .sidebar ul { list-style: none; padding: 0; margin: 0; }
 .sidebar li { margin-bottom: 4px; }
 
+.sidebar-menu-toggle {
+    display: none;
+}
+
 /* Група категорій (Насіння) з підкатегоріями */
 .sidebar-group {
     position: relative;
@@ -1057,22 +1061,28 @@ body.has-sale-banner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 12px;
+    width: 100%;
+    padding: 10px 12px;
     border-radius: var(--radius-sm);
-    font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 600;
+    border: 1px solid transparent;
+    border-left: 3px solid var(--primary-color);
+    background: rgba(255,255,255,0.035);
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    text-align: left;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     color: var(--primary-color);
     cursor: pointer;
-    border-left: 3px solid var(--primary-color);
-    transition: background var(--transition), color var(--transition), padding-left var(--transition);
+    transition: background var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
 }
 .sidebar-group-label:hover {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.075);
+    border-color: var(--border-color);
+    border-left-color: var(--primary-color);
     color: var(--text-color);
-    padding-left: 18px;
+    transform: translateX(2px);
 }
 .sidebar-group-label::after {
     content: '▸';
@@ -1095,48 +1105,60 @@ body.has-sale-banner {
     opacity: 0;
 }
 .sidebar-group.is-open .sidebar-submenu {
-    max-height: 200px;
+    max-height: 240px;
     opacity: 1;
+    margin-top: 5px;
+}
+.product-page-layout .sidebar-group.is-open > .sidebar-submenu {
+    max-height: 240px;
+    opacity: 1;
+    margin-top: 5px;
+    transition: none;
 }
 .sidebar-submenu li { margin-bottom: 2px; }
 .sidebar-submenu a {
     display: block;
-    padding: 6px 12px;
+    padding: 9px 12px;
     border-radius: var(--radius-sm);
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.1px;
+    text-transform: none;
     color: var(--text-muted);
     transition: background var(--transition), color var(--transition), padding-left var(--transition);
 }
 .sidebar-submenu a:hover {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.075);
     color: var(--text-color);
-    padding-left: 18px;
+    padding-left: 16px;
 }
 .sidebar-submenu a::before {
-    content: '— ';
-    color: var(--primary-color);
+    content: none;
 }
 
 .sidebar a {
     display: block;
-    padding: 8px 12px;
+    padding: 10px 12px;
     border-radius: var(--radius-sm);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.2px;
     color: var(--text-muted);
-    transition: background var(--transition), color var(--transition), padding-left var(--transition);
+    transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+.sidebar > nav > ul > li > a,
+.sidebar > .sidebar > ul > li > a {
+    font-family: var(--font-heading);
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
 }
 .sidebar a:hover,
 .sidebar a.active,
 .sidebar a.theme-active {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.075);
     color: var(--text-color);
-    padding-left: 18px;
+    transform: translateX(2px);
 }
 .sidebar a.theme-active {
     background: linear-gradient(
@@ -1145,10 +1167,16 @@ body.has-sale-banner {
         rgba(255,255,255,0.03) 100%
     );
     color: var(--primary-color) !important;
-    padding-left: 20px !important;
+    padding-left: 12px !important;
     border-left: 3px solid var(--primary-color);
     font-weight: 700;
-    letter-spacing: 1.2px;
+    letter-spacing: 0.2px;
+}
+.sidebar-group-label:focus-visible,
+.sidebar-menu-toggle:focus-visible,
+.sidebar nav a:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 3px;
 }
 
 /* Рекомендовані товари у sidebar */
@@ -1700,6 +1728,22 @@ body.has-sale-banner {
 .product-card:hover .img-container img {
     transform: scale(1.07);
     filter: brightness(1.08) contrast(1.04);
+}
+
+.image-missing-label {
+    position: relative;
+    z-index: 1;
+    padding: 10px;
+    color: var(--text-muted);
+    font: 500 0.8rem var(--font-heading);
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.main-img-wrap[hidden],
+#gallery-thumbs[hidden] {
+    display: none;
 }
 
 .product-card:hover .img-container::after {
@@ -3763,16 +3807,61 @@ footer {
     #catalog-container { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 
     /* Sidebar на мобільних — більші елементи для тачу */
+    .main-layout > .sidebar {
+        gap: 14px;
+        padding: 12px;
+    }
+    .main-layout > .sidebar > h3 {
+        display: none;
+    }
+    .sidebar-menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 48px;
+        padding: 10px 14px;
+        border: 1px solid var(--border-warm);
+        border-radius: var(--radius-sm);
+        background: linear-gradient(135deg, var(--surface-2), var(--surface));
+        color: var(--text-color);
+        font: 600 14px var(--font-body);
+        text-align: left;
+        cursor: pointer;
+    }
+    .sidebar-menu-chevron {
+        color: var(--primary-color);
+        font-size: 19px;
+        line-height: 1;
+        transition: transform var(--transition);
+    }
+    .sidebar.is-category-menu-open .sidebar-menu-chevron {
+        transform: rotate(180deg);
+    }
+    .main-layout > .sidebar.is-category-collapsible > nav {
+        display: none;
+        margin-top: -6px;
+    }
+    .main-layout > .sidebar.is-category-collapsible.is-category-menu-open > nav {
+        display: block;
+    }
+    .main-layout > .sidebar nav > ul {
+        display: grid;
+        gap: 6px;
+    }
+    .main-layout > .sidebar nav > ul > li {
+        margin: 0;
+    }
     .sidebar-group-label {
-        padding: 12px 16px;
+        padding: 12px 14px;
         font-size: 14px;
     }
     .sidebar-submenu a {
-        padding: 10px 14px;
+        padding: 11px 14px;
         font-size: 13px;
     }
     .sidebar a {
-        padding: 12px 16px;
+        padding: 12px 14px;
         font-size: 14px;
     }
 
@@ -3943,6 +4032,13 @@ body.theme-switching .overlay {
     border-left: 3px solid var(--primary-color);
     font-weight: 700;
     letter-spacing: 1.2px;
+}
+.sidebar .sidebar-submenu a.theme-active {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.1px;
+    text-transform: none;
 }
 
 /* Тонка кольорова смужка під header — індикатор теми */

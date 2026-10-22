@@ -1366,7 +1366,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         price: 30,
         metaDescription: "Купити насіння солодкого томату-біколора Серцевина сонця. Середньопізній великоплідний сорт із м'ясистою цукровою м'якушшю та ефектним мармуровим розрізом.",
         heatScore: "1",
-        images: ["heart-of-sun (4).jpg", "heart-of-sun (2).jpg", "heart-of-sun.jpg", "heart-of-sun (3).jpg"],
+        images: ["heart-of-sun (4).jpg", "heart-of-sun (2).jpg", "heart-of-sun.jpg", "heart-of-sun (3).jpg", ""],
         specs: {
             maturity: "Середньопізній (115–125 днів)",
             height: "1.5 – 1.8 м (індетермінантний)",
@@ -2007,7 +2007,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         
         metaDescription: "Купити насіння томату Ананасовий вогонь. Великоплідний соковитий біколор із цукристою м'якушшю, солодким фруктовим смаком та тривалим плодоношенням до осені.",
         heatScore: "1",
-        images: ["ananas-fire.jpg", "", ""],
+        images: ["ananas-fire.jpg", "sonce.jpg", ""],
         specs: {
             maturity: "Середньостиглий (110–120 днів)",
             height: "1.6 – 1.9 м (індетермінантний)",

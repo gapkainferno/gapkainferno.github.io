@@ -6,12 +6,20 @@ let currentProductId = null;
 let selectedSeedVersion = null;
 
 document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.sidebar-group-label').forEach(label => {
+        label.addEventListener('click', () => {
+            const group = label.closest('.sidebar-group');
+            const isOpen = group.classList.toggle('is-open');
+            label.setAttribute('aria-expanded', String(isOpen));
+        });
+    });
+
     // Отримуємо ID товару з URL (наприклад: product.html?id=habaneroredsavina)
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('id');
     const product = allProducts[productId];
 
-    if (!product) {
+    if (!product || product.isHidden) {
         const productPage = document.querySelector('.product-page');
         if (productPage) {
             productPage.innerHTML = 
@@ -105,7 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "@context": "https://schema.org/",
             "@type": "Product",
             "name": product.name,
-            "image": product.images.filter(img => img !== "").map(img => baseUrl + img),
+            "image": product.images
+                .filter(img => typeof img === 'string' && img.trim() && !/placeholder/i.test(img))
+                .map(img => baseUrl + img),
             "description": product.description.replace(/<br>/g, ' '), // Прибираємо теги
             "sku": id.toUpperCase(),
             "brand": {
@@ -255,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Рівень гостроти (якщо є)
         const heatTag = document.getElementById('product-heat');
         const heatWrap = document.getElementById('product-heat-wrap');
-        const hasHeatInfo = product.category === 'sauces' || /\bSHU\b/i.test(product.heatLevel || '');
+        const hasHeatInfo = product.category === 'sauces' || product.isSpicy || /\bSHU\b/i.test(product.heatLevel || '');
         if (heatWrap) heatWrap.style.display = hasHeatInfo ? 'flex' : 'none';
         if (heatTag && product.heatLevel) {
             heatTag.innerText = product.heatLevel;
@@ -370,26 +380,92 @@ document.addEventListener('DOMContentLoaded', () => {
         const mainImg = document.getElementById('main-view');
         const thumbsContainer = document.getElementById('gallery-thumbs');
         
-        if (mainImg && thumbsContainer && product.images && product.images.length > 0) {
-            // Головне фото
-            mainImg.src = product.images[0];
-            mainImg.alt = product.name;
+        if (mainImg && thumbsContainer) {
+            const galleryImages = (Array.isArray(product.images) ? product.images : []).filter(img => (
+                typeof img === 'string' && img.trim() && !/placeholder/i.test(img)
+            ));
+            const mainImageWrap = mainImg.closest('.main-img-wrap');
+            const navArrows = mainImageWrap?.querySelectorAll('.nav-arrow') || [];
 
-            // Генеруємо мініатюри
-            thumbsContainer.innerHTML = product.images.map((imgSrc, index) => `
-                <img src="${imgSrc}" 
-                     alt="${product.name} ${index + 1}" 
-                     class="thumb-img ${index === 0 ? 'active' : ''}" 
-                     onclick="updateView(this); currentImgIndex = ${index};"
+            thumbsContainer.innerHTML = galleryImages.map((imgSrc, index) => `
+                <img src="${imgSrc}"
+                     alt="${product.name} ${index + 1}"
+                     class="thumb-img ${index === 0 ? 'active' : ''}"
                 >
             `).join('');
+
+            mainImg.alt = product.name;
+            mainImg.onerror = () => {
+                const activeThumb = thumbsContainer.querySelector('.thumb-img.active');
+                activeThumb?.remove();
+                const nextThumb = thumbsContainer.querySelector('.thumb-img');
+
+                if (nextThumb) {
+                    nextThumb.classList.add('active');
+                    currentImgIndex = Array.from(thumbsContainer.children).indexOf(nextThumb);
+                    mainImg.src = nextThumb.src;
+                } else {
+                    mainImg.removeAttribute('src');
+                    mainImageWrap.hidden = true;
+                    thumbsContainer.hidden = true;
+                }
+
+                navArrows.forEach(arrow => {
+                    arrow.hidden = thumbsContainer.querySelectorAll('.thumb-img').length < 2;
+                });
+            };
+
+            thumbsContainer.querySelectorAll('.thumb-img').forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    updateView(thumb);
+                    currentImgIndex = Array.from(thumbsContainer.children).indexOf(thumb);
+                });
+                thumb.addEventListener('error', () => {
+                    const wasActive = thumb.classList.contains('active');
+                    thumb.remove();
+
+                    const remainingThumbs = thumbsContainer.querySelectorAll('.thumb-img');
+                    navArrows.forEach(arrow => {
+                        arrow.hidden = remainingThumbs.length < 2;
+                    });
+
+                    if (wasActive) {
+                        const nextThumb = remainingThumbs[0];
+                        if (nextThumb) {
+                            nextThumb.classList.add('active');
+                            updateView(nextThumb);
+                            currentImgIndex = 0;
+                        } else {
+                            mainImg.removeAttribute('src');
+                            mainImageWrap.hidden = true;
+                            thumbsContainer.hidden = true;
+                        }
+                    } else {
+                        const activeThumb = thumbsContainer.querySelector('.thumb-img.active');
+                        currentImgIndex = activeThumb
+                            ? Array.from(thumbsContainer.children).indexOf(activeThumb)
+                            : 0;
+                    }
+                }, { once: true });
+            });
+
+            navArrows.forEach(arrow => {
+                arrow.hidden = galleryImages.length < 2;
+            });
+
+            if (galleryImages.length > 0) {
+                mainImg.src = galleryImages[0];
+            } else {
+                mainImageWrap.hidden = true;
+                thumbsContainer.hidden = true;
+            }
         }
 
         // ===== 9. РЕКОМЕНДАЦІЇ В САЙДБАРІ =====
         const sideRecGrid = document.getElementById('sidebar-rec-grid');
         if (sideRecGrid) {
             const allIds = Object.keys(allProducts);
-            const otherIds = allIds.filter(id => id !== productId);
+            const otherIds = allIds.filter(id => id !== productId && !allProducts[id].isHidden);
             const randomIds = otherIds.sort(() => 0.5 - Math.random()).slice(0, 3);
 
             sideRecGrid.innerHTML = randomIds.map(id => {
