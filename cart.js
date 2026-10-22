@@ -19,7 +19,7 @@ const GLOBAL_SETTINGS = {
     isCategoryLockActive: true,
     lockedCategories: ['sauces', 'seeds', 'otherseeds', 'fresh-peppers'],
     lockedCategoryTitle: 'Незабаром',
-    lockedCategoryText: 'Розділ готується до старту восени 2026 🔥',
+    lockedCategoryText: 'Розділ готується до старту 2026 🔥',
     lockedCategoryAlert: '🌶️ Цей розділ ще в розробці. Чекаємо на вас восени 2026!'
 };
 
@@ -88,7 +88,7 @@ window.getLockedCategoryAlert = function() {
 };
 
 function isProductOrderable(product) {
-    return !!product && product.inStock !== false && !isProductLocked(product);
+    return !!product && !product.isHidden && product.inStock !== false && !isProductLocked(product);
 }
 
 function getCartValidationError(cart) {
