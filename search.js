@@ -60,6 +60,7 @@ function searchProducts(query) {
 
     Object.keys(allProducts).forEach(id => {
         const product = allProducts[id];
+        if (product.isHidden) return;
         
         // Шукаємо по назві
         const nameMatch = product.name.toLowerCase().includes(query);

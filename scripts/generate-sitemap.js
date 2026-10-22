@@ -10,16 +10,13 @@ const DATE = new Date().toISOString().split('T')[0];
 // 1. Зчитуємо продукти
 const content = fs.readFileSync(PRODUCTS_FILE, 'utf8');
 
-// Використовуємо регулярний вираз для пошуку ID товарів (ключів у об'єкті allProducts)
-const productIds = [];
-const regex = /"([^"]+)"\s*:\s*\{/g;
-let match;
-while ((match = regex.exec(content)) !== null) {
-    // Ігноруємо мета-інфо або вкладені об'єкти, якщо вони не є товарами першого рівня
-    if (!['specs', 'meta', 'seedVersions', 'openPollinated', 'isolated'].includes(match[1])) {
-        productIds.push(match[1]);
-    }
-}
+// Збираємо ключі товарів першого рівня та пропускаємо тимчасово приховані товари.
+const productEntries = [...content.matchAll(/^ {0,4}"([^"]+)"\s*:\s*\{/gm)];
+const productIds = productEntries.flatMap((entry, index) => {
+    const end = productEntries[index + 1]?.index ?? content.length;
+    const productSource = content.slice(entry.index, end);
+    return /\bisHidden\s*:\s*true\b/.test(productSource) ? [] : [entry[1]];
+});
 
 // 2. Шаблон XML
 let xml = `<?xml version="1.0" encoding="UTF-8"?>

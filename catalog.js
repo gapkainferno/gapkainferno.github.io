@@ -67,7 +67,7 @@ const CATEGORY_PAGES = {
         url: 'fresh-peppers.html',
         navLabel: isEnglishCatalog ? '🌶️ Inferno harvest' : '🌶️ Врожай Пекла',
         title: isEnglishCatalog ? 'Inferno harvest: fresh, dried peppers & pepper products' : 'Врожай Пекла: свіжі, сушені перці та продукти з перців',
-        description: isEnglishCatalog ? 'Everything from our beds and workshop: fresh superhots, dried peppers and pepper products (powder, flakes, pastes). Fresh superhots will be available in autumn 2026.' : 'Тут з\'являтимуться плоди, які ми збираємо на власних грядках, і продукти з перців: свіжі та сушені перці, порошки, пластівці, пасти. Свіжі суперхоти будуть доступні восени 2026.',
+        description: '',
         filterTitle: isEnglishCatalog ? 'Product type:' : 'Тип продукту:',
         filters: isEnglishCatalog ? [
             ['all', 'All'],
@@ -140,6 +140,26 @@ const SCOVILLE_DATA = isEnglishCatalog ? {
 
 function buildCategorySidebar(activeCategory) {
     document.querySelectorAll('.main-layout > .sidebar nav ul').forEach(list => {
+        const nav = list.closest('nav');
+        const sidebar = list.closest('.sidebar');
+        if (nav && sidebar && !sidebar.querySelector('.sidebar-menu-toggle')) {
+            const menuToggle = document.createElement('button');
+            sidebar.classList.add('is-category-collapsible');
+            menuToggle.type = 'button';
+            menuToggle.className = 'sidebar-menu-toggle';
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.innerHTML = `<span>${isEnglishCatalog ? 'Browse categories' : 'Категорії товарів'}</span><span class="sidebar-menu-chevron" aria-hidden="true">⌄</span>`;
+            nav.id = 'category-navigation';
+            menuToggle.setAttribute('aria-controls', nav.id);
+            nav.setAttribute('aria-label', isEnglishCatalog ? 'Product categories' : 'Категорії товарів');
+            nav.before(menuToggle);
+
+            menuToggle.addEventListener('click', () => {
+                const isOpen = sidebar.classList.toggle('is-category-menu-open');
+                menuToggle.setAttribute('aria-expanded', String(isOpen));
+            });
+        }
+
         list.innerHTML = CATEGORY_NAV.map(group => {
             const activeLeafClass = group.key === activeCategory ? ' class="theme-active active"' : '';
 
@@ -147,8 +167,8 @@ function buildCategorySidebar(activeCategory) {
                 const groupHasActive = group.children.some(child => child.key === activeCategory);
                 return `
                     <li class="sidebar-group${groupHasActive ? ' is-open' : ''}">
-                        <span class="sidebar-group-label">${safeText(group.label)}</span>
-                        <ul class="sidebar-submenu">
+                        <button type="button" class="sidebar-group-label" aria-expanded="${groupHasActive}" aria-controls="category-submenu-${safeText(group.key)}">${safeText(group.label)}</button>
+                        <ul class="sidebar-submenu" id="category-submenu-${safeText(group.key)}">
                             ${group.children.map(child => {
                                 const childActiveClass = child.key === activeCategory ? ' class="theme-active active"' : '';
                                 return `<li><a href="${child.url}"${childActiveClass}>${safeText(child.label)}</a></li>`;
@@ -160,14 +180,12 @@ function buildCategorySidebar(activeCategory) {
             return `<li><a href="${group.url}"${activeLeafClass}>${safeText(group.label)}</a></li>`;
         }).join('');
     });
-
     // Додаємо клік для перемикання підменю
     document.querySelectorAll('.sidebar-group-label').forEach(label => {
-        label.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+        label.addEventListener('click', () => {
             const group = label.parentElement;
-            group.classList.toggle('is-open');
+            const isOpen = group.classList.toggle('is-open');
+            label.setAttribute('aria-expanded', String(isOpen));
         });
     });
 }
@@ -249,7 +267,7 @@ function getMiniSpecsHTML(product) {
     }
 
     // Для перців показуємо гострота
-    if (product.category === 'seeds' && product.heatLevel) {
+    if ((product.category === 'seeds' || product.isSpicy) && product.heatLevel) {
         const heat = product.heatLevel.split('(')[0].trim();
         if (heat && heat !== '-' && heat !== 'N/A') {
             specs.push({ label: 'Гострота', value: heat });
@@ -276,13 +294,14 @@ function getMiniSpecsHTML(product) {
 }
 
 function hasScovilleInfo(product) {
-    return product.category === 'sauces' || /\bSHU\b/i.test(product.heatLevel || '');
+    return product.category === 'sauces' || (!product.isSpicy && /\bSHU\b/i.test(product.heatLevel || ''));
 }
 
 function getTagsHTML(product) {
     let tagsHTML = '';
     if (product.isNew) tagsHTML += '<span class="product-tag">NEW</span>';
-    if (product.isHot) tagsHTML += '<span class="product-tag hot">🔥 HOT</span>';
+    if (product.isSpicy) tagsHTML += '<span class="product-tag hot">🌶️ ГОСТРИЙ</span>';
+    else if (product.isHot) tagsHTML += '<span class="product-tag hot">🔥 HOT</span>';
     if (product.isFlavor) tagsHTML += `<span class="product-tag flavor">${safeText(product.isFlavor)}</span>`;
     return tagsHTML;
 }
@@ -292,14 +311,19 @@ function renderProductCard(id, product) {
     const hasHeatInfo = hasScovilleInfo(product);
     const isInStock = product.inStock !== false;
     const descriptionText = getDescriptionText(product);
+    const productImage = Array.isArray(product.images)
+        ? product.images.find(image => typeof image === 'string' && image.trim() && !/placeholder/i.test(image))
+        : '';
     const mutedImageClass = isInStock ? '' : ' muted-product-img';
     const mutedPriceClass = isInStock ? '' : ' muted-card-price';
 
     return `
         <a href="product.html?id=${safeText(id)}" class="product-card ${isInStock ? '' : 'out-of-stock'}" data-id="${safeText(id)}">
             <div class="product-tags">${getTagsHTML(product)}</div>
-            <div class="img-container">
-                <img src="${safeText(product.images[0])}" alt="${safeText(product.name)}" loading="lazy" class="${mutedImageClass}">
+            <div class="img-container${productImage ? '' : ' is-image-missing'}">
+                ${productImage
+                    ? `<img src="${safeText(productImage)}" alt="${safeText(product.name)}" loading="lazy" class="${mutedImageClass}">`
+                    : '<span class="image-missing-label">Фото буде додано</span>'}
 
                 ${hasHeatInfo ? `
                     <div class="scoville-overlay heat-${safeText(product.heatScore || 'unknown')}">
@@ -351,7 +375,7 @@ function renderCatalog(container, pageCategory) {
 
     Object.keys(allProducts).forEach(id => {
         const product = allProducts[id];
-        if (!pageCategory || product.category === pageCategory) {
+        if (!product.isHidden && (!pageCategory || product.category === pageCategory)) {
             container.insertAdjacentHTML('beforeend', renderProductCard(id, product));
         }
     });
