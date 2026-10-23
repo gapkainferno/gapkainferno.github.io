@@ -63,7 +63,8 @@ function searchProducts(query) {
         if (product.isHidden) return;
         
         // Шукаємо по назві
-        const nameMatch = product.name.toLowerCase().includes(query);
+        const displayName = window.getProductDisplayName?.(product) || product.name;
+        const nameMatch = displayName.toLowerCase().includes(query);
 
         // 2. ШУКАЄМО ПО ПРИХОВАНІЙ НАЗВІ (searchName)
         const altNameMatch = product.searchName && product.searchName.toLowerCase().includes(lowerQuery);
@@ -124,7 +125,7 @@ function displaySearchResults(results, container) {
     const sanitizedResults = results.map(item => ({
         ...item,
         rawCategory: item.category,
-        name: sanitize.text(item.name),  // Повна XSS защита
+        name: sanitize.text(window.getProductDisplayName?.(item) || item.name),  // Повна XSS защита
         category: sanitize.text(categoryNames[item.category] || item.category),
         price: isNaN(item.price) ? 0 : item.price // Перевіряємо, що ціна - число
     }));

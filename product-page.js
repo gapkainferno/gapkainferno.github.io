@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return; // Зупиняємо виконання всього, що нижче
     }
+
+    const productDisplayName = window.getProductDisplayName?.(product) || product.name;
     
     // Зберігаємо ID глобально
     currentProductId = productId;
@@ -59,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             breadcrumbLink.textContent = cat.name;
             breadcrumbLink.href = cat.url;
         }
-        if (breadcrumbProd) breadcrumbProd.textContent = product.name;
+        if (breadcrumbProd) breadcrumbProd.textContent = productDisplayName;
 
         const schema = {
             "@context": "https://schema.org",
@@ -67,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "itemListElement": [
                 { "@type": "ListItem", "position": 1, "name": "Головна", "item": baseUrl + "index.html" },
                 { "@type": "ListItem", "position": 2, "name": cat.name, "item": baseUrl + cat.url },
-                { "@type": "ListItem", "position": 3, "name": product.name, "item": window.location.href }
+                { "@type": "ListItem", "position": 3, "name": productDisplayName, "item": window.location.href }
             ]
         };
 
@@ -112,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const schema = {
             "@context": "https://schema.org/",
             "@type": "Product",
-            "name": product.name,
+            "name": productDisplayName,
             "image": product.images
                 .filter(img => typeof img === 'string' && img.trim() && !/placeholder/i.test(img))
                 .map(img => baseUrl + img),
@@ -175,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'otherseeds': 'Насіння овочів та томатів'
         };
         const catName = categorySEO[product.category] || 'Товари';
-        document.title = `${product.name} — ${catName} — купити в Gapka Homestead Inferno`;
+        document.title = `${productDisplayName} — ${catName} — купити в Gapka Homestead Inferno`;
         
         // Оновлюємо мета-теги з перевірками
         const metaDesc = document.getElementById('meta-description');
@@ -188,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const ogTitle = document.getElementById('og-title');
-        if (ogTitle) ogTitle.content = `${product.name} — ${catName} — Gapka Homestead Inferno`;
+        if (ogTitle) ogTitle.content = `${productDisplayName} — ${catName} — Gapka Homestead Inferno`;
         
         const ogImage = document.getElementById('og-image');
         if (ogImage && product.images && product.images[0]) {
@@ -215,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // ===== 2. ЗАПОВНЮЄМО ОСНОВНУ ІНФОРМАЦІЮ =====
         const pName = document.getElementById('p-name');
-        if (pName) pName.innerText = product.name;
+        if (pName) pName.innerText = productDisplayName;
         
         const pDesc = document.getElementById('p-desc');
         if (pDesc) pDesc.innerHTML = product.description;
@@ -389,12 +391,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             thumbsContainer.innerHTML = galleryImages.map((imgSrc, index) => `
                 <img src="${imgSrc}"
-                     alt="${product.name} ${index + 1}"
+                     alt="${productDisplayName} ${index + 1}"
                      class="thumb-img ${index === 0 ? 'active' : ''}"
                 >
             `).join('');
 
-            mainImg.alt = product.name;
+            mainImg.alt = productDisplayName;
             mainImg.onerror = () => {
                 const activeThumb = thumbsContainer.querySelector('.thumb-img.active');
                 activeThumb?.remove();

@@ -16,7 +16,7 @@ const orderRateLimiter = {
 
 const GLOBAL_SETTINGS = {
     // Щоб відкрити магазин: isCategoryLockActive: false або lockedCategories: []
-    isCategoryLockActive: true,
+    isCategoryLockActive: false,
     lockedCategories: ['sauces', 'seeds', 'otherseeds', 'fresh-peppers'],
     lockedCategoryTitle: 'Незабаром',
     lockedCategoryText: 'Розділ готується до старту 2026 🔥',
@@ -109,11 +109,13 @@ function getCartValidationError(cart) {
         }
 
         if (isProductLocked(product)) {
-            return `Товар "${product.name}" зараз недоступний до запуску.`;
+            const productName = window.getProductDisplayName?.(product) || product.name;
+            return `Товар "${productName}" зараз недоступний до запуску.`;
         }
 
         if (product.inStock === false) {
-            return `Товар "${product.name}" зараз відсутній у наявності.`;
+            const productName = window.getProductDisplayName?.(product) || product.name;
+            return `Товар "${productName}" зараз відсутній у наявності.`;
         }
     }
 
@@ -428,7 +430,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // === 1. РОБОТА З ПАМ'ЯТТЮ ===
 function getFreshCart() {
-    try { return JSON.parse(localStorage.getItem('homestead_cart')) || []; } 
+    try {
+        const cart = JSON.parse(localStorage.getItem('homestead_cart')) || [];
+        return cart.map(item => {
+            const product = item.productId && typeof allProducts !== 'undefined'
+                ? allProducts[item.productId]
+                : null;
+            if (!product || typeof window.getProductDisplayName !== 'function') return item;
+            return { ...item, name: window.getProductDisplayName(product, item.name) };
+        });
+    }
     catch (e) { return []; }
 }
 function saveCart(cart) { localStorage.setItem('homestead_cart', JSON.stringify(cart)); }
@@ -498,7 +509,13 @@ function updateCartUI() {
 
                 // Використовуємо збережену назву з кошика (вона містить версію), 
                 // або беремо з бази, або ставимо дефолтну заглушку
-                const safeName = item.name || (productData ? productData.name : 'Товар');
+                const safeName = item.name
+                    ? (productData && typeof window.getProductDisplayName === 'function'
+                        ? window.getProductDisplayName(productData, item.name)
+                        : item.name)
+                    : (productData && typeof window.getProductDisplayName === 'function'
+                        ? window.getProductDisplayName(productData)
+                        : productData?.name || 'Товар');
 
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'cart-item';
@@ -1224,7 +1241,10 @@ window.addToCart = function(productId, price, name, qty = 1, originalPrice = nul
     let cart = getFreshCart();
     
     // ✅ НОВЕ: Sanitize назви
-    const safeName = sanitizeInput(name, CART_CONSTANTS.MAX_NAME_LENGTH);
+    const displayName = productData && typeof window.getProductDisplayName === 'function'
+        ? window.getProductDisplayName(productData, name)
+        : name;
+    const safeName = sanitizeInput(displayName, CART_CONSTANTS.MAX_NAME_LENGTH);
     
     // ✅ НОВЕ: Використання константи
     const validatedPrice = validatePrice(productId, parseFloat(price));
@@ -1296,7 +1316,7 @@ window.pushToCart = function() {
     
     // БЕРЕМО НАЗВУ З БАЗИ (як у каталозі), а не з екрана
     let name = (productId && typeof allProducts !== 'undefined' && allProducts[productId]) 
-               ? allProducts[productId].name 
+               ? (window.getProductDisplayName?.(allProducts[productId]) || allProducts[productId].name)
                : document.getElementById('p-name').innerText;
 
     // 🔥 НОВЕ: ДОДАЄМО ВЕРСІЮ НАСІННЯ ДО НАЗВИ
@@ -1341,7 +1361,7 @@ window.addToCartDirectly = function(productId, buttonElement) {
 
         // 1. БЕРЕМО НАЗВУ З БАЗИ (products.js)
         let actualName = (typeof allProducts !== 'undefined' && allProducts[productId]) 
-                         ? allProducts[productId].name 
+                         ? (window.getProductDisplayName?.(allProducts[productId]) || allProducts[productId].name)
                          : productId;
 
         // 2. ШУКАЄМО ЦІНУ НА КАРТЦІ (щоб врахувати акцію)

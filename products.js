@@ -50,7 +50,7 @@ heatScore: "2",
         heatLevel: "☠️ ЕКСТРЕМАЛЬНА (1,500,000 – 2,200,000+ SHU)",
         metaDescription: "Насіння Carolina Reaper Red — найгострішого перцю у світі (2.2M+ SHU). Офіційний рекордсмен Гіннеса. Замовляйте з доставкою по Україні в Gapka Homestead Inferno.",
 heatScore:"4",
-        images: ["Carolina-Reaper-Red-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
+        images: ["carolina-reaper-red-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
         specs: {
             maturity: "100-120 днів (пізньостиглий)",
             height: "90-120 см",
@@ -2399,7 +2399,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
     price: 0,
     heatLevel: "☠️ ЕКСТРЕМАЛЬНА",
     heatScore: "2", // Фільтр: Сушені
-    images: ["Carolina-Reaper-Red-main.webp"],
+    images: ["carolina-reaper-red-main.webp"],
     description: "Сушені при низьких температурах слайси для збереження аромату та пекучості.",
     inStock: false,
     allowSale: false
@@ -2419,6 +2419,25 @@ isHot: true,  // З'явиться тег 🔥 HOT
 },
 
 };
+
+window.getProductDisplayName = (product, name = product?.name) => {
+    const rawName = String(name || '').trim();
+    if (!product || !['seeds', 'otherseeds'].includes(product.category) || !rawName) {
+        return rawName;
+    }
+
+    const varietyName = rawName
+        .replace(/^(?:насіння(?:\s+(?:(?:гострого|солодкого|супергострого)\s+)?(?:перцю|перець|томат(?:у|ів)?|овочів))?|перець(?:\s+гострий)?|томат)\s*[:—-]?\s*/i, '')
+        .trim();
+
+    return `Насіння — ${varietyName || rawName}`;
+};
+
+Object.values(allProducts).forEach(product => {
+    if (product.category === 'seeds' || product.category === 'otherseeds') {
+        product.name = window.getProductDisplayName(product);
+    }
+});
 
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

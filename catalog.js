@@ -310,6 +310,7 @@ function renderProductCard(id, product) {
     const currentHeat = HEAT_LEVELS[product.heatScore] || { shu: "Unknown", width: "0%" };
     const hasHeatInfo = hasScovilleInfo(product);
     const isInStock = product.inStock !== false;
+    const productDisplayName = window.getProductDisplayName?.(product) || product.name;
     const descriptionText = getDescriptionText(product);
     const productImage = Array.isArray(product.images)
         ? product.images.find(image => typeof image === 'string' && image.trim() && !/placeholder/i.test(image))
@@ -322,7 +323,7 @@ function renderProductCard(id, product) {
             <div class="product-tags">${getTagsHTML(product)}</div>
             <div class="img-container${productImage ? '' : ' is-image-missing'}">
                 ${productImage
-                    ? `<img src="${safeText(productImage)}" alt="${safeText(product.name)}" loading="lazy" class="${mutedImageClass}">`
+                    ? `<img src="${safeText(productImage)}" alt="${safeText(productDisplayName)}" loading="lazy" class="${mutedImageClass}">`
                     : '<span class="image-missing-label">Фото буде додано</span>'}
 
                 ${hasHeatInfo ? `
@@ -346,7 +347,7 @@ function renderProductCard(id, product) {
                 ${isInStock ? `
                     <button class="quick-add-btn"
                             onclick="event.stopPropagation(); event.preventDefault(); addToCartDirectly('${safeText(id)}', this); return false;"
-                            aria-label="Додати ${safeText(product.name)} у кошик">
+                            aria-label="Додати ${safeText(productDisplayName)} у кошик">
                         🛒
                     </button>
                 ` : ''}
@@ -354,7 +355,7 @@ function renderProductCard(id, product) {
 
             <div class="product-label">
                 <div class="name-price-row">
-                    <h3 class="p-name">${safeText(product.name)}</h3>
+                    <h3 class="p-name">${safeText(productDisplayName)}</h3>
                     <p class="card-price${mutedPriceClass}"
                        data-base-price="${safeText(product.price)}"
                        data-allow-sale="${product.allowSale === true ? 'true' : 'false'}">
