@@ -3851,6 +3851,94 @@ footer {
     }
 
     #catalog-container { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    #catalog-container .product-card {
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.24);
+    }
+    #catalog-container .img-container {
+        aspect-ratio: 1 / 1;
+        border-radius: 11px 11px 0 0;
+    }
+    #catalog-container .product-label {
+        flex: 0 0 auto;
+    }
+    #catalog-container .product-label::before {
+        display: none;
+    }
+    #catalog-container .name-price-row {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 5px;
+        padding: 10px 10px 11px;
+        margin: 0;
+    }
+    #catalog-container .product-label .p-name {
+        display: -webkit-box;
+        flex: none;
+        width: 100%;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        font-size: 13px;
+        line-height: 1.3;
+        letter-spacing: 0.04em;
+        overflow-wrap: anywhere;
+    }
+    #catalog-container .card-price {
+        font-size: 17px;
+        line-height: 1.1;
+    }
+    #catalog-container .product-specs-mini,
+    #catalog-container .product-description-short {
+        display: none !important;
+    }
+    #catalog-container .product-tags {
+        top: 8px;
+        left: 8px;
+        gap: 4px;
+    }
+    #catalog-container .product-tag {
+        padding: 4px 7px;
+        font-size: 8px;
+        letter-spacing: 0.06em;
+    }
+    #catalog-container .product-tag.flavor {
+        display: none;
+    }
+    #catalog-container .quick-add-btn {
+        width: 38px;
+        height: 38px;
+        right: 8px;
+        bottom: 8px;
+        border-radius: 50%;
+        font-size: 19px;
+    }
+    #catalog-container .out-of-stock {
+        filter: none;
+        opacity: 1;
+    }
+    #catalog-container .out-of-stock .img-container img {
+        filter: grayscale(0.55);
+    }
+    #catalog-container .out-of-stock .img-container::after {
+        top: 50%;
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        width: auto;
+        height: auto;
+        transform: translate(-50%, -50%);
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+    }
+    #catalog-container .product-card.out-of-stock:hover {
+        filter: none;
+        opacity: 1;
+    }
 
     /* Sidebar на мобільних — більші елементи для тачу */
     .main-layout > .sidebar {
