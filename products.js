@@ -2145,7 +2145,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
     heatLevel: "Томат",
     metaDescription: "Насіння зеленого томата GHI Emerald Honey. Неймовірна медова солодкість із нотками ківі. Тропічний десерт на вашому городі.",
     heatScore: "1",
-    images: ["green.jpg", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"], 
+    images: ["emerald-honey.jpg", "green.jpg", ""], 
     specs: {
         maturity: "115-125 днів (середньоранній)",
         height: "170-190 см (індетермінантний)",
