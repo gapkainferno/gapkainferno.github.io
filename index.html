@@ -508,7 +508,7 @@
 
 <section class="cards-section">
 <!-- ═══ НАСІННЯ: супергострі перці + томати та інші овочі ═══ -->
-    <div class="card-link seeds">
+    <div class="card-link seeds" role="group" aria-label="Насіння — торкніться, щоб обрати підрозділ">
         <img src="Habanero-chocolate-plant.webp" 
              alt="Насіння — супергострі перці, томати та інші овочі" 
              class="card-image" 
@@ -764,5 +764,34 @@
 <script defer src="optimization-module.js"></script>
 <script src="language-switcher.js"></script>
 <script type="module" src="modules/init.js"></script>
+<script>
+    (() => {
+        const seedsCard = document.querySelector('.card-link.seeds');
+        const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+        if (!seedsCard || !isTouchDevice) return;
+
+        seedsCard.addEventListener('click', (event) => {
+            const isOpen = seedsCard.classList.contains('is-open');
+            const isSubcategoryLink = event.target.closest('.card-split a');
+
+            if (!isOpen) {
+                event.preventDefault();
+                seedsCard.classList.add('is-open');
+                return;
+            }
+
+            if (!isSubcategoryLink) {
+                seedsCard.classList.remove('is-open');
+            }
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!seedsCard.contains(event.target)) {
+                seedsCard.classList.remove('is-open');
+            }
+        });
+    })();
+</script>
 </body>
 </html>

@@ -3918,7 +3918,32 @@ footer {
     }
 
     /* Головна */
-    .cards-section  { grid-template-columns: 1fr; gap: 16px; }
+    body.homepage .cards-section {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin: 28px 0;
+    }
+    body.homepage .card-link {
+        aspect-ratio: 4 / 3;
+    }
+    body.homepage .card-label {
+        font-size: clamp(16px, 4vw, 22px);
+    }
+    body.homepage .split-label {
+        width: calc(100% - 12px);
+        font-size: clamp(11px, 3vw, 15px);
+        line-height: 1.15;
+        text-align: center;
+        white-space: normal;
+    }
+    body.homepage .card-link.seeds.is-open .card-split {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    body.homepage .card-link.seeds.is-open .card-label {
+        opacity: 0;
+        pointer-events: none;
+    }
     .features-grid  { grid-template-columns: 1fr; padding: 30px 0; }
     .hero-banner    { margin: 40px 0; }
 
@@ -3958,6 +3983,32 @@ footer {
 
     /* Опис на мобілці — прибираємо justify (на вузьких екранах виглядає гірше) */
     #p-desc { text-align: left; hyphens: none; }
+}
+
+@media (max-width: 768px) and (hover: none) and (pointer: coarse) {
+    body.homepage .card-link:hover {
+        transform: none;
+    }
+    body.homepage .card-link:hover .card-image {
+        transform: none;
+    }
+    body.homepage .card-link.seeds:hover .card-split {
+        opacity: 0;
+        pointer-events: none;
+    }
+    body.homepage .card-link.seeds.is-open:hover .card-split {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    body.homepage .card-link.seeds:hover .card-label {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+        color: #d6d6d6;
+    }
+    body.homepage .card-link.seeds.is-open:hover .card-label {
+        opacity: 0;
+        pointer-events: none;
+    }
 }
 
 /* ── Маленькі мобільні до 480px ── */
