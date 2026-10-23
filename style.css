@@ -756,7 +756,6 @@ body.has-sale-banner {
     z-index: 1;
     border: 1px solid rgba(255,255,255,0.05);
 }
-
 /* Глибокий градієнт знизу для ідеальної читабельності тексту */
 .card-link::after {
     content: '';
@@ -834,6 +833,53 @@ body.has-sale-banner {
 .card-link.fresh-peppers:hover .card-label::before { background: #e25822; }
 
 .card-link:hover .card-label::before { width: 60px; }
+
+.card-link.seasonal-closed {
+    cursor: default;
+}
+.card-link.seasonal-closed:hover {
+    transform: none;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,255,255,0.02);
+    border-color: rgba(255,255,255,0.05);
+}
+.card-link.seasonal-closed:hover .card-image {
+    transform: none;
+}
+.card-link.seasonal-closed:hover::after {
+    opacity: 1;
+}
+.card-link.seasonal-closed:hover .card-label {
+    transform: translate(-50%, -50%);
+    color: #d6d6d6;
+}
+.card-link.seasonal-closed:hover .card-label::before {
+    width: 35px;
+    background: #e25822;
+}
+.seasonal-badge,
+.seasonal-note {
+    position: absolute;
+    left: 50%;
+    z-index: 10;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+.seasonal-badge {
+    top: 22px;
+    padding: 8px 14px;
+    border: 1px solid rgba(255,190,120,0.45);
+    border-radius: 999px;
+    background: rgba(20,10,5,0.78);
+    color: #ffd19e;
+    font: 600 0.78rem var(--font-heading);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.seasonal-note {
+    bottom: 22px;
+    color: rgba(255,255,255,0.78);
+    font: 400 0.9rem var(--font-body);
+}
 
 /* Розділення картки «Насіння» на 2 частини при наведенні */
 .card-split {
