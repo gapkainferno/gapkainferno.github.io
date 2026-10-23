@@ -50,7 +50,7 @@ heatScore: "2",
         heatLevel: "☠️ ЕКСТРЕМАЛЬНА (1,500,000 – 2,200,000+ SHU)",
         metaDescription: "Насіння Carolina Reaper Red — найгострішого перцю у світі (2.2M+ SHU). Офіційний рекордсмен Гіннеса. Замовляйте з доставкою по Україні в Gapka Homestead Inferno.",
 heatScore:"4",
-        images: ["carolina-reaper-red-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
+        images: ["Carolina-Reaper-Red-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
         specs: {
             maturity: "100-120 днів (пізньостиглий)",
             height: "90-120 см",
@@ -1128,7 +1128,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         metaDescription: "Купити соус із хабанеро Neon Vibe. Яскрава фруктова солодкість та неонова гострота. Натуральний крафтовий соус до морепродуктів та локшини.",
         heatScore: "2",
         images: [
-            "Neon-Vibe-sauce.webp",
+            "Neon-vibe-sauce.webp",
             "sauce1.jpg",  // Можеш додати більше фото пізніше
             "sauce1.jpg"
         ],
@@ -1170,7 +1170,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         metaDescription: "Лагідний гострий соус Mild Forest. Гармонія Padrón, Jalapeno та Lemon Drop. Легке цитрусове тепло для ідеальних сніданків.",
         heatScore: "1",
         images: [
-            "Mild-Forest-sauce.webp",
+            "Mild-forest-sauce.webp",
             "sauce1.jpg",  // Можеш додати більше фото пізніше
             "sauce1.jpg"
         ],
@@ -2399,7 +2399,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
     price: 0,
     heatLevel: "☠️ ЕКСТРЕМАЛЬНА",
     heatScore: "2", // Фільтр: Сушені
-    images: ["carolina-reaper-red-main.webp"],
+    images: ["Carolina-Reaper-Red-main.webp"],
     description: "Сушені при низьких температурах слайси для збереження аромату та пекучості.",
     inStock: false,
     allowSale: false
