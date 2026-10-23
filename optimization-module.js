@@ -263,10 +263,13 @@ const WebVitalsMonitor = (() => {
             return { ...metrics };
         },
         log() {
+            const availableMetrics = Object.entries(metrics).filter(([, value]) => value !== null);
+            if (availableMetrics.length === 0) return;
+
             console.group('📊 Web Vitals');
-            console.log('LCP (Largest Contentful Paint):', metrics.lcp, 'ms');
-            console.log('FID (First Input Delay):', metrics.fid, 'ms');
-            console.log('CLS (Cumulative Layout Shift):', metrics.cls);
+            availableMetrics.forEach(([name, value]) => {
+                console.log(`${name.toUpperCase()}:`, value, name === 'cls' ? '' : 'ms');
+            });
             console.groupEnd();
         }
     };

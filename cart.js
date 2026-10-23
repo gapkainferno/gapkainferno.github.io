@@ -422,19 +422,8 @@ function applyCategoryLock() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('📍 DOMContentLoaded: Запущення функцій акцій та блокування');
-    console.log('🎯 GLOBAL_SETTINGS:', GLOBAL_SETTINGS);
     applyGlobalSale();
     applyCategoryLock();
-    
-    // Діагностика: Перевірити, чи елементи були заблоковані
-    setTimeout(() => {
-        const lockedElements = document.querySelectorAll('.card-link.is-locked');
-        console.log(`🔍 Заблокованих елементів на сторінці: ${lockedElements.length}`);
-        lockedElements.forEach(el => {
-            console.log('   - Заблокований:', el.className, el.href);
-        });
-    }, 100);
 });
 
 // === 1. РОБОТА З ПАМ'ЯТТЮ ===

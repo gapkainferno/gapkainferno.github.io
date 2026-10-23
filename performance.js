@@ -229,8 +229,7 @@ class PerformanceMonitor {
         
         // Базові метрики
         window.addEventListener('load', () => {
-            const perfData = window.performance.timing;
-            const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+            const pageLoadTime = Math.round(window.performance.now());
             
             // Логування або відправка на сервер
             console.log(`📊 Page Load Time: ${pageLoadTime}ms`);
