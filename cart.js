@@ -1579,8 +1579,10 @@ window.submitOrder = async function() {
         orderText += `\n\n💰 TOTAL: ${totalSum.toFixed(2)} UAH (${totalUSD})`;
         orderText += `\n📦 Shipping to be calculated individually`;
 
+
+       // https://api.telegram.org/bot8532849974:AAG-JfB6E6_XfNggptnpygCrr0JqutvRhgA/setWebhook?url=<ТВОЄ_ПОСИЛАННЯ_EXEC> створити ВЕБХУК після зміни посилання
         try {
-            const response = await fetch("https://script.google.com/macros/s/AKfycbyiEM5NnSk-Hg6-ObFifQQf3Xfmt8AjRcqHuinxkueImuEbBUKWl0AlAYUcmn5v0tfm/exec", {
+            const response = await fetch("https://script.google.com/macros/s/AKfycbyJICcVWSTJy-7Bm_xT2jqrAR_y4fEXHPSmLp25EtPr5hC6Q1vN_UHIJ9Y3BSM7B_N6/exec", {
                 method: "POST",
                 mode: "cors",
                 redirect: "follow",
