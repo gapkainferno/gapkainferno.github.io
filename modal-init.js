@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // СПІЛЬНІ ЗМІННІ ТА ФУНКЦІЇ
 // ═══════════════════════════════════════════════════════════════
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiEM5NnSk-Hg6-ObFifQQf3Xfmt8AjRcqHuinxkueImuEbBUKWl0AlAYUcmn5v0tfm/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJICcVWSTJy-7Bm_xT2jqrAR_y4fEXHPSmLp25EtPr5hC6Q1vN_UHIJ9Y3BSM7B_N6/exec";
 
 let currentNotifyCategory = '';
 
@@ -361,7 +361,7 @@ function createNotifyModalEn(category) {
                 <button class="order-btn" onclick="submitNotification()">Notify Me First</button>
             </div>
             <div id="notify-success" style="display:none; color: var(--primary-color); margin-top: 20px; font-weight: bold;">
-                You're on the list! 🔥
+                Request sent. Check your email for confirmation. 🔥
             </div>
         </div>
     </div>`;
@@ -371,11 +371,11 @@ function createNotifyModalEn(category) {
 // Універсальна функція для відправки даних у Google Sheet
 async function sendToGoogleSheet(data) {
     try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
+        await fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
             cache: 'no-cache',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
             body: JSON.stringify(data)
         });
         return true;
@@ -409,14 +409,24 @@ async function submitNotification() {
     const data = {
         date: new Date().toLocaleString("en-US"),
         email: email,
-        orderType: "LAUNCH_REQUEST",
+        orderType: "ЗАПИТ_НА_ЗАПУСК",
         details: `Category: ${currentNotifyCategory}${window.IS_ENGLISH ? ' (EN)' : ''}`,
         secret_token: "summerof26"
     };
 
-    await sendToGoogleSheet(data);
+    const sent = await sendToGoogleSheet(data);
+    if (!sent) {
+        alert(window.IS_ENGLISH ? 'Could not send your request. Please try again.' : 'Не вдалося надіслати запит. Спробуйте ще раз.');
+        btn.disabled = false;
+        btn.innerText = window.IS_ENGLISH ? "Notify Me First" : "Хочу дізнатися першим";
+        return;
+    }
 
-    document.getElementById('notify-success').style.display = 'block';
+    const successMessage = document.getElementById('notify-success');
+    successMessage.innerText = window.IS_ENGLISH
+        ? 'Request sent. Check your email for confirmation. 🔥'
+        : 'Запит надіслано. Перевірте пошту для підтвердження. 🔥';
+    successMessage.style.display = 'block';
     setTimeout(() => {
         document.getElementById('notifyModal').style.display = 'none';
         document.getElementById('notify-success').style.display = 'none';
@@ -482,15 +492,24 @@ async function handleGeneralSubscribe(event) {
     btn.disabled = true;
     btn.innerText = "⏳";
 
-    await sendToGoogleSheet({
+    const sent = await sendToGoogleSheet({
         date: new Date().toISOString(),
         email: email,
-        orderType: "MARKETING_SUBSCRIBE",
+        orderType: "ПІДПИСКА_МАРКЕТИНГ",
         details: window.IS_ENGLISH ? "Subscribe from English homepage" : "Підписка з головної сторінки (футер)",
         secret_token: "summerof26"
     });
 
-    alert(window.IS_ENGLISH ? 'Thank you! You\'re on the list 🔥' : 'Дякуємо! Тепер ви в списку обраних 🔥');
+    if (!sent) {
+        alert(window.IS_ENGLISH ? 'Could not subscribe. Please try again.' : 'Не вдалося оформити підписку. Спробуйте ще раз.');
+        btn.disabled = false;
+        btn.innerText = window.IS_ENGLISH ? "Subscribe" : "Підписатися";
+        return;
+    }
+
+    alert(window.IS_ENGLISH
+        ? 'Request sent. Check your email for confirmation. 🔥'
+        : 'Запит надіслано. Перевірте пошту для підтвердження. 🔥');
     btn.disabled = false;
     btn.innerText = window.IS_ENGLISH ? "Subscribe" : "Підписатися";
     document.getElementById('sub-email').value = '';
