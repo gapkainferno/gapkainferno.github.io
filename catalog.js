@@ -374,11 +374,16 @@ function renderProductCard(id, product) {
 function renderCatalog(container, pageCategory) {
     container.innerHTML = '';
 
-    Object.keys(allProducts).forEach(id => {
+    const productIds = Object.keys(allProducts)
+        .filter(id => {
+            const product = allProducts[id];
+            return !product.isHidden && (!pageCategory || product.category === pageCategory);
+        })
+        .sort((a, b) => Number(allProducts[a].inStock === false) - Number(allProducts[b].inStock === false));
+
+    productIds.forEach(id => {
         const product = allProducts[id];
-        if (!product.isHidden && (!pageCategory || product.category === pageCategory)) {
-            container.insertAdjacentHTML('beforeend', renderProductCard(id, product));
-        }
+        container.insertAdjacentHTML('beforeend', renderProductCard(id, product));
     });
 
     if (typeof applyGlobalSale === 'function') {
