@@ -87,36 +87,69 @@
         if (!overlay) {
             overlay = document.createElement('div');
             overlay.className = 'zoom-overlay';
-            // Додаємо структуру: Хрестик + Контейнер для фото
             overlay.innerHTML = `
-                <div class="zoom-close">&times;</div>
-                <img src="" alt="Zoomed">
+                <button class="zoom-close" type="button" aria-label="Закрити">&times;</button>
+                <button class="zoom-arrow left" type="button" aria-label="Попереднє фото">&#10094;</button>
+                <img src="" alt="Фото товару">
+                <button class="zoom-arrow right" type="button" aria-label="Наступне фото">&#10095;</button>
             `;
             document.body.appendChild(overlay);
         }
 
         const zoomImg = overlay.querySelector('img');
         const closeBtn = overlay.querySelector('.zoom-close');
+        const previousBtn = overlay.querySelector('.zoom-arrow.left');
+        const nextBtn = overlay.querySelector('.zoom-arrow.right');
+        let activeGallery = [];
+        let activeIndex = 0;
+
+        const syncZoomImage = () => {
+            if (activeGallery.length < 2) {
+                previousBtn.hidden = true;
+                nextBtn.hidden = true;
+                return;
+            }
+
+            previousBtn.hidden = false;
+            nextBtn.hidden = false;
+            zoomImg.src = activeGallery[activeIndex].src;
+            zoomImg.alt = activeGallery[activeIndex].alt || 'Фото товару';
+        };
+
+        const changeZoomImage = (step) => {
+            if (!activeGallery.length) return;
+            activeIndex = (activeIndex + step + activeGallery.length) % activeGallery.length;
+            activeGallery[activeIndex].click();
+            syncZoomImage();
+        };
 
         // Функція закриття
         const closeZoom = () => {
             overlay.classList.remove('active');
             document.body.style.overflow = '';
-            setTimeout(() => { zoomImg.src = ''; }, 300); // Очищуємо після анімації
+            setTimeout(() => { zoomImg.src = ''; }, 300);
         };
 
-        overlay.onclick = (e) => { if (e.target !== zoomImg) closeZoom(); };
+        overlay.onclick = (e) => { if (e.target === overlay) closeZoom(); };
         closeBtn.onclick = closeZoom;
+        previousBtn.onclick = () => changeZoomImage(-1);
+        nextBtn.onclick = () => changeZoomImage(1);
 
         document.addEventListener('click', function (e) {
             const target = e.target;
             // Перевіряємо клік по головному фото
             if (target.id === 'main-view' || target.closest('.main-img-wrap img')) {
-                
                 const sourceSrc = target.src;
                 if (!sourceSrc) return;
 
+                activeGallery = Array.from(document.querySelectorAll('#gallery-thumbs .thumb-img'));
+                activeIndex = activeGallery.findIndex(image => image.classList.contains('active'));
+                if (activeIndex < 0) activeIndex = 0;
+
                 zoomImg.src = sourceSrc;
+                zoomImg.alt = target.alt || 'Фото товару';
+                previousBtn.hidden = activeGallery.length < 2;
+                nextBtn.hidden = activeGallery.length < 2;
                 overlay.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 
@@ -124,6 +157,20 @@
                 e.preventDefault();
             }
         }, true);
+
+        document.addEventListener('keydown', (e) => {
+            if (!overlay.classList.contains('active')) return;
+
+            if (e.key === 'Escape') {
+                closeZoom();
+            } else if (e.key === 'ArrowLeft' && activeGallery.length > 1) {
+                e.preventDefault();
+                changeZoomImage(-1);
+            } else if (e.key === 'ArrowRight' && activeGallery.length > 1) {
+                e.preventDefault();
+                changeZoomImage(1);
+            }
+        });
     }
 
     if (document.readyState === 'loading') {

@@ -2069,6 +2069,38 @@ main.product-page {
     transform: scale(1);
 }
 
+.zoom-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 64px;
+    border: 0;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 1;
+    transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.zoom-arrow:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.zoom-arrow[hidden] {
+    display: none;
+}
+
+.zoom-arrow.left {
+    left: 24px;
+}
+
+.zoom-arrow.right {
+    right: 24px;
+}
+
 /* Кнопка закриття (хрестик) */
 .zoom-close {
     position: absolute;
@@ -2082,6 +2114,9 @@ main.product-page {
     opacity: 0.7;
     transition: 0.3s;
     user-select: none;
+    background: none;
+    border: 0;
+    padding: 0;
 }
 
 .zoom-close:hover {
