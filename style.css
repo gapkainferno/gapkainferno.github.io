@@ -1689,41 +1689,14 @@ body.has-sale-banner {
 /* ── Фото-зона ── */
 .img-container {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 16 / 10;
     overflow: hidden;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 12px;
-    background: var(--surface);
-}
-
-/* Тонке підсвічення по центру — відчуття студійного світла */
-.img-container::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.04) 0%, transparent 65%);
-    pointer-events: none;
-    z-index: 2;
-}
-
-/* Ореол під фото */
-.img-container::after {
-    content: '';
-    position: absolute;
-    bottom: 8%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 55%;
-    height: 12px;
-    background: var(--primary-color);
-    filter: blur(20px);
-    opacity: 0.12;
-    pointer-events: none;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    z-index: 0;
+    background: transparent;
 }
 
 .img-container img {
@@ -1733,13 +1706,9 @@ body.has-sale-banner {
     height: 100%;
     object-fit: contain;
     object-position: center;
-    padding: 7%;
-    transition: filter 0.4s ease;
+    padding: 0;
+    transition: none;
     z-index: 1;
-}
-
-.product-card:hover .img-container img {
-    filter: brightness(1.08) contrast(1.04);
 }
 
 .image-missing-label {
@@ -1756,11 +1725,6 @@ body.has-sale-banner {
 .main-img-wrap[hidden],
 #gallery-thumbs[hidden] {
     display: none;
-}
-
-.product-card:hover .img-container::after {
-    opacity: 0.28;
-    transform: translateX(-50%) scale(1.3);
 }
 
 /* ── Нижня частина — інформаційна панель ── */
@@ -3859,7 +3823,7 @@ footer {
         box-shadow: none;
     }
     #catalog-container .img-container {
-        aspect-ratio: 1 / 1;
+        aspect-ratio: 16 / 10;
         border-radius: 11px 11px 0 0;
     }
     #catalog-container .product-label {
