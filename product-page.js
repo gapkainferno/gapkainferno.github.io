@@ -530,7 +530,6 @@ function updateView(el) {
 function renderSeedVersionSelector(product, productId) {
     // Перевіряємо чи є версії
     if (!product.seedVersions) return;
-    if (Object.keys(product.seedVersions).length < 2) return;
     
     // Перевіряємо чи це насіння
     if (product.category !== 'seeds' && product.category !== 'otherseeds') return;
@@ -654,9 +653,11 @@ function updatePriceDisplay(product, version) {
     
     // Визначаємо підпис ціни залежно від категорії
     let priceLabel = '/ шт.';
-    if (product.category === 'seeds') priceLabel = '/ 8 шт.';
-    else if (product.category === 'otherseeds') priceLabel = '/ 15 шт.';
-    else if (product.category === 'sauces') priceLabel = '/ пляшка';
+    if ((product.category === 'seeds' || product.category === 'otherseeds') && product.meta?.count) {
+        priceLabel = `/ ${product.meta.count}`;
+    } else if (product.category === 'sauces') {
+        priceLabel = '/ пляшка';
+    }
 
     const finalPrice = typeof getDiscountedPrice === 'function'
         ? getDiscountedPrice(version.price, product)

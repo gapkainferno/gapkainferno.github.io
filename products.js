@@ -188,7 +188,7 @@ heatScore:"3",
         metaDescription: "7 Pot Brain Strain Yellow: екстремальна гострота (1M+ SHU) та інтенсивний лимонно-цитрусовий аромат. Насіння для професійних чиліхедів від Gapka Homestead Inferno.",
         growTip: "Будьте обережні: жовті суперхоти часто здаються «лагіднішими» на вигляд, але Brain Strain б’є миттєво і дуже боляче. Працюйте тільки в рукавичках та уникайте контакту з очима.",
         meta: { count: "10+ насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: true,
+        isolatedAvailable: false,
          //ТЕГИ
         // isNew: true,  // З'явиться тег NEW
         isHot: true,  // З'явиться тег 🔥 HOT
@@ -2421,20 +2421,15 @@ Object.values(allProducts).forEach(product => {
                         label: "Open Pollinated",
                         price: p.price,
                         description: "Насіння вільного запилення.",
-                        inStock: p.inStock
-                    }
-                };
-
-                // Ізольовану версію додаємо тільки для тих товарів,
-                // де ти явно вказала isolatedAvailable: true
-                if (p.isolatedAvailable === true) {
-                    p.seedVersions.isolated = {
+                        inStock: p.inStock !== false
+                    },
+                    isolated: {
                         label: "Ізольоване",
                         price: isolatedPrice,
                         description: "Контрольоване запилення.",
-                        inStock: p.inStock
-                    };
-                }
+                        inStock: p.isolatedAvailable === true && p.inStock !== false
+                    }
+                };
             }
         });
         console.log("🔥 Gapka Homestead Inferno: Протоколи ціноутворення синхронізовано.");
