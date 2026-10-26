@@ -25,20 +25,23 @@ function doPost(e) {
     if (!e || !e.postData || !e.postData.contents) return errorResponse("No data");
     let data = JSON.parse(e.postData.contents);
 
-    if (!BOT_TOKEN || CHAT_IDS.length === 0 || !API_SECRET) {
-      return errorResponse("Server configuration missing");
-    }
-
     // 1. ОБРОБКА КНОПКИ З TELEGRAM (Callback)
     if (data.callback_query) {
+      if (!BOT_TOKEN || CHAT_IDS.length === 0) {
+        return errorResponse("Telegram configuration missing");
+      }
       return handleTelegramCallback(data.callback_query);
     }
 
     // 2. ОБРОБКА НОВОГО ЗАМОВЛЕННЯ З САЙТУ
+    if (!API_SECRET) return errorResponse("Server configuration missing");
     if (data.secret_token !== API_SECRET) return errorResponse("Unauthorized");
 
     // 3. ОБРОБКА ПІДПИСКИ (МАРКЕТИНГ АБО ЗАПУСК ТОВАРУ)
     if (data.orderType === "ПІДПИСКА_МАРКЕТИНГ" || data.orderType === "ЗАПИТ_НА_ЗАПУСК") {
+      if (!validateEmail(data.email)) return errorResponse("Invalid email");
+      data.email = data.email.trim();
+
       const ss = SpreadsheetApp.getActiveSpreadsheet();
       let subSheet = ss.getSheetByName(SUB_SHEET_NAME);
       
@@ -58,16 +61,21 @@ function doPost(e) {
       ]]);
 
       // ВІДПРАВКА ВІТАЛЬНОГО ЛИСТА
-      if (data.email && data.email.includes("@")) {
-        sendWelcomeEmail(data.email, data.orderType, data.details);
-      }
+      const emailSent = sendWelcomeEmail(data.email, data.orderType, data.details);
       
-      return ContentService.createTextOutput(JSON.stringify({status: "success", type: "subscription"}))
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        type: "subscription",
+        emailSent: emailSent
+      }))
         .setMimeType(ContentService.MimeType.JSON);
     }
 
     // 4. ОБРОБКА ВІДГУКУ
     if (data.orderType === "ВІДГУК") {
+      if (!BOT_TOKEN || CHAT_IDS.length === 0) {
+        return errorResponse("Telegram configuration missing");
+      }
       const ss = SpreadsheetApp.getActiveSpreadsheet();
       let revSheet = ss.getSheetByName(REVIEW_SHEET_NAME);
       
@@ -98,6 +106,10 @@ function doPost(e) {
 
       return ContentService.createTextOutput(JSON.stringify({status: "success", type: "review"}))
         .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (!BOT_TOKEN || CHAT_IDS.length === 0) {
+      return errorResponse("Telegram configuration missing");
     }
 
     const orderId = data.id || generateOrderId();
@@ -733,8 +745,10 @@ function sendWelcomeEmail(email, type, details) {
       name: "Gapka Homestead Inferno 🔥"
     });
     Logger.log("Welcome email sent to: " + email);
+    return true;
   } catch (e) {
     Logger.log("Error sending welcome email: " + e.toString());
+    return false;
   }
 }
 

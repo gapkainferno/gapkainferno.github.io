@@ -486,6 +486,71 @@ document.addEventListener('DOMContentLoaded', () => {
             }).join('');
         }
 
+        // ===== ТОВАРИ ТОЇ Ж КАТЕГОРІЇ ПЕРЕД ФУТЕРОМ =====
+        const relatedProductsSection = document.getElementById('related-products');
+        const relatedProductsList = document.getElementById('related-products-list');
+        const relatedProductsTitle = document.getElementById('related-products-title');
+        if (relatedProductsSection && relatedProductsList && relatedProductsTitle) {
+            const categoryTitles = {
+                sauces: 'Інші соуси',
+                seeds: 'Інше насіння суперхотів',
+                otherseeds: 'Інше насіння',
+                'fresh-peppers': 'Інші перці з урожаю'
+            };
+            const relatedProducts = Object.entries(allProducts)
+                .filter(([id, item]) => id !== productId && !item.isHidden && item.category === product.category)
+                .slice(0, 5);
+
+            if (relatedProducts.length > 0) {
+                relatedProductsTitle.textContent = categoryTitles[product.category] || 'Інші товари цієї категорії';
+                relatedProducts.forEach(([id, item]) => {
+                    const card = document.createElement('a');
+                    card.className = `product-card related-product-card${item.inStock === false ? ' out-of-stock' : ''}`;
+                    card.href = `product.html?id=${encodeURIComponent(id)}`;
+                    card.dataset.id = id;
+
+                    const image = document.createElement('img');
+                    const productImage = Array.isArray(item.images)
+                        ? item.images.find(src => typeof src === 'string' && src.trim())
+                        : '';
+                    if (productImage) {
+                        image.src = productImage;
+                        image.alt = window.getProductDisplayName?.(item) || item.name;
+                        image.loading = 'lazy';
+                    } else {
+                        image.className = 'related-product-image-missing';
+                        image.alt = '';
+                        image.setAttribute('aria-hidden', 'true');
+                    }
+
+                    const name = document.createElement('h3');
+                    name.textContent = window.getProductDisplayName?.(item) || item.name;
+
+                    const price = document.createElement('p');
+                    price.className = `card-price related-product-price${item.inStock === false ? ' muted-card-price' : ''}`;
+                    const basePrice = Number(item.price);
+                    const discountedPrice = typeof window.getDiscountedPrice === 'function'
+                        ? window.getDiscountedPrice(basePrice, item)
+                        : basePrice;
+                    price.dataset.basePrice = String(basePrice);
+                    price.dataset.allowSale = item.allowSale === true ? 'true' : 'false';
+                    price.innerHTML = typeof window.renderSalePriceHTML === 'function'
+                        ? window.renderSalePriceHTML(basePrice, discountedPrice)
+                        : (window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function'
+                            ? window.formatEnglishPrice(basePrice)
+                            : `${basePrice.toFixed(2)} ₴`);
+
+                    card.append(image, name, price);
+                    relatedProductsList.append(card);
+                });
+                relatedProductsSection.hidden = false;
+                const productContent = document.querySelector('.product-content-col');
+                if (productContent) {
+                    productContent.append(relatedProductsSection);
+                }
+            }
+        }
+
         // ===== 10. ВІДГУКИ (якщо є) =====
         const sideReviewsList = document.getElementById('sidebar-reviews-list');
         if (sideReviewsList && product.reviews) {

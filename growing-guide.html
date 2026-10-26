@@ -1674,7 +1674,7 @@
                     method: 'POST',
                     mode: 'no-cors',
                     cache: 'no-cache',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
                     body: JSON.stringify(data)
                 });
                 return true;
@@ -1702,7 +1702,7 @@
             btn.disabled = true;
             btn.textContent = "ЗАПИСУЄМО...";
 
-            await sendToGoogleSheet({
+            const sent = await sendToGoogleSheet({
                 date: new Date().toLocaleString("uk-UA"),
                 email: email,
                 orderType: "ПІДПИСКА_МАРКЕТИНГ",
@@ -1711,8 +1711,15 @@
                 client_id: getVisitorId()
             });
 
+            if (!sent) {
+                alert('Не вдалося надіслати підписку. Спробуйте ще раз.');
+                btn.disabled = false;
+                btn.textContent = originalText;
+                return;
+            }
+
             // Візуальний фідбек
-            btn.textContent = "✓ ВИ В КЛУБІ!";
+            btn.textContent = "✓ ЗАПИТ НАДІСЛАНО";
             btn.style.background = "linear-gradient(135deg, #4caf50, #2e7d32)";
             emailInput.value = "";
             
