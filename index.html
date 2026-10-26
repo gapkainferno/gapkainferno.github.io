@@ -11,7 +11,6 @@
     connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://*.firebasedatabase.app https://*.googleapis.com wss://*.firebasedatabase.app wss://*.firebaseio.com; 
     img-src 'self' data: https://gapkainferno.github.io https://*.gstatic.com; 
     frame-src 'self' https://*.firebasedatabase.app;
-    frame-ancestors 'none'; 
     base-uri 'self'; 
     form-action 'self'; 
     upgrade-insecure-requests;">
@@ -489,22 +488,8 @@
 
 <main>
             <section class="hero-text">
-                <h1>Фермерський онлайн-магазинчик незабаром відкриється. Щоб час пробіг швидше, завітайте у наші <a href="https://gapkainferno.github.io/blog.html"><span class="fire-text">INFERNO Нотатки</span></a>! Ми будемо раді, а Ви - підготовлені. <br><br>Gapka Homestead Inferno — це Ваша перепустка у світ гостроти. Вирощуйте врожай, яким хочеться хвалитися. Спробуйте крафтові соуси, що наділяють звичайну їжу <a href="sauces.html"><span class="fire-text">INFERNO</span></a> здібностями.</h1>
+                <h1>Ми відкрились! Вирощуйте врожай, яким хочеться хвалитися, та відкривайте для себе крафтові соуси, що наділяють звичайну їжу <a href="sauces.html"><span class="fire-text">INFERNO</span></a> здібностями. Завітайте до наших <a href="https://gapkainferno.github.io/blog.html"><span class="fire-text">INFERNO Нотаток</span></a> за натхненням і порадами.</h1>
             </section>
-
-    <!-- 📧 СЕКЦІЯ ПІДПИСКИ (ПЕРЕНЕСЕНО ВИЩЕ ДЛЯ МАКСИМАЛЬНОЇ ВИДИМОСТІ) -->
-    <section class="subscribe-section container">
-        <div class="subscribe-container">
-            <div class="fire-emoji" style="font-size: 2rem;">📩</div>
-            <h2 class="modal-title" style="margin-top: 10px;">Станьте частиною <span>Inferno!</span></h2>
-            <p style="margin-top: 10px; opacity: 0.8;">Наразі ми готуємося до великого запуску сезону 2026. Залиште свій email, щоб першими дізнатися про відкриття категорій!</p>
-            <form class="subscribe-form" onsubmit="handleGeneralSubscribe(event)">
-                <input type="email" id="sub-email" placeholder="Ваш Email" required 
-                       style="flex: 1; padding: 12px 20px; border-radius: 30px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white;">
-                <button type="submit" id="sub-btn" class="add-btn" style="width: auto; margin: 0; padding: 12px 30px;">Підписатися</button>
-            </form>
-        </div>
-    </section>
 
 <section class="cards-section">
 <!-- ═══ НАСІННЯ: супергострі перці + томати та інші овочі ═══ -->
@@ -540,14 +525,14 @@
       замініть цей <div> на <a href="fresh-peppers.html" class="card-link fresh-peppers">
       і закривальний </div> нижче — на </a>. Клас seasonal-closed приберіть.
     -->
-    <div class="card-link fresh-peppers seasonal-closed" role="group" aria-label="Врожай Пекла — сезонний розділ, наразі зачинено">
+    <div class="card-link fresh-peppers seasonal-closed" role="group" aria-label="Врожай Inferno — сезонний розділ, наразі зачинено">
         <img src="freshpeppers.jpg" 
-             alt="Врожай Пекла — свіжі, сушені перці та продукти з перців" 
+             alt="Врожай Inferno — свіжі, сушені перці та продукти з перців" 
              class="card-image" 
              width="400" 
              height="300">
         <span class="seasonal-badge">Сезонний розділ</span>
-        <div class="card-label">Врожай Пекла:<br>свіжі · сушені · продукти</div>
+        <div class="card-label">Врожай Inferno:<br>свіжі, сушені перці та продукти з них</div>
         <span class="seasonal-note">Наразі зачинено</span>
     </div>
 </section>
@@ -667,7 +652,22 @@
     </button>
 </div>
     </div>
-</section>-->
+</section>
+
+-->
+
+<section class="subscribe-section container">
+    <div class="subscribe-container">
+        <div class="fire-emoji" style="font-size: 2rem;">📩</div>
+        <h2 class="modal-title" style="margin-top: 10px;">Станьте частиною <span>Inferno!</span></h2>
+        <p style="margin-top: 10px; opacity: 0.8;">Підпишіться на новини ферми, нові врожаї та поповнення каталогу.</p>
+        <form class="subscribe-form" onsubmit="handleGeneralSubscribe(event)">
+            <input type="email" id="sub-email" placeholder="Ваш Email" required 
+                   style="flex: 1; padding: 12px 20px; border-radius: 30px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white;">
+            <button type="submit" id="sub-btn" class="add-btn" style="width: auto; margin: 0; padding: 12px 30px;">Підписатися</button>
+        </form>
+    </div>
+</section>
 
         <section class="hero-banner">
     <div class="video-container">
@@ -704,6 +704,7 @@
 <p style="text-align: center; margin-top: 20px; font-size: 14px; opacity: 0.7;">
     Детальніше про наші принципи роботи та <a href="faq.html#guarantee" style="color: var(--primary-orange); text-decoration: underline;">умови гарантії читайте тут</a>
 </p>
+
 </main>
         </div>
 
@@ -762,7 +763,6 @@
 <script src="modal-init.js"></script>
 <script src="cart.js"></script>
 <script defer src="optimization-module.js"></script>
-<script src="language-switcher.js"></script>
 <script type="module" src="modules/init.js"></script>
 <script>
     (() => {

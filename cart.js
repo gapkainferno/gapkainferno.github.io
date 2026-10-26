@@ -16,7 +16,7 @@ const orderRateLimiter = {
 
 const GLOBAL_SETTINGS = {
     // Щоб відкрити магазин: isCategoryLockActive: false або lockedCategories: []
-    isCategoryLockActive: true,
+    isCategoryLockActive: false,
     lockedCategories: ['sauces', 'seeds', 'otherseeds', 'fresh-peppers'],
     lockedCategoryTitle: 'Незабаром',
     lockedCategoryText: 'Розділ готується до старту 2026 🔥',
@@ -32,8 +32,8 @@ const SALE_SETTINGS = {
     deadline: "", // Наприклад: "2026-09-30T23:59:59+03:00"
     badgeText: "АКЦІЯ",
     banner: {
-        isActive: true,
-        text: "🔥 ГОТУЄМОСЯ ДО ВЕЛИКОГО ЗАПУСКУ!"
+        isActive: false,
+        text: ""
     }
 };
 
@@ -302,6 +302,8 @@ window.renderSalePriceHTML = renderSalePriceHTML;
 window.syncCartPrices = syncCartPrices;
 
 function validatePrice(productId, price) {
+    if (productId && productId.startsWith('bundle_')) return price;
+
     if (typeof allProducts === 'undefined' || !allProducts[productId]) {
         console.warn('⚠️ Товар не знайдено:', productId);
         return price;
@@ -1226,7 +1228,7 @@ window.addToCart = function(productId, price, name, qty = 1, originalPrice = nul
     // ✅ RATE LIMITING: Перевіряємо частоту клавіш
     if (typeof RateLimiter !== 'undefined' && !RateLimiter.check('addToCart')) {
         console.warn('⏱️ Надто швидке додавання товарів. Чекайте...');
-        return;
+        return false;
     }
 
     const productData = productId && typeof allProducts !== 'undefined' ? allProducts[productId] : null;
@@ -1235,7 +1237,7 @@ window.addToCart = function(productId, price, name, qty = 1, originalPrice = nul
             ? window.getLockedCategoryAlert()
             : 'Цей товар зараз недоступний для замовлення.';
         alert(message);
-        return;
+        return false;
     }
 
     let cart = getFreshCart();
@@ -1296,6 +1298,7 @@ window.addToCart = function(productId, price, name, qty = 1, originalPrice = nul
             }]
         });
     }
+    return true;
 };
 
 
@@ -1342,20 +1345,16 @@ window.pushToCart = function() {
     const mainImg = document.getElementById('main-view');
     const image = mainImg ? mainImg.src : null;
     
-    addToCart(productId, price, name, qty, originalPrice, image, versionKey);
-    alert("Додано у кошик! 🌶️");
+    const added = addToCart(productId, price, name, qty, originalPrice, image, versionKey);
+    if (added) {
+        alert("Додано у кошик! 🌶️");
+    } else {
+        alert("Не вдалося додати товар. Спробуйте ще раз за кілька секунд.");
+    }
 };
 
 window.addToCartDirectly = function(productId, buttonElement) {
     try {
-        // ✅ RATE LIMITING для запобігання спаму
-        if (window.RateLimiter && !window.RateLimiter.check('addToCart')) {
-            console.warn('⏱️ Забагато спроб добавлення в кошик');
-            // Жахнемо кнопку
-            buttonElement?.style?.setProperty('animation', 'pulse 0.3s ease-in-out');
-            return;
-        }
-
         const card = buttonElement.closest('.product-card');
         if (!card) throw new Error("Картку товару не знайдено");
 
@@ -1384,9 +1383,12 @@ window.addToCartDirectly = function(productId, buttonElement) {
         const image = imgEl ? imgEl.src : null;
 
         // 3. ДОДАЄМО В КОШИК через універсальну функцію
-        addToCart(productId, cleanPrice, actualName, 1, basePrice, image);
-        
-        alert(`🌶️ ${actualName} додано!`);
+        const added = addToCart(productId, cleanPrice, actualName, 1, basePrice, image);
+        if (added) {
+            alert(`🌶️ ${actualName} додано!`);
+        } else {
+            alert("Не вдалося додати товар. Спробуйте ще раз за кілька секунд.");
+        }
 
     } catch (error) {
         console.error("Помилка додавання:", error.message);
@@ -1404,12 +1406,11 @@ window.clearFullCart = function() {
 // ===== ГЕНЕРАТОР НОМЕРА ЗАМОВЛЕННЯ =====
 function generateOrderNumber() {
     const now = new Date();
-    const day = String(now.getDate()).padStart(2, '0'); // Додаємо день (наприклад, 06)
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // Місяць (02)
-    const year = String(now.getFullYear()).slice(-2); // 26
-    // 4 випадкові символи (цифри та букви) у верхньому регістрі
-    const unique = Math.random().toString(36).substring(2, 6).toUpperCase();
-    return `HS-${day}${month}${year}-${unique}`;
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const hour = String(now.getHours()).padStart(2, '0');
+    const minute = String(now.getMinutes()).padStart(2, '0');
+    return `${day}${month}${hour}${minute}`;
 }
 
 // === 4. ВІДПРАВКА ЗАМОВЛЕННЯ ===
@@ -1580,7 +1581,7 @@ window.submitOrder = async function() {
         orderText += `\n📦 Shipping to be calculated individually`;
 
 
-       // https://api.telegram.org/bot8532849974:AAG-JfB6E6_XfNggptnpygCrr0JqutvRhgA/setWebhook?url=<ТВОЄ_ПОСИЛАННЯ_EXEC> створити ВЕБХУК після зміни посилання
+       // https://api.telegram.org/bot8532849974:AAG-JfB6E6_XfNggptnpygCrr0JqutvRhgA/setWebhook?url=<ТВОЄ_ПОСИЛАННЯ_EXEC> створити ВЕБХУК після зміни посилання ТА У MODAL
         try {
             const response = await fetch("https://script.google.com/macros/s/AKfycbyJICcVWSTJy-7Bm_xT2jqrAR_y4fEXHPSmLp25EtPr5hC6Q1vN_UHIJ9Y3BSM7B_N6/exec", {
                 method: "POST",

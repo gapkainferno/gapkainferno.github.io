@@ -8,7 +8,7 @@
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
     font-src 'self' https://fonts.gstatic.com; 
     script-src 'self' 'unsafe-inline' https://script.google.com https://www.googletagmanager.com https://www.gstatic.com; 
-    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://*.firebasedatabase.app;  
+    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://*.firebasedatabase.app https://*.googleapis.com wss://*.firebasedatabase.app wss://*.firebaseio.com;  
     img-src 'self' data: https://gapkainferno.github.io;">
 
     <title id="meta-title">Купити насіння гострих перців, супер-гострі соуси та інше насіння  - Gapka’s Homestead Inferno</title>
@@ -90,7 +90,7 @@
                 <h3>Категорії</h3>
                 <ul>
                     <li class="sidebar-group">
-                        <button type="button" class="sidebar-group-label" aria-expanded="false" aria-controls="product-category-seeds">🌱 Насіння</button>
+                        <span class="sidebar-group-label">🌱 Насіння</span>
                         <ul class="sidebar-submenu" id="product-category-seeds">
                             <li><a href="seedsandseedlings.html">🌶️ Супергострі перці</a></li>
                             <li><a href="otherseeds.html">🍅 Томати та інші овочі</a></li>
@@ -100,14 +100,8 @@
                     <li><a href="fresh-peppers.html">🌶️ Врожай Пекла</a></li>
                 </ul>
                 </div>
-                <div class="sidebar-rec-wrapper" style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-                    <h3 style=" margin-bottom: 20px;">🔥 Рекомендуємо</h3>
-                    <div id="sidebar-rec-grid" style="display: flex; flex-direction: column; gap: 15px;">
-                        </div>
-                </div>
-
                 <div id="review-form-section" style="margin-top: 50px; padding: 20px; background: rgba(255,255,255,0.03); border: 1px solid #33251e; border-radius: 8px;">
-                    <h4 style="color: var(--primary-orange); margin-top: 0;">Залишити відгук</h4>
+                    <h4 style="color: var(--primary-orange); margin-top: 0;">Залишити відгук про цей продукт</h4>
                     <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
                         <input type="text" id="rev-author" placeholder="Ваше ім'я" style="background: #1a100a; border: 1px solid #44332a; color: white; padding: 10px; border-radius: 4px;">
                         <textarea id="rev-text" rows="3" placeholder="Враження..." style="background: #1a100a; border: 1px solid #44332a; color: white; padding: 10px; resize: none; border-radius: 4px;"></textarea>
@@ -204,6 +198,11 @@
         <p style="margin: 5px 0; opacity: 0.8;"><strong>Рік збору:</strong> <span id="meta-year"></span></p>
     </div>
 </div>
+
+                <section class="related-products-section" id="related-products" aria-labelledby="related-products-title" hidden>
+                    <h2 id="related-products-title">Ще з цієї категорії</h2>
+                    <div class="related-products-grid" id="related-products-list"></div>
+                </section>
                 </div>
             </main>
         
@@ -266,6 +265,6 @@
 <script src="product-page.js"></script>
 <script src="theme-switcher.js"></script>
 <script type="module" src="modules/init.js"></script>
-<script src="language-switcher.js"></script></body>
+</body>
 
 </html>

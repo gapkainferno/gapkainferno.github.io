@@ -1155,11 +1155,21 @@ body.has-sale-banner {
     opacity: 1;
     margin-top: 5px;
 }
-.product-page-layout .sidebar-group.is-open > .sidebar-submenu {
-    max-height: 240px;
+.product-page-layout .sidebar-group > .sidebar-submenu {
+    max-height: none;
     opacity: 1;
     margin-top: 5px;
+    overflow: visible;
     transition: none;
+}
+.product-page-layout .sidebar-group-label {
+    cursor: default;
+}
+.product-page-layout .sidebar-group-label::after {
+    content: none;
+}
+.product-page-layout .sidebar-group-label:hover {
+    transform: none;
 }
 .sidebar-submenu li { margin-bottom: 2px; }
 .sidebar-submenu a {
@@ -1421,6 +1431,133 @@ body.has-sale-banner {
     max-width: 1400px;
     margin: 0 auto;
     padding: 24px 0 40px;
+}
+
+.sauce-bundle {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin: 12px 0 42px;
+    padding: clamp(20px, 4vw, 36px);
+    border: 1px solid rgba(214, 96, 58, 0.45);
+    border-radius: 16px;
+    background:
+        radial-gradient(ellipse at top right, rgba(214, 96, 58, 0.16), transparent 55%),
+        rgba(255, 255, 255, 0.025);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+.sauce-bundle[hidden] {
+    display: none;
+}
+
+.sauce-bundle-heading {
+    text-align: center;
+}
+
+.sauce-bundle-kicker {
+    color: var(--primary-orange);
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.sauce-bundle-heading h2 {
+    margin: 8px 0;
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.sauce-bundle-heading p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.sauce-bundle-items {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.sauce-bundle-item {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.18);
+}
+
+.sauce-bundle-item img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.sauce-bundle-item span {
+    display: block;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.sauce-bundle-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sauce-bundle-price {
+    display: grid;
+    gap: 2px;
+}
+
+.sauce-bundle-price span {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.sauce-bundle-price strong {
+    color: var(--primary-orange);
+    font-size: 1.6rem;
+}
+
+.sauce-bundle-price del {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.sauce-bundle-footer .add-btn {
+    width: auto;
+    margin: 0;
+    padding: 13px 24px;
+}
+
+@media (max-width: 600px) {
+    .sauce-bundle-items {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .sauce-bundle-item span {
+        padding: 8px;
+        font-size: 0.8rem;
+    }
+
+    .sauce-bundle-footer {
+        gap: 16px;
+    }
+
+    .sauce-bundle-footer .add-btn {
+        width: 100%;
+    }
 }
 
 /* ── Базова картка ── */
@@ -1928,6 +2065,80 @@ main.product-page {
     gap: 40px;
     align-items: start;
     min-width: 0;
+}
+
+.related-products-section {
+    grid-column: 1 / -1;
+    min-width: 0;
+    margin-top: 20px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(214, 96, 58, 0.3);
+}
+
+.related-products-section[hidden] {
+    display: none;
+}
+
+.related-products-section h2 {
+    margin: 0 0 18px;
+    color: var(--primary-orange);
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+}
+
+.related-products-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.related-product-card {
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-color);
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.related-product-card:hover,
+.related-product-card:focus-visible {
+    transform: translateY(-3px);
+    border-color: var(--primary-orange);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.related-product-card:focus-visible {
+    outline: 2px solid var(--primary-orange);
+    outline-offset: 2px;
+}
+
+.related-product-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin-bottom: 10px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.04);
+    object-fit: cover;
+}
+
+.related-product-image-missing {
+    visibility: hidden;
+}
+
+.related-product-name {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.35;
+}
+
+.related-product-price {
+    margin: 10px 0 0;
+    color: var(--primary-orange);
+    font-weight: 700;
 }
 
 /* Галерея */
@@ -3757,16 +3968,6 @@ footer {
         flex-direction: column !important;
     }
 
-    /* Порядок блоків всередині sidebar на мобілці:
-       1. Рекомендації (order: -2)
-       2. Форма відгуків (order: -1)
-       3. Категорії та решта (order: 0, дефолт) */
-    .sidebar-rec-wrapper {
-        order: -2;
-        margin-bottom: 20px;
-        padding-bottom: 20px;
-        border-bottom: 1px dashed var(--border-color);
-    }
     #review-form-section {
         order: -1;
         margin-bottom: 20px;
@@ -3776,10 +3977,24 @@ footer {
     main.product-page {
         grid-template-columns: 1fr;
     }
-    
-
 }
 
+@media (max-width: 900px) {
+    .related-products-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .related-products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .related-product-card {
+        padding: 9px;
+    }
+}
 
 /* ── Мобільні до 768px ── */
 @media (max-width: 768px) {
@@ -4191,6 +4406,16 @@ body.theme-switching .overlay {
     font-weight: 400;
     letter-spacing: 0.1px;
     text-transform: none;
+}
+
+.product-page-layout .sidebar a,
+.product-page-layout .sidebar-group-label,
+.product-page-layout .sidebar .sidebar-submenu a.theme-active {
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.2px !important;
+    text-transform: none !important;
 }
 
 /* Тонка кольорова смужка під header — індикатор теми */

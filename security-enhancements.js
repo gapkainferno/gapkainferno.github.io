@@ -12,7 +12,7 @@ window.RateLimiter = (() => {
     const requests = new Map();
     const limits = {
         checkout: { max: 3, windowMs: 60000 },
-        addToCart: { max: 10, windowMs: 10000 },
+        addToCart: { max: 30, windowMs: 10000 },
         search: { max: 30, windowMs: 60000 }
     };
 

@@ -6,14 +6,6 @@ let currentProductId = null;
 let selectedSeedVersion = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.sidebar-group-label').forEach(label => {
-        label.addEventListener('click', () => {
-            const group = label.closest('.sidebar-group');
-            const isOpen = group.classList.toggle('is-open');
-            label.setAttribute('aria-expanded', String(isOpen));
-        });
-    });
-
     // Отримуємо ID товару з URL (наприклад: product.html?id=habaneroredsavina)
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('id');
@@ -464,9 +456,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // ===== 9. ТОВАРИ ТОЇ Ж КАТЕГОРІЇ =====
-        const sideRecGrid = document.getElementById('sidebar-rec-grid');
-        const sideRecWrapper = sideRecGrid?.closest('.sidebar-rec-wrapper');
-        if (sideRecGrid && sideRecWrapper) {
+        const relatedProductsSection = document.getElementById('related-products');
+        const relatedProductsList = document.getElementById('related-products-list');
+        const relatedProductsTitle = document.getElementById('related-products-title');
+        if (relatedProductsSection && relatedProductsList && relatedProductsTitle) {
             const productSpecies = product.category === 'otherseeds'
                 ? String(product.specs?.species || '').trim().toLowerCase()
                 : '';
@@ -483,57 +476,63 @@ document.addEventListener('DOMContentLoaded', () => {
                 .slice(0, 5);
 
             if (relatedProducts.length) {
-                const title = sideRecWrapper.querySelector('h3');
-                if (title) {
-                    if (productSpecies.includes('solanum lycopersicum')) {
-                        title.textContent = '🍅 Інші томати';
-                    } else if (product.category === 'sauces') {
-                        title.textContent = '🔥 Інші соуси';
-                    } else if (product.category === 'seeds') {
-                        title.textContent = '🌶️ Інше насіння суперхотів';
-                    } else if (product.category === 'fresh-peppers') {
-                        title.textContent = '🌶️ Інші перці з урожаю';
-                    } else {
-                        title.textContent = '🌱 Ще з цієї категорії';
-                    }
+                if (productSpecies.includes('solanum lycopersicum')) {
+                    relatedProductsTitle.textContent = '🍅 Інші томати';
+                } else if (product.category === 'sauces') {
+                    relatedProductsTitle.textContent = '🔥 Інші соуси';
+                } else if (product.category === 'seeds') {
+                    relatedProductsTitle.textContent = '🌶️ Інше насіння суперхотів';
+                } else if (product.category === 'fresh-peppers') {
+                    relatedProductsTitle.textContent = '🌶️ Інші перці з урожаю';
+                } else {
+                    relatedProductsTitle.textContent = '🌱 Ще з цієї категорії';
                 }
 
                 relatedProducts.forEach(([id, item]) => {
-                    const link = document.createElement('a');
-                    link.href = `product.html?id=${encodeURIComponent(id)}`;
-                    link.style.cssText = 'text-decoration: none; color: inherit; display: block; margin-bottom: 12px;';
-
-                    const card = document.createElement('div');
-                    card.className = 'side-rec-card';
+                    const card = document.createElement('a');
+                    card.className = `related-product-card${item.inStock === false ? ' out-of-stock' : ''}`;
+                    card.href = `product.html?id=${encodeURIComponent(id)}`;
 
                     const imageSource = Array.isArray(item.images)
                         ? item.images.find(image => typeof image === 'string' && image.trim() && !/placeholder/i.test(image))
                         : '';
+                    const image = document.createElement('img');
                     if (imageSource) {
-                        const image = document.createElement('img');
                         image.src = imageSource;
                         image.alt = window.getProductDisplayName?.(item) || item.name;
                         image.loading = 'lazy';
-                        image.style.cssText = 'width: 100%; height: 120px; object-fit: cover; border: 1px solid #33251e; margin-bottom: 8px;';
-                        card.append(image);
+                        image.className = 'related-product-image';
+                    } else {
+                        image.className = 'related-product-image related-product-image-missing';
+                        image.alt = '';
+                        image.setAttribute('aria-hidden', 'true');
                     }
+                    card.append(image);
 
-                    const name = document.createElement('h4');
+                    const name = document.createElement('h3');
                     name.textContent = window.getProductDisplayName?.(item) || item.name;
-                    name.style.cssText = 'margin: 0; font-size: 13px; line-height: 1.2; opacity: 0.9;';
+                    name.className = 'related-product-name';
 
-                    const price = document.createElement('div');
-                    price.className = 'side-rec-price';
-                    price.textContent = window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function'
-                        ? window.formatEnglishPrice(item.price)
-                        : `${Number(item.price).toFixed(2)} ₴`;
+                    const price = document.createElement('p');
+                    price.className = `related-product-price${item.inStock === false ? ' muted-card-price' : ''}`;
+                    const basePrice = Number(item.price);
+                    const discountedPrice = typeof window.getDiscountedPrice === 'function'
+                        ? window.getDiscountedPrice(basePrice, item)
+                        : basePrice;
+                    price.dataset.basePrice = String(basePrice);
+                    price.dataset.allowSale = item.allowSale === true ? 'true' : 'false';
+                    price.innerHTML = typeof window.renderSalePriceHTML === 'function'
+                        ? window.renderSalePriceHTML(basePrice, discountedPrice)
+                        : (window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function'
+                            ? window.formatEnglishPrice(basePrice)
+                            : `${basePrice.toFixed(2)} ₴`);
 
                     card.append(name, price);
-                    link.append(card);
-                    sideRecGrid.append(link);
+                    relatedProductsList.append(card);
                 });
+                relatedProductsSection.hidden = false;
             } else {
-                sideRecWrapper.hidden = true;
+                relatedProductsSection.hidden = true;
             }
         }
 
@@ -647,7 +646,7 @@ function renderSeedVersionSelector(product, productId) {
                     які вільно запилювалися (вітром, комахами). Може бути варіація у потомстві.
                     <br><br>
                     <strong>Ізольоване (Isolated):</strong> Контрольоване запилення. Рослини ізольовані під час цвітіння, 
-                    що гарантує чистоту сорту. Преміум якість.
+                    що гарантує чистоту сорту.
                 </div>
             </div>
         </div>

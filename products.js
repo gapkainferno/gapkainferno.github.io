@@ -112,7 +112,7 @@ heatScore:"3",
         heatLevel: "🔥🔥🔥 ДУЖЕ ВИСОКА (800,000 – 1,001,304 SHU)",
         metaDescription: "Купити насіння Ghost Pepper (Bhut Jolokia). Легендарний перець-мільйонник із примарною гостротою та квітковим ароматом. Доставка по Україні.",
 heatScore:"3",
-        images: ["ghost-main.jpg", "bhut-jolokia-red-secondary.webp", "BhutJolokiaRed2.webp", "ghost-main.webp","ghost4.jpg","ghost5.jpg",],
+        images: ["ghost111.jpg", "bhut-jolokia-red-secondary.webp", "BhutJolokiaRed2.webp", "ghost-main.webp","ghost4.jpg","ghost5.jpg", "ghost-main.jpg"],
         specs: {
             maturity: "100-120 днів",
             height: "60-90 см",
@@ -144,7 +144,7 @@ heatScore:"3",
         heatLevel: "🔥+ ПОМІРНА (30,000 – 50,000 SHU)",
         metaDescription: "Насіння перцю Aji Melocoton. Помірна гострота та неймовірний аромат стиглого персика. Ідеальний вибір для гурманів та літніх салатів.",
 heatScore:"1",
-        images: ["aji-melocoton.jpg", "aji-melocoton-secondary-1.webp", "aji-melocoton-secondary-2.webp"],
+        images: ["aji-melocoton.jpg", "melocoton.jpg", "melocoton4.jpg"],
         specs: {
             maturity: "80-90 днів",
             height: "90-150 см (високий, розлогий кущ)",
@@ -356,23 +356,23 @@ heatScore:"3",
 
 "7pot-chocolate": {
         name: "Насіння перцю 7 Pot Chocolate",
-        searchName: "Перець гострий 7 Pot Chocolate шоколадний суперхот дуглах суперосный шоколадний суперос",
+        searchName: "Перець гострий 7 Pot Chocolate шоколадний суперхот шоколадний",
         category: "seeds",
         price: 50,
         heatLevel: "🔥🔥🔥 ВИСОКА (1 100 000 – 1 850 000 SHU)",
         metaDescription: "Купити насіння гострого перцю 7 Pot Chocolate. Легендарний суперхот із землисто-шоколадним ароматом та екстремальною гостротою понад 1 млн SHU.",
         heatScore: "4",
-        images: ["7-pot-choc.jpg", "", ""],
+        images: ["7-pot-choc.jpg", "7pot2.jpg", "7pot.jpg"],
         specs: {
-            maturity: "Середньоранній (100–120 днів)",
+            maturity: "Пізній (110–120 днів)",
             height: "0.8 – 1.2 м (розлогий)",
             species: "Capsicum chinense",
-            yield: "Висока (дуже урожайний)",
+            yield: "Висока",
         },
         description: `Справжня перлина серед суперхотів, перець 7 Pot Chocolate вражає своїм екстремальним характером. Плоди мають дуже зморшкувату, пухирчасту поверхню, що є ознакою неймовірної гостроти, та насичений шоколадно-коричневий колір.
 <br><br>
         Аромат цього перцю землистий, з нотками диму та шоколаду, а також солодким фруктовим відтінком, який з'являється перед тим, як вас наздожене вогняна хвиля гостроти понад 1 млн SHU. Екстремальна гострота робить його ідеальним для досвідчених поціновувачів та для створення вогняних соусів, сушіння на пластівці та ферментації. Згідно з легендою, одного стручка вистачає, щоб зробити гострими 7 каструль (pots) їжі.`,
-        growTip: "Як і всі представники виду Chinense, сорт теплолюбний, тому рекомендовано ранній висів на розсаду (січень–лютий). Для досягнення екстремальної гостроти та багатого ароматичного букета висаджуйте на добре освітлених сонячних ділянках або в теплиці. Потребує помірного поливу та підживлення в період формування плодів. Рослина розлога, може потребувати підв'язки через важкі китиці.",
+        growTip: "Як і всі представники виду Chinense, сорт теплолюбний, тому рекомендовано ранній висів на розсаду. Для досягнення екстремальної гостроти та багатого ароматичного букета висаджуйте на добре освітлених сонячних ділянках або в теплиці. Потребує помірного поливу та підживлення в період формування плодів. Рослина розлога, може потребувати підв'язки через важкі китиці.",
         meta: { count: "10+ насінин", pack: "Zip", year: "2026" },
         isolatedAvailable: false,
         isFlavor:"Шоколадний & землистий" , //Вписуй будь-який смак
@@ -388,7 +388,7 @@ heatScore:"3",
         heatLevel: "🔥+ ПОМІРНА (5,000 – 30,000 SHU)",
         metaDescription: "Насіння Brazilian Starfish Red. Декоративний перець у формі морської зірки з фруктовим смаком та помірною гостротою. Врожайний сорт Baccatum.",
 heatScore:"1",
-        images: ["Starfish (2).webp", "starfish-main.webp", ""],
+        images: ["star2.jpg", "starfish-main.webp", "Starfish (2).webp"],
         specs: {
             maturity: "90–100 днів",
             height: "до 1.5 - 2 метрів",
@@ -482,7 +482,7 @@ heatScore:"1",
         heatLevel: "🔥+ ПОМІРНА (10,000 – 25,000 SHU)",
         metaDescription: "Купити насіння Peter Pepper — найкумеднішого перцю у світі з анатомічною формою. Середня гострота та чудовий смак. Оригінальний поданок.",
 heatScore:"1",
-        images: ["peter.jpg", "", ""],
+        images: ["peter.jpg", "peter1.jpg", ""],
         specs: {
             maturity: "80–90 днів",
             height: "60–90 см",
@@ -546,7 +546,7 @@ heatScore:"1",
         heatLevel: "🔥🔥 ВИСОКА (30,000 – 80,000 SHU)",
         metaDescription: "Купити насіння Sugar Rush Stripey. Смугастий персиковий перець із неймовірною цукровою солодкістю та фруктовим вибухом. Ексклюзивна селекція.",
 heatScore:"2",
-        images: ["sugar-rush-stripey-main.webp", "", ""],
+        images: ["sugarrush.jpg", "sugar-rush-stripey-main.webp", ""],
         specs: {
             maturity: "100–120 днів",
             height: "100–150 см",
@@ -569,6 +569,34 @@ heatScore:"2",
         allowSale: true
     },
 
+"sugarrushpeach": {
+        name: "Насіння перцю Sugar Rush Peach",
+        searchName: "Sugar Rush Peach, Шугар Раш Персик, персиковий перець, насіння перцю",
+        category: "seeds",
+        price: 50,
+        heatLevel: "🔥🔥 ВИСОКА (50,000–100,000 SHU)",
+        metaDescription: "Насіння перцю Sugar Rush Peach — солодкий фруктовий сорт Capsicum baccatum із персиковими плодами та виразною гостротою.",
+        heatScore: "2",
+        images: ["sugarpeach.jpg", "sugar-rush-peach.jpg", "sugarpeach (2).jpg", "sugarruch3.jpg"],
+        specs: {
+            maturity: "100–120 днів",
+            height: "100–150 см",
+            species: "Capsicum baccatum (Ягідний перець)",
+            yield: "Висока"
+        },
+        description: `<b>Sugar Rush Peach</b> — ароматний сорт перцю з родини Sugar Rush, відомий солодкими персиковими плодами та яскравим фруктовим смаком.
+        <br><br>
+        За приємною солодкістю ховається виразна гострота. Плоди добре смакують свіжими, а також підходять для соусів, сальси та сушіння. Кущ високорослий і врожайний, тож йому знадобляться сонячне місце та надійна опора.`,
+        growTip: "Sugar Rush Peach потребує багато сонця й тривалого теплого сезону. Підв'язуйте розлогий кущ і дочекайтеся повного персикового забарвлення плодів.",
+        meta: { count: "10+ насінин", pack: "Zip", year: "2026" },
+        isolatedAvailable: false,
+        
+        isHot: true,
+        isFlavor: "🍑 Фруктовий & солодкий",
+        inStock: true,
+        allowSale: true
+    },
+
 "lemondrop": {
         name: "Насіння перцю Lemon Drop",
         searchName: "Лемон дроп, лимон дроп, лимонна крапля, насіння перцю",
@@ -577,7 +605,7 @@ heatScore:"2",
         heatLevel: "🔥+ ПОМІРНА (15,000 – 30,000 SHU)",
         metaDescription: "Насіння Lemon Drop. Цитрусова візитівка Перу з дзвінкою гостротою та лимонним ароматом. Надзвичайно врожайний сорт для салатів та риби.",
 heatScore:"1",
-        images: ["lemon-drop-main.webp", "", ""],
+        images: ["lemon-drop-main.webp", "lemon2.jpg", "lemon4.jpg", "lemon.jpg"],
         specs: {
             maturity: "80–90 днів",
             height: "90–120 см (дуже гіллястий)",
@@ -639,7 +667,7 @@ heatScore:"2",
         heatLevel: "🔥🔥 ВИСОКА (125,000 – 400,000 SHU)",
         metaDescription: "Насіння Fatalii Red. Африканський перець із миттєвою різкою гостротою та фруктовим підтоном. Висока концентрація капсаїцину для соусів.",
 heatScore:"2",
-        images: ["fatalii-red.jpg", "fatalii-red (2).jpg", ""],
+        images: ["fatalired.jpg", "fatalii-red (2).jpg", "fatalii-red.jpg"],
         specs: {
             maturity: "85-95 днів",
             height: "60–90 см",
@@ -763,7 +791,7 @@ heatScore:"2",
         heatLevel: "🔥🔥  ВИСОКА (100,000 – 350,000 SHU)",
         metaDescription: "Купити насіння Scotch Bonnet Yellow. Золотий стандарт смаку з Ямайки з медовим ароматом тропіків. Обов'язковий інгредієнт карибських маринадів.",
 heatScore:"2",
-        images: ["Scotch-bonnet-yellow-main.webp", "", ""],
+        images: ["Scotch-bonnet-yellow-main.webp", "scotch.jpg", ""],
         specs: {
             maturity: "90–110 днів",
             height: "70–90 см",
@@ -795,7 +823,7 @@ heatScore:"2",
         heatLevel: "☠️ ЕКСТРЕМАЛЬНА (1,200,000 – 2,000,000 SHU)",
         metaDescription: "Насіння Moruga Scorpion Red — пекельний шторм гостроти з Тринідаду. Купуйте насіння Скорпіона для екстремальних кулінарних експериментів.",
 heatScore:"4",
-        images: ["scorp.jpg", "scorp (2).jpg", ""],
+        images: ["scorp1.jpg", "scorp (2).jpg", "scorpion.jpg"],
         specs: {
             maturity: "110–120 днів",
             height: "90–120 см",
@@ -827,7 +855,7 @@ heatScore:"4",
         heatLevel: "🔥 НИЗЬКА (2,500 – 8,000+ SHU)",
         metaDescription: "Купити насіння Jalapeno. Класичний мексиканський перець для маринування та гриля. Соковиті стінки, фірмовий хрускіт та свіжий смак.",
 heatScore:"1",
-        images: ["jalapeno.jpg", "jalapeno (2).jpg", ""],
+        images: ["jalapeno-main.webp", "jalapeno.jpg", "jalapeno (2).jpg", "jalapeno1.jpg", ],
         specs: {
             maturity: "70-80 днів",
             height: "",
@@ -891,7 +919,7 @@ heatScore:"2",
     heatLevel: "🔥🔥 (10 000–30 000 SHU)",
     metaDescription: "Надзвичайно врожайний Халапеньйо Slim Jim з видовженими плодами та вираженою гостротою. Формує багато перців, добре підходить для свіжого споживання, маринування та соусів.",
     heatScore: "2",
-    images: ["slim-jim.jpg", "", ""],
+    images: ["slim-jim.jpg", "slimjim1.jpg", ""],
     specs: {
         maturity: "Ранньостиглий, 70–80 днів",
         height: "60–90 см",
@@ -914,6 +942,56 @@ Slim Jim особливо цікавий своєю врожайністю: на
         inStock: true, 
         allowSale: true
     },
+"chili": {
+    name: "Насіння перцю Чилі",
+    searchName: "звичайний чилі, чилі, chili pepper, chilli pepper, гострий перець чилі, насіння перцю",
+    category: "seeds",
+    price: 40,
+    heatLevel: "🔥 ПОМІРНО ГОСТРИЙ",
+    metaDescription: "Насіння звичайного перцю чилі — класичний гострий перець для домашніх соусів, сушіння та кулінарії.",
+    heatScore: "1",
+    images: ["chili.jpg", "chili1.jpg", "product-secondary-placeholder.webp"],
+    specs: {
+        maturity: "—",
+        height: "—",
+        species: "Capsicum annuum",
+        yield: "—"
+    },
+    description: `<b>Звичайний чилі</b> — класичний гострий перець із яскравим пікантним смаком. Плоди можна використовувати свіжими, сушити або додавати до соусів, маринадів та інших страв. Підходить для вирощування на сонячній грядці чи в контейнері.`,
+    growTip: "Вирощуйте на сонячному, теплому місці та поливайте регулярно, не допускаючи застою води.",
+    meta: { count: "10+ насінин", pack: "Zip", year: "2026" },
+    isolatedAvailable: false,
+    isHot: true,
+    isFlavor: "🌶️ Класичний гострий перець",
+    inStock: true,
+    allowSale: true
+},
+"cayenne": {
+    name: "Насіння перцю Каєнський",
+    searchName: "каєнський перець, кайенский перец, Cayenne pepper, кайєнський, насіння перцю",
+    category: "seeds",
+    price: 50,
+    heatLevel: "🔥🔥 ПОМІРНО ГОСТРИЙ (30,000–50,000 SHU)",
+    metaDescription: "Насіння каєнського перцю — урожайного сорту з довгими червоними плодами, виразною гостротою та широким кулінарним використанням.",
+    heatScore: "2",
+    images: ["cayenne.jpg","cayenne1.jpg"],
+    specs: {
+        maturity: "70–85 днів",
+        height: "60–90 см",
+        species: "Capsicum annuum",
+        yield: "Висока"
+    },
+    description: `<b>Каєнський перець (Cayenne)</b> — класичний гострий сорт із довгими вузькими плодами, які при достиганні набувають насиченого червоного кольору.
+<br><br>
+Плоди мають виразну гостроту та добре підходять для сушіння, приготування пластівців і меленого перцю, а також для соусів та маринадів. Компактний кущ рясно плодоносить і добре росте на сонячному місці.`,
+    growTip: "Висаджуйте на сонячній ділянці та підтримуйте рівномірний полив. Для заготівель дайте плодам повністю почервоніти на кущі.",
+    meta: { count: "10+ насінин", pack: "Zip", year: "2026" },
+    isolatedAvailable: false,
+    isHot: true,
+    isFlavor: "🌶️ Класична гострота",
+    inStock: true,
+    allowSale: true
+},
 "ghost-peach": {
     name: "Насіння перцю Ghost Peach",
     searchName: "Гост Персиковий",
@@ -947,7 +1025,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
     isSpicy: true,
     metaDescription: "Багряний Шепіт — урожайний перець із видовженими плодами, помірною гостротою та насиченим багряно-червоним кольором. Чудово підходить для сушіння та заготівель.",
     heatScore: "2",
-    images: ["crimson.jpg", "", ""],
+    images: ["bahr.jpg", "crimson.jpg", ""],
     specs: {
         maturity: "Середньостиглий",
         height: "70–100 см",
@@ -1106,7 +1184,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         category: "sauces",
         price: 189,
         heatLevel: "🔥 ПОМІРНИЙ",
-        metaDescription: "Лагідний гострий соус Mild Forest. Гармонія Padrón, Jalapeno та Lemon Drop. Легке цитрусове тепло для ідеальних сніданків.",
+        metaDescription: "Лагідний гострий соус Mild Forest. Гармонія Padrón, Jalapeno, Lemon Drop. Легке цитрусове тепло для ідеальних сніданків.",
         heatScore: "1",
         images: [
             "Mild-forest-sauce.webp",
@@ -1124,7 +1202,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         description: `<b>Гострий соус MILD FOREST</b> — створений для тих, хто цінує смак перцю без зайвих сліз.
         <br><br>
         Тут бере участь тандем Padrón, Jalapeno, <b>цитрусового Lemon Drop</b>, та інших перців середньої гостроти, що дарують свіжість та легке тепло. Ідеальний вибір для сніданків з авокадо, риби чи яєчні. Справжня гармонія природи у пляшці від Gapka Homestead Inferno.`,
-        metaDescription: "Mild Forest: лагідний гострий соус з гармонією Padrón, Jalapeno та Lemon Drop. Легке цитрусове тепло для ідеальних сніданків від Gapka Homestead Inferno.",
+        metaDescription: "Mild Forest: лагідний гострий соус з гармонією Padrón, Jalapeno, Lemon Drop та інших перців. Легке тепло для ідеальних сніданків від Gapka Homestead Inferno.",
         
         growTip: "Зберігати в холодильнику після відкриття. Перед вживанням добре збовтати.",
         
@@ -1146,7 +1224,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         name: "Крафтовий соус Carrot Madness",
         searchName: "соус Carrot Madness, морквяний соус, гострий морквяний соус, крафтовий соус",
         category: "sauces",
-        price: 200,
+        price: 189,
         heatLevel: "🔥🔥 ГОСТРИЙ",
         metaDescription: "Carrot Madness — крафтовий гострий соус із морквяною солодкістю та характером суперхотів. Спробуйте з овочами, бургерами та м'ясом із гриля.",
         heatScore: "2",
@@ -1246,27 +1324,39 @@ isHot: true,  // З'явиться тег 🔥 HOT
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 // інше насіння...
-"opal_gem_120": {
-    name: "Насіння томату GHI Opal Gem (Опаловий Самоцвіт)",
-    searchName: "опалова таємниця, опаловий томат, болотний томат, синій томат, якравий самоцвіт, lucid gem, насіння томатів",
+"mar": {
+    name: "Насіння томату Green Honey (Mar azul лінія)",
+    searchName: "зелений мед, green honey, насіння томатів",
     category: "otherseeds",
     price: 30,
     heatLevel: "Томат, 15шт. в упаковці",
-    metaDescription: "Купити насіння томата GHI Opal Gem. Екзотичний сорт з антоціаном та смаком ківі й дині. Смарагдова м'якоть та оранжева зірка всередині.",
+    metaDescription: "Купити насіння томата Green Honey. Екзотичний сорт з антоціаном та смаком ківі й дині. Смарагдова м'якоть та оранжева зірка всередині.",
     heatScore: "1",
-    images: ["ghi-opal-gem-main.webp", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"], 
+    images: ["opal4.jpg", "opal.jpg", "opal3.jpg", "opal2.jpg", "opal5.jpg"], 
     specs: {
         maturity: "115-125 днів (середньоранній)",
         height: "70-100 см (детермінантний)",
         species: "Solanum lycopersicum",
         yield: "Висока (5-8 кг з куща)"
     },
-    description: `<b>GHI Opal Gem</b> — це справжня таємниця «Опалового самоцвіту», дивовижний пересорт синьо-зеленої лінії.
+    description: `<b>Green Honey</b> — це справжня таємниця «Зеленого меду», дивовижна синьо-зелена лінія від Mar Azul.
     <br><br>
     Зовні — таємничий оливковий колір із сизими антоціановими плечима. Всередині — смарагдова м'якоть із яскравою оранжевою зіркою в центрі. Саме ця пляма сигналізує про пік солодкості та готовність до вживання.
     <br><br>
-    Смак — чиста екзотика: суміш ківі, дині та томата. Насіння томата GHI Opal Gem від Gapka Homestead Inferno — це ваш шлях до незвичайних смаків.`,
+    Смак — чиста екзотика: суміш ківі, дині та томата.`,
     growTip: "Обов'язково підв'язуйте та пасинкуйте. Щоб визначити стиглість, не чекайте зміни кольору — просто помацайте плід, він має стати м'яким.",
     meta: { count: "15 насінин", pack: "Zip", year: "2026" },
     isFlavor: "🌿 Тропічний десерт",
@@ -1289,9 +1379,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         yield: "Висока"
     },
     description: `Цитриновий Фреш — яскравий жовтий томат із насиченим, солодким смаком, який зовсім не здається «блідим» за смаковими якостями. Це саме той жовтий томат, який хочеться їсти просто з грядки — соковитий, ароматний та по-справжньому смачний.
-
 Зовні плоди мають теплий золотисто-жовтий відтінок, що нагадує колір сонця перед заходом. Усередині — чистий, світлий лимонний колір із ніжною соковитою м'якоттю та красивою структурою на розрізі.
-
 Цитриновий Фреш чудово підійде для свіжих салатів, бутербродів та просто для поїдання прямо з куща. Його головна перевага — саме смак: солодкий, насичений і виразний, без характерної для деяких жовтих томатів водянистості.`,
     growTip: "Вирощуйте на сонячному місці з родючим ґрунтом та стабільним поливом. Для найкращого смаку дайте плодам повністю визріти на рослині.",
     meta: { count: "15 насінин", pack: "Zip", year: "2026" },
@@ -1355,7 +1443,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         price: 30,
         metaDescription: "Купити насіння великоплідного смугастого томату Тигровий вітраж. Врожайний біф-сорт із плодами вагою до 600 г, неймовірним вітражним розрізом та стійкістю до дозрівання.",
         heatScore: "1",
-        images: ["tiger-vitrazh (3).jpg", "tiger-vitrazh (2).jpg", "tiger-vitrazh.jpg"],
+        images: ["", "tiger-vitrazh (3).jpg", "tiger-vitrazh.jpg"],
         specs: {
             maturity: "Середньостиглий (110–120 днів)",
             height: "1.6 – 2.0 м (індетермінантний)",
@@ -1529,7 +1617,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
        
         metaDescription: "Купити насіння томату Золочена малинова шпалера. Ефектний великоплідний рожево-малиновий біф-сорт із золотистими смугами, вітражним розрізом та солодким смаком.",
         heatScore: "1",
-        images: ["zmsh.jpg", "", ""],
+        images: ["vitraz.jpg", "zmsh.jpg", ""],
         specs: {
             maturity: "Середньостиглий (110–120 днів)",
             height: "1.6 – 1.9 м (індетермінантний)",
@@ -1655,7 +1743,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
        
         metaDescription: "Купити насіння низькорослого томату Степова сливка. Надійний непримхливий сорт для цільноплідного консервування з щільними плодами, стійкістю до вершинної гнилі та чудовим лежкістю.",
         heatScore: "1",
-        images: ["step-sliva.jpg", "step-sliva (2).jpg", "step-sliva (3).jpg"],
+        images: ["stepsliva.jpg", "step-sliva.jpg", "stepsliva2.jpg"],
         specs: {
             maturity: "Середньоранній (95–105 днів)",
             height: "0.5 – 0.8 м (детермінантний)",
@@ -1679,7 +1767,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         price: 30,
         metaDescription: "Купити насіння шоколадного томату Копчена карамель (Smoked Caramel). Високорослий врожайний сорт із ніжною м'якушшю, що ідеально розварюється для густих крафтових соусів.",
         heatScore: "1",
-        images: ["Smoked-Caramel.jpg", "smoked-caramel (2).jpg", ""],
+        images: ["Smoked-Caramel.jpg", "smoked-caramel (2).jpg", "smoked.jpg"],
         specs: {
             maturity: "Середньоранній (100–110 днів)",
             height: "1.8 – 2.2 м (високорослий)",
@@ -1828,7 +1916,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         price: 30,
         heatScore: "1",
         metaDescription: "Купити насіння супервеликоплідного томату Рубіновий валун. Справжній рекордсмен урожайності з масивними ребристими плодами вагою 600–820+ г та м'ясистою соковитою м'якоттю.",
-        images: ["ruby-valun.jpg", "ruby-valun (2).jpg", "valun.jpg"],
+        images: ["ruby-valun (2).jpg", "ruby-valun.jpg", "", "valun.jpg"],
         specs: {
             maturity: "Середньостиглий (110–120 днів)",
             height: "1.6 – 2.0 м (індетермінантний)",
@@ -2044,7 +2132,8 @@ isHot: true,  // З'явиться тег 🔥 HOT
     meta: { count: "15 насінин", pack: "Zip", year: "2026" },
     isFlavor: "🐘 Супер-Гігант",
     inStock: true,
-    allowSale: true
+    allowSale: true,
+    ishidden: true
 },
 
 "whitewax_186": {
@@ -2077,28 +2166,28 @@ isHot: true,  // З'явиться тег 🔥 HOT
     allowSale: true
 },
 
-"emerald_honey_97": {
-    name: "Насіння томату GHI 97 Emerald Honey",
+"opalgem": {
+    name: "Насіння томату Opal Gem Collection",
     searchName: "зелений томат, зелений солодкий, зеленый сладкий, зеленый помідор, зелене диво, насіння томатів",
     category: "otherseeds",
     price: 30,
     heatLevel: "Томат, 15шт. в упаковці", // Трохи піднімемо ціну за "лінію GHI" та підтверджену вагу
     heatLevel: "Томат",
-    metaDescription: "Насіння зеленого томата GHI Emerald Honey. Неймовірна медова солодкість із нотками ківі. Тропічний десерт на вашому городі.",
+    metaDescription: "Насіння групи зелених томатів Opal Gem. Неймовірна медова солодкість із нотками ківі. Тропічний десерт на вашому городі.",
     heatScore: "1",
-    images: ["emerald-honey.jpg", "green.jpg", ""], 
+    images: ["opal1.jpg", "emerald-honey.jpg", "green.jpg"], 
     specs: {
         maturity: "115-125 днів (середньоранній)",
         height: "170-190 см (індетермінантний)",
         species: "Solanum lycopersicum",
         yield: "Висока (4-6 кг з куща, плоди невеликі)"
     },
-    description: `<b>GHI Emerald Honey (Лінія 97)</b> — це зелений солодкий томат, справжній мед із нотками ківі. Не вірте очам, вірте смаку!
+    description: `<b>Opal Gem</b> — це група солодких томатів, справжній мед із нотками ківі. Не вірте очам, вірте смаку!
     <br><br>
     Цей томат залишається зеленим, але стає м'яким при дозріванні. Справжній смарагдовий десерт для вашого столу. Головна фішка цього томата — його неймовірна солодкість. Смак не томатний, а справді тропічний, з легкими фруктовими нотками. Він ідеально підходить для тих, хто шукає екзотику або хоче здивувати гостей незвичною нарізкою.
     <br><br>
-    Насіння томата GHI Emerald Honey від Gapka Homestead Inferno — це ваш шлях до тропічних смаків.`,
-    metaDescription: "GHI Emerald Honey: зелений томат з медовою солодкістю та нотками ківі. Тропічний десерт для екзотичних страв. Насіння від Gapka Homestead Inferno.",
+    `,
+    metaDescription: "Opal Gem Collection: зелені томати з медовою солодкістю та нотками ківі. Тропічний десерт для екзотичних страв.",
     growTip: "Обов'язково підв'язуйте та пасинкуйте. Щоб визначити стиглість, не чекайте зміни кольору — просто помацайте плід, він має стати м'яким. Забезпечте йому багато сонця та регулярний полив.",
     meta: { count: "15 насінин", pack: "Zip", year: "2026" },
     isHot: false,
@@ -2166,13 +2255,13 @@ isHot: true,  // З'явиться тег 🔥 HOT
 },
 
 "ghi_medvezha_lapa": {
-    name: "Насіння томату GHI Ведмежа Лапа",
+    name: "Насіння томату Ведмежа Лапа",
     searchName: "ведмежа лапа, солодкий томат, великий помідор, насіння томатів",
     category: "otherseeds",
     price: 30,
     heatLevel: "Томат, 15шт. в упаковці",
     heatLevel: "Томат",
-    metaDescription: "Купити насіння томата GHI Ведмежа Лапа. Масивні м'ясисті плоди зі справжнім помідорним смаком. Стійкий старовинний сорт для будь-якого літа.",
+    metaDescription: "Купити насіння томата Ведмежа Лапа. Масивні м'ясисті плоди зі справжнім помідорним смаком. Стійкий старовинний сорт для будь-якого літа.",
     heatScore: "1",
     images: ["vedmeza-lapa.jpg", "product-secondary-placeholder.webp", "product-secondary-placeholder.webp"],
     specs: {
@@ -2181,12 +2270,12 @@ isHot: true,  // З'явиться тег 🔥 HOT
         species: "Solanum lycopersicum",
         yield: "5-8 кг з куща"
     },
-    description: `<b>GHI Ведмежа Лапа</b> — це старовинний український сорт, що цінується за масивність та <b>м'ясистість плодів</b>.
+    description: `<b>Ведмежа Лапа</b> — це старовинний український сорт, що цінується за масивність та <b>м'ясистість плодів</b>.
     <br><br>
     Плоди вагою до 600 г мають насичений помідорний смак. Сорт стійкий до примх погоди та дає стабільно високий врожай у будь-яке літо.
     <br><br>
-    Насіння томата GHI Ведмежа Лапа від Gapka Homestead Inferno — це ваш шлях до надійного та смачного врожаю.`,
-    metaDescription: "GHI Ведмежа Лапа: старовинний український томат з масивними м'ясистими плодами та насиченим смаком. Стійкий та врожайний. Насіння від Gapka Homestead Inferno.",
+    Насіння томата Ведмежа Лапа від Gapka Homestead Inferno — це ваш шлях до надійного та смачного врожаю.`,
+    metaDescription: "Ведмежа Лапа: старовинний український томат з масивними м'ясистими плодами та насиченим смаком. Стійкий та врожайний. Насіння від Gapka Homestead Inferno.",
     growTip: "Обов'язково пасинкуйте та підв'язуйте не тільки стовбур, а й важкі китиці, щоб вони не зламалися під вагою плодів. Забезпечте йому багато сонця та регулярний полив.",
     meta: { count: "15 насінин", pack: "Zip", year: "2026" },
     isFlavor: "🐻 Масивний та м'ясистий",
@@ -2296,6 +2385,94 @@ isHot: true,  // З'явиться тег 🔥 HOT
     allowSale: true
 },
 
+"medove-hrono": {
+    name: "Насіння томату Медове гроно",
+    searchName: "медове гроно, томат медове гроно, жовті чері, солодкі чері, томат черрі, насіння томатів",
+    category: "otherseeds",
+    price: 30,
+    heatLevel: "Томат",
+    heatScore: "1",
+    metaDescription: "Насіння томату Медове гроно — урожайні жовті чері з надзвичайно солодким смаком.",
+    images: [ "grono (2).jpg", "grono.jpg", "product-secondary-placeholder.webp"],
+    specs: {
+        maturity: "—",
+        height: "—",
+        species: "Solanum lycopersicum",
+        yield: "Рясне плодоношення"
+    },
+    description: `<b>Медове гроно</b> — урожайний томат чері, що формує численні грона яскраво-жовтих плодів. Невеликі помідори мають надзвичайно солодкий, десертний смак і чудово підходять для свіжого споживання, салатів та перекусів просто з куща.`,
+    meta: { count: "15 насінин", pack: "Zip", year: "2026" },
+    isFlavor: "🍯 Дуже солодкі жовті чері",
+    inStock: true,
+    allowSale: true
+},
+
+"synie-soniachne-siaivo": {
+    name: "Насіння томату Синє сонячне сяйво",
+    searchName: "синє сонячне сяйво, томат синє сонячне сяйво, синій томат, червоно-синій томат, антоціан, насіння томатів",
+    category: "otherseeds",
+    price: 30,
+    heatLevel: "Томат",
+    heatScore: "1",
+    metaDescription: "Насіння томату Синє сонячне сяйво — невеликі червоно-сині плоди з антоціановим забарвленням.",
+    images: [ "sss1.jpg", "sss.jpg", "product-secondary-placeholder.webp"],
+    specs: {
+        maturity: "—",
+        height: "—",
+        species: "Solanum lycopersicum",
+        yield: "—"
+    },
+    description: `<b>Синє сонячне сяйво</b> — незвичайний сорт із невеликими плодами, що поєднують червоні та сині відтінки. Синє забарвлення зумовлене антоціаном і виразніше проявляється на частинах плодів, відкритих сонцю. Оригінальні томати прикрасять свіжі салати та літню нарізку.`,
+    meta: { count: "15 насінин", pack: "Zip", year: "2026" },
+    isFlavor: "🔵 Червоно-сині плоди з антоціаном",
+    inStock: true,
+    allowSale: true
+},
+
+"rozhevyi-hahat": {
+    name: "Насіння томату Рожевий гагат",
+    searchName: "рожевий гагат, томат рожевий гагат, рожевий томат, антоціанові плечі, пружний томат, насіння томатів",
+    category: "otherseeds",
+    price: 30,
+    heatLevel: "Томат",
+    heatScore: "1",
+    metaDescription: "Насіння томату Рожевий гагат — пружні рожеві плоди з виразними антоціановими плечима.",
+    images: [ "gagat2.jpg", "gagat.jpg", "product-secondary-placeholder.webp"],
+    specs: {
+        maturity: "—",
+        height: "—",
+        species: "Solanum lycopersicum",
+        yield: "—"
+    },
+    description: `<b>Рожевий гагат</b> — ефектний рожевоплідний томат із темними антоціановими плечима, забарвлення яких посилюється під сонячним промінням. Плоди вирізняються надзвичайно пружною м'якоттю та привабливим контрастом кольорів. Добре смакують свіжими й підходять для красивої нарізки.`,
+    meta: { count: "15 насінин", pack: "Zip", year: "2026" },
+    isFlavor: "💎 Пружні плоди з антоціаном",
+    inStock: true,
+    allowSale: true
+},
+
+"hroshovyi-mishechok": {
+    name: "Насіння томату Грошовий мішечок",
+    searchName: "грошовий мішечок, томат грошовий мішечок, томат-торбочка, томат з синіми плямами, антоціан, насіння томатів",
+    category: "otherseeds",
+    price: 30,
+    heatLevel: "Томат",
+    heatScore: "1",
+    metaDescription: "Насіння томату Грошовий мішечок — оригінальні плоди у формі торбочок із синіми антоціановими плямами.",
+    images: [ "monet.jpg", "mishechok.jpg", "product-secondary-placeholder.webp"],
+    specs: {
+        maturity: "—",
+        height: "—",
+        species: "Solanum lycopersicum",
+        yield: "—"
+    },
+    description: `<b>Грошовий мішечок</b> — незвичайний томат із плодами характерної форми невеликих торбинок. Оригінальний вигляд доповнюють сині плями, що утворюються завдяки антоціановому забарвленню на сонячному боці плодів. Ці томати стануть яскравою окрасою городу та незвичайним акцентом на столі.`,
+    meta: { count: "15 насінин", pack: "Zip", year: "2026" },
+    isFlavor: "👜 Плоди-торбочки із синіми плямами",
+    inStock: true,
+    allowSale: true
+},
+
 "kapia-sweet": {
     name: "Насіння солодкого перцю Капія",
     searchName: "капія, капия, перець капія, солодкий перець капія, насіння солодкого перцю, kapia pepper",
@@ -2320,41 +2497,67 @@ isHot: true,  // З'явиться тег 🔥 HOT
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // 🌶️ ВРОЖАЙ ПЕКЛА (СВІЖІ ТА СУШЕНІ)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-"fresh_reaper_red": {
-    name: "Свіжий перець Carolina Reaper Chocolate",
-    searchName: "свіжий перець, кароліна ріпер свіжа, fresh pepper",
+"fresh_lemondrop": {
+    name: "Свіжий перець Lemon Drop",
+    searchName: "свіжий Lemon Drop, свіжий лимон дроп, свіжий перець, Lemon Drop fresh pepper",
     category: "fresh-peppers",
     price: 0,
-    heatLevel: "☠️ ЕКСТРЕМАЛЬНА",
-    heatScore: "1", // Фільтр: Свіжі
-    images: ["carolina-reaper-chocolate-main.webp"],
-    description: "Свіжі плоди найгострішого перцю у світі.",
+    heatLevel: "🔥+ ПОМІРНА (15,000–30,000 SHU)",
+    heatScore: "1",
+    images: ["lemon-drop-main.webp", "lemon2.jpg", "lemon4.jpg", "lemon.jpg"],
+    description: "Свіжі жовті плоди Lemon Drop із яскравим цитрусовим ароматом і помірною гостротою. Чудово пасують до салатів, риби та домашніх соусів.",
     inStock: false,
     allowSale: false
 },
 
-"dried_reaper_slices": {
-    name: "Сушений перець Carolina Reaper (слайси)",
-    searchName: "сушений перець, кароліна сушена, dried pepper",
+"fresh_habanero_chocolate": {
+    name: "Свіжий перець Habanero Chocolate",
+    searchName: "свіжий Habanero Chocolate, свіжий шоколадний хабанеро, свіжий перець",
     category: "fresh-peppers",
     price: 0,
-    heatLevel: "☠️ ЕКСТРЕМАЛЬНА",
-    heatScore: "2", // Фільтр: Сушені
-    images: ["carolina-reaper-red-main.webp"],
-    description: "Сушені при низьких температурах слайси для збереження аромату та пекучості.",
+    heatLevel: "🔥🔥 ВИСОКА (300,000–450,000 SHU)",
+    heatScore: "1",
+    images: ["habanero-chocolate-main.webp", "habanero-chocolate2.webp", "habanero-chocolate1.webp", "habanero-chocolate.jpg"],
+    description: "Свіжі стиглі плоди Habanero Chocolate з насиченим димно-землистим ароматом і високою гостротою. Для гострих соусів, маринадів і страв із виразним смаком.",
     inStock: false,
     allowSale: false
 },
 
-"fresh_habanero_savina": {
-    name: "Свіжий перець Habanero Red Savina",
-    searchName: "свіжий хабанеро, хабанеро савіна свіжа",
+"fresh_jalapeno": {
+    name: "Свіжий перець Jalapeno",
+    searchName: "свіжий Jalapeno, свіжий халапеньйо, свіжий перець халапеньо",
     category: "fresh-peppers",
     price: 0,
-    heatLevel: "🔥 ВИСОКА",
-    heatScore: "1", // Фільтр: Свіжі
-    images: ["habanero-savina-red-main.webp"],
-    description: "Легендарний сорт Хабанеро у свіжому вигляді. Неймовірний аромат.",
+    heatLevel: "🔥 НИЗЬКА (2,500–8,000 SHU)",
+    heatScore: "1",
+    images: ["jalapeno-main.webp", "jalapeno.jpg", "jalapeno (2).jpg", "jalapeno1.jpg"],
+    description: "Свіжі м'ясисті плоди Jalapeno з помірною гостротою та свіжим трав'янистим смаком. Підходять для гриля, фарширування, маринування та свіжих страв.",
+    inStock: false,
+    allowSale: false
+},
+
+"fresh_fatalii": {
+    name: "Свіжий перець Fatalii",
+    searchName: "свіжий Fatalii, свіжий перець Фаталі, свіжий гострий перець",
+    category: "fresh-peppers",
+    price: 0,
+    heatLevel: "🔥🔥 ВИСОКА (125,000–400,000 SHU)",
+    heatScore: "1",
+    images: ["fatalii.jpg", "fatalii (2).webp"],
+    description: "Свіжі жовті плоди Fatalii з яскравим цитрусовим ароматом і високою гостротою. Гарний вибір для ароматних соусів, сальси та сушіння.",
+    inStock: false,
+    allowSale: false
+},
+
+"fresh_monkey_face": {
+    name: "Свіжий перець Monkey Face Yellow",
+    searchName: "свіжий Monkey Face, свіжий Monkey Face Yellow, свіжий Манкі Фейс, жовтий свіжий перець",
+    category: "fresh-peppers",
+    price: 0,
+    heatLevel: "🔥 НИЗЬКА (2,500–5,000 SHU)",
+    heatScore: "1",
+    images: ["monkey-face-yellow-main.webp", "monkey-face (2).webp", "monkey-face.webp"],
+    description: "Свіжі жовті плоди Monkey Face із незвичайною формою, соковитою м'якоттю та солодким фруктовим смаком із легкою гостротою. Смакують свіжими та добре підходять для маринування.",
     inStock: false,
     allowSale: false
 },

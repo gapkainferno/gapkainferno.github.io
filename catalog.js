@@ -391,6 +391,82 @@ function renderCatalog(container, pageCategory) {
     }
 }
 
+function renderSauceBundle(pageCategory) {
+    if (pageCategory !== 'sauces') return;
+
+    const bundleSection = document.getElementById('sauce-bundle');
+    const bundleItems = document.getElementById('sauce-bundle-items');
+    const addButton = document.getElementById('sauce-bundle-add');
+    const sauceIds = ['sauceCoreHeat', 'sauceMildForest', 'sauceCarrotMadness', 'sauceMeanForest'];
+    const bundlePrice = 695;
+
+    if (!bundleSection || !bundleItems || !addButton) return;
+
+    const availableSauces = sauceIds
+        .map(id => [id, allProducts[id]])
+        .filter(([, product]) => product && product.category === 'sauces' && !product.isHidden && product.inStock !== false);
+
+    if (availableSauces.length !== sauceIds.length) {
+        bundleSection.hidden = true;
+        return;
+    }
+
+    const originalPrice = availableSauces.reduce((total, [, product]) => total + Number(product.price), 0);
+    bundleItems.replaceChildren();
+
+    availableSauces.forEach(([, product]) => {
+        const item = document.createElement('div');
+        item.className = 'sauce-bundle-item';
+
+        const imageSource = Array.isArray(product.images)
+            ? product.images.find(image => typeof image === 'string' && image.trim() && !/placeholder/i.test(image))
+            : '';
+        if (imageSource) {
+            const image = document.createElement('img');
+            image.src = imageSource;
+            image.alt = window.getProductDisplayName?.(product) || product.name;
+            image.loading = 'lazy';
+            item.append(image);
+        }
+
+        const name = document.createElement('span');
+        name.textContent = window.getProductDisplayName?.(product) || product.name;
+        item.append(name);
+        bundleItems.append(item);
+    });
+
+    const originalPriceElement = document.getElementById('sauce-bundle-original-price');
+    if (originalPriceElement) originalPriceElement.textContent = `${originalPrice.toFixed(2)} ₴`;
+
+    addButton.addEventListener('click', () => {
+        const stillAvailable = sauceIds.every(id => {
+            const product = allProducts[id];
+            return product && product.category === 'sauces' && !product.isHidden && product.inStock !== false;
+        });
+        if (!stillAvailable) {
+            bundleSection.hidden = true;
+            alert('Набір тимчасово недоступний: перевірте наявність соусів.');
+            return;
+        }
+
+        const added = window.addToCart(
+            'bundle_sauce_pack',
+            bundlePrice,
+            'Пак із чотирьох соусів',
+            1,
+            originalPrice,
+            'sauces-inferno-assortment.webp'
+        );
+        if (!added) {
+            alert('Не вдалося додати набір. Спробуйте ще раз за кілька секунд.');
+            return;
+        }
+        alert('🔥 Пак із чотирьох соусів додано у кошик!');
+    });
+
+    bundleSection.hidden = false;
+}
+
 function initFilters(mainGrid) {
     const filterButtons = mainGrid.querySelectorAll('.filter-btn');
 
@@ -469,6 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const pageCategory = mainGrid.getAttribute('data-category');
         prepareCategoryPage(mainGrid, pageCategory);
         renderCatalog(container, pageCategory);
+        renderSauceBundle(pageCategory);
         initFilters(mainGrid);
     }
 });
