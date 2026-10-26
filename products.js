@@ -1137,7 +1137,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         //ТЕГИ
         //isNew: true,
         isHot: false,
-       isFlavor:"🍋 Цитрус", //Вписуй будь-який смак
+       isFlavor:"Гостра кислинка", //Вписуй будь-який смак
       inStock:true, 
       allowSale: true, 
     },
@@ -2363,7 +2363,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
 
 window.getProductDisplayName = (product, name = product?.name) => {
     const rawName = String(name || '').trim();
-    if (!product || !['seeds', 'otherseeds'].includes(product.category) || !rawName) {
+    if (!product || product.category !== 'seeds' || !rawName) {
         return rawName;
     }
 
@@ -2371,12 +2371,11 @@ window.getProductDisplayName = (product, name = product?.name) => {
         .replace(/^(?:насіння(?:\s+(?:(?:гострого|солодкого|супергострого)\s+)?(?:перцю|перець|томат(?:у|ів)?|овочів))?|перець(?:\s+гострий)?|томат)\s*[:—-]?\s*/i, '')
         .trim();
 
-    const seedLabel = product.category === 'seeds' ? 'Насіння перцю' : 'Насіння —';
-    return `${seedLabel} ${varietyName || rawName}`;
+    return `Насіння перцю ${varietyName || rawName}`;
 };
 
 Object.values(allProducts).forEach(product => {
-    if (product.category === 'seeds' || product.category === 'otherseeds') {
+    if (product.category === 'seeds') {
         product.name = window.getProductDisplayName(product);
     }
 });

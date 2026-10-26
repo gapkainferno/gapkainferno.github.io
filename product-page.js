@@ -463,91 +463,77 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // ===== 9. РЕКОМЕНДАЦІЇ В САЙДБАРІ =====
+        // ===== 9. ТОВАРИ ТОЇ Ж КАТЕГОРІЇ =====
         const sideRecGrid = document.getElementById('sidebar-rec-grid');
-        if (sideRecGrid) {
-            const allIds = Object.keys(allProducts);
-            const otherIds = allIds.filter(id => id !== productId && !allProducts[id].isHidden);
-            const randomIds = otherIds.sort(() => 0.5 - Math.random()).slice(0, 3);
-
-            sideRecGrid.innerHTML = randomIds.map(id => {
-                const item = allProducts[id];
-                return `
-                    <a href="product.html?id=${id}" style="text-decoration: none; color: inherit; display: block; margin-bottom: 25px;">
-                        <div class="side-rec-card">
-                            <img src="${item.images[0]}" style="width: 100%; height: 120px; object-fit: cover; border: 1px solid #33251e; margin-bottom: 8px;">
-                            <h4 style="margin: 0; font-size: 13px; line-height: 1.2; opacity: 0.9;">${item.name}</h4>
-                            <div class="side-rec-price">${window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function' 
-                                ? window.formatEnglishPrice(item.price) 
-                                : `${item.price.toFixed(2)} ₴`}</div>
-                        </div>
-                    </a>
-                `;
-            }).join('');
-        }
-
-        // ===== ТОВАРИ ТОЇ Ж КАТЕГОРІЇ ПЕРЕД ФУТЕРОМ =====
-        const relatedProductsSection = document.getElementById('related-products');
-        const relatedProductsList = document.getElementById('related-products-list');
-        const relatedProductsTitle = document.getElementById('related-products-title');
-        if (relatedProductsSection && relatedProductsList && relatedProductsTitle) {
-            const categoryTitles = {
-                sauces: 'Інші соуси',
-                seeds: 'Інше насіння суперхотів',
-                otherseeds: 'Інше насіння',
-                'fresh-peppers': 'Інші перці з урожаю'
-            };
+        const sideRecWrapper = sideRecGrid?.closest('.sidebar-rec-wrapper');
+        if (sideRecGrid && sideRecWrapper) {
+            const productSpecies = product.category === 'otherseeds'
+                ? String(product.specs?.species || '').trim().toLowerCase()
+                : '';
             const relatedProducts = Object.entries(allProducts)
-                .filter(([id, item]) => id !== productId && !item.isHidden && item.category === product.category)
+                .filter(([id, item]) => {
+                    if (id === productId || item.isHidden || item.inStock === false || item.category !== product.category) {
+                        return false;
+                    }
+                    if (!productSpecies) {
+                        return true;
+                    }
+                    return String(item.specs?.species || '').trim().toLowerCase() === productSpecies;
+                })
                 .slice(0, 5);
 
-            if (relatedProducts.length > 0) {
-                relatedProductsTitle.textContent = categoryTitles[product.category] || 'Інші товари цієї категорії';
-                relatedProducts.forEach(([id, item]) => {
-                    const card = document.createElement('a');
-                    card.className = `product-card related-product-card${item.inStock === false ? ' out-of-stock' : ''}`;
-                    card.href = `product.html?id=${encodeURIComponent(id)}`;
-                    card.dataset.id = id;
+            if (relatedProducts.length) {
+                const title = sideRecWrapper.querySelector('h3');
+                if (title) {
+                    if (productSpecies.includes('solanum lycopersicum')) {
+                        title.textContent = '🍅 Інші томати';
+                    } else if (product.category === 'sauces') {
+                        title.textContent = '🔥 Інші соуси';
+                    } else if (product.category === 'seeds') {
+                        title.textContent = '🌶️ Інше насіння суперхотів';
+                    } else if (product.category === 'fresh-peppers') {
+                        title.textContent = '🌶️ Інші перці з урожаю';
+                    } else {
+                        title.textContent = '🌱 Ще з цієї категорії';
+                    }
+                }
 
-                    const image = document.createElement('img');
-                    const productImage = Array.isArray(item.images)
-                        ? item.images.find(src => typeof src === 'string' && src.trim())
+                relatedProducts.forEach(([id, item]) => {
+                    const link = document.createElement('a');
+                    link.href = `product.html?id=${encodeURIComponent(id)}`;
+                    link.style.cssText = 'text-decoration: none; color: inherit; display: block; margin-bottom: 12px;';
+
+                    const card = document.createElement('div');
+                    card.className = 'side-rec-card';
+
+                    const imageSource = Array.isArray(item.images)
+                        ? item.images.find(image => typeof image === 'string' && image.trim() && !/placeholder/i.test(image))
                         : '';
-                    if (productImage) {
-                        image.src = productImage;
+                    if (imageSource) {
+                        const image = document.createElement('img');
+                        image.src = imageSource;
                         image.alt = window.getProductDisplayName?.(item) || item.name;
                         image.loading = 'lazy';
-                    } else {
-                        image.className = 'related-product-image-missing';
-                        image.alt = '';
-                        image.setAttribute('aria-hidden', 'true');
+                        image.style.cssText = 'width: 100%; height: 120px; object-fit: cover; border: 1px solid #33251e; margin-bottom: 8px;';
+                        card.append(image);
                     }
 
-                    const name = document.createElement('h3');
+                    const name = document.createElement('h4');
                     name.textContent = window.getProductDisplayName?.(item) || item.name;
+                    name.style.cssText = 'margin: 0; font-size: 13px; line-height: 1.2; opacity: 0.9;';
 
-                    const price = document.createElement('p');
-                    price.className = `card-price related-product-price${item.inStock === false ? ' muted-card-price' : ''}`;
-                    const basePrice = Number(item.price);
-                    const discountedPrice = typeof window.getDiscountedPrice === 'function'
-                        ? window.getDiscountedPrice(basePrice, item)
-                        : basePrice;
-                    price.dataset.basePrice = String(basePrice);
-                    price.dataset.allowSale = item.allowSale === true ? 'true' : 'false';
-                    price.innerHTML = typeof window.renderSalePriceHTML === 'function'
-                        ? window.renderSalePriceHTML(basePrice, discountedPrice)
-                        : (window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function'
-                            ? window.formatEnglishPrice(basePrice)
-                            : `${basePrice.toFixed(2)} ₴`);
+                    const price = document.createElement('div');
+                    price.className = 'side-rec-price';
+                    price.textContent = window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function'
+                        ? window.formatEnglishPrice(item.price)
+                        : `${Number(item.price).toFixed(2)} ₴`;
 
-                    card.append(image, name, price);
-                    relatedProductsList.append(card);
+                    card.append(name, price);
+                    link.append(card);
+                    sideRecGrid.append(link);
                 });
-                relatedProductsSection.hidden = false;
-                const productContent = document.querySelector('.product-content-col');
-                if (productContent) {
-                    productContent.append(relatedProductsSection);
-                }
+            } else {
+                sideRecWrapper.hidden = true;
             }
         }
 

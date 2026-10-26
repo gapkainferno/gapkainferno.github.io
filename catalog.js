@@ -299,7 +299,7 @@ function hasScovilleInfo(product) {
 
 function getTagsHTML(product) {
     let tagsHTML = '';
-    if (product.isNew) tagsHTML += '<span class="product-tag">NEW</span>';
+    if (product.isNew) tagsHTML += '<span class="product-tag new">NEW</span>';
     if (product.isSpicy) tagsHTML += '<span class="product-tag hot">🌶️ ГОСТРИЙ</span>';
     else if (product.isHot) tagsHTML += '<span class="product-tag hot">🔥 HOT</span>';
     if (product.isFlavor) tagsHTML += `<span class="product-tag flavor">${safeText(product.isFlavor)}</span>`;
