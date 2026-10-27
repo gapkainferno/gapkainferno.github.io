@@ -17,7 +17,7 @@ const orderRateLimiter = {
 const GLOBAL_SETTINGS = {
     // Щоб відкрити магазин: isCategoryLockActive: false або lockedCategories: []
     isCategoryLockActive: false,
-    lockedCategories: ['sauces', 'seeds', 'otherseeds', 'fresh-peppers'],
+    lockedCategories: ['sauces', 'seeds', 'tomatoes', 'vegetable-seeds', 'fresh-peppers'],
     lockedCategoryTitle: 'Незабаром',
     lockedCategoryText: 'Розділ готується до старту 2026 🔥',
     lockedCategoryAlert: '🌶️ Цей розділ ще в розробці. Чекаємо на вас восени 2026!'
@@ -48,10 +48,15 @@ const CATEGORY_LOCK_CONFIG = {
         pagePattern: /seedsandseedlings(\.html)?$/,
         productCategories: ['seeds', 'seedlings']
     },
-    otherseeds: {
-        cardSelector: '.card-link.otherseeds',
-        pagePattern: /otherseeds(\.html)?$/,
-        productCategories: ['otherseeds']
+    tomatoes: {
+        cardSelector: '.card-link.tomatoes',
+        pagePattern: /tomatoes(\.html)?$/,
+        productCategories: ['tomatoes']
+    },
+    'vegetable-seeds': {
+        cardSelector: '.card-link.vegetable-seeds',
+        pagePattern: /vegetable-seeds(\.html)?$/,
+        productCategories: ['vegetable-seeds']
     },
     'fresh-peppers': {
         cardSelector: '.card-link.fresh-peppers',
@@ -1894,7 +1899,7 @@ window.submitOrder = async function() {
                             <img src="https://gapkainferno.github.io/GHI.jpg" alt="QR" width="140" height="140" style="display: block;">
                         </div>
                         <p style="font-size: 14px; color: #ccc; margin-bottom: 15px;">Відскануйте QR-код або натисніть кнопку нижче:</p>
-                        <a href="https://www.privat24.ua/send/jkvgx" target="_blank" class="order-btn" style="display: inline-block; width: auto; padding: 10px 25px; font-size: 14px; margin-bottom: 15px; text-decoration: none;">
+                        <a href="https://www.privat24.ua/send/km9k0" target="_blank" class="order-btn" style="display: inline-block; width: auto; padding: 10px 25px; font-size: 14px; margin-bottom: 15px; text-decoration: none;">
                             Оплатити у Privat24
                         </a>
                         <p style="font-size: 13px; color: #888;">
