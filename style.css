@@ -4285,6 +4285,20 @@ footer {
 @media (max-width: 480px) {
     :root { --fs-h1: 28px; }
 
+    body.homepage .cards-section {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    body.homepage .card-link {
+        aspect-ratio: 4 / 3;
+    }
+    body.homepage .card-label {
+        font-size: clamp(20px, 5.5vw, 26px);
+    }
+    body.homepage .split-label {
+        font-size: clamp(14px, 4vw, 18px);
+    }
+
     /* Каталог на дуже маленьких екранах - 2 стовпця */
     #catalog-container { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 
