@@ -173,12 +173,18 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "Інше насіння",
-          "url": "https://gapkainferno.github.io/otherseeds.html"
+          "name": "Насіння томатів",
+          "url": "https://gapkainferno.github.io/tomatoes.html"
         },
         {
           "@type": "ListItem",
           "position": 4,
+          "name": "Насіння овочів",
+          "url": "https://gapkainferno.github.io/vegetable-seeds.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
           "name": "Врожай Пекла (Свіжі та сушені перці)",
           "url": "https://gapkainferno.github.io/fresh-peppers.html"
         }
@@ -292,9 +298,9 @@
     },
     {
       "@type": "Product",
-      "name": "Насіння томатів та овочів (Інше насіння)",
+      "name": "Насіння томатів",
       "image": "https://gapkainferno.github.io/other-vegetable-seeds-assortment.webp",
-      "description": "Насіння унікальних томатів та овочів. Від ультраранніх сортів до велетнів-рекордсменів від ферми Gapka Homestead Inferno.",
+      "description": "Насіння унікальних томатів від ферми Gapka Homestead Inferno.",
       "brand": {
         "@type": "Brand",
         "name": "Gapka Homestead Inferno"
@@ -341,6 +347,25 @@
             "addressCountry": "UA"
           }
         }
+      }
+    },
+    {
+      "@type": "Product",
+      "name": "Насіння овочів",
+      "url": "https://gapkainferno.github.io/vegetable-seeds.html",
+      "image": "https://gapkainferno.github.io/other-vegetable-seeds-assortment.webp",
+      "description": "Насіння солодких та помірно гострих перців для домашнього городу.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Gapka Homestead Inferno"
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "UAH",
+        "lowPrice": 30,
+        "highPrice": 40,
+        "offerCount": 2,
+        "availability": "https://schema.org/InStock"
       }
     },
     {
@@ -492,23 +517,15 @@
             </section>
 
 <section class="cards-section">
-<!-- ═══ НАСІННЯ: супергострі перці + томати та інші овочі ═══ -->
-    <div class="card-link seeds" role="group" aria-label="Насіння — торкніться, щоб обрати підрозділ">
-        <img src="Habanero-chocolate-plant.webp" 
-             alt="Насіння — супергострі перці, томати та інші овочі" 
+<!-- ═══ НАСІННЯ СУПЕРГОСТРИХ ПЕРЦІВ ═══ -->
+    <a href="seedsandseedlings.html" class="card-link seeds">
+        <img src="peppers.jpg" 
+             alt="Рослина гострого перцю — насіння суперхотів" 
              class="card-image" 
              width="400" 
              height="300">
-        <div class="card-label">Насіння:<br>супергострі, томати та інші</div>
-        <div class="card-split">
-            <a href="seedsandseedlings.html" class="split-half split-top">
-                <span class="split-label">🌶️ Супергострі перці</span>
-            </a>
-            <a href="otherseeds.html" class="split-half split-bottom">
-                <span class="split-label">🍅 Томати та інші овочі</span>
-            </a>
-        </div>
-    </div>
+        <div class="card-label">Насіння<br>супергострих перців</div>
+    </a>
 
     <!-- ═══ КРАФТОВІ СОУСИ ═══ -->
     <a href="sauces.html" class="card-link sauces">
@@ -535,6 +552,26 @@
         <div class="card-label">Врожай Inferno:<br>свіжі, сушені перці та продукти з них</div>
         <span class="seasonal-note">Наразі зачинено</span>
     </div>
+
+    <!-- ═══ НАСІННЯ ТОМАТІВ ═══ -->
+    <a href="tomatoes.html" class="card-link tomatoes">
+        <img src="tomatoes.jpg"
+             alt="Стиглий томат — насіння томатів"
+             class="card-image"
+             width="400"
+             height="300">
+        <div class="card-label">Насіння<br>томатів</div>
+    </a>
+
+    <!-- ═══ НАСІННЯ ОВОЧІВ ═══ -->
+    <a href="vegetable-seeds.html" class="card-link vegetable-seeds">
+        <img src="veggies.jpg"
+             alt="Плоди перцю Капія — насіння овочів"
+             class="card-image"
+             width="400"
+             height="300">
+        <div class="card-label">Інше насіння</div>
+    </a>
 </section>
 
     <p class="description">
@@ -764,34 +801,5 @@
 <script src="cart.js"></script>
 <script defer src="optimization-module.js"></script>
 <script type="module" src="modules/init.js"></script>
-<script>
-    (() => {
-        const seedsCard = document.querySelector('.card-link.seeds');
-        const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-
-        if (!seedsCard || !isTouchDevice) return;
-
-        seedsCard.addEventListener('click', (event) => {
-            const isOpen = seedsCard.classList.contains('is-open');
-            const isSubcategoryLink = event.target.closest('.card-split a');
-
-            if (!isOpen) {
-                event.preventDefault();
-                seedsCard.classList.add('is-open');
-                return;
-            }
-
-            if (!isSubcategoryLink) {
-                seedsCard.classList.remove('is-open');
-            }
-        });
-
-        document.addEventListener('click', (event) => {
-            if (!seedsCard.contains(event.target)) {
-                seedsCard.classList.remove('is-open');
-            }
-        });
-    })();
-</script>
 </body>
 </html>

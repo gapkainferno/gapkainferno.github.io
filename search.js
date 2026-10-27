@@ -80,7 +80,8 @@ function searchProducts(query) {
                 'seeds': 'насіння, seeds',
                 'sauces': 'соус, соуси, sauces',
                 'seedlings': 'розсада',
-                'otherseeds': 'овочі, овочі, томати, насіння овочів, otherseeds',
+                'tomatoes': 'томати, помідори, насіння томатів, tomatoes',
+                'vegetable-seeds': 'овочевий перець, солодкий перець, гострий перець, насіння овочів, vegetable seeds',
                 'fresh-peppers': 'врожай пекла, свіжий перець, сушений перець, свіжі перці, fresh peppers'
             };
             const categoryName = categoryNames[product.category] || product.category;
@@ -117,7 +118,8 @@ function displaySearchResults(results, container) {
         'seeds': '🌶️ Насіння',
         'sauces': '🔥 Соус',
         'seedlings': '🌱 Розсада',
-        'otherseeds': '🍅 Насіння овочів',
+        'tomatoes': '🍅 Насіння томатів',
+        'vegetable-seeds': '🫑 Насіння овочів',
         'fresh-peppers': '🌶️ Врожай Пекла'
     };
     

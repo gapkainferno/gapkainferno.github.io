@@ -546,7 +546,7 @@ heatScore:"1",
         heatLevel: "🔥🔥 ВИСОКА (30,000 – 80,000 SHU)",
         metaDescription: "Купити насіння Sugar Rush Stripey. Смугастий персиковий перець із неймовірною цукровою солодкістю та фруктовим вибухом. Ексклюзивна селекція.",
 heatScore:"2",
-        images: ["sugarrush.jpg", "sugar-rush-stripey-main.webp", ""],
+        images: ["sugarrush.jpg", "sugar-rush-stripey-main.webp", "stripey.jpg"],
         specs: {
             maturity: "100–120 днів",
             height: "100–150 см",
@@ -1016,35 +1016,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
         inStock: true, 
         allowSale: true
     },
-"bagryanyy-shepit": {
-    name: "Багряний Шепіт (Crimson Whisper)",
-    searchName: "Crimson Whisper, Багряний Шепіт, насіння перцю",
-    category: "otherseeds",
-    price: 40,
-    heatLevel: "🌶️ Помірно гострий (2 000–10 000 SHU)",
-    isSpicy: true,
-    metaDescription: "Багряний Шепіт — урожайний перець із видовженими плодами, помірною гостротою та насиченим багряно-червоним кольором. Чудово підходить для сушіння та заготівель.",
-    heatScore: "2",
-    images: ["bahr.jpg", "crimson.jpg", ""],
-    specs: {
-        maturity: "Середньостиглий",
-        height: "70–100 см",
-        species: "Capsicum annuum",
-        yield: "Висока"
-    },
-    description: `Багряний Шепіт — власний сорт із дуже вдалою комбінацією врожайності, форми та помірної гостроти. Плоди видовжені, м'ясисті, з характерним загостреним кінчиком і при дозріванні набувають насиченого багряно-червоного кольору. На рослині формується велика кількість плодів, тому сорт чудово підходить для вирощування на масу та масштабних домашніх заготівель.<br><br>
 
-За гостротою Багряний Шепіт знаходиться десь між солодким перцем і гострими сортами — він дає приємну пекучість, але не перетворює страву на випробування на виживання. Завдяки цьому перець універсальний у використанні: його можна додавати до соусів, приправ, маринадів та різноманітних заготовок.<br><br>
-
-Окремий плюс сорту — чудова придатність до сушіння. Плоди добре підходять для виготовлення сухого перцю, пластівців або порошку, а велика кількість урожаю дозволяє без проблем заготовляти його у значних об'ємах. Багряний Шепіт — той випадок, коли красивий зовнішній вигляд і практичність чудово працюють разом.`,
-    growTip: "Для отримання максимального врожаю висаджуйте перець на добре освітленому та прогрітому місці. Сорт варто вирощувати саме з розрахунком на кількість — рослина здатна сформувати багато плодів, які зручно збирати та використовувати для сушіння й заготівель.",
-    meta: { count: "10+ насінин", pack: "Zip", year: "2026" },
-    isolatedAvailable: false,
-isHot: true,  // З'явиться тег 🔥 HOT
-        isFlavor:"" , //Вписуй будь-який смак
-        inStock: true, 
-        allowSale: true
-    },
 
 "nebesna-pyramida": {
         name: "Насіння перцю Celestial Pyramid",
@@ -2376,7 +2348,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
     metaDescription: "Насіння томату Черрі круглі — високорослий і врожайний сорт із солодкими круглими плодами черрі.",
     images: ["cherrykr.jpg"],
     specs: {
-        maturity: "—",
+        maturity: "70-80 днів",
         height: "Високорослий (індетермінантний)",
         species: "Solanum lycopersicum",
         yield: "Висока"
@@ -2421,8 +2393,8 @@ isHot: true,  // З'явиться тег 🔥 HOT
     metaDescription: "Насіння томату Медове гроно — урожайні жовті чері з надзвичайно солодким смаком.",
     images: [ "grono (2).jpg", "grono.jpg", "product-secondary-placeholder.webp"],
     specs: {
-        maturity: "—",
-        height: "—",
+        maturity: "70-75 днів",
+        height: "Високорослий (індетермінантний)",
         species: "Solanum lycopersicum",
         yield: "Рясне плодоношення"
     },
@@ -2443,10 +2415,10 @@ isHot: true,  // З'явиться тег 🔥 HOT
     metaDescription: "Насіння томату Синє сонячне сяйво — невеликі червоно-сині плоди з антоціановим забарвленням.",
     images: [ "sss1.jpg", "sss.jpg", "product-secondary-placeholder.webp"],
     specs: {
-        maturity: "—",
-        height: "—",
+        maturity: "70-75 днів",
+        height: "Високорослий (індетермінантний)",
         species: "Solanum lycopersicum",
-        yield: "—"
+        yield: "Рясне плодоношення"
     },
     description: `<b>Синє сонячне сяйво</b> — незвичайний сорт із невеликими плодами, що поєднують червоні та сині відтінки. Синє забарвлення зумовлене антоціаном і виразніше проявляється на частинах плодів, відкритих сонцю. Оригінальні томати прикрасять свіжі салати та літню нарізку.`,
     meta: { count: "15 насінин", pack: "Zip", year: "2026" },
@@ -2465,8 +2437,8 @@ isHot: true,  // З'явиться тег 🔥 HOT
     metaDescription: "Насіння томату Рожевий гагат — пружні рожеві плоди з виразними антоціановими плечима.",
     images: [ "gagat2.jpg", "gagat.jpg", "product-secondary-placeholder.webp"],
     specs: {
-        maturity: "—",
-        height: "—",
+        maturity: "70-80 днів",
+        height: "Високорослий (індетермінантний)",
         species: "Solanum lycopersicum",
         yield: "—"
     },
@@ -2487,8 +2459,8 @@ isHot: true,  // З'явиться тег 🔥 HOT
     metaDescription: "Насіння томату Грошовий мішечок — оригінальні плоди у формі торбочок із синіми антоціановими плямами.",
     images: [ "monet.jpg", "mishechok.jpg", "product-secondary-placeholder.webp"],
     specs: {
-        maturity: "—",
-        height: "—",
+        maturity: "Середьоранній (80-90 днів)",
+        height: "Високорослий (індетермінантний)",
         species: "Solanum lycopersicum",
         yield: "—"
     },
@@ -2507,7 +2479,7 @@ isHot: true,  // З'явиться тег 🔥 HOT
     heatLevel: "Солодкий",
     heatScore: "2",
     metaDescription: "Насіння солодкого перцю Капія — сорт із характерними видовженими плодами для свіжого споживання та домашніх страв.",
-    images: ["kap2.jpg", "kap.jpg"],
+    images: ["Kapia.jpg", "kap.jpg", "kap2.jpg"],
     specs: {
         maturity: "—",
         height: "—",
@@ -2520,6 +2492,36 @@ isHot: true,  // З'явиться тег 🔥 HOT
     inStock: true,
     allowSale: true
 },
+
+"bagryanyy-shepit": {
+    name: "Багряний Шепіт (Crimson Whisper)",
+    searchName: "Crimson Whisper, Багряний Шепіт, насіння перцю",
+    category: "otherseeds",
+    price: 35,
+    heatLevel: "🌶️ Помірно гострий (2 000–10 000 SHU)",
+    isSpicy: true,
+    metaDescription: "Багряний Шепіт — урожайний перець із видовженими плодами, помірною гостротою та насиченим багряно-червоним кольором. Чудово підходить для сушіння та заготівель.",
+    heatScore: "2",
+    images: ["bahr.jpg", "crimson.jpg", ""],
+    specs: {
+        maturity: "Середньостиглий",
+        height: "70–100 см",
+        species: "Capsicum annuum",
+        yield: "Висока"
+    },
+    description: `Багряний Шепіт — власний сорт із дуже вдалою комбінацією врожайності, форми та помірної гостроти. Плоди видовжені, м'ясисті, з характерним загостреним кінчиком і при дозріванні набувають насиченого багряно-червоного кольору. На рослині формується велика кількість плодів, тому сорт чудово підходить для вирощування на масу та масштабних домашніх заготівель.<br><br>
+
+За гостротою Багряний Шепіт знаходиться десь між солодким перцем і гострими сортами — він дає приємну пекучість, але не перетворює страву на випробування на виживання. Завдяки цьому перець універсальний у використанні: його можна додавати до соусів, приправ, маринадів та різноманітних заготовок.<br><br>
+
+Окремий плюс сорту — чудова придатність до сушіння. Плоди добре підходять для виготовлення сухого перцю, пластівців або порошку, а велика кількість урожаю дозволяє без проблем заготовляти його у значних об'ємах. Багряний Шепіт — той випадок, коли красивий зовнішній вигляд і практичність чудово працюють разом.`,
+    growTip: "Для отримання максимального врожаю висаджуйте перець на добре освітленому та прогрітому місці. Сорт варто вирощувати саме з розрахунком на кількість — рослина здатна сформувати багато плодів, які зручно збирати та використовувати для сушіння й заготівель.",
+    meta: { count: "15 насінин", pack: "Zip", year: "2026" },
+    isolatedAvailable: false,
+isHot: true,  // З'явиться тег 🔥 HOT
+        isFlavor:"" , //Вписуй будь-який смак
+        inStock: true, 
+        allowSale: true
+    },
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // 🌶️ ВРОЖАЙ ПЕКЛА (СВІЖІ ТА СУШЕНІ)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2590,6 +2592,25 @@ isHot: true,  // З'явиться тег 🔥 HOT
 
 };
 
+const legacySeedSpeciesCategories = {
+    'Solanum lycopersicum': 'tomatoes',
+    'Capsicum annuum': 'vegetable-seeds'
+};
+
+Object.entries(allProducts).forEach(([id, product]) => {
+    if (product.category !== 'otherseeds') return;
+
+    const species = String(product.specs?.species || '').trim();
+    const category = legacySeedSpeciesCategories[species]
+        || (/^Capsicum(?:\s|$)/i.test(species) ? 'vegetable-seeds' : null);
+    if (!category) {
+        console.error(`Не вдалося визначити нову категорію для товару ${id}.`);
+        return;
+    }
+
+    product.category = category;
+});
+
 window.getProductDisplayName = (product, name = product?.name) => {
     const rawName = String(name || '').trim();
     if (!product || product.category !== 'seeds' || !rawName) {
@@ -2618,7 +2639,7 @@ Object.values(allProducts).forEach(product => {
         Object.keys(allProducts).forEach(id => {
             const p = allProducts[id];
 
-            if (p.category === 'seeds' || p.category === 'otherseeds') {
+            if (p.category === 'seeds' || p.category === 'tomatoes' || p.category === 'vegetable-seeds') {
                 
                 // 1. Розрахунок ціни (завжди автоматично +25%)
                 const isolatedPrice = Math.round(p.price * 1.25);
@@ -2661,7 +2682,8 @@ Object.values(allProducts).forEach(product => {
                         // Визначаємо категорію для агрегованих цін на головній
                         if (nameLower.includes("соуси")) targetCategory = "sauces";
                         else if (nameLower.includes("суперхотів")) targetCategory = "seeds";
-                        else if (nameLower.includes("інше насіння")) targetCategory = "otherseeds";
+                        else if (nameLower.includes("насіння томатів")) targetCategory = "tomatoes";
+                        else if (nameLower.includes("насіння овочів")) targetCategory = "vegetable-seeds";
                         else if (nameLower.includes("врожай пекла")) targetCategory = "fresh-peppers";
 
                         if (targetCategory) {

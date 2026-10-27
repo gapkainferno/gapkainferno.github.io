@@ -30,10 +30,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
 
     // Очищуємо старі класи тем, щоб вони не змішувалися
-    body.classList.remove('seeds-page', 'sauces-page', 'otherseeds-page', 'fresh-peppers-page', 'theme-fire');
+    body.classList.remove('seeds-page', 'sauces-page', 'otherseeds-page', 'tomatoes-page', 'vegetable-seeds-page', 'fresh-peppers-page', 'theme-fire');
 
     // Встановлюємо тему залежно від категорії товару
-    const themeClass = `${product.category}-page`;
+    const themeClass = product.category === 'tomatoes' || product.category === 'vegetable-seeds'
+        ? 'otherseeds-page'
+        : `${product.category}-page`;
     if (product.category) {
         body.classList.add(themeClass);
     }
@@ -43,7 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const categoryMap = {
             'seeds': { name: 'Насіння суперхотів', url: 'seedsandseedlings.html' },
             'sauces': { name: 'Крафтові Соуси', url: 'sauces.html' },
-            'otherseeds': { name: 'Інше насіння', url: 'otherseeds.html' }
+            'tomatoes': { name: 'Насіння томатів', url: 'tomatoes.html' },
+            'vegetable-seeds': { name: 'Насіння овочів', url: 'vegetable-seeds.html' }
         };
         const cat = categoryMap[product.category] || { name: 'Каталог', url: 'index.html' };
 
@@ -166,7 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const categorySEO = {
             'seeds': 'Насіння суперхотів',
             'sauces': 'Крафтові соуси',
-            'otherseeds': 'Насіння овочів та томатів'
+            'tomatoes': 'Насіння томатів',
+            'vegetable-seeds': 'Насіння овочів'
         };
         const catName = categorySEO[product.category] || 'Товари';
         document.title = `${productDisplayName} — ${catName} — купити в Gapka Homestead Inferno`;
@@ -460,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const relatedProductsList = document.getElementById('related-products-list');
         const relatedProductsTitle = document.getElementById('related-products-title');
         if (relatedProductsSection && relatedProductsList && relatedProductsTitle) {
-            const productSpecies = product.category === 'otherseeds'
+            const productSpecies = product.category === 'tomatoes' || product.category === 'vegetable-seeds'
                 ? String(product.specs?.species || '').trim().toLowerCase()
                 : '';
             const relatedProducts = Object.entries(allProducts)
@@ -482,6 +486,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     relatedProductsTitle.textContent = '🔥 Інші соуси';
                 } else if (product.category === 'seeds') {
                     relatedProductsTitle.textContent = '🌶️ Інше насіння суперхотів';
+                } else if (product.category === 'tomatoes') {
+                    relatedProductsTitle.textContent = '🍅 Інші томати';
+                } else if (product.category === 'vegetable-seeds') {
+                    relatedProductsTitle.textContent = '🫑 Інші овочеві перці';
                 } else if (product.category === 'fresh-peppers') {
                     relatedProductsTitle.textContent = '🌶️ Інші перці з урожаю';
                 } else {
@@ -582,7 +590,7 @@ function renderSeedVersionSelector(product, productId) {
     if (!product.seedVersions) return;
     
     // Перевіряємо чи це насіння
-    if (product.category !== 'seeds' && product.category !== 'otherseeds') return;
+    if (!['seeds', 'tomatoes', 'vegetable-seeds'].includes(product.category)) return;
     
     // Знаходимо зону для селектора (після ціни, перед кнопкою)
     const priceEl = document.getElementById('p-price');
@@ -703,7 +711,7 @@ function updatePriceDisplay(product, version) {
     
     // Визначаємо підпис ціни залежно від категорії
     let priceLabel = '/ шт.';
-    if ((product.category === 'seeds' || product.category === 'otherseeds') && product.meta?.count) {
+    if (['seeds', 'tomatoes', 'vegetable-seeds'].includes(product.category) && product.meta?.count) {
         priceLabel = `/ ${product.meta.count}`;
     } else if (product.category === 'sauces') {
         priceLabel = '/ пляшка';

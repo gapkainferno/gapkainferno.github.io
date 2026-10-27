@@ -43,25 +43,21 @@ const CATEGORY_PAGES = {
             ['3', '🔥🔥🔥 Пекельні']
         ]
     },
-    otherseeds: {
-        url: 'otherseeds.html',
-        navLabel: isEnglishCatalog ? '🍅 Tomatoes & other vegetables' : '🍅 Томати та інші овочі',
+    tomatoes: {
+        url: 'tomatoes.html',
+        navLabel: isEnglishCatalog ? '🍅 Tomato seeds' : '🍅 Насіння томатів',
+        title: isEnglishCatalog ? 'Tomato seeds' : 'Насіння томатів',
+        description: '',
+        filterTitle: isEnglishCatalog ? 'Varieties:' : 'Сорти:',
+        filters: []
+    },
+    'vegetable-seeds': {
+        url: 'vegetable-seeds.html',
+        navLabel: isEnglishCatalog ? '🫑 Vegetable seeds' : '🫑 Насіння овочів',
         title: isEnglishCatalog ? 'Vegetable seeds' : 'Насіння овочів',
         description: '',
-        filterTitle: isEnglishCatalog ? 'Vegetable type:' : 'Тип овочів:',
-        filters: isEnglishCatalog ? [
-            ['all', 'All'],
-            ['1', '🍅 Tomatoes'],
-            ['2', '🫑 Peppers'],
-            ['3', '🥒 Cucumbers'],
-            ['4', 'Other seeds']
-        ] : [
-            ['all', 'Всі'],
-            ['1', '🍅 Помідори'],
-            ['2', '🫑 Перець'],
-            ['3', '🥒 Огірки'],
-            ['4', 'Інше насіння']
-        ]
+        filterTitle: isEnglishCatalog ? 'Varieties:' : 'Сорти:',
+        filters: []
     },
     'fresh-peppers': {
         url: 'fresh-peppers.html',
@@ -89,7 +85,8 @@ const CATEGORY_NAV = isEnglishCatalog ? [
         label: '🌱 Seeds',
         children: [
             { key: 'seeds', url: 'seedsandseedlings.html', label: '🌶️ Superhot peppers' },
-            { key: 'otherseeds', url: 'otherseeds.html', label: '🍅 Tomatoes & other vegetables' }
+            { key: 'tomatoes', url: 'tomatoes.html', label: '🍅 Tomato seeds' },
+            { key: 'vegetable-seeds', url: 'vegetable-seeds.html', label: '🫑 Vegetable pepper seeds' }
         ]
     },
     { key: 'sauces', url: 'sauces.html', label: '🔥 Craft sauces' },
@@ -100,7 +97,8 @@ const CATEGORY_NAV = isEnglishCatalog ? [
         label: '🌱 Насіння',
         children: [
             { key: 'seeds', url: 'seedsandseedlings.html', label: '🌶️ Супергострі перці' },
-            { key: 'otherseeds', url: 'otherseeds.html', label: '🍅 Томати та інші овочі' }
+            { key: 'tomatoes', url: 'tomatoes.html', label: '🍅 Насіння томатів' },
+            { key: 'vegetable-seeds', url: 'vegetable-seeds.html', label: '🫑 Насіння овочів' }
         ]
     },
     { key: 'sauces', url: 'sauces.html', label: '🔥 Крафтові соуси' },
@@ -210,6 +208,11 @@ function renderCategoryIntro(mainGrid, category) {
 
 function renderCategoryFilters(mainGrid, category) {
     let filterSection = mainGrid.querySelector('.filter-section');
+    if (!category.filters.length) {
+        filterSection?.remove();
+        return;
+    }
+
     const catalogContainer = mainGrid.querySelector('#catalog-container');
 
     if (!filterSection) {
@@ -275,7 +278,7 @@ function getMiniSpecsHTML(product) {
     }
 
     // Для овочів показуємо колір (якщо є)
-    if (product.category === 'vegetables' && s.color && s.color.trim() !== '' && s.color.trim() !== '-') {
+    if ((product.category === 'tomatoes' || product.category === 'vegetable-seeds') && s.color && s.color.trim() !== '' && s.color.trim() !== '-') {
         specs.push({ label: 'Колір', value: s.color });
     }
 
@@ -319,7 +322,7 @@ function renderProductCard(id, product) {
     const mutedPriceClass = isInStock ? '' : ' muted-card-price';
 
     return `
-        <a href="product.html?id=${safeText(id)}" class="product-card ${isInStock ? '' : 'out-of-stock'}" data-id="${safeText(id)}">
+        <a href="product.html?id=${safeText(id)}" class="product-card ${isInStock ? '' : 'out-of-stock'}" data-id="${safeText(id)}" data-category="${safeText(product.category)}">
             <div class="product-tags">${getTagsHTML(product)}</div>
             <div class="img-container${productImage ? '' : ' is-image-missing'}">
                 ${productImage

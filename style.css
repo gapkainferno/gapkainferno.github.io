@@ -148,7 +148,7 @@ body.sauces-page {
 }
 
 /* ─────────────────────────────────────────
-   🌿  OTHERSEEDS-PAGE — Насіння овочів
+   🌿  OTHERSEEDS-PAGE — Томати й насіння овочів
    Тема: Мохове зелене, суха трава, роса
    ───────────────────────────────────────── */
 body.otherseeds-page {
@@ -636,7 +636,7 @@ body.has-sale-banner {
 /* Плаваючий кошик */
 .floating-cart {
     position: fixed;
-    bottom: 20px; right: 20px;
+    bottom: max(20px, env(safe-area-inset-bottom)); right: 20px;
     width: 56px; height: 56px;
     border-radius: 50%;
     background: var(--primary-color);
@@ -646,9 +646,19 @@ body.has-sale-banner {
     box-shadow: 0 4px 18px rgba(0,0,0,0.35);
     z-index: 999;
     text-decoration: none;
-    transition: transform var(--transition);
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    /* Не примушувати власний шар — на мобільних це роблять нестабільним під час інерційного скролу */
+    transform: none;
+    will-change: auto;
+    overflow-anchor: none;
+    /* transition тільки на hover — інакше браузер анімує будь-яке тимчасове зміщення transform під час скролу */
 }
-.floating-cart:hover { transform: scale(1.1); }
+.floating-cart:hover {
+    transition: transform var(--transition);
+    transform: scale(1.1);
+}
 .floating-cart .cart-icon   { font-size: 22px; }
 .floating-cart #cart-count  { font-size: 11px; font-weight: 700; }
 
@@ -819,9 +829,15 @@ body.has-sale-banner {
     color: var(--primary-color);
 }
 
-/* Специфічні кольори для категорій (переконайтеся, що додали класи seeds/sauces/otherseeds до посилань .card-link в HTML) */
+/* Специфічні кольори для категорій головної сторінки */
 .card-link.seeds:hover .card-label { color: #c9622a; }
 .card-link.seeds:hover .card-label::before { background: #c9622a; }
+
+.card-link.tomatoes:hover .card-label { color: #d65b45; }
+.card-link.tomatoes:hover .card-label::before { background: #d65b45; }
+
+.card-link.vegetable-seeds:hover .card-label { color: #6ba86b; }
+.card-link.vegetable-seeds:hover .card-label::before { background: #6ba86b; }
 
 .card-link.sauces:hover .card-label { color: #b83240; }
 .card-link.sauces:hover .card-label::before { background: #b83240; }
@@ -879,66 +895,6 @@ body.has-sale-banner {
     bottom: 22px;
     color: rgba(255,255,255,0.78);
     font: 400 0.9rem var(--font-body);
-}
-
-/* Розділення картки «Насіння» на 2 частини при наведенні */
-.card-split {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    z-index: 8;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-}
-.card-link:hover .card-split {
-    opacity: 1;
-    pointer-events: auto;
-}
-.split-half {
-    display: block;
-    width: 100%;
-    height: 50%;
-    text-decoration: none;
-    position: relative;
-    transition: background 0.3s ease;
-}
-.split-label {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: var(--font-heading);
-    font-size: 18px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #fff;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
-    transition: transform 0.3s ease;
-    white-space: nowrap;
-}
-.split-half:hover .split-label {
-    transform: translate(-50%, -50%) scale(1.08);
-}
-.split-top {
-    background: rgba(0, 0, 0, 0.65);
-    border-bottom: 2px solid var(--primary-color);
-}
-.split-top:hover {
-    background: rgba(201, 98, 42, 0.9);
-}
-.split-bottom {
-    background: rgba(0, 0, 0, 0.65);
-}
-.split-bottom:hover {
-    background: rgba(74, 140, 80, 0.9);
-}
-.card-link.seeds:hover .card-label {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2818,7 +2774,7 @@ main.product-page {
 /* ── GRID: форма + чек ── */
 .checkout-grid {
     display: grid;
-    grid-template-columns: 1.15fr 1fr;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
 }
 
 /* ═══════════════════════════════════════════
@@ -3412,6 +3368,34 @@ main.product-page {
     display: none;
     text-align: center;
     padding: 60px 40px;
+    box-sizing: border-box;
+    width: 100%;
+}
+/* Адаптив для екрана успіху на мобільних */
+@media (max-width: 540px) {
+    #success-msg {
+        padding: 30px 20px;
+    }
+    #success-msg h2 {
+        font-size: 22px;
+        margin-bottom: 12px;
+    }
+    #success-msg p {
+        font-size: 14px;
+        margin: 6px 0;
+    }
+    #success-msg .order-btn {
+        max-width: 100%;
+        margin: 20px auto 0;
+    }
+    /* Потрібно, щоб success-msg перекривав всю доступну висоту модалки на мобільних */
+    #success-msg {
+        min-height: 50vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
 #success-msg h2 {
     font-family: var(--font-heading);
@@ -3438,16 +3422,18 @@ main.product-page {
 ═══════════════════════════════════════════ */
 @media (max-width: 860px) {
     .checkout-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
     .checkout-form {
         border-right: none;
         border-bottom: 1px solid rgba(255,255,255,0.06);
         padding: 24px 20px;
+        min-width: 0;
     }
     .checkout-summary {
         padding: 24px 20px;
         min-height: auto;
+        min-width: 0;
     }
     .cart-items-list { max-height: 200px; }
     .checkout-header { padding: 20px 20px 18px; }
@@ -3458,14 +3444,36 @@ main.product-page {
     .modal { 
         padding: 0; 
         background: rgba(0,0,0,0.95);
+        overflow: hidden;          /* скролиться лише .modal-box */
+        align-items: flex-end;     /* "шторка" знизу, без порожньої смуги */
+    }
+    .modal[style*="flex"] {
+        align-items: flex-end;
     }
     .modal-box { 
         margin: 0; 
         border-radius: 12px 12px 0 0;
         min-height: auto;
-        max-width: 100%;
-        max-height: 90dvh;
+        min-width: 0;
+        max-width: 100vw;
+        max-height: calc(100vh - 8px);   /* запасний варіант */
+        max-height: calc(100dvh - 8px);  /* враховує адресний рядок браузера */
+        overflow-x: hidden;
         overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    /* Кнопка закриття залишається видимою під час скролу */
+    .close-btn {
+        position: sticky;
+        top: 8px;
+        right: auto;
+        float: none;
+        margin: 8px 8px -40px auto;
+    }
+    .checkout-header {
+        padding-right: 52px;
     }
     .form-row { 
         grid-template-columns: 1fr; 
@@ -3502,8 +3510,13 @@ main.product-page {
     .form-group input,
     .form-group select,
     .form-group textarea {
+        min-width: 0;
+        max-width: 100%;
         font-size: 16px;
         padding: 10px 12px;
+    }
+    .form-group small {
+        overflow-wrap: anywhere;
     }
     
     .add-btn,
@@ -3511,7 +3524,22 @@ main.product-page {
         padding: 12px 20px;
         font-size: 14px;
     }
-    
+
+    /* Кошик всередині модалки на мобільних */
+    .cart-item {
+        flex-wrap: wrap;
+    }
+    .cart-item-image-wrapper {
+        width: 56px;
+        height: 56px;
+    }
+    .cart-item-subtotal {
+        white-space: nowrap;
+    }
+    .total-price-display {
+        font-size: 26px;
+    }
+
     /* Empty cart modal responsive */
     .empty-cart-categories {
         grid-template-columns: 1fr;
@@ -3531,8 +3559,8 @@ main.product-page {
         width: 32px;
         height: 32px;
         font-size: 18px;
+        margin-bottom: -40px;
     }
-}
     
     .empty-cart-footer {
         padding: 16px 20px 24px;
@@ -3546,6 +3574,7 @@ main.product-page {
     .empty-cart-card h3 {
         font-size: 18px;
     }
+}
 
 
 
@@ -4107,6 +4136,9 @@ footer {
     #catalog-container .product-tag.flavor {
         display: none;
     }
+    #catalog-container .product-card[data-category="vegetable-seeds"] .product-tag.flavor {
+        display: inline-flex;
+    }
     #catalog-container .quick-add-btn {
         width: 38px;
         height: 38px;
@@ -4218,21 +4250,6 @@ footer {
     body.homepage .card-label {
         font-size: clamp(16px, 4vw, 22px);
     }
-    body.homepage .split-label {
-        width: calc(100% - 12px);
-        font-size: clamp(11px, 3vw, 15px);
-        line-height: 1.15;
-        text-align: center;
-        white-space: normal;
-    }
-    body.homepage .card-link.seeds.is-open .card-split {
-        opacity: 1;
-        pointer-events: auto;
-    }
-    body.homepage .card-link.seeds.is-open .card-label {
-        opacity: 0;
-        pointer-events: none;
-    }
     .features-grid  { grid-template-columns: 1fr; padding: 30px 0; }
     .hero-banner    { margin: 40px 0; }
 
@@ -4240,8 +4257,8 @@ footer {
     .video-container { height: 260px; }
 
     /* Модалка */
-    .modal-box { padding: 20px; }
-    #modal-main-content { grid-template-columns: 1fr !important; }
+    .modal-box { padding: 20px; min-width: 0; }
+    #modal-main-content { grid-template-columns: minmax(0, 1fr) !important; }
 
     /* Футер */
     .footer-content { 
@@ -4281,22 +4298,10 @@ footer {
     body.homepage .card-link:hover .card-image {
         transform: none;
     }
-    body.homepage .card-link.seeds:hover .card-split {
-        opacity: 0;
-        pointer-events: none;
-    }
-    body.homepage .card-link.seeds.is-open:hover .card-split {
-        opacity: 1;
-        pointer-events: auto;
-    }
     body.homepage .card-link.seeds:hover .card-label {
         opacity: 1;
         transform: translate(-50%, -50%);
         color: #d6d6d6;
-    }
-    body.homepage .card-link.seeds.is-open:hover .card-label {
-        opacity: 0;
-        pointer-events: none;
     }
 }
 
@@ -4314,10 +4319,6 @@ footer {
     body.homepage .card-label {
         font-size: clamp(20px, 5.5vw, 26px);
     }
-    body.homepage .split-label {
-        font-size: clamp(14px, 4vw, 18px);
-    }
-
     /* Каталог на дуже маленьких екранах - 2 стовпця */
     #catalog-container { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 

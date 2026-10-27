@@ -7,14 +7,17 @@
     const THEMES = {
         seeds:      'seeds-page',
         sauces:     'sauces-page',
-        otherseeds: 'otherseeds-page',
+        tomatoes: 'otherseeds-page',
+        'vegetable-seeds': 'otherseeds-page',
         'fresh-peppers': 'fresh-peppers-page'
     };
 
     const URL_MAP = {
         'seedsandseedlings': 'seeds',
         'sauces':            'sauces',
-        'otherseeds':        'otherseeds',
+        'tomatoes':          'tomatoes',
+        'vegetable-seeds':   'vegetable-seeds',
+        'otherseeds':        'tomatoes',
         'superhots':         'seeds',
         'fresh-peppers':     'fresh-peppers'
     };
