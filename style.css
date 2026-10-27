@@ -2079,6 +2079,25 @@ main.product-page {
     display: none;
 }
 
+.product-delivery-brief {
+    grid-column: 1 / -1;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.product-delivery-brief h2 {
+    margin: 0 0 10px;
+    color: var(--primary-orange);
+    font: 700 0.75rem var(--font-heading);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
 .related-products-section h2 {
     margin: 0 0 18px;
     color: var(--primary-orange);
