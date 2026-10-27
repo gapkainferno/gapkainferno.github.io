@@ -1415,7 +1415,8 @@ function generateOrderNumber() {
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const hour = String(now.getHours()).padStart(2, '0');
     const minute = String(now.getMinutes()).padStart(2, '0');
-    return `${day}${month}${hour}${minute}`;
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    return `${day}${month}${hour}${minute}${seconds}`;
 }
 
 // === 4. ВІДПРАВКА ЗАМОВЛЕННЯ ===
