@@ -288,36 +288,6 @@ heatScore:"4",
 
 
 
-"nagapeach": {
-        name: "Насіння перцю Naga Peach",
-        searchName: "Naga Peach, Нага Персик, Нага Піч, насіння суперхотів",
-        category: "seeds",
-        price: 99,
-        heatLevel: "🔥🔥🔥 ВИСОКА (600,000 до 1,200,000 SHU)",
-        metaDescription: "Насіння Naga Peach. Декоративний перець у формі морської зірки з фруктовим смаком та помірною гостротою. Врожайний сорт Baccatum.",
-heatScore:"3",
-        images: ["IMG_20260824_131320.jpg", "IMG_20260824_130804.jpg"],
-        specs: {
-            maturity: "90–100 днів",
-            height: "до 1.5 - 2 метрів",
-            species: "Capsicum baccatum (Ягідний перець)",
-            yield: ""
-        },
-        description: `<b>Naga Peach</b> — це справжня перлина виду Capsicum baccatum, що вражає своїм інопланетним виглядом «червоної морської зірки».
-        <br><br>
-        Це перець-контраст: його хвилясті краї солодкі та хрусткі, як стигле яблуко, але що ближче до центру, то сильніше він «кусається». Невибагливий у догляді та надзвичайно врожайний, він стане головною прикрасою вашого городу або теплиці.
-        <br><br>    `,
-        metaDescription: "Naga Peach. Насіння від Gapka Homestead Inferno.",
-        growTip: "Naga Peach має великий потенціал, тому обов'язково забезпечте йому простір та хорошу опору. Регулярне підживлення та сонце сприятимуть рясному плодоношенню.",
-        meta: { count: "10+ насінин", pack: "Zip", year: "2026" },
-        isolatedAvailable: false,
-         //ТЕГИ
-        // isNew: true,  // З'явиться тег NEW
-        isHot: true,  // З'явиться тег 🔥 HOT
-        isFlavor:"🥭 Фруктовий" , //Вписуй будь-який смак
-        inStock: true, 
-        allowSale: true
-    },
 
 "starfishred": {
         name: "Насіння перцю Brazilian Starfish Red",
