@@ -1936,7 +1936,7 @@ window.submitOrder = async function() {
                         </a>
                         <p style="font-size: 13px; color: #888;">
                             Рахунок: <br>
-                            <strong style="color: var(--primary-color); font-family: monospace; font-size: 16px;">5168 7521 5680 2145</strong>
+                            <strong style="color: var(--primary-color); font-family: monospace; font-size: 16px;">UA693052990262076400946213056</strong>
                         </p>
                         
                     </div>`;
