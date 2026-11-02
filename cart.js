@@ -1620,7 +1620,7 @@ window.submitOrder = async function() {
 
        // https://api.telegram.org/bot8532849974:AAG-JfB6E6_XfNggptnpygCrr0JqutvRhgA/setWebhook?url=<ТВОЄ_ПОСИЛАННЯ_EXEC> створити ВЕБХУК після зміни посилання ТА У MODAL
         try {
-            const response = await fetch("https://script.google.com/macros/s/AKfycbzHU5WeM2GbCetTueGcZyfbM3tSRtg-kkiopuOPRVxSlSv4oZhO8k3Viay1l1zoKjtm/exec", {
+            const response = await fetch("https://script.google.com/macros/s/AKfycbxDyF7T6yYQiqMsBAQKDI4z_WAc318dlLCRLwlYA3fJUZbN1YqdXwqhMbXd1W1e76Os/exec", {
                 method: "POST",
                 mode: "cors",
                 redirect: "follow",

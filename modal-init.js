@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // СПІЛЬНІ ЗМІННІ ТА ФУНКЦІЇ
 // ═══════════════════════════════════════════════════════════════
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzHU5WeM2GbCetTueGcZyfbM3tSRtg-kkiopuOPRVxSlSv4oZhO8k3Viay1l1zoKjtm/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxDyF7T6yYQiqMsBAQKDI4z_WAc318dlLCRLwlYA3fJUZbN1YqdXwqhMbXd1W1e76Os/exec";
 
 let currentNotifyCategory = '';
 
