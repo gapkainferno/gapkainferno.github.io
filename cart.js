@@ -1926,6 +1926,7 @@ window.submitOrder = async function() {
                 paymentDetails.innerHTML = `
                     <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; border: 1px solid var(--primary-color);">
                         <h3 style="color: #fff; margin-bottom: 15px; font-size: 18px; font-family: var(--font-heading);">💳 Реквізити для оплати</h3>
+                        <p style="font-size: 18px; color: #fff; margin-bottom: 15px;">💰 До сплати: <strong style="color: var(--primary-color);">${totalSum.toFixed(2)} ₴</strong></p>
                         <div style="background: #fff; padding: 10px; display: inline-block; border-radius: 8px; margin-bottom: 15px;">
                             <img src="https://gapkainferno.github.io/GHI.jpg" alt="QR" width="140" height="140" style="display: block;">
                         </div>
