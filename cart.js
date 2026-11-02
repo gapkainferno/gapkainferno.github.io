@@ -1900,11 +1900,11 @@ window.submitOrder = async function() {
                             <img src="https://gapkainferno.github.io/GHI.jpg" alt="QR" width="140" height="140" style="display: block;">
                         </div>
                         <p style="font-size: 14px; color: #ccc; margin-bottom: 15px;">Відскануйте QR-код або натисніть кнопку нижче:</p>
-                        <a href="https://www.privat24.ua/send/km9k0" target="_blank" class="order-btn" style="display: inline-block; width: auto; padding: 10px 25px; font-size: 14px; margin-bottom: 15px; text-decoration: none;">
+                        <a href="https://www.privat24.ua/send/km9lh" target="_blank" class="order-btn" style="display: inline-block; width: auto; padding: 10px 25px; font-size: 14px; margin-bottom: 15px; text-decoration: none;">
                             Оплатити у Privat24
                         </a>
                         <p style="font-size: 13px; color: #888;">
-                            Картка Конверта: <br>
+                            Рахунок: <br>
                             <strong style="color: var(--primary-color); font-family: monospace; font-size: 16px;">5168 7521 5680 2145</strong>
                         </p>
                         
