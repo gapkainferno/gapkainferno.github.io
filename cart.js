@@ -1042,28 +1042,59 @@ function initDeliveryOptions() {
         }
         
         try {
-            const response = await fetch(NP_SETTINGS.apiUrl, {
-                method: 'POST',
-                mode: 'cors',
-                redirect: 'follow',
-                headers: {
-                    'Content-Type': 'text/plain'
-                },
-                body: JSON.stringify({
-                    modelName: "Address",
-                    calledMethod: "getWarehouses",
-                    methodProperties: { 
-                        CityRef: cityRef,
-                        Limit: 500 // Завантажуємо всі відділення
-                    }
-                })
-            });
+            const limit = 500;
+            const warehouses = [];
+            const seenWarehouses = new Set();
+            let page = 1;
 
-            const data = await response.json();
+            while (true) {
+                const response = await fetch(NP_SETTINGS.apiUrl, {
+                    method: 'POST',
+                    mode: 'cors',
+                    redirect: 'follow',
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    },
+                    body: JSON.stringify({
+                        modelName: "Address",
+                        calledMethod: "getWarehouses",
+                        methodProperties: {
+                            CityRef: cityRef,
+                            Page: page,
+                            Limit: limit
+                        }
+                    })
+                });
 
-            if (data.success && data.data && data.data.length > 0) {
-                currentCityBranches = data.data;
-                console.log(`✅ Завантажено ${data.data.length} відділень`);
+                if (!response.ok) {
+                    throw new Error(`Nova Poshta API returned HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (!data.success || !Array.isArray(data.data)) {
+                    throw new Error(data.errors?.join(', ') || 'Invalid warehouse response');
+                }
+
+                let newWarehouseCount = 0;
+                for (const warehouse of data.data) {
+                    const key = warehouse.Ref || warehouse.Description;
+                    if (key && seenWarehouses.has(key)) continue;
+                    if (key) seenWarehouses.add(key);
+                    warehouses.push(warehouse);
+                    newWarehouseCount++;
+                }
+
+                if (data.data.length < limit) break;
+                if (newWarehouseCount === 0) {
+                    throw new Error(`Warehouse pagination returned duplicate results on page ${page}`);
+                }
+
+                page++;
+            }
+
+            if (warehouses.length > 0) {
+                currentCityBranches = warehouses;
+                console.log(`✅ Завантажено ${warehouses.length} відділень`);
                 
                 branchInput.placeholder = 'Введіть номер або адресу';
                 
