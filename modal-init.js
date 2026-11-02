@@ -321,8 +321,6 @@ document.addEventListener("DOMContentLoaded", function() {
 // СПІЛЬНІ ЗМІННІ ТА ФУНКЦІЇ
 // ═══════════════════════════════════════════════════════════════
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxDyF7T6yYQiqMsBAQKDI4z_WAc318dlLCRLwlYA3fJUZbN1YqdXwqhMbXd1W1e76Os/exec";
-
 let currentNotifyCategory = '';
 
 function openNotifyModal(category) {
@@ -371,7 +369,7 @@ function createNotifyModalEn(category) {
 // Універсальна функція для відправки даних у Google Sheet
 async function sendToGoogleSheet(data) {
     try {
-        await fetch(GOOGLE_SCRIPT_URL, {
+        await fetch(window.GOOGLE_SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
             cache: 'no-cache',

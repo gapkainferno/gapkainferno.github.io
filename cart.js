@@ -134,9 +134,9 @@ const CART_CONSTANTS = {
     MAX_ORDERS_PER_MINUTE: 5 // Rate limiting
 };
 
-// ===== НАЛАШТУВАННЯ НОВОЇ ПОШТИ =====
-const NP_SETTINGS = { // Вставте сюди URL вашого розгорнутого Google Apps Script
-    apiUrl: 'https://script.google.com/macros/s/AKfycbyM4hOHvoUThsKDWSjPPR84TLh_D5SrvBJW3qmly4r2xWk6u2wBO1GVavU1jDUULM83Xg/exec' // <-- НЕ ЧІПАТИ, НА ЦЕ
+// ===== ОКРЕМИЙ ENDPOINT ПРОКСІ НОВОЇ ПОШТИ =====
+const NP_SETTINGS = {
+    apiUrl: 'https://script.google.com/macros/s/AKfycbyM4hOHvoUThsKDWSjPPR84TLh_D5SrvBJW3qmly4r2xWk6u2wBO1GVavU1jDUULM83Xg/exec'
 };
 
 // ===== ФУНКЦІЯ ЗАХИСТУ ВІД XSS АТАК =====
@@ -1618,9 +1618,8 @@ window.submitOrder = async function() {
         orderText += `\n📦 Shipping to be calculated individually`;
 
 
-       // https://api.telegram.org/bot8532849974:AAG-JfB6E6_XfNggptnpygCrr0JqutvRhgA/setWebhook?url=<ТВОЄ_ПОСИЛАННЯ_EXEC> створити ВЕБХУК після зміни посилання ТА У MODAL
         try {
-            const response = await fetch("https://script.google.com/macros/s/AKfycbxDyF7T6yYQiqMsBAQKDI4z_WAc318dlLCRLwlYA3fJUZbN1YqdXwqhMbXd1W1e76Os/exec", {
+            const response = await fetch(window.GOOGLE_SCRIPT_URL, {
                 method: "POST",
                 mode: "cors",
                 redirect: "follow",
@@ -1872,7 +1871,7 @@ window.submitOrder = async function() {
     orderText += `\n\n💰 РАЗОМ: ${totalSum.toFixed(2)} ₴`;
 
     try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbyiEM5NnSk-Hg6-ObFifQQf3Xfmt8AjRcqHuinxkueImuEbBUKWl0AlAYUcmn5v0tfm/exec", {
+        const response = await fetch(window.GOOGLE_SCRIPT_URL, {
             method: "POST",
             mode: "cors", 
             redirect: "follow",
@@ -2016,7 +2015,7 @@ window.sendReview = async function() {
 
     try {
         // 3. Відправка на основний скрипт з токеном
-        await fetch("https://script.google.com/macros/s/AKfycbyL5WKFxLfStcgOQHasZ4QYi5wh1jxNVKhis495gjd6BGAlhex8e1b6607fUV4Y0zUA/exec", {
+        await fetch(window.GOOGLE_SCRIPT_URL, {
             method: "POST",
             mode: "cors",
             redirect: "follow",

@@ -1606,6 +1606,7 @@
     </div>
     </div>
 
+    <script src="google-script-config.js"></script>
     <script>
         // Перемикання між видами
         const speciesButtons = document.querySelectorAll('.species-buttons .species-btn');
@@ -1653,8 +1654,6 @@
         });
 
         // --- ЛОГІКА ПІДПИСКИ (GOOGLE SHEETS) ---
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyL5WKFxLfStcgOQHasZ4QYi5wh1jxNVKhis495gjd6BGAlhex8e1b6607fUV4Y0zUA/exec";
-
         function getVisitorId() {
             let id = localStorage.getItem('ghi_visitor_id');
             if (!id) {
@@ -1670,7 +1669,7 @@
 
         async function sendToGoogleSheet(data) {
             try {
-                await fetch(GOOGLE_SCRIPT_URL, {
+                await fetch(window.GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     cache: 'no-cache',

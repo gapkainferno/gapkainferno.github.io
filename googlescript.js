@@ -14,10 +14,53 @@ const SHEET_NAME = "Замовлення"; // ЗАМІНИ на назву св�
 const SUB_SHEET_NAME = "Підписки"; 
 const REVIEW_SHEET_NAME = "Відгуки"; 
 
+function getOrdersSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  return ss.getSheetByName(SHEET_NAME) || ss.getSheets()[0];
+}
+
+function normalizeOrderId(value) {
+  const orderId = String(value).trim();
+  return /^\d+$/.test(orderId) ? orderId.replace(/^0+(?=\d)/, '') : orderId;
+}
+
 function doGet() {
   return ContentService.createTextOutput("Бот Homestead Inferno активний. " + 
-    "Скрипт очікує POST-запити від Telegram. Поточна версія: 46")
+    "Скрипт очікує POST-запити від Telegram. Поточна версія: 48")
     .setMimeType(ContentService.MimeType.TEXT);
+}
+
+function setupTelegramWebhook() {
+  if (!BOT_TOKEN) throw new Error("Telegram BOT_TOKEN is not configured");
+  const serviceUrl = ScriptApp.getService().getUrl();
+  if (!serviceUrl) throw new Error("Deploy this script as a Web app before configuring the Telegram webhook");
+  const webAppUrl = serviceUrl.replace(/\/dev$/, '/exec');
+  if (!webAppUrl.endsWith('/exec')) {
+    throw new Error(`Unexpected Web app URL: ${serviceUrl}. Expected a URL ending in /exec or /dev.`);
+  }
+
+  const response = UrlFetchApp.fetch(`https://api.telegram.org/bot${BOT_TOKEN}/setWebhook`, {
+    method: 'post',
+    contentType: 'application/json',
+    payload: JSON.stringify({
+      url: webAppUrl,
+      allowed_updates: ['message', 'callback_query']
+    }),
+    muteHttpExceptions: true
+  });
+  const result = JSON.parse(response.getContentText());
+  if (!result.ok) throw new Error(`Telegram setWebhook failed: ${result.description || response.getResponseCode()}`);
+  Logger.log(`Telegram webhook configured: ${result.description}`);
+}
+
+function checkTelegramWebhook() {
+  if (!BOT_TOKEN) throw new Error("Telegram BOT_TOKEN is not configured");
+  const response = UrlFetchApp.fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getWebhookInfo`, {
+    muteHttpExceptions: true
+  });
+  const result = JSON.parse(response.getContentText());
+  if (!result.ok) throw new Error(`Telegram getWebhookInfo failed: ${result.description || response.getResponseCode()}`);
+  Logger.log(JSON.stringify(result.result));
 }
 
 function doPost(e) {
@@ -112,7 +155,7 @@ function doPost(e) {
       return errorResponse("Telegram configuration missing");
     }
 
-    const orderId = data.id || generateOrderId();
+    const orderId = String(data.id || generateOrderId()).trim();
     const customerEmail = data.email || "-";
     const customerName = data.name || "Друже";
     const customerPhone = data.phone || "-";
@@ -130,7 +173,7 @@ function doPost(e) {
     const fullMessage = buildOrderDetails(data, safeCart.items);
 
     // Запис у таблицю
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const sheet = getOrdersSheet();
     sheet.insertRowBefore(2);
     
     const rowData = [[
@@ -147,6 +190,7 @@ function doPost(e) {
       customerPayment      // K - Оплата
     ]];
     
+    sheet.getRange(2, 3).setNumberFormat('@');
     sheet.getRange(2, 1, 1, 11).setValues(rowData);
     sheet.getRange(2, 1).insertCheckboxes();
     
@@ -218,34 +262,41 @@ function sendOrderWithButtons(message, orderId) {
 
 // Обробка натискання кнопки в Telegram
 function handleTelegramCallback(callback) {
-  // 1. ВІДПОВІДЬ НА КЛІК: Обов'язково для Телеграм, щоб зупинити анімацію завантаження на кнопці
-  answerCallbackQuery(callback.id);
+  const callbackMatch = String(callback.data || "").match(/^(accept|cancel)_(.+)$/);
+  if (!callbackMatch) {
+    answerCallbackQuery(callback.id, "Невідома дія для замовлення.");
+    return ContentService.createTextOutput(JSON.stringify({ status: "ignored" }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 
-  const adminName = callback.from.first_name || callback.from.username || "Адмін";
+  answerCallbackQuery(callback.id, "Обробляю замовлення…");
+
+  const action = callbackMatch[1];
+  const orderId = callbackMatch[2].trim();
+  const adminName = callback.from?.first_name || callback.from?.username || "Адмін";
   const actionTime = Utilities.formatDate(new Date(), "Europe/Kiev", "HH:mm");
-  const callbackData = callback.data || "";
-  const action = callbackData.split('_')[0];
-  const orderId = String(callbackData.split('_')[1] || "").trim();
   
   Logger.log(`🚀 ОБРОБКА КЛІКУ: Адмін ${adminName}, Дія ${action}, Замовлення ${orderId}`);
 
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getSheetByName(SHEET_NAME) || ss.getSheets()[0];
-  
-  // Оптимізований пошук рядка замовлення через indexOf
-  const orderIds = sheet.getRange("C:C").getValues().flat().map(id => String(id).trim());
-  const rowIndex = orderIds.indexOf(orderId) + 1;
+  const sheet = getOrdersSheet();
+  const lastRow = sheet.getLastRow();
+  const orders = lastRow >= 2
+    ? sheet.getRange(2, 3, lastRow - 1, 9).getValues()
+    : [];
+  const orderIndex = orders.findIndex(row => normalizeOrderId(row[0]) === normalizeOrderId(orderId));
+  const rowIndex = orderIndex >= 0 ? orderIndex + 2 : -1;
 
   // Ініціалізуємо шаблон за замовчуванням (щоб не був порожнім)
   let finalStatusTemplate = `⚠️ Статус замовлення #${escapeHtml(orderId)} змінено (Action: ${action}).`;
 
-  if (rowIndex !== -1) {
+  if (rowIndex > 0) {
     if (action === 'accept') {
       sheet.getRange(rowIndex, 8).setValue("📦 Пакується");
-      const name = sheet.getRange(rowIndex, 4).getValue() || "Клієнт";
-      const phone = sheet.getRange(rowIndex, 6).getValue() || "-";
-      const msg = sheet.getRange(rowIndex, 7).getValue() || "Деталі відсутні";
-      const payment = sheet.getRange(rowIndex, 11).getValue() || "-";
+      const orderRow = orders[orderIndex];
+      const name = orderRow[1] || "Клієнт";
+      const phone = orderRow[3] || "-";
+      const msg = orderRow[4] || "Деталі відсутні";
+      const payment = orderRow[8] || "-";
 
       finalStatusTemplate = "✅ <b>ЗАМОВЛЕННЯ ПРИЙНЯТО</b>\n" +
                             "📦 Статус: Пакується\n" +
@@ -280,12 +331,16 @@ function handleTelegramCallback(callback) {
       }
     } else {
       Logger.log(`⚠️ КРИТИЧНО: Мапу повідомлень для ${orderId} не знайдено в PropertiesService!`);
-      updateTelegramMessage(callback.message.chat.id, callback.message.message_id, finalStatusTemplate);
+      if (callback.message) {
+        updateTelegramMessage(callback.message.chat.id, callback.message.message_id, finalStatusTemplate);
+      }
     }
   } else {
     // Якщо замовлення не знайдено в таблиці
     finalStatusTemplate = `⚠️ Помилка: Замовлення #${escapeHtml(orderId)} не знайдено в таблиці.`;
-    updateTelegramMessage(callback.message.chat.id, callback.message.message_id, finalStatusTemplate);
+    if (callback.message) {
+      updateTelegramMessage(callback.message.chat.id, callback.message.message_id, finalStatusTemplate);
+    }
   }
   return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
 }
@@ -293,12 +348,22 @@ function handleTelegramCallback(callback) {
 /**
  * Відправка відповіді на Callback (прибирає "годинник" з кнопки)
  */
-function answerCallbackQuery(callbackId) {
+function answerCallbackQuery(callbackId, text) {
   const url = "https://api.telegram.org/bot" + BOT_TOKEN + "/answerCallbackQuery";
   const payload = { callback_query_id: callbackId };
+  if (text) payload.text = text;
   try {
-    UrlFetchApp.fetch(url, { method: 'post', contentType: 'application/json', payload: JSON.stringify(payload), muteHttpExceptions: true });
-  } catch (e) { Logger.log("Error answering callback: " + e); }
+    const response = UrlFetchApp.fetch(url, {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    });
+    const result = JSON.parse(response.getContentText());
+    if (!result.ok) Logger.log(`Telegram callback acknowledgment failed: ${result.description}`);
+  } catch (e) {
+    Logger.log("Error answering callback: " + e);
+  }
 }
 
 /**
@@ -478,7 +543,7 @@ function formatTelegramMessage(orderId, name, email, phone, total, fullMessage, 
 • <a href="https://msng.link/vi/${cleanPhone}">Написати у Viber</a>
 • <a href="https://wa.me/${cleanPhone}">Написати у WhatsApp</a>
 • <a href="https://t.me/+${cleanPhone}">Спробувати Telegram</a>
-• <a href="tel:+${cleanPhone}">📞 ЗАПАТЕЛЕФОНУВАТИ</a>
+• <a href="tel:+${cleanPhone}">📞 Телефон</a>
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -533,11 +598,11 @@ function sendConfirmationEmail(email, name, orderId, total, cartItems, paymentMe
           <img src="https://gapkainferno.github.io/GHI.jpg" alt="QR код для оплати" width="150" height="150" style="display: block;">
         </div>
         <p style="color: #aaa; font-size: 14px; margin-bottom: 20px;">Відскануйте код камерою або натисніть кнопку:</p>
-        <a href="https://www.privat24.ua/send/jkvgx" style="background-color: #ff4500; color: #ffffff; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px;">
+        <a href="https://www.privat24.ua/send/km9lh" style="background-color: #ff4500; color: #ffffff; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px;">
           ОПЛАТИТИ В ОДИН КЛІК
         </a>
-        <p style="color: #666; font-size: 12px; margin-top: 20px;">Номер картки Конверта: <br>
-          <strong style="color: #ffffff; font-size: 15px; font-family: monospace;">5168752156802145</strong>
+        <p style="color: #666; font-size: 12px; margin-top: 20px;">Рахунок: <br>
+          <strong style="color: #ffffff; font-size: 15px; font-family: monospace;">UA693052990262076400946213056</strong>
         </p>
         <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #333;">
           <p style="color: #ffd2b3; font-size: 13px; line-height: 1.6; margin: 0;">
