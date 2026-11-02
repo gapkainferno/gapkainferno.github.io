@@ -593,7 +593,7 @@ function sendConfirmationEmail(email, name, orderId, total, cartItems, paymentMe
   if (methodNormalized.includes("онлайн")) {
     paymentSectionHtml = `
       <div style="border: 2px dashed #ff4500; border-radius: 15px; padding: 25px; text-align: center; background-color: #000;">
-        <h3 style="color: #ffffff; margin: 0 0 15px 0;">💳 Оплата на Конверт</h3>
+        <h3 style="color: #ffffff; margin: 0 0 15px 0;">💳 Сплатити можна тут</h3>
         <div style="background-color: #fff; padding: 10px; display: inline-block; border-radius: 10px; margin-bottom: 20px;">
           <img src="https://gapkainferno.github.io/GHI.jpg" alt="QR код для оплати" width="150" height="150" style="display: block;">
         </div>

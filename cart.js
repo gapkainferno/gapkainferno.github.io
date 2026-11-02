@@ -662,8 +662,15 @@ function initDeliveryOptions() {
     const branchSuggestions = document.getElementById('branch-suggestions');
     const citySuggestions = document.getElementById('city-suggestions');
     const branchHidden = document.getElementById('cust-branch'); // Приховане поле для Nova Poshta Ref
+    const ukrposhtaBranchHint = document.getElementById('ukrposhta-branch-hint');
+    const cityDeliveryHint = document.getElementById('city-delivery-hint');
 
     if (!deliverySelect || !cityInput || !branchInput || !branchLabel) return;
+
+    const isNovaPoshtaDelivery = () =>
+        ["Відділення НП", "Поштомат НП", "Кур'єр НП"].includes(currentDeliveryType);
+    const supportsCitySearch = () =>
+        ["Відділення НП", "Поштомат НП", "Укрпошта"].includes(currentDeliveryType);
 
     // Оновлення UI для типу доставки
     const updateBranchUI = () => {
@@ -676,9 +683,17 @@ function initDeliveryOptions() {
         // Приховуємо підказки за замовчуванням
         citySuggestions.style.display = 'none';
         branchSuggestions.style.display = 'none';
+        if (ukrposhtaBranchHint) {
+            ukrposhtaBranchHint.style.display = currentDeliveryType === "Укрпошта" ? 'block' : 'none';
+        }
+        if (cityDeliveryHint) {
+            cityDeliveryHint.textContent = currentDeliveryType === "Укрпошта"
+                ? "Якщо населений пункт не знайдеться у списку, введіть його назву вручну."
+                : "Тільки населені пункти України";
+        }
 
         // Логіка для Нової Пошти
-        if (currentDeliveryType.includes("Нова Пошта")) {
+        if (isNovaPoshtaDelivery()) {
             branchLabel.innerText = (currentDeliveryType === "Кур'єр НП")
                 ? "Адреса доставки (вулиця, будинок, квартира)"
                 : "Відділення або поштомат (номер чи адреса)";
@@ -691,8 +706,8 @@ function initDeliveryOptions() {
         }
         // Логіка для Укрпошти
         else if (currentDeliveryType === "Укрпошта") {
-            branchLabel.innerText = "Адреса доставки (вулиця, будинок, квартира, індекс)";
-            branchInput.placeholder = "Наприклад: вул. Центральна 1, кв. 5, 01001";
+            branchLabel.innerText = "Відділення або поштомат Укрпошти (номер і адреса)";
+            branchInput.placeholder = "Наприклад: № 12, вул. Центральна, 1";
             cityInput.placeholder = "Наприклад: Київ";
             cityInput.disabled = false;
             branchInput.disabled = false;
@@ -733,9 +748,9 @@ function initDeliveryOptions() {
 
     const triggerCitySearch = async (query) => {
         // Додаємо перевірку блокування на початку функції
-        if (currentDeliveryType !== "Відділення НП" && currentDeliveryType !== "Поштомат НП") {
+        if (!supportsCitySearch()) {
             citySuggestions.style.display = 'none';
-            return; // Не шукаємо міста, якщо не Нова Пошта
+            return;
         }
 
 
@@ -808,7 +823,7 @@ function initDeliveryOptions() {
 
     // ✅ ПОКРАЩЕНО: Input handler з дебаунсом
     cityInput.addEventListener('input', (e) => {
-        if (currentDeliveryType !== "Відділення НП" && currentDeliveryType !== "Поштомат НП") {
+        if (!supportsCitySearch()) {
             cityInput.dataset.ref = ""; // Скидаємо ref, якщо переключились з НП
             return;
         }
@@ -841,7 +856,7 @@ function initDeliveryOptions() {
 
     // ✅ ПОКРАЩЕНО: Показуємо список при фокусі
     cityInput.addEventListener('focus', () => {
-        if (currentDeliveryType !== "Відділення НП" && currentDeliveryType !== "Поштомат НП") {
+        if (!supportsCitySearch()) {
             citySuggestions.style.display = 'none';
             return;
         }
@@ -862,7 +877,7 @@ function initDeliveryOptions() {
 
     // ✅ ПОКРАЩЕНО: Вибір міста
     citySuggestions.addEventListener('click', async (e) => {
-        if (currentDeliveryType !== "Відділення НП" && currentDeliveryType !== "Поштомат НП") {
+        if (!supportsCitySearch()) {
             citySuggestions.style.display = 'none';
             return;
         }
@@ -907,16 +922,24 @@ function initDeliveryOptions() {
         branchHidden.value = '';
         currentCityBranches = [];
         
-        // 3. Показуємо лоадер у placeholder
+        // 3. Для Укрпошти відділення вводять вручну, без завантаження списку НП
+        if (currentDeliveryType === "Укрпошта") {
+            branchInput.placeholder = "№ відділення/поштомата та повна адреса";
+            branchInput.focus();
+            isLocked = false;
+            return;
+        }
+
+        // 4. Показуємо лоадер у placeholder
         const isCourier = deliverySelect?.value === "Кур'єр НП";
         branchInput.placeholder = isCourier 
             ? 'Вулиця, будинок...' 
             : 'Завантаження відділень... ⏳';
         
-        // 4. Переводимо фокус
+        // 5. Переводимо фокус
         branchInput.focus();
 
-        // 5. Завантажуємо відділення
+        // 6. Завантажуємо відділення
         await loadWarehouses(cityRef);
         
         // ✅ ФІКС: Розблокуємо через більший інтервал
@@ -1133,11 +1156,6 @@ function initDeliveryOptions() {
 
     // Закриття на ESC
     document.addEventListener('keydown', (e) => {
-        // Не закриваємо підказки, якщо не Нова Пошта
-        if (currentDeliveryType === "Укрпошта") {
-            return;
-        }
-
         if (e.key === 'Escape') {
             citySuggestions.style.display = 'none';
             branchSuggestions.style.display = 'none';
@@ -1150,11 +1168,6 @@ function initDeliveryOptions() {
 
     // ✅ НОВИНКА: Навігація стрілками у списку
     const handleArrowNavigation = (e, suggestions) => {
-        // Не навігуємо, якщо не Нова Пошта
-        if (currentDeliveryType === "Укрпошта") {
-            return;
-        }
-
         const items = Array.from(suggestions.querySelectorAll('.np-item:not(.np-loading):not(.np-empty):not(.np-error):not(.np-info)'));
         if (items.length === 0) return;
 
@@ -1789,8 +1802,9 @@ window.submitOrder = async function() {
     const cityInput = document.getElementById('cust-city');
     if (cityInput) {
         const cityRef = cityInput.dataset.ref;
-        if (currentDeliveryType.includes("Нова Пошта") && (!cityRef || cityRef === "" || cityInput.value.trim() !== lastSelectedCity.trim())) {
-            alert("Будь ласка, оберіть місто саме зі списку підказок 📍\nЦе необхідно для правильної реєстрації доставки.");
+        if (["Відділення НП", "Поштомат НП"].includes(currentDeliveryType) &&
+            (!cityRef || cityRef === "" || cityInput.value.trim() !== lastSelectedCity.trim())) {
+            alert("Будь ласка, оберіть населений пункт зі списку підказок 📍\nЦе допоможе правильно оформити доставку.");
             cityInput.classList.add('input-error');
             hasError = true;
         }
@@ -1799,13 +1813,14 @@ window.submitOrder = async function() {
     const branchVal = fields.branch.value.trim().toLowerCase();
     const deliveryType = fields.delivery.value;
 
-    if (deliveryType.includes("Нова Пошта") && deliveryType !== "Кур'єр НП" && (branchVal === 'поштомат' || branchVal === 'відділення' || branchVal.length < 3)) {
+    if (["Відділення НП", "Поштомат НП"].includes(deliveryType) &&
+        (branchVal === 'поштомат' || branchVal === 'відділення' || branchVal.length < 3)) {
         alert("Будь ласка, вкажіть конкретний номер або адресу відділення/поштомату Нової Пошти 🏢");
         if (fields.branchInput) fields.branchInput.classList.add('input-error');
         hasError = true;
     }
     else if (deliveryType === "Укрпошта" && branchVal.length < 5) {
-        alert("Будь ласка, вкажіть повну адресу доставки для Укрпошти (вулиця, будинок, квартира, індекс) 📮");
+        alert("Будь ласка, вкажіть номер і повну адресу відділення або поштомата Укрпошти 📮");
         if (fields.branchInput) fields.branchInput.classList.add('input-error');
         hasError = true;
     }
