@@ -46,7 +46,7 @@ function hashKey_(value) {
 }
 function safeSheetText_(value) {
   const text = String(value == null ? '' : value);
-  return /^[=+@\\-\\t\\r]/.test(text) ? "'" + text : text;
+  return /^[=+\-@\t\r]/.test(text) ? "'" + text : text;
 }
 function verifyTurnstile_(token) {
   const secret = PropertiesService.getScriptProperties().getProperty("TURNSTILE_SECRET_KEY");
