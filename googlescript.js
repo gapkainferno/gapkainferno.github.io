@@ -206,7 +206,7 @@ function getCanonicalOrderCatalog() {
   if (!catalog || catalog.schemaVersion !== 1 || !catalog.products || !catalog.bundles) {
     throw new Error("Canonical order catalog has an unsupported format");
   }
-  cache.put("canonical_order_catalog_v1", JSON.stringify(catalog), 300);
+  cache.put("canonical_order_catalog_v1", JSON.stringify(catalog), 60);
   return catalog;
 }
 
