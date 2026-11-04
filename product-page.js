@@ -531,7 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     price.dataset.allowSale = item.allowSale === true ? 'true' : 'false';
                     price.innerHTML = typeof window.renderSalePriceHTML === 'function'
                         ? window.renderSalePriceHTML(basePrice, discountedPrice)
-                        : (window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function'
+                        : (false && typeof window.formatEnglishPrice === 'function'
                             ? window.formatEnglishPrice(basePrice)
                             : `${basePrice.toFixed(2)} ₴`);
 
