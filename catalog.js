@@ -2,7 +2,7 @@ import { sanitize } from './utils/sanitizer.js';
 
 const safeText = (value) => sanitize.text(String(value ?? ''));
 
-const isEnglishCatalog = Boolean(window.IS_ENGLISH);
+const isEnglishCatalog = false;
 
 const CATEGORY_PAGES = {
     seeds: {
