@@ -57,11 +57,17 @@ for (const [id, p] of Object.entries(products)) {
   };
 }
 for (const [id, b] of Object.entries(bundles)) {
+  const includedProductIds = Array.isArray(b.includedProductIds) ? b.includedProductIds.map(String) : [];
+  const includedProductsAvailable = includedProductIds.every(productId => {
+    const product = products[productId];
+    return product && product.category === 'sauces' && product.inStock !== false && product.isHidden !== true;
+  });
   catalog.bundles[id] = {
     name: String(b.name || id),
     price: Number(b.price),
-    inStock: b.inStock === true,
-    allowSale: b.allowSale === true
+    inStock: b.inStock === true && includedProductsAvailable,
+    allowSale: b.allowSale === true,
+    includedProductIds
   };
 }
 
