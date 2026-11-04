@@ -93,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <span>Разом:</span>
                                 <span class="total-price-display"><span id="final-price">0.00</span> ₴</span>
                             </div>
+                            <div id="turnstile-checkout" style="display:flex; justify-content:center; margin:14px 0;"></div>
                             <button class="order-btn" onclick="submitOrder()">Підтвердити замовлення</button>
                         </div>
                     </div>
