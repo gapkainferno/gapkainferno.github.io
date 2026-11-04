@@ -5,6 +5,8 @@ on:
     paths:
       - 'products.js'
       - 'cart.js'
+      - 'catalog.js'
+      - 'googlescript.js'
       - 'scripts/generate-order-catalog.js'
       - '.github/workflows/generate-order-catalog.yml'
   pull_request:
@@ -24,6 +26,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Check JavaScript syntax
+        run: |
+          node --check cart.js
+          node --check products.js
+          node --check googlescript.js
+          node --input-type=module --check < catalog.js
       - name: Generate canonical order catalog
         run: node scripts/generate-order-catalog.js
       - name: Commit generated catalog
