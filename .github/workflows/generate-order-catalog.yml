@@ -1,7 +1,7 @@
 name: Generate order catalog
 on:
   push:
-    branches: [master]
+    branches: [master, cleanup/ukraine-only-no-telegram]
     paths:
       - 'products.js'
       - 'cart.js'
