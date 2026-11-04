@@ -1669,14 +1669,16 @@
 
         async function sendToGoogleSheet(data) {
             try {
-                await fetch(window.GOOGLE_SCRIPT_URL, {
+                const response = await fetch(window.GOOGLE_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
+                    mode: 'cors',
                     cache: 'no-cache',
                     headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
                     body: JSON.stringify(data)
                 });
-                return true;
+                if (!response.ok) return false;
+                const result = await response.json();
+                return result.status === 'success';
             } catch (error) {
                 console.error('Помилка відправки:', error);
                 return false;
