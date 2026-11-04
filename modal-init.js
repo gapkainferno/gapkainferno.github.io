@@ -216,7 +216,7 @@ async function submitNotification() {
     const email = emailInput.value.trim();
     
     if (!validateEmail(email)) {
-        alert(window.IS_ENGLISH ? 'Please enter a valid email address!' : 'Будь ласка, введіть коректну адресу електронної пошти!');
+        alert('Будь ласка, введіть коректну адресу електронної пошти!');
         emailInput.classList.add('input-error');
         return;
     }
@@ -319,15 +319,13 @@ async function handleGeneralSubscribe(event) {
     });
 
     if (!sent) {
-        alert(window.IS_ENGLISH ? 'Could not subscribe. Please try again.' : 'Не вдалося оформити підписку. Спробуйте ще раз.');
+        alert('Не вдалося оформити підписку. Спробуйте ще раз.');
         btn.disabled = false;
-        btn.innerText = window.IS_ENGLISH ? "Subscribe" : "Підписатися";
+        btn.innerText = "Підписатися";
         return;
     }
 
-    alert(window.IS_ENGLISH
-        ? 'Request sent. Check your email for confirmation. 🔥'
-        : 'Запит надіслано. Перевірте пошту для підтвердження. 🔥');
+    alert('Запит надіслано. Перевірте пошту для підтвердження. 🔥');
     btn.disabled = false;
     btn.innerText = window.IS_ENGLISH ? "Subscribe" : "Підписатися";
     document.getElementById('sub-email').value = '';
