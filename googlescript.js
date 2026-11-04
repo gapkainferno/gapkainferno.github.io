@@ -86,10 +86,6 @@ function doPost(e) {
     const email = emailInput === "-" ? "" : emailInput;
     const phone = String(data.phone || "").replace(/[^0-9+]/g, "").slice(0, 20);
     if (!consumeRateLimit_("global_requests", 20, 60)) return errorResponse("Забагато запитів. Спробуйте пізніше.");
-    const identity = email || phone;
-    if (identity && !consumeRateLimit_("identity_" + hashKey_(identity), 3, 600)) {
-      return errorResponse("Забагато запитів з цих контактних даних. Спробуйте пізніше.");
-    }
     const captcha = verifyTurnstile_(data.turnstileToken);
     if (!captcha.ok) return errorResponse("Перевірка безпеки не пройдена. Оновіть сторінку та повторіть спробу.");
 
@@ -97,6 +93,9 @@ function doPost(e) {
     if (requestId && !/^[A-Za-z0-9_-]{20,100}$/.test(requestId)) return errorResponse("Некоректний ідентифікатор запиту.");
     if (data.orderType === "ПІДПИСКА_МАРКЕТИНГ" || data.orderType === "ЗАПИТ_НА_ЗАПУСК") {
       if (!validateEmail(email)) return errorResponse("Некоректна електронна адреса");
+      if (!consumeRateLimit_("identity_" + hashKey_(email), 5, 600)) {
+        return errorResponse("Забагато запитів з цієї адреси. Спробуйте пізніше.");
+      }
 
       const ss = getSpreadsheet_();
       let subSheet = ss.getSheetByName(SUB_SHEET_NAME);
@@ -120,6 +119,9 @@ function doPost(e) {
       const product = String(data.product || "").trim().slice(0, 150);
       const message = String(data.message || "").trim().slice(0, 1500);
       if (!author || !product || !message) return errorResponse("Заповніть усі поля відгуку");
+      if (!consumeRateLimit_("identity_" + hashKey_(phone || email || author), 5, 600)) {
+        return errorResponse("Забагато запитів. Спробуйте пізніше.");
+      }
 
       const ss = getSpreadsheet_();
       let revSheet = ss.getSheetByName(REVIEW_SHEET_NAME);
@@ -153,6 +155,9 @@ function doPost(e) {
 
     const safeCart = normalizeCart(data.cart);
     if (safeCart.error) return errorResponse(safeCart.error);
+    if (!consumeRateLimit_("identity_" + hashKey_(phone + "|" + (email || "")), 5, 600)) {
+      return errorResponse("Забагато замовлень з цих контактних даних. Спробуйте пізніше.");
+    }
     const orderId = generateOrderId();
     const total = safeCart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
     const formattedTotal = total.toFixed(2);
