@@ -401,7 +401,7 @@ function renderSauceBundle(pageCategory) {
     const bundleItems = document.getElementById('sauce-bundle-items');
     const addButton = document.getElementById('sauce-bundle-add');
     const sauceIds = ['sauceCoreHeat', 'sauceMildForest', 'sauceCarrotMadness', 'sauceMeanForest'];
-    const bundlePrice = 695;
+    const bundlePrice = Number(orderBundles?.bundle_sauce_pack?.price);
 
     if (!bundleSection || !bundleItems || !addButton) return;
 
