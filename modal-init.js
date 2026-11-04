@@ -246,7 +246,7 @@ async function submitNotification() {
         document.getElementById('notify-success').style.display = 'none';
         emailInput.value = '';
         btn.disabled = false;
-        btn.innerText = window.IS_ENGLISH ? "Notify Me First" : "Хочу дізнатися першим";
+        btn.innerText = "Хочу дізнатися першим";
     }, 2000);
 }
 
@@ -297,7 +297,7 @@ async function handleGeneralSubscribe(event) {
     const btn = document.getElementById('sub-btn');
 
     if (!validateEmail(email)) {
-        alert(window.IS_ENGLISH ? 'Please enter a valid email address!' : 'Будь ласка, введіть коректну адресу електронної пошти!');
+        alert('Будь ласка, введіть коректну адресу електронної пошти!');
         emailInput.classList.add('input-error');
         return;
     }
@@ -322,6 +322,6 @@ async function handleGeneralSubscribe(event) {
 
     alert('Запит надіслано. Перевірте пошту для підтвердження. 🔥');
     btn.disabled = false;
-    btn.innerText = window.IS_ENGLISH ? "Subscribe" : "Підписатися";
+    btn.innerText = "Підписатися";
     document.getElementById('sub-email').value = '';
 }
