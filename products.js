@@ -2500,6 +2500,23 @@ isHot: true,  // З'явиться тег 🔥 HOT
 
 };
 
+// Окремі набори, які продаються через кошик, але не є звичайними картками товарів.
+const orderBundles = {
+    bundle_sauce_pack: {
+        name: "Пак із чотирьох соусів",
+        price: 695,
+        allowSale: false,
+        inStock: true,
+        includedProductIds: [
+            "sauceCoreHeat",
+            "sauceMildForest",
+            "sauceCarrotMadness",
+            "sauceMeanForest"
+        ]
+    }
+};
+
+
 const legacySeedSpeciesCategories = {
     'Solanum lycopersicum': 'tomatoes',
     'Capsicum annuum': 'vegetable-seeds'
