@@ -21,7 +21,7 @@ const products = vm.runInContext('allProducts', sandbox);
 const bundles = vm.runInContext('orderBundles || {}', sandbox);
 
 const cartSource = fs.readFileSync(path.join(root, 'cart.js'), 'utf8');
-const saleMatch = cartSource.match(/const SALE_SETTINGS\\s*=\\s*(\\{[\\s\\S]*?\\n\\});/);
+const saleMatch = cartSource.match(/const SALE_SETTINGS\s*=\s*(\{[\s\S]*?\n\});/);
 if (!saleMatch) throw new Error('Could not read SALE_SETTINGS from cart.js');
 const saleSettings = vm.runInNewContext('(' + saleMatch[1] + ')', {}, { timeout: 1000 });
 
@@ -66,5 +66,5 @@ for (const [id, b] of Object.entries(bundles)) {
 }
 
 const out = path.join(root, 'order-catalog.json');
-fs.writeFileSync(out, JSON.stringify(catalog, null, 2) + '\\n');
+fs.writeFileSync(out, JSON.stringify(catalog, null, 2) + '\n');
 console.log('Generated order-catalog.json:', Object.keys(catalog.products).length, 'products,', Object.keys(catalog.bundles).length, 'bundles');
