@@ -93,7 +93,7 @@ function doPost(e) {
     if (!allowedDelivery.includes(delivery)) return errorResponse("Недоступний спосіб доставки");
     const name = String(data.name || "").trim().slice(0, 100);
     const cleanPhone = phone;
-    if (!name || !/^(?:\\+380|0)\\d{9}$/.test(cleanPhone)) {
+    if (!name || !/^(?:\+380|0)\d{9}$/.test(cleanPhone)) {
       return errorResponse("Перевірте ім'я та номер телефону");
     }
     if (email && email !== "-" && !validateEmail(email)) return errorResponse("Некоректна електронна адреса");
