@@ -35,7 +35,8 @@ function doPost(e) {
       return ContentService.createTextOutput(JSON.stringify({status:"success"})).setMimeType(ContentService.MimeType.JSON);
     }
 
-    const email = String(data.email || "").trim().toLowerCase();
+    const emailInput = String(data.email || "").trim().toLowerCase();
+    const email = emailInput === "-" ? "" : emailInput;
     const phone = String(data.phone || "").replace(/[^0-9+]/g, "").slice(0, 20);
     const limiterKey = "submit_" + Utilities.base64EncodeWebSafe(email || phone || "unknown").slice(0, 60);
     const cache = CacheService.getScriptCache();
