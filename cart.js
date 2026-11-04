@@ -1649,6 +1649,12 @@ window.submitOrder = async function() {
         return;
     }
 
+    if (window.TURNSTILE_SITE_KEY && !window.__gapkaTurnstileToken) {
+        await renderCheckoutTurnstile_();
+        alert("Будь ласка, пройдіть перевірку безпеки перед підтвердженням замовлення.");
+        return;
+    }
+
     const submitBtn = document.querySelector('.checkout-summary .order-btn');
     if (!submitBtn) { console.error('submitOrder: кнопку order-btn не знайдено'); return; }
     const originalText = submitBtn.textContent;
