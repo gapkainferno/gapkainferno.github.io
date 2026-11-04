@@ -1688,6 +1688,16 @@ window.submitOrder = async function() {
             throw new Error(`Сервер повернув помилку: ${response.status}`);
         }
 
+        let serverResult;
+        try {
+            serverResult = await response.json();
+        } catch (_) {
+            throw new Error('Сервер повернув некоректну відповідь. Спробуйте ще раз.');
+        }
+        if (!serverResult || serverResult.status !== 'success') {
+            throw new Error(serverResult?.message || 'Не вдалося підтвердити замовлення. Оновіть кошик і спробуйте ще раз.');
+        }
+
         if (typeof gtag === 'function') {
             gtag('event', 'purchase', {
                 transaction_id: orderData.id,
