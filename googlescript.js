@@ -192,13 +192,16 @@ function generateOrderId() {
 }
 
 function getCanonicalOrderCatalog() {
+  const properties = PropertiesService.getScriptProperties();
+  const url = properties.getProperty("CANONICAL_ORDER_CATALOG_URL") ||
+    "https://raw.githubusercontent.com/gapkainferno/gapkainferno.github.io/master/order-catalog.json";
   const cache = CacheService.getScriptCache();
-  const cached = cache.get("canonical_order_catalog_v1");
+  const cacheKey = "canonical_order_catalog_v1_" + encodeURIComponent(url).slice(0, 180);
+  const cached = cache.get(cacheKey);
   if (cached) {
     try { return JSON.parse(cached); } catch (_) {}
   }
 
-  const url = "https://raw.githubusercontent.com/gapkainferno/gapkainferno.github.io/master/order-catalog.json";
   const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true, followRedirects: true });
   if (response.getResponseCode() !== 200) {
     throw new Error("Canonical order catalog is unavailable (HTTP " + response.getResponseCode() + ")");
@@ -207,7 +210,7 @@ function getCanonicalOrderCatalog() {
   if (!catalog || catalog.schemaVersion !== 1 || !catalog.products || !catalog.bundles) {
     throw new Error("Canonical order catalog has an unsupported format");
   }
-  cache.put("canonical_order_catalog_v1", JSON.stringify(catalog), 60);
+  cache.put(cacheKey, JSON.stringify(catalog), 60);
   return catalog;
 }
 
