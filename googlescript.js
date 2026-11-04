@@ -3,12 +3,8 @@
 // Google Apps Script для обробки замовлень з сайту
 // ════════════════════════════════════════════════════════════════
 const SCRIPT_PROPS = PropertiesService.getScriptProperties();
-const BOT_TOKEN = SCRIPT_PROPS.getProperty('BOT_TOKEN');
-const CHAT_IDS = (SCRIPT_PROPS.getProperty('CHAT_IDS') || '').split(',').map(id => id.trim()).filter(Boolean);
 const API_SECRET = SCRIPT_PROPS.getProperty('API_SECRET');
 const CONTACT_EMAIL = "homestead.inferno@gmail.com";
-const PAYMENT_IBAN = "UA000000000000000000000000000";
-const PAYMENT_RECIPIENT = "ПІБ Отримувача";
 
 const SHEET_NAME = "Замовлення"; // ЗАМІНИ на назву свого аркуша з замовленнями
 const SUB_SHEET_NAME = "Підписки"; 
@@ -25,392 +21,132 @@ function normalizeOrderId(value) {
 }
 
 function doGet() {
-  return ContentService.createTextOutput("Бот Homestead Inferno активний. " + 
-    "Скрипт очікує POST-запити від Telegram. Поточна версія: 48")
+  return ContentService.createTextOutput("Gapka Homestead Inferno — сервіс замовлень активний. Версія: 49")
     .setMimeType(ContentService.MimeType.TEXT);
 }
 
-function setupTelegramWebhook() {
-  if (!BOT_TOKEN) throw new Error("Telegram BOT_TOKEN is not configured");
-  const serviceUrl = ScriptApp.getService().getUrl();
-  if (!serviceUrl) throw new Error("Deploy this script as a Web app before configuring the Telegram webhook");
-  const webAppUrl = serviceUrl.replace(/\/dev$/, '/exec');
-  if (!webAppUrl.endsWith('/exec')) {
-    throw new Error(`Unexpected Web app URL: ${serviceUrl}. Expected a URL ending in /exec or /dev.`);
-  }
-
-  const response = UrlFetchApp.fetch(`https://api.telegram.org/bot${BOT_TOKEN}/setWebhook`, {
-    method: 'post',
-    contentType: 'application/json',
-    payload: JSON.stringify({
-      url: webAppUrl,
-      allowed_updates: ['message', 'callback_query']
-    }),
-    muteHttpExceptions: true
-  });
-  const result = JSON.parse(response.getContentText());
-  if (!result.ok) throw new Error(`Telegram setWebhook failed: ${result.description || response.getResponseCode()}`);
-  Logger.log(`Telegram webhook configured: ${result.description}`);
-}
-
-function checkTelegramWebhook() {
-  if (!BOT_TOKEN) throw new Error("Telegram BOT_TOKEN is not configured");
-  const response = UrlFetchApp.fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getWebhookInfo`, {
-    muteHttpExceptions: true
-  });
-  const result = JSON.parse(response.getContentText());
-  if (!result.ok) throw new Error(`Telegram getWebhookInfo failed: ${result.description || response.getResponseCode()}`);
-  Logger.log(JSON.stringify(result.result));
-}
-
 function doPost(e) {
+  const lock = LockService.getScriptLock();
   try {
-    if (!e || !e.postData || !e.postData.contents) return errorResponse("No data");
-    let data = JSON.parse(e.postData.contents);
+    if (!e || !e.postData || !e.postData.contents) return errorResponse("Немає даних");
+    const data = JSON.parse(e.postData.contents);
+    if (!data || typeof data !== "object" || Array.isArray(data)) return errorResponse("Некоректний запит");
 
-    // 1. ОБРОБКА КНОПКИ З TELEGRAM (Callback)
-    if (data.callback_query) {
-      if (!BOT_TOKEN || CHAT_IDS.length === 0) {
-        return errorResponse("Telegram configuration missing");
-      }
-      return handleTelegramCallback(data.callback_query);
+    // Honeypot: приховане поле має залишатися порожнім.
+    if (String(data.website_url || "").trim()) {
+      return ContentService.createTextOutput(JSON.stringify({status:"success"})).setMimeType(ContentService.MimeType.JSON);
     }
 
-    // 2. ОБРОБКА НОВОГО ЗАМОВЛЕННЯ З САЙТУ
-    if (!API_SECRET) return errorResponse("Server configuration missing");
-    if (data.secret_token !== API_SECRET) return errorResponse("Unauthorized");
+    const email = String(data.email || "").trim().toLowerCase();
+    const phone = String(data.phone || "").replace(/[^0-9+]/g, "").slice(0, 20);
+    const limiterKey = "submit_" + Utilities.base64EncodeWebSafe(email || phone || "unknown").slice(0, 60);
+    const cache = CacheService.getScriptCache();
+    const attempts = Number(cache.get(limiterKey) || 0);
+    if (attempts >= 5) return errorResponse("Забагато запитів. Спробуйте пізніше.");
 
-    // 3. ОБРОБКА ПІДПИСКИ (МАРКЕТИНГ АБО ЗАПУСК ТОВАРУ)
     if (data.orderType === "ПІДПИСКА_МАРКЕТИНГ" || data.orderType === "ЗАПИТ_НА_ЗАПУСК") {
-      if (!validateEmail(data.email)) return errorResponse("Invalid email");
-      data.email = data.email.trim();
-
+      if (!validateEmail(email)) return errorResponse("Некоректна електронна адреса");
+      cache.put(limiterKey, String(attempts + 1), 300);
       const ss = SpreadsheetApp.getActiveSpreadsheet();
       let subSheet = ss.getSheetByName(SUB_SHEET_NAME);
-      
-      // Якщо аркуша немає — створюємо його з заголовками
       if (!subSheet) {
         subSheet = ss.insertSheet(SUB_SHEET_NAME);
         subSheet.appendRow(["Дата", "Email", "Тип", "Деталі/Категорія"]);
         subSheet.getRange(1, 1, 1, 4).setFontWeight("bold").setBackground("#fcefe1");
       }
-
       subSheet.insertRowBefore(2);
       subSheet.getRange(2, 1, 1, 4).setValues([[
-        data.date || Utilities.formatDate(new Date(), "Europe/Kiev", "dd.MM.yyyy HH:mm:ss"),
-        data.email,
-        data.orderType,
-        data.details || "-"
+        Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss"),
+        email, String(data.orderType).slice(0, 60), String(data.details || "-").slice(0, 300)
       ]]);
-
-      // ВІДПРАВКА ВІТАЛЬНОГО ЛИСТА
-      const emailSent = sendWelcomeEmail(data.email, data.orderType, data.details);
-      
-      return ContentService.createTextOutput(JSON.stringify({
-        status: "success",
-        type: "subscription",
-        emailSent: emailSent
-      }))
+      const emailSent = sendWelcomeEmail(email, data.orderType, data.details);
+      return ContentService.createTextOutput(JSON.stringify({status:"success", type:"subscription", emailSent:emailSent}))
         .setMimeType(ContentService.MimeType.JSON);
     }
 
-    // 4. ОБРОБКА ВІДГУКУ
     if (data.orderType === "ВІДГУК") {
-      if (!BOT_TOKEN || CHAT_IDS.length === 0) {
-        return errorResponse("Telegram configuration missing");
-      }
+      const author = String(data.name || "").trim().slice(0, 100);
+      const product = String(data.product || "").trim().slice(0, 150);
+      const message = String(data.message || "").trim().slice(0, 1500);
+      if (!author || !product || !message) return errorResponse("Заповніть усі поля відгуку");
+      cache.put(limiterKey, String(attempts + 1), 300);
       const ss = SpreadsheetApp.getActiveSpreadsheet();
       let revSheet = ss.getSheetByName(REVIEW_SHEET_NAME);
-      
       if (!revSheet) {
         revSheet = ss.insertSheet(REVIEW_SHEET_NAME);
         revSheet.appendRow(["Дата", "Автор", "Товар", "Текст відгуку"]);
         revSheet.getRange(1, 1, 1, 4).setFontWeight("bold").setBackground("#cfe2f3");
       }
-
       revSheet.insertRowBefore(2);
       revSheet.getRange(2, 1, 1, 4).setValues([[
-        data.date || Utilities.formatDate(new Date(), "Europe/Kiev", "dd.MM.yyyy HH:mm:ss"),
-        data.name || "Анонім",
-        data.product || "-",
-        data.message || ""
+        Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss"), author, product, message
       ]]);
-
-      // Відправка повідомлення в Telegram
-      const tgMsg = `💬 <b>НОВИЙ ВІДГУК</b>\n\n👤 <b>Автор:</b> ${escapeHtml(data.name)}\n📦 <b>Товар:</b> ${escapeHtml(data.product)}\n📝 <b>Текст:</b> ${escapeHtml(data.message)}`;
-      CHAT_IDS.forEach(chatId => {
-        UrlFetchApp.fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'post',
-          contentType: 'application/json',
-          payload: JSON.stringify({ chat_id: chatId, text: tgMsg, parse_mode: 'HTML' }),
-          muteHttpExceptions: true
-        });
+      MailApp.sendEmail({
+        to: CONTACT_EMAIL,
+        subject: "Новий відгук на Gapka Homestead Inferno",
+        body: "Автор: " + author + "\nТовар: " + product + "\n\n" + message
       });
-
-      return ContentService.createTextOutput(JSON.stringify({status: "success", type: "review"}))
-        .setMimeType(ContentService.MimeType.JSON);
+      return ContentService.createTextOutput(JSON.stringify({status:"success", type:"review"})).setMimeType(ContentService.MimeType.JSON);
     }
 
-    if (!BOT_TOKEN || CHAT_IDS.length === 0) {
-      return errorResponse("Telegram configuration missing");
+    // Замовлення приймаємо лише з українськими способами доставки.
+    const allowedDelivery = ["Відділення НП", "Поштомат НП", "Укрпошта", "Кур'єр НП"];
+    const delivery = String(data.delivery || "").trim();
+    if (!allowedDelivery.includes(delivery)) return errorResponse("Недоступний спосіб доставки");
+    const name = String(data.name || "").trim().slice(0, 100);
+    const cleanPhone = phone;
+    if (!name || !/^\\+?38?0?\\d{9}$/.test(cleanPhone.replace(/^\\+/, ""))) {
+      return errorResponse("Перевірте ім'я та номер телефону");
     }
+    if (email && email !== "-" && !validateEmail(email)) return errorResponse("Некоректна електронна адреса");
 
-    const orderId = String(data.id || generateOrderId()).trim();
-    const customerEmail = data.email || "-";
-    const customerName = data.name || "Друже";
-    const customerPhone = data.phone || "-";
-    const customerPayment = data.payment || "-";
-    
-    // Фіксація точного часу (день.місяць.рік години:хвилини:секунди)
-    const timestamp = Utilities.formatDate(new Date(), "Europe/Kiev", "dd.MM.yyyy HH:mm:ss");
-
-    // Витягуємо суму
     const safeCart = normalizeCart(data.cart);
     if (safeCart.error) return errorResponse(safeCart.error);
-
-    let orderTotal = safeCart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
-    const formattedTotal = orderTotal.toFixed(2);
+    const orderId = String(data.id || generateOrderId()).trim().slice(0, 40);
+    const total = safeCart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const formattedTotal = total.toFixed(2);
+    const customerPayment = String(data.payment || "-").slice(0, 80);
+    const timestamp = Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss");
     const fullMessage = buildOrderDetails(data, safeCart.items);
 
-    // Запис у таблицю
+    if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
+    cache.put(limiterKey, String(attempts + 1), 300);
     const sheet = getOrdersSheet();
     sheet.insertRowBefore(2);
-    
-    const rowData = [[
-      false,               // A - Чекбокс
-      timestamp,           // B - Дата
-      orderId,             // C - ID
-      customerName,        // D - Ім'я
-      customerEmail,       // E - Email
-      customerPhone,       // F - Телефон
-      fullMessage,         // G - Повідомлення
-      "🆕 Нове",           // H - Статус
-      formattedTotal + " ₴", // I - Сума
-      "",                   // J - ТТН
-      customerPayment      // K - Оплата
-    ]];
-    
-    sheet.getRange(2, 3).setNumberFormat('@');
-    sheet.getRange(2, 1, 1, 11).setValues(rowData);
+    sheet.getRange(2, 3).setNumberFormat("@");
+    sheet.getRange(2, 1, 1, 11).setValues([[
+      false, timestamp, orderId, name, email || "-", cleanPhone || "-",
+      fullMessage, "🆕 Нове", formattedTotal + " ₴", "", customerPayment
+    ]]);
     sheet.getRange(2, 1).insertCheckboxes();
-    
-    // Стилізація (ваша логіка)
-    const wholeRow = sheet.getRange(2, 1, 1, 11);
-    wholeRow.setBackground('#061a07').setFontColor('#ffffff').setVerticalAlignment("middle");
+    sheet.getRange(2, 1, 1, 11).setBackground("#061a07").setFontColor("#ffffff").setVerticalAlignment("middle");
+    lock.releaseLock();
 
-    // Відправка повідомлення з кнопками в Telegram
-    const telegramMessage = formatTelegramMessage(orderId, customerName, customerEmail, customerPhone, formattedTotal, fullMessage, customerPayment);
-    // Логуємо повідомлення перед відправкою, щоб перевірити чи воно не порожнє
-    sendOrderWithButtons(telegramMessage, orderId);
+    // Сповіщення власнику надсилається незалежно від наявності email клієнта.
+    const adminBody = [
+      "Нове замовлення #" + orderId,
+      "Клієнт: " + name,
+      "Телефон: " + cleanPhone,
+      "Email: " + (email || "не вказано"),
+      "Оплата: " + customerPayment,
+      "Сума: " + formattedTotal + " грн",
+      "",
+      fullMessage
+    ].join("\n");
+    MailApp.sendEmail({to: CONTACT_EMAIL, subject: "🔥 Нове замовлення #" + orderId, body: adminBody, replyTo: email || CONTACT_EMAIL});
 
-    
-
-    // Відправка підтвердження клієнту на імейл
-    if (customerEmail !== "-" && customerEmail.includes("@")) {
-      sendConfirmationEmail(customerEmail, customerName, orderId, formattedTotal, safeCart.items, customerPayment);
+    if (validateEmail(email)) {
+      try { sendConfirmationEmail(email, name, orderId, formattedTotal, safeCart.items, customerPayment); }
+      catch (mailError) { Logger.log("Customer confirmation email failed: " + mailError); }
     }
-
-    return ContentService.createTextOutput(JSON.stringify({status: "success", orderId: orderId})).setMimeType(ContentService.MimeType.JSON);
-
+    return ContentService.createTextOutput(JSON.stringify({status:"success", orderId:orderId})).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
-    return errorResponse(err.toString());
+    try { if (lock.hasLock()) lock.releaseLock(); } catch (_) {}
+    Logger.log("doPost error: " + err);
+    return errorResponse("Не вдалося обробити запит. Спробуйте ще раз.");
   }
 }
 
-// Функція для відправки повідомлення з кнопками "Прийняти"
-function sendOrderWithButtons(message, orderId) {
-  if (!message || message.trim() === "") {
-    Logger.log("⚠️ КРИТИЧНО: Спроба відправити порожній текст замовлення скасована.");
-    return;
-  }
-  const messageIdsMapping = {};
-  CHAT_IDS.forEach(chatId => {
-    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-    const payload = {
-      chat_id: chatId,
-      text: message,
-      parse_mode: 'HTML',
-      reply_markup: JSON.stringify({
-        inline_keyboard: [[
-          { text: "✅ Прийняти та Оформити", callback_data: `accept_${orderId}` },
-          { text: "❌ Скасувати", callback_data: `cancel_${orderId}` }
-        ]]
-      })
-    };
-    try {
-      const response = UrlFetchApp.fetch(url, { method: 'post', contentType: 'application/json', payload: JSON.stringify(payload), muteHttpExceptions: true });
-      const resObj = JSON.parse(response.getContentText());
-      
-      if (resObj.ok) {
-        // Зберігаємо ID повідомлення для кожного адміна
-        messageIdsMapping[chatId] = resObj.result.message_id;
-        Logger.log(`✅ Повідомлення відправлено адміну ${chatId}, ID: ${resObj.result.message_id}`);
-      } else if (resObj.description.includes("bot was blocked")) {
-        Logger.log("🚫 Користувач " + chatId + " заблокував бота або не натиснув START.");
-      }
-    } catch (e) {
-      Logger.log("Критична помилка відправки для ID " + chatId + ": " + e);
-    }
-  });
-
-  // Записуємо мапу повідомлень у властивості скрипта (діє 24+ години, зазвичай достатньо для обробки)
-  const cleanOrderId = String(orderId).trim();
-  const mapToSave = JSON.stringify(messageIdsMapping);
-  PropertiesService.getScriptProperties().setProperty('msg_map_' + cleanOrderId, mapToSave);
-  Logger.log("📝 DEBUG: Збережено мапу повідомлень для " + orderId + ": " + mapToSave);
-}
-
-// Обробка натискання кнопки в Telegram
-function handleTelegramCallback(callback) {
-  const callbackMatch = String(callback.data || "").match(/^(accept|cancel)_(.+)$/);
-  if (!callbackMatch) {
-    answerCallbackQuery(callback.id, "Невідома дія для замовлення.");
-    return ContentService.createTextOutput(JSON.stringify({ status: "ignored" }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-
-  answerCallbackQuery(callback.id, "Обробляю замовлення…");
-
-  const action = callbackMatch[1];
-  const orderId = callbackMatch[2].trim();
-  const adminName = callback.from?.first_name || callback.from?.username || "Адмін";
-  const actionTime = Utilities.formatDate(new Date(), "Europe/Kiev", "HH:mm");
-  
-  Logger.log(`🚀 ОБРОБКА КЛІКУ: Адмін ${adminName}, Дія ${action}, Замовлення ${orderId}`);
-
-  const sheet = getOrdersSheet();
-  const lastRow = sheet.getLastRow();
-  const orders = lastRow >= 2
-    ? sheet.getRange(2, 3, lastRow - 1, 9).getValues()
-    : [];
-  const orderIndex = orders.findIndex(row => normalizeOrderId(row[0]) === normalizeOrderId(orderId));
-  const rowIndex = orderIndex >= 0 ? orderIndex + 2 : -1;
-
-  // Ініціалізуємо шаблон за замовчуванням (щоб не був порожнім)
-  let finalStatusTemplate = `⚠️ Статус замовлення #${escapeHtml(orderId)} змінено (Action: ${action}).`;
-
-  if (rowIndex > 0) {
-    if (action === 'accept') {
-      sheet.getRange(rowIndex, 8).setValue("📦 Пакується");
-      const orderRow = orders[orderIndex];
-      const name = orderRow[1] || "Клієнт";
-      const phone = orderRow[3] || "-";
-      const msg = orderRow[4] || "Деталі відсутні";
-      const payment = orderRow[8] || "-";
-
-      finalStatusTemplate = "✅ <b>ЗАМОВЛЕННЯ ПРИЙНЯТО</b>\n" +
-                            "📦 Статус: Пакується\n" +
-                            "💳 Оплата: <b>" + escapeHtml(payment) + "</b>\n" +
-                            "⚡️ Обробив: <b>" + escapeHtml(adminName) + "</b> о " + actionTime + "\n\n" +
-                            "📋 <b>ДАНІ ДОСТАВКИ:</b>\n" +
-                            "👤 " + escapeHtml(name) + "\n" +
-                            "📱 <code>" + escapeHtml(phone) + "</code>\n" +
-                            "📍 " + escapeHtml(msg);
-    } else if (action === 'cancel') {
-      sheet.getRange(rowIndex, 8).setValue("❌ Скасовано");
-      finalStatusTemplate = "❌ <b>ЗАМОВЛЕННЯ СКАСОВАНО</b>\n" +
-                            "👤 Ким: <b>" + escapeHtml(adminName) + "</b> о " + actionTime;
-    }
-
-    // Отримуємо збережені ID повідомлень для обох адмінів
-    const props = PropertiesService.getScriptProperties();
-    const msgMapStr = props.getProperty('msg_map_' + orderId); // Використовуємо той самий ключ
-    
-    if (msgMapStr && msgMapStr !== "{}") {
-      const msgMap = JSON.parse(msgMapStr);
-      Logger.log("📦 Знайдено зв'язки повідомлень: " + msgMapStr);
-      
-      // Цикл оновлення повідомлень у ВСІХ адмінів
-      for (const chatId in msgMap) {
-        try {
-          const success = updateTelegramMessage(chatId, msgMap[chatId], finalStatusTemplate);
-          Logger.log(`🔄 Оновлення чату ${chatId}: ${success ? "Успішно" : "ПОМИЛКА"}`);
-        } catch (e) {
-          Logger.log("Помилка оновлення для адміна " + chatId + ": " + e);
-        }
-      }
-    } else {
-      Logger.log(`⚠️ КРИТИЧНО: Мапу повідомлень для ${orderId} не знайдено в PropertiesService!`);
-      if (callback.message) {
-        updateTelegramMessage(callback.message.chat.id, callback.message.message_id, finalStatusTemplate);
-      }
-    }
-  } else {
-    // Якщо замовлення не знайдено в таблиці
-    finalStatusTemplate = `⚠️ Помилка: Замовлення #${escapeHtml(orderId)} не знайдено в таблиці.`;
-    if (callback.message) {
-      updateTelegramMessage(callback.message.chat.id, callback.message.message_id, finalStatusTemplate);
-    }
-  }
-  return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
-}
-
-/**
- * Відправка відповіді на Callback (прибирає "годинник" з кнопки)
- */
-function answerCallbackQuery(callbackId, text) {
-  const url = "https://api.telegram.org/bot" + BOT_TOKEN + "/answerCallbackQuery";
-  const payload = { callback_query_id: callbackId };
-  if (text) payload.text = text;
-  try {
-    const response = UrlFetchApp.fetch(url, {
-      method: 'post',
-      contentType: 'application/json',
-      payload: JSON.stringify(payload),
-      muteHttpExceptions: true
-    });
-    const result = JSON.parse(response.getContentText());
-    if (!result.ok) Logger.log(`Telegram callback acknowledgment failed: ${result.description}`);
-  } catch (e) {
-    Logger.log("Error answering callback: " + e);
-  }
-}
-
-/**
- * Допоміжна функція для ручної перевірки всіх збережених ID повідомлень.
- * Виберіть її у списку функцій зверху і натисніть "Run".
- */
-function debugCheckAllStoredOrders() {
-  const props = PropertiesService.getScriptProperties().getProperties();
-  Logger.log("=== СПИСОК ЗБЕРЕЖЕНИХ ДАНИХ (Properties) ===");
-  let found = false;
-  for (const key in props) {
-    if (key.startsWith('msg_map_')) {
-      Logger.log("Замовлення " + key.replace('msg_map_', '') + " -> " + props[key]);
-      found = true;
-    }
-  }
-  if (!found) Logger.log("Жодних активних мап повідомлень не знайдено.");
-  Logger.log("===========================================");
-}
-
-function updateTelegramMessage(chatId, messageId, newText) {
-  // ЗАХИСТ: Якщо текст порожній, Telegram видасть помилку 400
-  if (!newText || String(newText).trim() === "") {
-    Logger.log("Спроба оновити повідомлення порожнім текстом скасована.");
-    return;
-  }
-
-  const url = `https://api.telegram.org/bot${BOT_TOKEN}/editMessageText`;
-  const options = {
-    method: 'post',
-    contentType: 'application/json',
-    payload: JSON.stringify({ chat_id: chatId, message_id: messageId, text: newText, parse_mode: 'HTML' }),
-    muteHttpExceptions: true // Дозволяє побачити помилку в логах без зупинки скрипта
-  };
-  
-  const response = UrlFetchApp.fetch(url, options);
-  const resObj = JSON.parse(response.getContentText());
-  
-  // Ігноруємо помилку, якщо повідомлення вже має такий самий текст (наприклад, одночасний клік двох адмінів)
-  if (!resObj.ok && resObj.description && resObj.description.includes("message is not modified")) {
-    Logger.log(`ℹ️ Чат ${chatId}: Повідомлення вже було оновлене.`);
-    return true;
-  }
-
-  Logger.log(`Telegram Update Response for ${chatId}: ${response.getContentText()}`);
-  return resObj.ok;
-}
 /**
  * Санітизація рядка — видаляє небезпечні символи
  */
@@ -500,61 +236,6 @@ function buildOrderDetails(data, cartItems) {
     'Товари:',
     itemsText
   ].filter(line => line !== '').join('\n');
-}
-
-function formatTelegramMessage(orderId, name, email, phone, total, fullMessage, payment) {
-  const safeName = escapeHtml(name);
-  const safeMessage = escapeHtml(fullMessage);
-  const safeEmail = escapeHtml(email);
-  
-  // 1. Очищуємо номер від усього, крім цифр
-  let cleanPhone = String(phone).replace(/\D/g, '');
-
-  // 2. Нормалізуємо для України: якщо починається з 0, додаємо 38
-  if (cleanPhone.startsWith('0') && cleanPhone.length === 10) {
-    cleanPhone = '38' + cleanPhone;
-  }
-  // Якщо починається з 80, додаємо 3
-  if (cleanPhone.startsWith('80') && cleanPhone.length === 11) {
-    cleanPhone = '3' + cleanPhone;
-  }
-
-  // Форматуємо дату
-  const now = new Date();
-  const dateStr = now.toLocaleString('uk-UA', { 
-    timeZone: 'Europe/Kiev',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-  
-  return `
-🔥 <b>НОВЕ ЗАМОВЛЕННЯ</b> 🔥       
-
-📦 <b>Номер:</b> #${orderId}
-👤 <b>Клієнт:</b> ${safeName}
-📧 <b>Email:</b> ${safeEmail}
-📱 <b>Телефон:</b> <code>+${cleanPhone}</code>
-💳 <b>Оплата:</b> ${escapeHtml(payment)}
-
-🔗 <b>ШВИДКИЙ ЗВ'ЯЗОК:</b>
-• <a href="https://msng.link/vi/${cleanPhone}">Написати у Viber</a>
-• <a href="https://wa.me/${cleanPhone}">Написати у WhatsApp</a>
-• <a href="https://t.me/+${cleanPhone}">Спробувати Telegram</a>
-• <a href="tel:+${cleanPhone}">📞 Телефон</a>
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-<b>ПОВІДОМЛЕННЯ:</b>
-${safeMessage}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-💰 <b>СУМА ДО ОПЛАТИ: ${total} ₴</b>
-⏰ ${dateStr}
-`.trim();
 }
 
 function escapeHtml(text) {
