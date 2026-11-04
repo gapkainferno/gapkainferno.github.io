@@ -3,7 +3,6 @@
 // Google Apps Script для обробки замовлень з сайту
 // ════════════════════════════════════════════════════════════════
 const SCRIPT_PROPS = PropertiesService.getScriptProperties();
-const API_SECRET = SCRIPT_PROPS.getProperty('API_SECRET');
 const CONTACT_EMAIL = "homestead.inferno@gmail.com";
 
 const SHEET_NAME = "Замовлення"; // ЗАМІНИ на назву свого аркуша з замовленнями
