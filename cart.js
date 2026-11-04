@@ -1680,6 +1680,7 @@ window.submitOrder = async function() {
                 comment: orderData.comment,
                 total: totalSum,
                 cart: cart,
+                website_url: document.getElementById('website_url')?.value || ''
             })
         });
 
@@ -1742,9 +1743,9 @@ window.submitOrder = async function() {
     } catch (e) {
         console.error("Помилка відправки:", e);
         if (e.message.includes('Failed to fetch') || e.message.includes('NetworkError')) {
-            alert("Помилка мережі або CORS. Перевірте з'єднання. Якщо проблема повторюється — напишіть нам у месенджер! 🌐");
+            alert("Помилка мережі або CORS. Перевірте з'єднання. Якщо проблема повторюється — напишіть нам на homestead.inferno@gmail.com 🌐");
         } else {
-            alert("Помилка сервера. Спробуйте ще раз або напишіть нам у месенджер 🌶️");
+            alert("Помилка сервера. Спробуйте ще раз або напишіть нам на homestead.inferno@gmail.com 🌶️");
         }
     } finally {
         submitBtn.disabled = false;
@@ -1804,7 +1805,7 @@ window.sendReview = async function() {
     btn.style.cursor = "not-allowed";
 
     try {
-        // 3. Відправка на основний скрипт з токеном
+        // 3. Відправка відгуку на сервер
         await fetch(window.GOOGLE_SCRIPT_URL, {
             method: "POST",
             mode: "cors",
