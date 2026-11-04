@@ -65,7 +65,7 @@ function verifyTurnstile_(token) {
 }
 
 function doGet() {
-  return ContentService.createTextOutput("Gapka Homestead Inferno — сервіс замовлень активний. Версія: 49")
+  return ContentService.createTextOutput("Gapka Homestead Inferno — сервіс замовлень активний. Версія: 50")
     .setMimeType(ContentService.MimeType.TEXT);
 }
 
@@ -95,13 +95,6 @@ function doPost(e) {
 
     const requestId = String(data.requestId || "").trim();
     if (requestId && !/^[A-Za-z0-9_-]{20,100}$/.test(requestId)) return errorResponse("Некоректний ідентифікатор запиту.");
-    if (requestId) {
-      const requestKey = "request_once_" + hashKey_(requestId);
-      const requestCache = CacheService.getScriptCache();
-      if (requestCache.get(requestKey)) return errorResponse("Цей запит уже обробляється або був прийнятий.");
-      requestCache.put(requestKey, "1", 600);
-    }
-
     if (data.orderType === "ПІДПИСКА_МАРКЕТИНГ" || data.orderType === "ЗАПИТ_НА_ЗАПУСК") {
       if (!validateEmail(email)) return errorResponse("Некоректна електронна адреса");
 
@@ -169,6 +162,18 @@ function doPost(e) {
 
     if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
 
+    const requestKey = requestId ? "request_once_" + hashKey_(requestId) : "";
+    const requestCache = CacheService.getScriptCache();
+    if (requestKey) {
+      const previousOrderId = requestCache.get(requestKey);
+      if (previousOrderId) {
+        lock.releaseLock();
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "success", orderId: previousOrderId, duplicate: true
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+
     const sheet = getOrdersSheet();
     sheet.insertRowBefore(2);
     sheet.getRange(2, 3).setNumberFormat("@");
@@ -178,6 +183,7 @@ function doPost(e) {
     ]]);
     sheet.getRange(2, 1).insertCheckboxes();
     sheet.getRange(2, 1, 1, 11).setBackground("#061a07").setFontColor("#ffffff").setVerticalAlignment("middle");
+    if (requestKey) requestCache.put(requestKey, orderId, 21600);
     lock.releaseLock();
 
     // Сповіщення власнику надсилається незалежно від наявності email клієнта.
