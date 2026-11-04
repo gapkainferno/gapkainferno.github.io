@@ -2,7 +2,6 @@
 // HOMESTEAD INFERNO — ORDER PROCESSING SCRIPT
 // Google Apps Script для обробки замовлень з сайту
 // ════════════════════════════════════════════════════════════════
-const SCRIPT_PROPS = PropertiesService.getScriptProperties();
 const CONTACT_EMAIL = "homestead.inferno@gmail.com";
 
 const SHEET_NAME = "Замовлення"; // ЗАМІНИ на назву свого аркуша з замовленнями
@@ -94,7 +93,7 @@ function doPost(e) {
     if (!allowedDelivery.includes(delivery)) return errorResponse("Недоступний спосіб доставки");
     const name = String(data.name || "").trim().slice(0, 100);
     const cleanPhone = phone;
-    if (!name || !/^\+?38?0?\d{9}$/.test(cleanPhone.replace(/^\\+/, ""))) {
+    if (!name || !/^(?:\\+380|0)\\d{9}$/.test(cleanPhone)) {
       return errorResponse("Перевірте ім'я та номер телефону");
     }
     if (email && email !== "-" && !validateEmail(email)) return errorResponse("Некоректна електронна адреса");
