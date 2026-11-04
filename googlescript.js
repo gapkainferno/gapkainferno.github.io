@@ -161,9 +161,7 @@ function doPost(e) {
 
     const safeCart = normalizeCart(data.cart);
     if (safeCart.error) return errorResponse(safeCart.error);
-    if (!consumeRateLimit_("identity_" + hashKey_(phone + "|" + (email || "")), 5, 600)) {
-      return errorResponse("Забагато замовлень з цих контактних даних. Спробуйте пізніше.");
-    }
+    if (!requestId) return errorResponse("Відсутній ідентифікатор запиту. Оновіть сторінку та повторіть спробу.");
     const orderId = generateOrderId();
     const total = safeCart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
     const formattedTotal = total.toFixed(2);
@@ -184,6 +182,16 @@ function doPost(e) {
         })).setMimeType(ContentService.MimeType.JSON);
       }
     }
+
+    // Ліміт контактних даних витрачаємо лише для нового замовлення, не для повтору.
+    // Використовуємо вже захоплений ScriptLock, щоб уникнути повторного захоплення lock.
+    const identityRateKey = "identity_" + hashKey_(phone + "|" + (email || ""));
+    const identityCount = Number(requestCache.get(identityRateKey) || 0);
+    if (identityCount >= 5) {
+      lock.releaseLock();
+      return errorResponse("Забагато замовлень з цих контактних даних. Спробуйте пізніше.");
+    }
+    requestCache.put(identityRateKey, String(identityCount + 1), 600);
 
     const sheet = getOrdersSheet();
     sheet.insertRowBefore(2);
