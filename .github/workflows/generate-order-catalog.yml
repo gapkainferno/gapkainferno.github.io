@@ -13,6 +13,8 @@ on:
     paths:
       - 'products.js'
       - 'cart.js'
+      - 'catalog.js'
+      - 'googlescript.js'
       - 'scripts/generate-order-catalog.js'
       - '.github/workflows/generate-order-catalog.yml'
   workflow_dispatch:
