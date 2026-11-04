@@ -2,14 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Перевіряємо, чи модалки ще немає на сторінці (щоб не дублювати)
     if (document.getElementById('checkoutModal')) return;
 
-    // ═══════════════════════════════════════════════════════════════
-    // АНГЛІЙСЬКА ВЕРСІЯ МОДАЛКИ (для міжнародних замовлень)
-    // ═══════════════════════════════════════════════════════════════
-    {
-
-        // ═══════════════════════════════════════════════════════════════
-        // УКРАЇНСЬКА ВЕРСІЯ МОДАЛКИ (для замовлень в Україні)
-        // ═══════════════════════════════════════════════════════════════
+    // Українська форма замовлення для доставки в межах України.
         const uaModalHTML = `
         <div id="checkoutModal" class="modal">
             <div class="modal-box">
@@ -276,10 +269,10 @@ function openEmptyCartModal() {
     <div id="emptyCartModal" class="modal" style="display: flex;">
         <div class="modal-box" style="max-width: 600px; padding: 40px; text-align: center;">
             <button class="close-btn" onclick="closeEmptyCartModal()">&times;</button>
-            <h2 class="modal-title">${window.IS_ENGLISH ? 'Your cart is <span>empty</span>' : 'Кошик <span>порожній</span>'}</h2>
-            <p style="margin: 15px 0; font-size: 16px; opacity: 0.8;">${window.IS_ENGLISH ? 'Discover the world of spicy flavors! Browse our catalog:' : 'Відкрийте для себе світ гострих смаків! Перегляньте наш каталог:'}</p>
-            <a href="sauces.html" class="order-btn" style="display: inline-block; width: auto; text-decoration: none; margin-top: 20px;">🔥 ${window.IS_ENGLISH ? 'Hot Sauces' : 'Гострі соуси'}</a>
-            <a href="seedsandseedlings.html" class="order-btn" style="display: inline-block; width: auto; text-decoration: none; margin-top: 10px;">🌱 ${window.IS_ENGLISH ? 'Superhot Seeds' : 'Насіння суперхотів'}</a>
+            <h2 class="modal-title">Кошик <span>порожній</span></h2>
+            <p style="margin: 15px 0; font-size: 16px; opacity: 0.8;">Відкрийте для себе світ гострих смаків! Перегляньте наш каталог:</p>
+            <a href="sauces.html" class="order-btn" style="display: inline-block; width: auto; text-decoration: none; margin-top: 20px;">🔥 Гострі соуси</a>
+            <a href="seedsandseedlings.html" class="order-btn" style="display: inline-block; width: auto; text-decoration: none; margin-top: 10px;">🌱 Насіння суперхотів</a>
         </div>
     </div>`;
     document.body.insertAdjacentHTML('beforeend', emptyModalHTML);
