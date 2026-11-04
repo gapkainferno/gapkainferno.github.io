@@ -8,9 +8,21 @@ const SHEET_NAME = "Замовлення"; // ЗАМІНИ на назву св�
 const SUB_SHEET_NAME = "Підписки"; 
 const REVIEW_SHEET_NAME = "Відгуки"; 
 
+function getSpreadsheet_() {
+  const spreadsheetId = PropertiesService.getScriptProperties().getProperty("SPREADSHEET_ID");
+  if (!spreadsheetId) {
+    throw new Error("Не налаштовано Script Property SPREADSHEET_ID");
+  }
+  return SpreadsheetApp.openById(spreadsheetId);
+}
+
 function getOrdersSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  return ss.getSheetByName(SHEET_NAME) || ss.getSheets()[0];
+  const ss = getSpreadsheet_();
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) {
+    throw new Error("У таблиці не знайдено аркуш «" + SHEET_NAME + "»");
+  }
+  return sheet;
 }
 
 function normalizeOrderId(value) {
@@ -46,7 +58,7 @@ function doPost(e) {
     if (data.orderType === "ПІДПИСКА_МАРКЕТИНГ" || data.orderType === "ЗАПИТ_НА_ЗАПУСК") {
       if (!validateEmail(email)) return errorResponse("Некоректна електронна адреса");
       cache.put(limiterKey, String(attempts + 1), 300);
-      const ss = SpreadsheetApp.getActiveSpreadsheet();
+      const ss = getSpreadsheet_();
       let subSheet = ss.getSheetByName(SUB_SHEET_NAME);
       if (!subSheet) {
         subSheet = ss.insertSheet(SUB_SHEET_NAME);
@@ -69,7 +81,7 @@ function doPost(e) {
       const message = String(data.message || "").trim().slice(0, 1500);
       if (!author || !product || !message) return errorResponse("Заповніть усі поля відгуку");
       cache.put(limiterKey, String(attempts + 1), 300);
-      const ss = SpreadsheetApp.getActiveSpreadsheet();
+      const ss = getSpreadsheet_();
       let revSheet = ss.getSheetByName(REVIEW_SHEET_NAME);
       if (!revSheet) {
         revSheet = ss.insertSheet(REVIEW_SHEET_NAME);
