@@ -29,6 +29,40 @@ function normalizeOrderId(value) {
   const orderId = String(value).trim();
   return /^\d+$/.test(orderId) ? orderId.replace(/^0+(?=\d)/, '') : orderId;
 }
+function consumeRateLimit_(key, limit, windowSeconds) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(3000)) return false;
+  try {
+    const cache = CacheService.getScriptCache();
+    const current = Number(cache.get(key) || 0);
+    if (current >= limit) return false;
+    cache.put(key, String(current + 1), windowSeconds);
+    return true;
+  } finally { lock.releaseLock(); }
+}
+function hashKey_(value) {
+  const bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(value), Utilities.Charset.UTF_8);
+  return Utilities.base64EncodeWebSafe(bytes).replace(/=+$/g, '').slice(0, 40);
+}
+function safeSheetText_(value) {
+  const text = String(value == null ? '' : value);
+  return /^[=+@\\-\\t\\r]/.test(text) ? "'" + text : text;
+}
+function verifyTurnstile_(token) {
+  const secret = PropertiesService.getScriptProperties().getProperty("TURNSTILE_SECRET_KEY");
+  if (!secret) return { ok: true, configured: false };
+  if (!token || typeof token !== "string" || token.length > 2048) return { ok: false, configured: true };
+  try {
+    const response = UrlFetchApp.fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "post", payload: { secret: secret, response: token }, muteHttpExceptions: true
+    });
+    if (response.getResponseCode() !== 200) return { ok: false, configured: true };
+    return { ok: JSON.parse(response.getContentText()).success === true, configured: true };
+  } catch (error) {
+    Logger.log("Turnstile verification failed: " + error);
+    return { ok: false, configured: true };
+  }
+}
 
 function doGet() {
   return ContentService.createTextOutput("Gapka Homestead Inferno — сервіс замовлень активний. Версія: 49")
@@ -42,22 +76,35 @@ function doPost(e) {
     const data = JSON.parse(e.postData.contents);
     if (!data || typeof data !== "object" || Array.isArray(data)) return errorResponse("Некоректний запит");
 
-    // Honeypot: приховане поле має залишатися порожнім.
+    // Honeypot: відхиляємо бота без запису замовлення.
     if (String(data.website_url || "").trim()) {
       return ContentService.createTextOutput(JSON.stringify({status:"success"})).setMimeType(ContentService.MimeType.JSON);
     }
+    if (e.postData.contents.length > 30000) return errorResponse("Запит завеликий.");
 
     const emailInput = String(data.email || "").trim().toLowerCase();
     const email = emailInput === "-" ? "" : emailInput;
     const phone = String(data.phone || "").replace(/[^0-9+]/g, "").slice(0, 20);
-    const limiterKey = "submit_" + Utilities.base64EncodeWebSafe(email || phone || "unknown").slice(0, 60);
-    const cache = CacheService.getScriptCache();
-    const attempts = Number(cache.get(limiterKey) || 0);
-    if (attempts >= 5) return errorResponse("Забагато запитів. Спробуйте пізніше.");
+    if (!consumeRateLimit_("global_requests", 20, 60)) return errorResponse("Забагато запитів. Спробуйте пізніше.");
+    const identity = email || phone;
+    if (identity && !consumeRateLimit_("identity_" + hashKey_(identity), 3, 600)) {
+      return errorResponse("Забагато запитів з цих контактних даних. Спробуйте пізніше.");
+    }
+    const captcha = verifyTurnstile_(data.turnstileToken);
+    if (!captcha.ok) return errorResponse("Перевірка безпеки не пройдена. Оновіть сторінку та повторіть спробу.");
+
+    const requestId = String(data.requestId || "").trim();
+    if (requestId && !/^[A-Za-z0-9_-]{20,100}$/.test(requestId)) return errorResponse("Некоректний ідентифікатор запиту.");
+    if (requestId) {
+      const requestKey = "request_once_" + hashKey_(requestId);
+      const requestCache = CacheService.getScriptCache();
+      if (requestCache.get(requestKey)) return errorResponse("Цей запит уже обробляється або був прийнятий.");
+      requestCache.put(requestKey, "1", 600);
+    }
 
     if (data.orderType === "ПІДПИСКА_МАРКЕТИНГ" || data.orderType === "ЗАПИТ_НА_ЗАПУСК") {
       if (!validateEmail(email)) return errorResponse("Некоректна електронна адреса");
-      cache.put(limiterKey, String(attempts + 1), 300);
+
       const ss = getSpreadsheet_();
       let subSheet = ss.getSheetByName(SUB_SHEET_NAME);
       if (!subSheet) {
@@ -68,7 +115,7 @@ function doPost(e) {
       subSheet.insertRowBefore(2);
       subSheet.getRange(2, 1, 1, 4).setValues([[
         Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss"),
-        email, String(data.orderType).slice(0, 60), String(data.details || "-").slice(0, 300)
+        safeSheetText_(email), safeSheetText_(String(data.orderType).slice(0, 60)), safeSheetText_(String(data.details || "-").slice(0, 300))
       ]]);
       const emailSent = sendWelcomeEmail(email, data.orderType, data.details);
       return ContentService.createTextOutput(JSON.stringify({status:"success", type:"subscription", emailSent:emailSent}))
@@ -80,7 +127,7 @@ function doPost(e) {
       const product = String(data.product || "").trim().slice(0, 150);
       const message = String(data.message || "").trim().slice(0, 1500);
       if (!author || !product || !message) return errorResponse("Заповніть усі поля відгуку");
-      cache.put(limiterKey, String(attempts + 1), 300);
+
       const ss = getSpreadsheet_();
       let revSheet = ss.getSheetByName(REVIEW_SHEET_NAME);
       if (!revSheet) {
@@ -90,7 +137,7 @@ function doPost(e) {
       }
       revSheet.insertRowBefore(2);
       revSheet.getRange(2, 1, 1, 4).setValues([[
-        Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss"), author, product, message
+        Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss"), safeSheetText_(author), safeSheetText_(product), safeSheetText_(message)
       ]]);
       MailApp.sendEmail({
         to: CONTACT_EMAIL,
@@ -113,7 +160,7 @@ function doPost(e) {
 
     const safeCart = normalizeCart(data.cart);
     if (safeCart.error) return errorResponse(safeCart.error);
-    const orderId = String(data.id || generateOrderId()).trim().slice(0, 40);
+    const orderId = generateOrderId();
     const total = safeCart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
     const formattedTotal = total.toFixed(2);
     const customerPayment = String(data.payment || "-").slice(0, 80);
@@ -121,13 +168,13 @@ function doPost(e) {
     const fullMessage = buildOrderDetails(data, safeCart.items);
 
     if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
-    cache.put(limiterKey, String(attempts + 1), 300);
+
     const sheet = getOrdersSheet();
     sheet.insertRowBefore(2);
     sheet.getRange(2, 3).setNumberFormat("@");
     sheet.getRange(2, 1, 1, 11).setValues([[
-      false, timestamp, orderId, name, email || "-", cleanPhone || "-",
-      fullMessage, "🆕 Нове", formattedTotal + " ₴", "", customerPayment
+      false, timestamp, safeSheetText_(orderId), safeSheetText_(name), safeSheetText_(email || "-"), safeSheetText_(cleanPhone || "-"),
+      safeSheetText_(fullMessage), "🆕 Нове", formattedTotal + " ₴", "", safeSheetText_(customerPayment)
     ]]);
     sheet.getRange(2, 1).insertCheckboxes();
     sheet.getRange(2, 1, 1, 11).setBackground("#061a07").setFontColor("#ffffff").setVerticalAlignment("middle");
