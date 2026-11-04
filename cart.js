@@ -1813,6 +1813,11 @@ window.submitOrder = async function() {
         console.log("Замовлення відправлено успішно!");
 
     } catch (e) {
+        // Turnstile tokens are single-use; require a fresh challenge after any failed attempt.
+        window.__gapkaTurnstileToken = "";
+        if (window.turnstile && turnstileWidgetId !== null) {
+            try { window.turnstile.reset(turnstileWidgetId); } catch (_) {}
+        }
         console.error("Помилка відправки:", e);
         if (e.message.includes('Failed to fetch') || e.message.includes('NetworkError')) {
             alert("Помилка мережі або CORS. Перевірте з'єднання. Якщо проблема повторюється — напишіть нам на homestead.inferno@gmail.com 🌐");
