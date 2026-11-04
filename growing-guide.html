@@ -1707,8 +1707,8 @@
                 date: new Date().toLocaleString("uk-UA"),
                 email: email,
                 orderType: "ПІДПИСКА_МАРКЕТИНГ",
-                details: "Підписка з інструкції вирощування (Growing Guide)",
-                client_id: getVisitorId()
+                details: "Підписка з інструкції вирощування",
+                website_url: honeypot?.value || ""
             });
 
             if (!sent) {
