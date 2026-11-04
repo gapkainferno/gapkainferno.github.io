@@ -2515,6 +2515,7 @@ const orderBundles = {
         ]
     }
 };
+window.orderBundles = orderBundles;
 
 
 const legacySeedSpeciesCategories = {
