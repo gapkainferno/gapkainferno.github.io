@@ -626,6 +626,7 @@ window.openCheckout = function() {
             if (el) el.value = val;
         });
         updateCartUI();
+        renderCheckoutTurnstile_();
         
         if (!false) {
             initDeliveryOptions(); // Ініціалізація логіки доставки (тільки для UA)
@@ -1463,6 +1464,49 @@ function generateOrderNumber() {
     return `${day}${month}${hour}${minute}${seconds}`;
 }
 
+let turnstileLoadPromise = null;
+let turnstileWidgetId = null;
+window.__gapkaTurnstileToken = "";
+
+function loadTurnstile_() {
+    if (window.turnstile) return Promise.resolve();
+    if (turnstileLoadPromise) return turnstileLoadPromise;
+    turnstileLoadPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+        script.async = true;
+        script.defer = true;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error('Не вдалося завантажити перевірку безпеки.'));
+        document.head.appendChild(script);
+    });
+    return turnstileLoadPromise;
+}
+
+async function renderCheckoutTurnstile_() {
+    const siteKey = window.TURNSTILE_SITE_KEY;
+    if (!siteKey) return;
+    const container = document.getElementById('turnstile-checkout');
+    if (!container) return;
+    try {
+        await loadTurnstile_();
+        if (turnstileWidgetId !== null) {
+            window.turnstile.reset(turnstileWidgetId);
+            window.__gapkaTurnstileToken = "";
+            return;
+        }
+        turnstileWidgetId = window.turnstile.render(container, {
+            sitekey: siteKey,
+            theme: 'dark',
+            callback: token => { window.__gapkaTurnstileToken = token; },
+            'expired-callback': () => { window.__gapkaTurnstileToken = ""; },
+            'error-callback': () => { window.__gapkaTurnstileToken = ""; }
+        });
+    } catch (error) {
+        console.error('Turnstile init error:', error);
+    }
+}
+
 // === 4. ВІДПРАВКА ЗАМОВЛЕННЯ ===
 window.submitOrder = async function() {
     // ✅ Rate limiting
@@ -1609,6 +1653,13 @@ window.submitOrder = async function() {
     if (!submitBtn) { console.error('submitOrder: кнопку order-btn не знайдено'); return; }
     const originalText = submitBtn.textContent;
     const orderID = generateOrderNumber();
+    let requestId = localStorage.getItem('pending_order_request_id');
+    if (!requestId) {
+        requestId = (window.crypto && typeof window.crypto.randomUUID === 'function')
+            ? window.crypto.randomUUID()
+            : 'ghi_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+        localStorage.setItem('pending_order_request_id', requestId);
+    }
     const cartSync = syncCartPrices(getFreshCart(), { save: true });
     const cart = cartSync.cart;
     if (cartSync.changed) {
@@ -1680,6 +1731,8 @@ window.submitOrder = async function() {
                 comment: orderData.comment,
                 total: totalSum,
                 cart: cart,
+                requestId: requestId,
+                turnstileToken: window.__gapkaTurnstileToken || '',
                 website_url: document.getElementById('website_url')?.value || ''
             })
         });
@@ -1700,7 +1753,7 @@ window.submitOrder = async function() {
 
         if (typeof gtag === 'function') {
             gtag('event', 'purchase', {
-                transaction_id: orderData.id,
+                transaction_id: serverResult.orderId || orderData.id,
                 value: totalSum,
                 currency: 'UAH',
                 items: cart.map(item => ({
@@ -1717,7 +1770,7 @@ window.submitOrder = async function() {
         if (successMsg) {
             successMsg.style.display = 'block';
             const orderDisplay = document.getElementById('orderNumberDisplay');
-            if (orderDisplay) orderDisplay.innerText = orderData.id;
+            if (orderDisplay) orderDisplay.innerText = serverResult.orderId || orderData.id;
         }
 
         const paymentDetails = document.getElementById('payment-details-success');
@@ -1746,6 +1799,9 @@ window.submitOrder = async function() {
             }
         }
 
+        localStorage.removeItem('pending_order_request_id');
+        window.__gapkaTurnstileToken = "";
+        if (window.turnstile && turnstileWidgetId !== null) window.turnstile.reset(turnstileWidgetId);
         saveCart([]);
         updateCartUI();
         console.log("Замовлення відправлено успішно!");
