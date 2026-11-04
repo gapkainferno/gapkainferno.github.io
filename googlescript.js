@@ -336,7 +336,7 @@ function sendConfirmationEmail(email, name, orderId, total, cartItems, paymentMe
           <tr>
             <td style="padding: 40px 30px 20px;">
               <p style="font-size: 18px; color: #ffffff; margin: 0 0 10px 0; text-align: center; line-height: 1.6;">
-                Вітаємо, <strong style="color: #ff4500;">${name}</strong>! 
+                Вітаємо, <strong style="color: #ff4500;">${escapeHtml(name)}</strong>! 
               </p>
               <p style="font-size: 15px; color: #aaa; margin: 0 0 30px 0; text-align: center; line-height: 1.8;">
                 Ваше замовлення отримано. Ми вже перевіряємо наші вогняні запаси, щоб якнайшвидше відправити їх до вас!
