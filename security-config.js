@@ -31,7 +31,6 @@ const API_CONFIG = {
         SUBMIT_ORDER: '/api/orders/submit',      // Замість прямого запиту до Google Apps
         GET_NP_CITIES: '/api/novaposhta/cities',  // Замість прямого запиту до Nova Poshta
         SEND_EMAIL: '/api/email/send',            // Замість прямого Gmail запиту
-        TELEGRAM_NOTIFY: '/api/telegram/notify'   // Замість прямого Telegram запиту
     },
     
     // Таймаути та retry
@@ -45,7 +44,6 @@ const API_CONFIG = {
  */
 // В Node.js / Deno:
 // const API_KEYS = {
-//     TELEGRAM_BOT: process.env.TELEGRAM_BOT_TOKEN,
 //     GOOGLE_SCRIPT: process.env.GOOGLE_APPS_SCRIPT_URL,
 //     NOVA_POSHTA_KEY: process.env.NOVA_POSHTA_API_KEY
 // };
@@ -56,7 +54,6 @@ const API_CONFIG = {
 // Файл: .env (НІКОЛИ НЕ ПУБЛІКУВАТИ В GIT!)
 // ------------------------------------------
 // VITE_API_URL=https://your-domain.com/api
-// VITE_TELEGRAM_BOT_TOKEN=xxx
 // VITE_GOOGLE_SCRIPT_URL=xxx
 // .gitignore містить: .env, .env.local
 // ------------------------------------------
