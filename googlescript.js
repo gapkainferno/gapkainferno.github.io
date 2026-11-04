@@ -57,7 +57,13 @@ function verifyTurnstile_(token) {
       method: "post", payload: { secret: secret, response: token }, muteHttpExceptions: true
     });
     if (response.getResponseCode() !== 200) return { ok: false, configured: true };
-    return { ok: JSON.parse(response.getContentText()).success === true, configured: true };
+    const result = JSON.parse(response.getContentText());
+    if (result.success !== true) return { ok: false, configured: true };
+    const allowedHosts = (PropertiesService.getScriptProperties().getProperty("TURNSTILE_ALLOWED_HOSTNAMES") ||
+      "gapkainferno.github.io,localhost,127.0.0.1").split(",").map(host => host.trim().toLowerCase()).filter(Boolean);
+    const hostname = String(result.hostname || "").toLowerCase();
+    if (!hostname || !allowedHosts.includes(hostname)) return { ok: false, configured: true };
+    return { ok: true, configured: true };
   } catch (error) {
     Logger.log("Turnstile verification failed: " + error);
     return { ok: false, configured: true };
