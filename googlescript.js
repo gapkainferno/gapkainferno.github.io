@@ -131,13 +131,19 @@ function doPost(e) {
       "",
       fullMessage
     ].join("\n");
-    MailApp.sendEmail({to: CONTACT_EMAIL, subject: "🔥 Нове замовлення #" + orderId, body: adminBody, replyTo: email || CONTACT_EMAIL});
+    let adminEmailSent = false;
+    try {
+      MailApp.sendEmail({to: CONTACT_EMAIL, subject: "🔥 Нове замовлення #" + orderId, body: adminBody, replyTo: email || CONTACT_EMAIL});
+      adminEmailSent = true;
+    } catch (adminMailError) {
+      Logger.log("Admin order notification failed: " + adminMailError);
+    }
 
     if (validateEmail(email)) {
       try { sendConfirmationEmail(email, name, orderId, formattedTotal, safeCart.items, customerPayment); }
       catch (mailError) { Logger.log("Customer confirmation email failed: " + mailError); }
     }
-    return ContentService.createTextOutput(JSON.stringify({status:"success", orderId:orderId})).setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(JSON.stringify({status:"success", orderId:orderId, adminEmailSent:adminEmailSent})).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     try { if (lock.hasLock()) lock.releaseLock(); } catch (_) {}
     Logger.log("doPost error: " + err);
