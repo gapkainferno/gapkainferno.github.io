@@ -7,6 +7,12 @@ on:
       - 'cart.js'
       - 'scripts/generate-order-catalog.js'
       - '.github/workflows/generate-order-catalog.yml'
+  pull_request:
+    paths:
+      - 'products.js'
+      - 'cart.js'
+      - 'scripts/generate-order-catalog.js'
+      - '.github/workflows/generate-order-catalog.yml'
   workflow_dispatch:
 permissions:
   contents: write
@@ -21,6 +27,7 @@ jobs:
       - name: Generate canonical order catalog
         run: node scripts/generate-order-catalog.js
       - name: Commit generated catalog
+        if: github.event_name == 'push'
         run: |
           if git diff --quiet -- order-catalog.json; then
             echo "Catalog is already up to date."
