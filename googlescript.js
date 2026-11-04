@@ -50,7 +50,11 @@ function safeSheetText_(value) {
 }
 function verifyTurnstile_(token) {
   const secret = PropertiesService.getScriptProperties().getProperty("TURNSTILE_SECRET_KEY");
-  if (!secret) return { ok: true, configured: false };
+  // Fail closed: без секретного ключа сервер не приймає запити.
+  if (!secret) {
+    Logger.log("Turnstile secret is not configured.");
+    return { ok: false, configured: false };
+  }
   if (!token || typeof token !== "string" || token.length > 2048) return { ok: false, configured: true };
   try {
     const response = UrlFetchApp.fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
@@ -79,14 +83,20 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   try {
     if (!e || !e.postData || !e.postData.contents) return errorResponse("Немає даних");
-    const data = JSON.parse(e.postData.contents);
+    // Перевіряємо розмір до JSON.parse, щоб не розбирати надмірно великі запити.
+    if (e.postData.contents.length > 30000) return errorResponse("Запит завеликий.");
+    let data;
+    try {
+      data = JSON.parse(e.postData.contents);
+    } catch (_) {
+      return errorResponse("Некоректний формат JSON.");
+    }
     if (!data || typeof data !== "object" || Array.isArray(data)) return errorResponse("Некоректний запит");
 
     // Honeypot: відхиляємо бота без запису замовлення.
     if (String(data.website_url || "").trim()) {
       return ContentService.createTextOutput(JSON.stringify({status:"success"})).setMimeType(ContentService.MimeType.JSON);
     }
-    if (e.postData.contents.length > 30000) return errorResponse("Запит завеликий.");
 
     const emailInput = String(data.email || "").trim().toLowerCase();
     const email = emailInput === "-" ? "" : emailInput;
