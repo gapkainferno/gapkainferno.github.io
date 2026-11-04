@@ -1601,7 +1601,6 @@ window.submitOrder = async function() {
             delivery: enFields.delivery?.value || 'Standard International',
             payment: 'Online Payment (International)',
             comment: sanitizeInput(enFields.comment?.value?.trim() || '', 500),
-            secret_token: "summerof26"
         };
 
         // Зберігаємо дані
@@ -1653,7 +1652,6 @@ window.submitOrder = async function() {
                     total: totalSum,
                     cart: cart,
                     order_type: 'INTERNATIONAL',
-                    secret_token: "summerof26"
                 })
             });
 
@@ -1863,7 +1861,6 @@ window.submitOrder = async function() {
             : fields.branch.value.trim(),
         email: document.getElementById('email')?.value.trim() || "-",
         comment: (document.getElementById('cust-comment')?.value.trim() || "").substring(0, 500),
-        secret_token: "summerof26"
     };
 
     localStorage.setItem('saved_name', orderData.name);
@@ -1905,7 +1902,6 @@ window.submitOrder = async function() {
                 comment: orderData.comment,
                 total: totalSum,
                 cart: cart,
-                secret_token: "summerof26"
             })
         });
 
@@ -2041,7 +2037,6 @@ window.sendReview = async function() {
                 name: author,
                 product: prodName,
                 message: text,
-                secret_token: "summerof26"
             })
         });
 
@@ -2065,7 +2060,7 @@ window.sendReview = async function() {
 
     } catch (e) {
         console.error("Помилка відправки відгуку:", e);
-        alert("Помилка відправки. Напишіть нам у Telegram!");
+        alert("Не вдалося надіслати відгук. Спробуйте ще раз або напишіть нам на homestead.inferno@gmail.com.");
     }
 };
 
