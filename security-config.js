@@ -16,7 +16,6 @@
  */
 
 // СТАРИЙ НЕБЕЗПЕЧНИЙ ПІДХІД (НЕ ВИКОРИСТОВУВАТИ):
-// const BOT_TOKEN = 'PASTE_TOKEN_HERE'; // ❌ EXPOSED!
 // const GOOGLE_SCRIPT = 'https://script.google.com/macros/s/AKfycbyM4hOH...'; // ❌ VISIBLE!
 
 /**
