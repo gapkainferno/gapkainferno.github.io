@@ -97,6 +97,7 @@ function doPost(e) {
 
     const requestId = String(data.requestId || "").trim();
     if (requestId && !/^[A-Za-z0-9_-]{20,100}$/.test(requestId)) return errorResponse("Некоректний ідентифікатор запиту.");
+    const requestKey = requestId ? "request_once_" + hashKey_(requestId) : "";
     if (data.orderType === "ПІДПИСКА_МАРКЕТИНГ" || data.orderType === "ЗАПИТ_НА_ЗАПУСК") {
       if (!validateEmail(email)) return errorResponse("Некоректна електронна адреса");
       if (!consumeRateLimit_("identity_" + hashKey_(email), 5, 600)) {
@@ -148,6 +149,19 @@ function doPost(e) {
       return ContentService.createTextOutput(JSON.stringify({status:"success", type:"review"})).setMimeType(ContentService.MimeType.JSON);
     }
 
+    // Швидка перевірка вже прийнятого запиту до валідації поточного кошика.
+    // CAPTCHA все одно перевіряється вище; це лише захист від повторного списання/запису.
+    if (requestKey) {
+      if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
+      const previousOrderId = CacheService.getScriptCache().get(requestKey);
+      lock.releaseLock();
+      if (previousOrderId) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "success", orderId: previousOrderId, duplicate: true
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+
     // Замовлення приймаємо лише з українськими способами доставки.
     const allowedDelivery = ["Відділення НП", "Поштомат НП", "Укрпошта", "Кур'єр НП"];
     const delivery = String(data.delivery || "").trim();
@@ -171,7 +185,6 @@ function doPost(e) {
 
     if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
 
-    const requestKey = requestId ? "request_once_" + hashKey_(requestId) : "";
     const requestCache = CacheService.getScriptCache();
     if (requestKey) {
       const previousOrderId = requestCache.get(requestKey);
