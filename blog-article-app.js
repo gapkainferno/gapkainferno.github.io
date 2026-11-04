@@ -321,11 +321,6 @@ class ArticleApp {
 // SHARE FUNCTIONS
 // ═══════════════════════════════════════════════════════════════
 
-function shareToTelegram() {
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent(document.querySelector('h1').textContent);
-    window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
-}
 
 function shareToFacebook() {
     const url = encodeURIComponent(window.location.href);
