@@ -621,7 +621,7 @@ function renderSeedVersionSelector(product, productId) {
             : version.price;
         const displayPriceHtml = typeof renderSalePriceHTML === 'function'
             ? renderSalePriceHTML(version.price, salePrice)
-            : (window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function'
+            : (false && typeof window.formatEnglishPrice === 'function'
                 ? window.formatEnglishPrice(version.price)
                 : `${version.price} ₴`);
 
@@ -725,7 +725,7 @@ function updatePriceDisplay(product, version) {
     priceEl.setAttribute('data-val', version.price);
     priceEl.innerHTML = typeof renderSalePriceHTML === 'function'
         ? renderSalePriceHTML(version.price, finalPrice, priceSuffix)
-        : (window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function'
+        : (false && typeof window.formatEnglishPrice === 'function'
             ? window.formatEnglishPrice(version.price, priceSuffix)
             : `${version.price.toFixed(2)} ₴${priceSuffix}`);
 
