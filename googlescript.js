@@ -190,36 +190,119 @@ function generateOrderId() {
   return `HS-${day}${month}${year}-${random}`;
 }
 
-function normalizeCart(cartItems) {
-  if (!Array.isArray(cartItems) || cartItems.length === 0) {
-    return { error: "Cart is empty", items: [] };
+function getCanonicalOrderCatalog() {
+  const cache = CacheService.getScriptCache();
+  const cached = cache.get("canonical_order_catalog_v1");
+  if (cached) {
+    try { return JSON.parse(cached); } catch (_) {}
   }
 
+  const url = "https://raw.githubusercontent.com/gapkainferno/gapkainferno.github.io/master/order-catalog.json";
+  const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true, followRedirects: true });
+  if (response.getResponseCode() !== 200) {
+    throw new Error("Canonical order catalog is unavailable (HTTP " + response.getResponseCode() + ")");
+  }
+  const catalog = JSON.parse(response.getContentText());
+  if (!catalog || catalog.schemaVersion !== 1 || !catalog.products || !catalog.bundles) {
+    throw new Error("Canonical order catalog has an unsupported format");
+  }
+  cache.put("canonical_order_catalog_v1", JSON.stringify(catalog), 300);
+  return catalog;
+}
+
+function getCanonicalPrice(basePrice, product, catalog) {
+  let price = Number(basePrice);
+  const sale = catalog.sale || {};
+  const deadline = sale.deadline ? new Date(sale.deadline) : null;
+  const deadlinePassed = deadline instanceof Date && !Number.isNaN(deadline.getTime()) && Date.now() > deadline.getTime();
+  if (sale.isActive === true && product.allowSale === true && !deadlinePassed) {
+    const discount = Math.min(Math.max(Number(sale.discountPercent) || 0, 0), 90);
+    price = Math.round(price * (1 - discount / 100));
+  }
+  return Math.round(price * 100) / 100;
+}
+
+function normalizeCart(cartItems) {
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
+    return { error: "Кошик порожній.", items: [] };
+  }
   if (cartItems.length > 50) {
-    return { error: "Too many cart items", items: [] };
+    return { error: "У кошику забагато позицій.", items: [] };
+  }
+
+  let catalog;
+  try {
+    catalog = getCanonicalOrderCatalog();
+  } catch (error) {
+    Logger.log("Order catalog error: " + error);
+    return { error: "Не вдалося перевірити актуальний каталог. Спробуйте трохи пізніше.", items: [] };
   }
 
   const items = [];
-
   for (let i = 0; i < cartItems.length; i++) {
     const item = cartItems[i] || {};
-    const name = String(item.name || '').trim().slice(0, 200);
-    const productId = String(item.productId || '').trim().slice(0, 100);
-    const price = Number(item.price);
-    const qty = Math.max(1, Math.min(100, parseInt(item.qty, 10) || 1));
+    const productId = String(item.productId || "").trim().slice(0, 100);
+    const qty = Number(item.qty);
+    const submittedPrice = Number(item.price);
 
-    if (!name || !Number.isFinite(price) || price < 0 || price > 100000) {
-      return { error: "Invalid cart item", items: [] };
+    if (!productId || !Number.isInteger(qty) || qty < 1 || qty > 100 ||
+        !Number.isFinite(submittedPrice) || submittedPrice < 0) {
+      return { error: "Некоректна позиція кошика. Оновіть кошик і спробуйте ще раз.", items: [] };
+    }
+
+    let canonicalName = "";
+    let basePrice = NaN;
+    let saleProduct = null;
+
+    if (Object.prototype.hasOwnProperty.call(catalog.bundles, productId)) {
+      const bundle = catalog.bundles[productId];
+      if (bundle.inStock !== true || !Number.isFinite(Number(bundle.price))) {
+        return { error: "Набір «" + String(bundle.name || productId) + "» зараз недоступний.", items: [] };
+      }
+      canonicalName = String(bundle.name || productId);
+      basePrice = Number(bundle.price);
+      saleProduct = bundle;
+    } else {
+      const product = catalog.products[productId];
+      if (!product || product.isHidden === true || product.inStock === false ||
+          !Number.isFinite(Number(product.price)) || Number(product.price) <= 0) {
+        return { error: "Один із товарів більше недоступний. Оновіть кошик.", items: [] };
+      }
+
+      canonicalName = String(product.name || productId);
+      saleProduct = product;
+      const variants = product.variants || {};
+      const variantKeys = Object.keys(variants);
+      let versionKey = String(item.versionKey || "").trim();
+
+      if (variantKeys.length > 0) {
+        if (!versionKey) versionKey = "openPollinated";
+        const variant = variants[versionKey];
+        if (!variant || variant.inStock !== true || !Number.isFinite(Number(variant.price))) {
+          return { error: "Обраний варіант товару «" + canonicalName + "» більше недоступний. Оновіть кошик.", items: [] };
+        }
+        basePrice = Number(variant.price);
+        if (variant.label) canonicalName += " (" + String(variant.label) + ")";
+      } else {
+        if (versionKey) {
+          return { error: "Для товару «" + canonicalName + "» обрано невідомий варіант. Оновіть кошик.", items: [] };
+        }
+        basePrice = Number(product.price);
+      }
+    }
+
+    const expectedPrice = getCanonicalPrice(basePrice, saleProduct, catalog);
+    if (Math.abs(submittedPrice - expectedPrice) > 0.01) {
+      return { error: "Ціна товару «" + canonicalName + "» змінилася. Оновіть кошик, щоб побачити актуальну суму.", items: [] };
     }
 
     items.push({
       productId: productId,
-      name: name,
-      price: Math.round(price * 100) / 100,
+      name: canonicalName.slice(0, 200),
+      price: expectedPrice,
       qty: qty
     });
   }
-
   return { items: items };
 }
 
