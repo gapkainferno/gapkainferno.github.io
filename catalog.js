@@ -362,7 +362,7 @@ function renderProductCard(id, product) {
                     <p class="card-price${mutedPriceClass}"
                        data-base-price="${safeText(product.price)}"
                        data-allow-sale="${product.allowSale === true ? 'true' : 'false'}">
-                        ${window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function' 
+                        ${false && typeof window.formatEnglishPrice === 'function' 
                             ? window.formatEnglishPrice(product.price)
                             : `${safeText(product.price)} ₴`}
                     </p>
