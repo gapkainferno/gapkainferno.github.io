@@ -108,22 +108,21 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
         </div>`;
         document.body.insertAdjacentHTML('beforeend', uaModalHTML);
-    }
 
     // ═══════════════════════════════════════════════════════════════
-    // ФЛОАТИНГ КОШИК ТА ХЕДЕР КОШИК (для обох версій)
+    // Кнопки кошика
     // ═══════════════════════════════════════════════════════════════
-    const cartIcon = window.IS_ENGLISH ? '🛒' : '🛒';
-    const cartText = window.IS_ENGLISH ? 'Cart' : 'Кошик';
+    const cartIcon = '🛒';
+    const cartText = 'Кошик';
 
     const floatingCartHTML = `
-    <button type="button" class="floating-cart" onclick="openCheckout()" title="${window.IS_ENGLISH ? 'Open cart' : 'Відкрити кошик'}">
+    <button type="button" class="floating-cart" onclick="openCheckout()" title="Відкрити кошик">
         <span class="cart-icon">${cartIcon}</span>
         <span id="cart-count">0</span>
     </button>`;
 
     const headerCartHTML = `
-    <button type="button" class="header-cart-link" onclick="openCheckout()" title="${window.IS_ENGLISH ? 'Go to cart' : 'Перейти до кошика'}">
+    <button type="button" class="header-cart-link" onclick="openCheckout()" title="Перейти до кошика">
         <span class="cart-text">${cartText}</span>
         <span class="cart-icon">${cartIcon}</span>
         <span class="cart-count">0</span>
@@ -171,9 +170,7 @@ function openNotifyModal(category) {
     currentNotifyCategory = category;
     
     const messages = {
-        'fresh-peppers': window.IS_ENGLISH
-            ? "We'll email you as soon as we harvest our first crop of fresh superhots this fall! 🍂"
-            : "Ми напишемо вам, як тільки зберемо перший врожай свіжих суперхотів восени 2026! 🍂"
+        'fresh-peppers': "Ми напишемо вам, як тільки зберемо перший врожай свіжих суперхотів! 🍂"
     };
     
     if (messages[category]) {
@@ -224,10 +221,10 @@ async function submitNotification() {
 
     const btn = document.querySelector('#notifyModal .order-btn');
     btn.disabled = true;
-    btn.innerText = window.IS_ENGLISH ? "Saving..." : "Записуємо...";
+    btn.innerText = "Записуємо...";
 
     const data = {
-        date: new Date().toLocaleString("en-US"),
+        date: new Date().toLocaleString("uk-UA"),
         email: email,
         orderType: "ЗАПИТ_НА_ЗАПУСК",
         details: `Запит на повідомлення про появу: ${currentNotifyCategory}`,
@@ -235,16 +232,14 @@ async function submitNotification() {
 
     const sent = await sendToGoogleSheet(data);
     if (!sent) {
-        alert(window.IS_ENGLISH ? 'Could not send your request. Please try again.' : 'Не вдалося надіслати запит. Спробуйте ще раз.');
+        alert('Не вдалося надіслати запит. Спробуйте ще раз.');
         btn.disabled = false;
-        btn.innerText = window.IS_ENGLISH ? "Notify Me First" : "Хочу дізнатися першим";
+        btn.innerText = "Хочу дізнатися першим";
         return;
     }
 
     const successMessage = document.getElementById('notify-success');
-    successMessage.innerText = window.IS_ENGLISH
-        ? 'Request sent. Check your email for confirmation. 🔥'
-        : 'Запит надіслано. Перевірте пошту для підтвердження. 🔥';
+    successMessage.innerText = 'Запит надіслано. Перевірте пошту для підтвердження. 🔥';
     successMessage.style.display = 'block';
     setTimeout(() => {
         document.getElementById('notifyModal').style.display = 'none';
