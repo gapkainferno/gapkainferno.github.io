@@ -580,7 +580,7 @@ function updateCartUI() {
 window.openCheckout = function() {
     // ✅ RATE LIMITING: Перевіряємо чи не надто часто клікають на оформлення
     if (typeof RateLimiter !== 'undefined' && !RateLimiter.check('checkout')) {
-        alert(window.IS_ENGLISH ? '⏱️ Please wait a few seconds...' : '⏱️ Чекайте кілька секунд перед наступним кліком...');
+        alert('⏱️ Чекайте кілька секунд перед наступним кліком...');
         return;
     }
 
@@ -1467,7 +1467,7 @@ function generateOrderNumber() {
 window.submitOrder = async function() {
     // ✅ Rate limiting
     if (!orderRateLimiter.canSubmit()) {
-        alert(window.IS_ENGLISH ? "Too many attempts. Please wait a minute." : "Забагато спроб відправки. Зачекайте хвилину.");
+        alert("Забагато спроб відправки. Зачекайте хвилину.");
         return;
     }
     
@@ -1475,7 +1475,7 @@ window.submitOrder = async function() {
     const honeypot = document.getElementById('website_url');
     if (honeypot && honeypot.value !== '') {
         console.warn('🤖 Бот виявлено');
-        alert(window.IS_ENGLISH ? "Thank you for your order!" : "Дякуємо за замовлення!");
+        alert("Дякуємо за замовлення!");
         closeCheckout();
         return;
     }
