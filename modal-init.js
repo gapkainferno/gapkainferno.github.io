@@ -369,14 +369,16 @@ function createNotifyModalEn(category) {
 // Універсальна функція для відправки даних у Google Sheet
 async function sendToGoogleSheet(data) {
     try {
-        await fetch(window.GOOGLE_SCRIPT_URL, {
+        const response = await fetch(window.GOOGLE_SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',
+            mode: 'cors',
             cache: 'no-cache',
             headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
             body: JSON.stringify(data)
         });
-        return true;
+        if (!response.ok) return false;
+        const result = await response.json();
+        return result.status === 'success';
     } catch (error) {
         console.error('Помилка відправки:', error);
         return false;
@@ -408,8 +410,7 @@ async function submitNotification() {
         date: new Date().toLocaleString("en-US"),
         email: email,
         orderType: "ЗАПИТ_НА_ЗАПУСК",
-        details: `Category: ${currentNotifyCategory}${window.IS_ENGLISH ? ' (EN)' : ''}`,
-        secret_token: "summerof26"
+        details: `Запит на повідомлення про появу: ${currentNotifyCategory}`,
     };
 
     const sent = await sendToGoogleSheet(data);
@@ -494,8 +495,7 @@ async function handleGeneralSubscribe(event) {
         date: new Date().toISOString(),
         email: email,
         orderType: "ПІДПИСКА_МАРКЕТИНГ",
-        details: window.IS_ENGLISH ? "Subscribe from English homepage" : "Підписка з головної сторінки (футер)",
-        secret_token: "summerof26"
+        details: "Підписка з головної сторінки (футер)",
     });
 
     if (!sent) {
