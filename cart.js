@@ -282,10 +282,10 @@ function syncCartPrices(cart, options = {}) {
 
 function renderSalePriceHTML(basePrice, salePrice, suffix = "") {
     if (salePrice < basePrice) {
-        const oldPriceHtml = window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function'
+        const oldPriceHtml = false && typeof window.formatEnglishPrice === 'function'
             ? window.formatEnglishPrice(Number(basePrice))
             : `${Number(basePrice).toFixed(2)} ₴`;
-        const salePriceHtml = window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function'
+        const salePriceHtml = false && typeof window.formatEnglishPrice === 'function'
             ? window.formatEnglishPrice(Number(salePrice))
             : `${Number(salePrice).toFixed(2)} ₴`;
         return `
@@ -294,7 +294,7 @@ function renderSalePriceHTML(basePrice, salePrice, suffix = "") {
         `;
     }
 
-    if (window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function') {
+    if (false && typeof window.formatEnglishPrice === 'function') {
         return window.formatEnglishPrice(Number(basePrice)) + suffix;
     }
     return `${Number(basePrice).toFixed(2)} ₴${suffix}`;
@@ -497,7 +497,7 @@ function updateCartUI() {
                 const hasDiscount = item.originalPrice && item.originalPrice > item.price;
                 const priceDisplay = hasDiscount 
                     ? `<span style="text-decoration: line-through; opacity: 0.5; font-size: 0.85em; margin-right: 5px;">${parseFloat(item.originalPrice).toFixed(2)} ₴</span>${parseFloat(item.price).toFixed(2)} ₴`
-                    : (window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function'
+                    : (false && typeof window.formatEnglishPrice === 'function'
                         ? window.formatEnglishPrice(parseFloat(item.price))
                         : `${parseFloat(item.price).toFixed(2)} ₴`);
                 
@@ -546,7 +546,7 @@ function updateCartUI() {
                         </div>
                     </div>
                     <div class="cart-item-actions">
-                        <span class="cart-item-subtotal">${window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function' 
+                        <span class="cart-item-subtotal">${false && typeof window.formatEnglishPrice === 'function' 
                             ? window.formatEnglishPrice(parseFloat(item.price) * parseInt(item.qty)) 
                             : `${(parseFloat(item.price) * parseInt(item.qty)).toFixed(2)} ₴`}</span>
                         <div class="qty-stepper">
@@ -565,7 +565,7 @@ function updateCartUI() {
     });
 
     document.querySelectorAll('#final-price, .total-price-display, #cart-total').forEach(priceEl => {
-        const totalText = window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function'
+        const totalText = false && typeof window.formatEnglishPrice === 'function'
             ? window.formatEnglishPrice(totalSum)
             : `${totalSum.toFixed(2)} ₴`;
         priceEl.innerHTML = totalText;
@@ -611,12 +611,12 @@ window.openCheckout = function() {
                 return;
             }
             
-            if (f === 'branch' && !window.IS_ENGLISH) {
+            if (f === 'branch' && !false) {
                 const branchVisible = document.getElementById('cust-branch-input');
                 if (branchVisible) branchVisible.value = val;
             }
 
-            if (window.IS_ENGLISH && ['address'].includes(f)) {
+            if (false && ['address'].includes(f)) {
                 const el = document.getElementById('cust-' + f);
                 if (el) el.value = val;
                 return;
@@ -627,7 +627,7 @@ window.openCheckout = function() {
         });
         updateCartUI();
         
-        if (!window.IS_ENGLISH) {
+        if (!false) {
             initDeliveryOptions(); // Ініціалізація логіки доставки (тільки для UA)
             initPaymentLogic();    // Ініціалізація підказки про оплату (тільки для UA)
         }
