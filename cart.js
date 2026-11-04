@@ -1755,7 +1755,7 @@ window.submitOrder = async function() {
         if (e.message.includes('Failed to fetch') || e.message.includes('NetworkError')) {
             alert("Помилка мережі або CORS. Перевірте з'єднання. Якщо проблема повторюється — напишіть нам на homestead.inferno@gmail.com 🌐");
         } else {
-            alert("Помилка сервера. Спробуйте ще раз або напишіть нам на homestead.inferno@gmail.com 🌶️");
+            alert(e.message || "Помилка сервера. Спробуйте ще раз або напишіть нам на homestead.inferno@gmail.com 🌶️");
         }
     } finally {
         submitBtn.disabled = false;
