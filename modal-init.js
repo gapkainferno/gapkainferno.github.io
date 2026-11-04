@@ -190,29 +190,7 @@ function openNotifyModal(category) {
     // Показуємо модалку notify, якщо вона є
     if (modal) {
         modal.style.display = 'flex';
-    } else {
-        // Створюємо на льоту для англійської версії
-        createNotifyModalEn(category);
     }
-}
-
-function createNotifyModalEn(category) {
-    const notifyHTML = `
-    <div id="notifyModal" class="modal" style="display: flex;">
-        <div class="modal-box" style="max-width: 500px; padding: 40px; text-align: center;">
-            <button class="close-btn" onclick="document.getElementById('notifyModal').style.display='none'">&times;</button>
-            <h2 class="modal-title">Notify me <span>on launch</span></h2>
-            <p style="margin: 20px 0; opacity: 0.8;" id="notify-text">Leave your email and we'll send you a hot update when the product arrives!</p>
-            <div class="form-group">
-                <input type="email" id="notify-email" placeholder="Your Email" style="width: 100%; margin-bottom: 20px;">
-                <button class="order-btn" onclick="submitNotification()">Notify Me First</button>
-            </div>
-            <div id="notify-success" style="display:none; color: var(--primary-color); margin-top: 20px; font-weight: bold;">
-                Request sent. Check your email for confirmation. 🔥
-            </div>
-        </div>
-    </div>`;
-    document.body.insertAdjacentHTML('beforeend', notifyHTML);
 }
 
 // Універсальна функція для відправки даних у Google Sheet
