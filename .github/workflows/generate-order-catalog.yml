@@ -19,6 +19,12 @@ on:
     paths:
       - 'products.js'
       - 'cart.js'
+      - 'modal-init.js'
+      - 'product.html'
+      - 'index.html'
+      - 'growing-guide.html'
+      - 'scripts/check-inline-scripts.js'
+      - 'google-script-config.js'
       - 'catalog.js'
       - 'googlescript.js'
       - 'scripts/generate-order-catalog.js'
