@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div id="success-msg" style="display:none; text-align: center; padding: 50px 20px;">
                     <h2 style="color: var(--primary-orange);">🌿 Замовлення прийнято!</h2>
                     <p>Номер: <strong id="orderNumberDisplay"></strong></p>
-                    <p>Дякуємо! Якщо ви обрали онлайн оплату, будь ласка, сплатіть за реквізитами нижче, щоб ми почали відправку. При оплаті вкажіть номер замовлення. Якщо Ви обрали післяплату - ми скоро зв'яжемося з вами. Всі деталі заказу продубльовані на Вашій пошті 🔥.</p>
+                    <p>Дякуємо! Якщо ви обрали онлайн оплату, будь ласка, сплатіть за реквізитами нижче, щоб ми почали відправку. При оплаті вкажіть номер замовлення. Якщо Ви обрали післяплату - ми скоро зв'яжемося з вами. Підтвердження та деталі замовлення ми надішлемо на вашу пошту 🔥.</p>
                     <p id="email-delivery-notice" style="display:none; color:#ffb36b; font-size:14px; line-height:1.5;">Замовлення прийнято, але лист-підтвердження затримується. Ми спробуємо надіслати його повторно автоматично. Якщо лист не надійде, напишіть нам на homestead.inferno@gmail.com.</p>
                     <div id="payment-details-success" style="display:none; margin-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;"></div>
                     <button class="order-btn" style="max-width: 200px; margin: 20px auto 0;" onclick="closeCheckout()">Закрити</button>
