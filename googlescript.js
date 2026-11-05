@@ -143,7 +143,7 @@ function doPost(e) {
 
     const emailInput = String(data.email || "").trim().toLowerCase();
     const email = emailInput === "-" ? "" : emailInput;
-    const phone = String(data.phone || "").replace(/[^0-9+]/g, "").slice(0, 20);
+    const phone = normalizeUkrainianPhone_(data.phone);
     const orderType = String(data.orderType || "ЗАМОВЛЕННЯ").trim();
     const idempotencyKey = hashKey_(orderType + "|" + requestId);
 
@@ -246,8 +246,8 @@ function doPost(e) {
     const delivery = String(data.delivery || "").trim();
     if (!allowedDelivery.includes(delivery)) return errorResponse("Недоступний спосіб доставки");
     const name = String(data.name || "").trim().slice(0, 100);
-    if (!name || !/^(?:\+380|0)\d{9}$/.test(phone)) return errorResponse("Перевірте ім'я та номер телефону");
-    if (email && !validateEmail(email)) return errorResponse("Некоректна електронна адреса");
+    if (!name || !phone) return errorResponse("Перевірте ім'я або номер телефону");
+    if (!validateEmail(email)) return errorResponse("Вкажіть коректну електронну адресу — на неї буде надіслано підтвердження замовлення та реквізити оплати.");
 
     const safeCart = normalizeCart(data.cart);
     if (safeCart.error) return errorResponse(safeCart.error);
@@ -332,6 +332,15 @@ function sanitizeString(str) {
 /**
  * Валідація email
  */
+function normalizeUkrainianPhone_(value) {
+  const cleaned = String(value || "").trim().replace(/[\s().-]/g, "");
+  if (!/^\+?\d+$/.test(cleaned)) return "";
+  const digits = cleaned.replace(/\D/g, "");
+  if (/^0\d{9}$/.test(digits)) return "+38" + digits;
+  if (/^380\d{9}$/.test(digits)) return "+" + digits;
+  return "";
+}
+
 function validateEmail(email) {
   if (!email || typeof email !== 'string') return false;
   
