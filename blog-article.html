@@ -7,10 +7,10 @@
     default-src 'self'; 
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
     font-src 'self' https://fonts.gstatic.com; 
-    script-src 'self' 'unsafe-inline' https://script.google.com https://www.googletagmanager.com https://www.gstatic.com https://*.firebasedatabase.app; 
-    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://*.firebasedatabase.app https://*.googleapis.com wss://*.firebasedatabase.app wss://*.firebaseio.com; 
+    script-src 'self' 'unsafe-inline' https://script.google.com https://www.googletagmanager.com https://www.gstatic.com https://*.firebasedatabase.app https://challenges.cloudflare.com; 
+    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://*.firebasedatabase.app https://*.googleapis.com wss://*.firebasedatabase.app wss://*.firebaseio.com https://challenges.cloudflare.com; 
     img-src 'self' data: https://gapkainferno.github.io https://*.gstatic.com; 
-    frame-src 'self' https://*.firebasedatabase.app;
+    frame-src 'self' https://*.firebasedatabase.app https://challenges.cloudflare.com;
     base-uri 'self'; 
     form-action 'self'; 
     upgrade-insecure-requests;
@@ -67,8 +67,8 @@
             "addressCountry": "UA"
           },
           "sameAs": [
-            "https://instagram.com/homestead.inferno",
-            "https://t.me/homesteadinferno"
+            "https://instagram.com/homestead.inferno"
+            
           ]
         },
         {
@@ -156,9 +156,6 @@
                 <div class="article-share">
                     <h4>Поділитися:</h4>
                     <div class="share-buttons">
-                        <button class="share-btn telegram" onclick="shareToTelegram()">
-                            📱 Telegram
-                        </button>
                         <button class="share-btn facebook" onclick="shareToFacebook()">
                             📘 Facebook
                         </button>
@@ -240,12 +237,6 @@
 <script type="module" src="blog-article-app.js"></script>
 <script>
     // Функції для кнопок "Поділитися", які мають бути глобальними
-    function shareToTelegram() {
-        const url = window.location.href;
-        const text = document.title;
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
-    }
-
     function shareToFacebook() {
         const url = window.location.href;
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');

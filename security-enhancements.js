@@ -48,57 +48,11 @@ window.RateLimiter = (() => {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // 2️⃣ SECURE STORAGE
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-window.SecureStorage = (() => {
-    const encryptSimple = (str, key = 'gapka-secure-2024') => {
-        let encrypted = '';
-        for (let i = 0; i < str.length; i++) {
-            encrypted += String.fromCharCode(str.charCodeAt(i) ^ key.charCodeAt(i % key.length));
-        }
-        return btoa(encrypted);
-    };
-
-    const decryptSimple = (encoded, key = 'gapka-secure-2024') => {
-        try {
-            const encrypted = atob(encoded);
-            let decrypted = '';
-            for (let i = 0; i < encrypted.length; i++) {
-                decrypted += String.fromCharCode(encrypted.charCodeAt(i) ^ key.charCodeAt(i % key.length));
-            }
-            return decrypted;
-        } catch (e) {
-            return null;
-        }
-    };
-
-    return {
-        set(key, value) {
-            try {
-                const encrypted = encryptSimple(JSON.stringify(value));
-                localStorage.setItem(`secure_${key}`, encrypted);
-            } catch (e) {
-                console.error('Storage write failed:', e);
-            }
-        },
-        
-        get(key) {
-            try {
-                const encrypted = localStorage.getItem(`secure_${key}`);
-                if (!encrypted) return null;
-                const decrypted = decryptSimple(encrypted);
-                return decrypted ? JSON.parse(decrypted) : null;
-            } catch (e) {
-                return null;
-            }
-        },
-        
-        remove(key) {
-            localStorage.removeItem(`secure_${key}`);
-        }
-    };
-})();
-
+// 2️⃣ CLIENT STORAGE NOTE
+// Browser storage is not encrypted by this site. Do not store passwords,
+// payment credentials, or sensitive personal data in localStorage.
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 3️⃣ SECURITY MONITOR
+
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 window.SecurityMonitor = (() => {
     const logs = [];
@@ -130,4 +84,4 @@ window.SecurityMonitor = (() => {
 // ИНИЦИАЛИЗАЦИЯ
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 console.log('✅ Security modules initialized');
-console.log('Available: window.RateLimiter, window.SecureStorage, window.SecurityMonitor');
+console.log('Available: window.RateLimiter, window.SecurityMonitor');

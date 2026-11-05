@@ -7,9 +7,10 @@
     default-src 'self' https://*.gstatic.com https://*.firebasedatabase.app; 
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
     font-src 'self' https://fonts.gstatic.com; 
-    script-src 'self' 'unsafe-inline' https://script.google.com https://www.googletagmanager.com https://www.gstatic.com; 
-    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://*.firebasedatabase.app https://*.googleapis.com wss://*.firebasedatabase.app wss://*.firebaseio.com;  
-    img-src 'self' data: https://gapkainferno.github.io;">
+    script-src 'self' 'unsafe-inline' https://script.google.com https://www.googletagmanager.com https://www.gstatic.com https://challenges.cloudflare.com; 
+    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://*.firebasedatabase.app https://*.googleapis.com wss://*.firebasedatabase.app wss://*.firebaseio.com https://challenges.cloudflare.com;  
+    img-src 'self' data: https://gapkainferno.github.io;
+    frame-src 'self' https://challenges.cloudflare.com;">
 
     <title id="meta-title">Купити насіння гострих перців, супер-гострі соуси та інше насіння  - Gapka’s Homestead Inferno</title>
     <meta name="description" id="meta-description" content="Купити насіння гострих перців та соуси в магазині Homestead">
@@ -106,6 +107,10 @@
                     <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
                         <input type="text" id="rev-author" placeholder="Ваше ім'я" style="background: #1a100a; border: 1px solid #44332a; color: white; padding: 10px; border-radius: 4px;">
                         <textarea id="rev-text" rows="3" placeholder="Враження..." style="background: #1a100a; border: 1px solid #44332a; color: white; padding: 10px; resize: none; border-radius: 4px;"></textarea>
+                        <div style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
+                            <input type="text" id="rev-honey" tabindex="-1" autocomplete="off">
+                        </div>
+                        <div id="review-turnstile" style="display:flex;justify-content:center;margin:12px 0;"></div>
                         <button class="add-btn-aside" style="width: 100%; padding: 10px;" onclick="sendReview()">Надіслати</button>
                     </div>
                 </div>

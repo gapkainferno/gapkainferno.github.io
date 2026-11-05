@@ -1,4 +1,6 @@
 (function () {
+  // Сайт працює лише українською; міжнародний режим вимкнено.
+  window.IS_ENGLISH = false;
   const STORAGE_KEY = 'site_lang_pref';
 
   try {
