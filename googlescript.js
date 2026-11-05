@@ -74,24 +74,42 @@ function findIdempotentRow_(sheet, column, key) {
 }
 
 function ensureOrderNotificationColumns_(sheet) {
-  const requiredColumns = 18;
-  if (sheet.getMaxColumns() < requiredColumns) {
-    sheet.insertColumnsAfter(sheet.getMaxColumns(), requiredColumns - sheet.getMaxColumns());
-  }
   const headers = [
     "Email клієнту", "Email адміністратору", "Спроби email",
     "Payload email (службовий)", "Остання спроба email", "Fingerprint запиту (службовий)"
   ];
-  const range = sheet.getRange(1, 13, 1, headers.length);
-  const current = range.getValues()[0];
-  headers.forEach((header, index) => {
-    if (!current[index]) sheet.getRange(1, 13 + index).setValue(header);
-  });
-  try { sheet.hideColumns(16); sheet.hideColumns(18); } catch (_) {}
+  const lastColumn = Math.max(sheet.getLastColumn(), 12);
+  const rowHeaders = sheet.getRange(1, 1, 1, lastColumn).getValues()[0].map(value => String(value || "").trim());
+  const found = headers.map(header => rowHeaders.indexOf(header) + 1);
+  const foundCount = found.filter(column => column > 0).length;
+  let startColumn;
+  if (foundCount === headers.length) {
+    startColumn = found[0];
+    if (found.some((column, index) => column !== startColumn + index)) {
+      throw new Error("Службові стовпці email мають бути розташовані поруч. Перевірте заголовки таблиці.");
+    }
+  } else if (foundCount > 0) {
+    throw new Error("Знайдено лише частину службових стовпців email. Перевірте заголовки таблиці.");
+  } else {
+    startColumn = lastColumn + 1;
+    if (sheet.getMaxColumns() < startColumn + headers.length - 1) {
+      sheet.insertColumnsAfter(sheet.getMaxColumns(), startColumn + headers.length - 1 - sheet.getMaxColumns());
+    }
+    sheet.getRange(1, startColumn, 1, headers.length).setValues([headers]);
+    sheet.getRange(1, startColumn, 1, headers.length).setFontWeight("bold").setBackground("#eeeeee");
+  }
+  const map = {
+    customer: startColumn, admin: startColumn + 1, attempts: startColumn + 2,
+    payload: startColumn + 3, lastAttempt: startColumn + 4, fingerprint: startColumn + 5,
+    start: startColumn
+  };
+  try { sheet.hideColumns(map.payload); sheet.hideColumns(map.fingerprint); } catch (_) {}
+  return map;
 }
 
 function getOrderEmailState_(sheet, row) {
-  const values = sheet.getRange(row, 13, 1, 3).getValues()[0];
+  const columns = ensureOrderNotificationColumns_(sheet);
+  const values = sheet.getRange(row, columns.start, 1, 3).getValues()[0];
   return {
     customerEmailSent: values[0] === "SENT",
     adminEmailSent: values[1] === "SENT",
@@ -106,12 +124,13 @@ function sendOrderEmailsForRow_(sheet, row) {
     return { customerEmailSent: state.customerEmailSent, adminEmailSent: state.adminEmailSent, pending: true };
   }
   try {
-    const stateRange = sheet.getRange(row, 13, 1, 3);
+    const columns = ensureOrderNotificationColumns_(sheet);
+    const stateRange = sheet.getRange(row, columns.start, 1, 3);
     const stateValues = stateRange.getValues()[0];
     let customerStatus = String(stateValues[0] || "PENDING");
     let adminStatus = String(stateValues[1] || "PENDING");
     let attempts = Number(stateValues[2]) || 0;
-    const payloadText = String(sheet.getRange(row, 16).getValue() || "");
+    const payloadText = String(sheet.getRange(row, columns.payload).getValue() || "");
     if (!payloadText) {
       return { customerEmailSent: null, adminEmailSent: null, pending: false };
     }
@@ -132,8 +151,8 @@ function sendOrderEmailsForRow_(sheet, row) {
     }
 
     attempts += 1;
-    sheet.getRange(row, 15).setValue(attempts);
-    sheet.getRange(row, 17).setValue(Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss"));
+    sheet.getRange(row, columns.attempts).setValue(attempts);
+    sheet.getRange(row, columns.lastAttempt).setValue(Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss"));
 
     if (adminStatus !== "SENT") {
       try {
@@ -148,7 +167,7 @@ function sendOrderEmailsForRow_(sheet, row) {
         Logger.log("Admin order notification failed for " + payload.orderId + ": " + error);
         adminStatus = "PENDING";
       }
-      sheet.getRange(row, 14).setValue(adminStatus);
+      sheet.getRange(row, columns.admin).setValue(adminStatus);
     }
 
     if (customerStatus !== "SENT") {
@@ -162,10 +181,10 @@ function sendOrderEmailsForRow_(sheet, row) {
         Logger.log("Customer confirmation email failed for " + payload.orderId + ": " + error);
         customerStatus = "PENDING";
       }
-      sheet.getRange(row, 13).setValue(customerStatus);
+      sheet.getRange(row, columns.customer).setValue(customerStatus);
     }
 
-    sheet.getRange(row, 15).setValue(attempts);
+    sheet.getRange(row, columns.attempts).setValue(attempts);
     return {
       customerEmailSent: customerStatus === "SENT",
       adminEmailSent: adminStatus === "SENT",
@@ -180,20 +199,19 @@ function sendOrderEmailsForRow_(sheet, row) {
 // Запускається часовим тригером кожні 5 хвилин. Повторює лише невдалі листи.
 function retryPendingOrderEmails() {
   const sheet = getOrdersSheet();
-  ensureOrderNotificationColumns_(sheet);
+  const columns = ensureOrderNotificationColumns_(sheet);
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) return;
-  const startRow = 2;
   const rowCount = Math.min(lastRow - 1, 100);
-  const states = sheet.getRange(startRow, 13, rowCount, 3).getValues();
+  const states = sheet.getRange(2, columns.start, rowCount, 3).getValues();
   let processed = 0;
   for (let i = 0; i < states.length && processed < 20; i++) {
     const customerStatus = String(states[i][0] || "");
     const adminStatus = String(states[i][1] || "");
     const attempts = Number(states[i][2]) || 0;
     if ((customerStatus !== "SENT" || adminStatus !== "SENT") &&
-        attempts < 6 && sheet.getRange(startRow + i, 16).getValue()) {
-      sendOrderEmailsForRow_(sheet, startRow + i);
+        attempts < 6 && sheet.getRange(i + 2, columns.payload).getValue()) {
+      sendOrderEmailsForRow_(sheet, i + 2);
       processed++;
     }
   }
@@ -401,11 +419,11 @@ function doPost(e) {
     try {
       const sheet = getOrdersSheet();
       ensureIdempotencyColumn_(sheet, 12, "Ключ запиту (службовий)");
-      ensureOrderNotificationColumns_(sheet);
+      const notificationColumns = ensureOrderNotificationColumns_(sheet);
       duplicateRow = findIdempotentRow_(sheet, 12, idempotencyKey);
       if (duplicateRow) {
         previousOrderId = String(sheet.getRange(duplicateRow, 3).getValue());
-        const storedFingerprint = String(sheet.getRange(duplicateRow, 18).getValue() || "");
+        const storedFingerprint = String(sheet.getRange(duplicateRow, notificationColumns.fingerprint).getValue() || "");
         if (storedFingerprint && storedFingerprint !== requestFingerprint) {
           return errorResponse("Цей запит уже використано для іншого вмісту замовлення. Оновіть сторінку та повторіть спробу.");
         }
@@ -455,10 +473,10 @@ function doPost(e) {
     try {
       const sheet = getOrdersSheet();
       ensureIdempotencyColumn_(sheet, 12, "Ключ запиту (службовий)");
-      ensureOrderNotificationColumns_(sheet);
+      const notificationColumns = ensureOrderNotificationColumns_(sheet);
       const duplicateDuringInsert = findIdempotentRow_(sheet, 12, idempotencyKey);
       if (duplicateDuringInsert) {
-        const storedFingerprint = String(sheet.getRange(duplicateDuringInsert, 18).getValue() || "");
+        const storedFingerprint = String(sheet.getRange(duplicateDuringInsert, notificationColumns.fingerprint).getValue() || "");
         if (storedFingerprint && storedFingerprint !== requestFingerprint) {
           return errorResponse("Цей запит уже використано для іншого вмісту замовлення. Оновіть сторінку та повторіть спробу.");
         }
@@ -471,12 +489,13 @@ function doPost(e) {
         }
         sheet.insertRowBefore(2);
         sheet.getRange(2, 3).setNumberFormat("@");
-        sheet.getRange(2, 1, 1, 18).setValues([[
+        sheet.getRange(2, 1, 1, 12).setValues([[
           false, timestamp, safeSheetText_(orderId), safeSheetText_(name), safeSheetText_(email),
           safeSheetText_(phone), safeSheetText_(fullMessage), "🆕 Нове", formattedTotal + " ₴", "",
-          safeSheetText_(payment), idempotencyKey,
-          "PENDING", "PENDING", 0, safeSheetText_(JSON.stringify(emailPayload)), "",
-          requestFingerprint
+          safeSheetText_(payment), idempotencyKey
+        ]]);
+        sheet.getRange(2, notificationColumns.start, 1, 6).setValues([[
+          "PENDING", "PENDING", 0, safeSheetText_(JSON.stringify(emailPayload)), "", requestFingerprint
         ]]);
         sheet.getRange(2, 1).insertCheckboxes();
         sheet.getRange(2, 1, 1, 11).setBackground("#061a07").setFontColor("#ffffff").setVerticalAlignment("middle");
