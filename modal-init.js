@@ -213,14 +213,23 @@ window.gapkaFormTurnstile = (() => {
   return {render, get, reset};
 })();
 
-window.gapkaRequestId_ = function(storageKey) {
-  let id = localStorage.getItem(storageKey);
-  if (!id) {
-    id = window.crypto?.randomUUID
-      ? window.crypto.randomUUID()
-      : "ghi_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
-    localStorage.setItem(storageKey, id);
+window.gapkaRequestId_ = function(storageKey, fingerprint = "") {
+  let fingerprintHash = 2166136261;
+  const source = String(fingerprint);
+  for (let i = 0; i < source.length; i++) {
+    fingerprintHash ^= source.charCodeAt(i);
+    fingerprintHash = Math.imul(fingerprintHash, 16777619);
   }
+  fingerprintHash = (fingerprintHash >>> 0).toString(36);
+
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(storageKey) || "null"); } catch (_) {}
+  if (saved && saved.id && saved.fingerprint === fingerprintHash) return saved.id;
+
+  const id = window.crypto?.randomUUID
+    ? window.crypto.randomUUID()
+    : "ghi_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+  localStorage.setItem(storageKey, JSON.stringify({id, fingerprint:fingerprintHash}));
   return id;
 };
 
@@ -259,7 +268,7 @@ async function sendToGoogleSheet(data, turnstileContainerId, storageKey) {
             mode: 'cors',
             cache: 'no-cache',
             headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-            body: JSON.stringify({...data, requestId: gapkaRequestId_(storageKey), turnstileToken: token})
+            body: JSON.stringify({...data, requestId: gapkaRequestId_(storageKey, JSON.stringify([data.orderType, data.email, data.details])), turnstileToken: token})
         });
         if (!response.ok) throw new Error('HTTP ' + response.status);
         const result = await response.json();
