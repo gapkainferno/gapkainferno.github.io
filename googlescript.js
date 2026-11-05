@@ -128,6 +128,11 @@ function doPost(e) {
     // дізнатися про наявність чужого замовлення без успішної перевірки.
     const captcha = verifyTurnstile_(data.turnstileToken);
     if (!captcha.ok) return errorResponse("Перевірка безпеки не пройдена. Оновіть сторінку та повторіть спробу.");
+    // Глобальний запобіжник застосовується лише після CAPTCHA, щоб не дозволяти
+    // анонімним запитам блокувати справжніх покупців.
+    if (!consumeRateLimit_("verified_global_requests", 120, 60)) {
+      return errorResponse("Забагато запитів. Спробуйте за хвилину.");
+    }
 
     const requestId = String(data.requestId || "").trim();
     if (!/^[A-Za-z0-9_-]{20,100}$/.test(requestId)) {
