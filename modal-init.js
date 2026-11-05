@@ -334,7 +334,7 @@ async function submitNotification() {
     }
 
     const successMessage = document.getElementById('notify-success');
-    successMessage.innerText = 'Запит надіслано. Перевірте пошту для підтвердження. 🔥';
+    successMessage.innerText = 'Запит прийнято! Якщо лист-підтвердження не надійде, перевірте папку «Спам» або напишіть нам. 🔥';
     successMessage.style.display = 'block';
     setTimeout(() => {
         document.getElementById('notifyModal').style.display = 'none';
@@ -428,7 +428,7 @@ async function handleGeneralSubscribe(event) {
         return;
     }
 
-    alert('Запит надіслано. Перевірте пошту для підтвердження. 🔥');
+    alert('Запит прийнято! Якщо лист-підтвердження не надійде, перевірте папку «Спам» або напишіть нам. 🔥');
     btn.disabled = false;
     btn.innerText = "Підписатися";
     document.getElementById('sub-email').value = '';
