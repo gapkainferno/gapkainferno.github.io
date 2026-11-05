@@ -114,7 +114,9 @@ function doPost(e) {
   try {
     if (!e || !e.postData || !e.postData.contents) return errorResponse("Немає даних");
     const rawBody = e.postData.contents;
-    if (Utilities.newBlob(rawBody).getBytes().length > 30000) return errorResponse("Запит завеликий.");
+    if (rawBody.length > 30000 || Utilities.newBlob(rawBody).getBytes().length > 30000) {
+      return errorResponse("Запит завеликий.");
+    }
 
     let data;
     try { data = JSON.parse(rawBody); }
