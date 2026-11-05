@@ -180,6 +180,9 @@ window.gapkaFormTurnstile = (() => {
       script.onload = resolve;
       script.onerror = () => reject(new Error("Не вдалося завантажити перевірку безпеки."));
       document.head.appendChild(script);
+    }).catch(error => {
+      loading = null;
+      throw error;
     });
     return loading;
   }
@@ -219,7 +222,7 @@ window.gapkaRequestId_ = function(storageKey) {
     localStorage.setItem(storageKey, id);
   }
   return id;
-}
+};
 
 let currentNotifyCategory = '';
 
