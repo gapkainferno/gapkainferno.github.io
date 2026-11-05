@@ -163,6 +163,68 @@ document.addEventListener("DOMContentLoaded", function() {
 // СПІЛЬНІ ЗМІННІ ТА ФУНКЦІЇ
 // ═══════════════════════════════════════════════════════════════
 
+// Спільний Turnstile для форм поза checkout.
+const gapkaFormTurnstile = (() => {
+  const widgets = new Map();
+  const tokens = new Map();
+  let loading = null;
+
+  function load() {
+    if (window.turnstile) return Promise.resolve();
+    if (loading) return loading;
+    loading = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.defer = true;
+      script.onload = resolve;
+      script.onerror = () => reject(new Error("Не вдалося завантажити перевірку безпеки."));
+      document.head.appendChild(script);
+    });
+    return loading;
+  }
+
+  async function render(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) throw new Error("Не знайдено контейнер перевірки безпеки.");
+    const siteKey = window.TURNSTILE_SITE_KEY;
+    if (!siteKey) throw new Error("Перевірка безпеки тимчасово недоступна.");
+    await load();
+    if (widgets.has(containerId)) {
+      window.turnstile.reset(widgets.get(containerId));
+      tokens.set(containerId, "");
+      return;
+    }
+    const widgetId = window.turnstile.render(container, {
+      sitekey: siteKey,
+      callback: token => tokens.set(containerId, token),
+      "expired-callback": () => tokens.set(containerId, ""),
+      "error-callback": () => tokens.set(containerId, "")
+    });
+    widgets.set(containerId, widgetId);
+  }
+
+  function get(containerId) { return tokens.get(containerId) || ""; }
+  function reset(containerId) {
+    tokens.set(containerId, "");
+    if (widgets.has(containerId) && window.turnstile) {
+      try { window.turnstile.reset(widgets.get(containerId)); } catch (_) {}
+    }
+  }
+  return {render, get, reset};
+})();
+
+function gapkaRequestId_(storageKey) {
+  let id = localStorage.getItem(storageKey);
+  if (!id) {
+    id = window.crypto?.randomUUID
+      ? window.crypto.randomUUID()
+      : "ghi_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+    localStorage.setItem(storageKey, id);
+  }
+  return id;
+}
+
 let currentNotifyCategory = '';
 
 function openNotifyModal(category) {
@@ -185,21 +247,33 @@ function openNotifyModal(category) {
 }
 
 // Універсальна функція для відправки даних у Google Sheet
-async function sendToGoogleSheet(data) {
+async function sendToGoogleSheet(data, turnstileContainerId, storageKey) {
+    const token = gapkaFormTurnstile.get(turnstileContainerId);
+    if (!token) {
+        alert('Пройдіть, будь ласка, перевірку безпеки перед надсиланням.');
+        await gapkaFormTurnstile.render(turnstileContainerId);
+        return false;
+    }
     try {
         const response = await fetch(window.GOOGLE_SCRIPT_URL, {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
             headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-            body: JSON.stringify(data)
+            body: JSON.stringify({...data, requestId: gapkaRequestId_(storageKey), turnstileToken: token})
         });
-        if (!response.ok) return false;
+        if (!response.ok) throw new Error('HTTP ' + response.status);
         const result = await response.json();
-        return result.status === 'success';
+        if (!result || result.status !== 'success') {
+            throw new Error(result?.message || 'Сервер не підтвердив запит.');
+        }
+        localStorage.removeItem(storageKey);
+        return true;
     } catch (error) {
         console.error('Помилка відправки:', error);
         return false;
+    } finally {
+        gapkaFormTurnstile.reset(turnstileContainerId);
     }
 }
 
@@ -221,17 +295,29 @@ async function submitNotification() {
     emailInput.classList.remove('input-error');
 
     const btn = document.querySelector('#notifyModal .order-btn');
+    let captchaBox = document.getElementById('notify-turnstile');
+    if (!captchaBox) {
+        captchaBox = document.createElement('div');
+        captchaBox.id = 'notify-turnstile';
+        captchaBox.style.cssText = 'display:flex;justify-content:center;margin:12px 0;';
+        btn.parentNode.insertBefore(captchaBox, btn);
+    }
+    try { await gapkaFormTurnstile.render('notify-turnstile'); }
+    catch (error) { alert(error.message); return; }
+    if (!gapkaFormTurnstile.get('notify-turnstile')) {
+        alert('Пройдіть перевірку безпеки перед надсиланням.');
+        return;
+    }
     btn.disabled = true;
     btn.innerText = "Записуємо...";
 
     const data = {
-        date: new Date().toLocaleString("uk-UA"),
         email: email,
         orderType: "ЗАПИТ_НА_ЗАПУСК",
-        details: `Запит на повідомлення про появу: ${currentNotifyCategory}`,
+        details: \`Запит на повідомлення про появу: \${currentNotifyCategory}\`,
     };
 
-    const sent = await sendToGoogleSheet(data);
+    const sent = await sendToGoogleSheet(data, 'notify-turnstile', 'pending_notify_request_id');
     if (!sent) {
         alert('Не вдалося надіслати запит. Спробуйте ще раз.');
         btn.disabled = false;
@@ -304,15 +390,28 @@ async function handleGeneralSubscribe(event) {
     }
     emailInput.classList.remove('input-error');
 
+    let captchaBox = document.getElementById('subscribe-turnstile');
+    if (!captchaBox) {
+        captchaBox = document.createElement('div');
+        captchaBox.id = 'subscribe-turnstile';
+        captchaBox.style.cssText = 'display:flex;justify-content:center;margin:12px 0;';
+        btn.parentNode.insertBefore(captchaBox, btn);
+    }
+    try { await gapkaFormTurnstile.render('subscribe-turnstile'); }
+    catch (error) { alert(error.message); return; }
+    if (!gapkaFormTurnstile.get('subscribe-turnstile')) {
+        alert('Пройдіть перевірку безпеки перед підпискою.');
+        return;
+    }
+
     btn.disabled = true;
     btn.innerText = "⏳";
 
     const sent = await sendToGoogleSheet({
-        date: new Date().toISOString(),
         email: email,
         orderType: "ПІДПИСКА_МАРКЕТИНГ",
         details: "Підписка з головної сторінки (футер)",
-    });
+    }, 'subscribe-turnstile', 'pending_subscribe_request_id');
 
     if (!sent) {
         alert('Не вдалося оформити підписку. Спробуйте ще раз.');
