@@ -76,6 +76,48 @@ function ensureIdempotencyColumn_(sheet, column, header) {
   try { sheet.hideColumns(column); } catch (_) {}
 }
 
+function ensureOrderIdempotencyColumn_(sheet) {
+  const header = "Ключ запиту (службовий)";
+  const lastColumn = Math.max(sheet.getLastColumn(), 12);
+  const headers = sheet.getRange(1, 1, 1, lastColumn).getValues()[0]
+    .map(value => String(value || "").trim());
+  const matches = [];
+  headers.forEach((value, index) => {
+    if (value === header) matches.push(index + 1);
+  });
+
+  if (matches.length > 1) {
+    throw new Error("Знайдено кілька стовпців ключа замовлення. Перевірте заголовки аркуша.");
+  }
+  if (matches.length === 1) {
+    const column = matches[0];
+    if (column < 12) {
+      throw new Error("Службовий ключ замовлення розташований серед основних полів A:K. Потрібна перевірка структури таблиці.");
+    }
+    try { sheet.hideColumns(column); } catch (_) {}
+    return column;
+  }
+
+  // Не перезаписуємо L або інший зайнятий стовпець: старі версії могли
+  // залишити там службові значення без заголовка.
+  let column = 12;
+  const l1 = String(sheet.getRange(1, 12).getValue() || "").trim();
+  let columnLHasData = false;
+  if (sheet.getLastRow() >= 2) {
+    columnLHasData = sheet.getRange(2, 12, sheet.getLastRow() - 1, 1)
+      .getValues().some(row => row[0] !== "" && row[0] !== null);
+  }
+  if (l1 || columnLHasData) column = lastColumn + 1;
+
+  if (sheet.getMaxColumns() < column) {
+    sheet.insertColumnsAfter(sheet.getMaxColumns(), column - sheet.getMaxColumns());
+  }
+  sheet.getRange(1, column).setValue(header);
+  sheet.getRange(1, column).setFontWeight("bold").setBackground("#eeeeee");
+  try { sheet.hideColumns(column); } catch (_) {}
+  return column;
+}
+
 function findIdempotentRow_(sheet, column, key) {
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) return 0;
@@ -437,9 +479,9 @@ function doPost(e) {
     if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
     try {
       const sheet = getOrdersSheet();
-      ensureIdempotencyColumn_(sheet, 12, "Ключ запиту (службовий)");
+      const orderIdempotencyColumn = ensureOrderIdempotencyColumn_(sheet);
       const notificationColumns = ensureOrderNotificationColumns_(sheet);
-      duplicateRow = findIdempotentRow_(sheet, 12, idempotencyKey);
+      duplicateRow = findIdempotentRow_(sheet, orderIdempotencyColumn, idempotencyKey);
       if (duplicateRow) {
         previousOrderId = String(sheet.getRange(duplicateRow, 3).getValue());
         const storedFingerprint = String(sheet.getRange(duplicateRow, notificationColumns.fingerprint).getValue() || "");
@@ -491,9 +533,9 @@ function doPost(e) {
     if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
     try {
       const sheet = getOrdersSheet();
-      ensureIdempotencyColumn_(sheet, 12, "Ключ запиту (службовий)");
+      const orderIdempotencyColumn = ensureOrderIdempotencyColumn_(sheet);
       const notificationColumns = ensureOrderNotificationColumns_(sheet);
-      const duplicateDuringInsert = findIdempotentRow_(sheet, 12, idempotencyKey);
+      const duplicateDuringInsert = findIdempotentRow_(sheet, orderIdempotencyColumn, idempotencyKey);
       if (duplicateDuringInsert) {
         const storedFingerprint = String(sheet.getRange(duplicateDuringInsert, notificationColumns.fingerprint).getValue() || "");
         if (storedFingerprint && storedFingerprint !== requestFingerprint) {
@@ -508,11 +550,12 @@ function doPost(e) {
         }
         sheet.insertRowBefore(2);
         sheet.getRange(2, 3).setNumberFormat("@");
-        sheet.getRange(2, 1, 1, 12).setValues([[
+        sheet.getRange(2, 1, 1, 11).setValues([[
           false, timestamp, safeSheetText_(orderId), safeSheetText_(name), safeSheetText_(email),
           safeSheetText_(phone), safeSheetText_(fullMessage), "🆕 Нове", formattedTotal + " ₴", "",
-          safeSheetText_(payment), idempotencyKey
+          safeSheetText_(payment)
         ]]);
+        sheet.getRange(2, orderIdempotencyColumn).setValue(idempotencyKey);
         sheet.getRange(2, notificationColumns.start, 1, 6).setValues([[
           "PENDING", "PENDING", 0, safeSheetText_(JSON.stringify(emailPayload)), "", requestFingerprint
         ]]);
