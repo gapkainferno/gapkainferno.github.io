@@ -1907,7 +1907,8 @@ window.sendReview = async function() {
                 product,
                 message,
                 requestId: window.gapkaRequestId_('pending_review_request_id', JSON.stringify([author, product, message])),
-                turnstileToken: window.gapkaFormTurnstile.get('review-turnstile')
+                turnstileToken: window.gapkaFormTurnstile.get('review-turnstile'),
+                website_url: document.getElementById('rev-honey')?.value || ''
             })
         });
         if (!response.ok) throw new Error("Сервер повернув помилку: " + response.status);
