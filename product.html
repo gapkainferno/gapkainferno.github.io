@@ -107,6 +107,9 @@
                     <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
                         <input type="text" id="rev-author" placeholder="Ваше ім'я" style="background: #1a100a; border: 1px solid #44332a; color: white; padding: 10px; border-radius: 4px;">
                         <textarea id="rev-text" rows="3" placeholder="Враження..." style="background: #1a100a; border: 1px solid #44332a; color: white; padding: 10px; resize: none; border-radius: 4px;"></textarea>
+                        <div style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
+                            <input type="text" id="rev-honey" tabindex="-1" autocomplete="off">
+                        </div>
                         <div id="review-turnstile" style="display:flex;justify-content:center;margin:12px 0;"></div>
                         <button class="add-btn-aside" style="width: 100%; padding: 10px;" onclick="sendReview()">Надіслати</button>
                     </div>
