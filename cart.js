@@ -1906,7 +1906,7 @@ window.sendReview = async function() {
                 name: author,
                 product,
                 message,
-                requestId: window.gapkaRequestId_('pending_review_request_id'),
+                requestId: window.gapkaRequestId_('pending_review_request_id', JSON.stringify([author, product, message])),
                 turnstileToken: window.gapkaFormTurnstile.get('review-turnstile')
             })
         });
