@@ -1615,23 +1615,21 @@ window.submitOrder = async function() {
             sanitizedData[key] = value;
         }
     }
+    function normalizeUkrainianPhone(phone) {
+        const cleaned = String(phone || '').trim().replace(/[\s().-]/g, '');
+        if (!/^\+?\d+$/.test(cleaned)) return '';
+        const digits = cleaned.replace(/\D/g, '');
+        if (/^0\d{9}$/.test(digits)) return '+38' + digits;
+        if (/^380\d{9}$/.test(digits)) return '+' + digits;
+        return '';
+    }
+
     function validatePhone(phone) {
-        if (!phone) return false;
-        const cleaned = phone.replace(/[\s\(\)\-]/g, '');
-        const phoneRegex = /^(?:\+?38)?(?:0|80)\d{9}$/;
-        return phoneRegex.test(cleaned);
+        return Boolean(normalizeUkrainianPhone(phone));
     }
 
     function cleanPhone(phone) {
-        if (!phone) return '';
-        const cleaned = phone.replace(/[\s\(\)\-]/g, '');
-        if (cleaned.startsWith('0')) {
-            return '+38' + cleaned;
-        }
-        if (cleaned.startsWith('+38')) {
-            return cleaned;
-        }
-        return cleaned;
+        return normalizeUkrainianPhone(phone);
     }
 
     if (fields.phone) {
@@ -1647,14 +1645,18 @@ window.submitOrder = async function() {
     }
 
     const emailEl = document.getElementById('email');
-    if (emailEl && emailEl.value.trim()) {
+    if (!emailEl || !emailEl.value.trim()) {
+        alert("Будь ласка, вкажіть електронну пошту — на неї надійде підтвердження замовлення та реквізити оплати.");
+        if (emailEl) emailEl.classList.add('input-error');
+        hasError = true;
+    } else {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(emailEl.value.trim())) {
             alert("Будь ласка, введіть коректний email");
             emailEl.classList.add('input-error');
             hasError = true;
         } else {
-            sanitizedData.email = sanitizeInput(emailEl.value.trim(), 100);
+            sanitizedData.email = sanitizeInput(emailEl.value.trim(), 100).toLowerCase();
             emailEl.value = sanitizedData.email;
         }
     }
