@@ -1,5 +1,12 @@
 ﻿
 // ✅ RATE LIMITING - Запобігаємо спаму на оформлення замовлення
+// Видаляємо персональні дані, збережені старими версіями кошика.
+try {
+    ['saved_name', 'saved_phone', 'saved_email', 'saved_city', 'saved_city_ref',
+     'saved_branch', 'saved_address', 'saved_zip', 'saved_country', 'saved_state']
+        .forEach(key => localStorage.removeItem(key));
+} catch (_) {}
+
 const orderRateLimiter = {
     lastSubmit: 0,
     minInterval: 30000,  // Мінімум 30 секунд між спробами
@@ -599,12 +606,6 @@ window.openCheckout = function() {
         document.getElementById('modal-main-content').style.display = 'grid';
         document.getElementById('success-msg').style.display = 'none';
         
-        // У браузері залишаємо лише нешкідливі налаштування доставки й оплати.
-        // Контактні та адресні дані не зберігаємо між сесіями.
-        ['saved_name', 'saved_phone', 'saved_email', 'saved_city', 'saved_city_ref',
-         'saved_branch', 'saved_address', 'saved_zip', 'saved_country', 'saved_state']
-            .forEach(key => localStorage.removeItem(key));
-
         ['delivery', 'payment'].forEach(field => {
             const value = localStorage.getItem('saved_' + field);
             const element = document.getElementById('cust-' + field);
