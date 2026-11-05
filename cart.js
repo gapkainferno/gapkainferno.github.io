@@ -599,6 +599,8 @@ window.openCheckout = function() {
             const element = document.getElementById('cust-' + field);
             if (value && element) element.value = value;
         });
+        restoreSavedCheckoutDetails();
+        initCheckoutMemoryConsent();
         updateCartUI();
         renderCheckoutTurnstile_();
         
@@ -614,6 +616,76 @@ let isPaymentInitialized = false;
 let currentCityBranches = [];
 let lastSelectedCity = "";
 let lastSelectedCityRef = "";
+
+// Персональні дані зберігаються лише після явної згоди покупця.
+const CHECKOUT_MEMORY_KEY = 'gapka_saved_checkout_v1';
+const CHECKOUT_MEMORY_CONSENT_KEY = 'gapka_remember_checkout';
+
+function restoreSavedCheckoutDetails() {
+    const consent = localStorage.getItem(CHECKOUT_MEMORY_CONSENT_KEY) === 'true';
+    const checkbox = document.getElementById('remember-checkout-data');
+    if (checkbox) checkbox.checked = consent;
+    if (!consent) return;
+
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem(CHECKOUT_MEMORY_KEY) || 'null'); } catch (_) {}
+    if (!saved || typeof saved !== 'object') return;
+
+    const fields = {
+        name: 'cust-name',
+        phone: 'cust-phone',
+        email: 'email',
+        city: 'cust-city',
+        branch: 'cust-branch-input'
+    };
+    Object.entries(fields).forEach(([key, id]) => {
+        const element = document.getElementById(id);
+        if (element && typeof saved[key] === 'string') element.value = saved[key];
+    });
+
+    const city = document.getElementById('cust-city');
+    const branch = document.getElementById('cust-branch');
+    if (city && saved.cityRef) {
+        city.dataset.ref = saved.cityRef;
+        lastSelectedCity = saved.city || '';
+        lastSelectedCityRef = saved.cityRef;
+    }
+    if (branch && typeof saved.branch === 'string') branch.value = saved.branch;
+}
+
+function saveCheckoutConsentAndDetails(orderData) {
+    const checkbox = document.getElementById('remember-checkout-data');
+    if (!checkbox?.checked) {
+        localStorage.removeItem(CHECKOUT_MEMORY_KEY);
+        localStorage.removeItem(CHECKOUT_MEMORY_CONSENT_KEY);
+        return;
+    }
+
+    const city = document.getElementById('cust-city');
+    const saved = {
+        name: orderData.name || '',
+        phone: orderData.phone || '',
+        email: orderData.email === '-' ? '' : (orderData.email || ''),
+        city: orderData.city || '',
+        cityRef: city?.dataset.ref || '',
+        branch: orderData.branch || ''
+    };
+    localStorage.setItem(CHECKOUT_MEMORY_KEY, JSON.stringify(saved));
+    localStorage.setItem(CHECKOUT_MEMORY_CONSENT_KEY, 'true');
+}
+
+function initCheckoutMemoryConsent() {
+    const checkbox = document.getElementById('remember-checkout-data');
+    if (!checkbox || checkbox.dataset.initialized === 'true') return;
+    checkbox.dataset.initialized = 'true';
+    checkbox.addEventListener('change', () => {
+        if (!checkbox.checked) {
+            localStorage.removeItem(CHECKOUT_MEMORY_KEY);
+            localStorage.removeItem(CHECKOUT_MEMORY_CONSENT_KEY);
+        }
+    });
+}
+
 let isLocked = false;
 let debounceTimeout;
 let currentDeliveryType = ""; // Додаємо змінну для відстеження поточного типу доставки
@@ -1720,6 +1792,9 @@ window.submitOrder = async function() {
         if (!serverResult || serverResult.status !== 'success') {
             throw new Error(serverResult?.message || 'Не вдалося підтвердити замовлення. Оновіть кошик і спробуйте ще раз.');
         }
+
+        // Запам'ятовуємо контактні дані лише за явної згоди покупця.
+        saveCheckoutConsentAndDetails(orderData);
 
         if (typeof gtag === 'function') {
             gtag('event', 'purchase', {
