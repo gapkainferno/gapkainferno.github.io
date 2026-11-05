@@ -163,7 +163,7 @@ function doPost(e) {
         }
         ensureIdempotencyColumn_(subSheet, 5, "Ключ запиту (службовий)");
         if (findIdempotentRow_(subSheet, 5, idempotencyKey)) {
-          return jsonResponse_({status:"success", type:"subscription", duplicate:true, emailSent:true});
+          return jsonResponse_({status:"success", type:"subscription", duplicate:true, emailSent:null});
         }
         if (!consumeRateLimitLocked_("subscription_" + hashKey_(email), 5, 600)) {
           return errorResponse("Забагато запитів з цієї адреси. Спробуйте пізніше.");
