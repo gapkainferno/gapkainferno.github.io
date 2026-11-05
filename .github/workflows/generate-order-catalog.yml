@@ -1,4 +1,5 @@
-name: Generate order catalog
+name: Validate order catalog
+
 on:
   push:
     branches: [master, cleanup/ukraine-only-no-telegram]
@@ -15,6 +16,7 @@ on:
       - 'catalog.js'
       - 'googlescript.js'
       - 'scripts/generate-order-catalog.js'
+      - 'order-catalog.json'
       - '.github/workflows/generate-order-catalog.yml'
   pull_request:
     paths:
@@ -30,12 +32,21 @@ on:
       - 'catalog.js'
       - 'googlescript.js'
       - 'scripts/generate-order-catalog.js'
+      - 'order-catalog.json'
       - '.github/workflows/generate-order-catalog.yml'
   workflow_dispatch:
+
+# Validation does not need write access. Serialize runs per branch so an older
+# run cannot race a newer one or attempt to push generated files.
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: order-catalog-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  generate:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,17 +62,26 @@ jobs:
           node --check products.js
           node --check googlescript.js
           node --input-type=module --check < catalog.js
-      - name: Generate canonical order catalog
-        run: node scripts/generate-order-catalog.js
-      - name: Commit generated catalog
-        if: github.event_name == 'push'
+      - name: Generate and validate canonical order catalog
         run: |
-          git add order-catalog.json
-          if git diff --cached --quiet -- order-catalog.json; then
-            echo "Catalog is already up to date."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: regenerate canonical order catalog"
-          git push
+          node scripts/generate-order-catalog.js
+          node <<'NODE'
+          const fs = require('fs');
+          const { execFileSync } = require('child_process');
+
+          const committed = JSON.parse(
+            execFileSync('git', ['show', 'HEAD:order-catalog.json'], { encoding: 'utf8' })
+          );
+          const generated = JSON.parse(fs.readFileSync('order-catalog.json', 'utf8'));
+
+          // generatedAt is intentionally time-dependent; all business data must match.
+          delete committed.generatedAt;
+          delete generated.generatedAt;
+
+          if (JSON.stringify(generated) !== JSON.stringify(committed)) {
+            console.error('order-catalog.json is out of date. Regenerate it and commit the updated file.');
+            process.exit(1);
+          }
+
+          console.log('Canonical order catalog matches products.js and SALE_SETTINGS.');
+          NODE
