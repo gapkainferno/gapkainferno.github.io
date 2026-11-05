@@ -21,6 +21,7 @@ on:
       - 'products.js'
       - 'cart.js'
       - 'modal-init.js'
+      - 'security-enhancements.js'
       - 'product.html'
       - 'index.html'
       - 'growing-guide.html'
