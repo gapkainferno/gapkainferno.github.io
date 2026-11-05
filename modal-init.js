@@ -72,6 +72,11 @@ document.addEventListener("DOMContentLoaded", function() {
                             <input type="email" id="email">
                         </div>
 
+                        <label for="remember-checkout-data" class="remember-checkout-option" style="display:flex; align-items:flex-start; gap:9px; margin:4px 0 14px; font-size:13px; line-height:1.4; cursor:pointer;">
+                            <input type="checkbox" id="remember-checkout-data" style="margin-top:2px; flex:0 0 auto;">
+                            <span>Запам’ятати мої контактні дані на цьому пристрої для наступних замовлень</span>
+                        </label>
+
                         <div class="form-group">
                             <label>Коментар</label>
                             <textarea id="cust-comment"></textarea>
