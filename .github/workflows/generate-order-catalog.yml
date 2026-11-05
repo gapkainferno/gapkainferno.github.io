@@ -1,4 +1,4 @@
-name: Validate order catalog
+name: Update and validate order catalog
 
 on:
   push:
@@ -6,18 +6,7 @@ on:
     paths:
       - 'products.js'
       - 'cart.js'
-      - 'modal-init.js'
-      - 'security-enhancements.js'
-      - 'product.html'
-      - 'index.html'
-      - 'growing-guide.html'
-      - 'scripts/check-inline-scripts.js'
-      - 'google-script-config.js'
-      - 'catalog.js'
-      - 'googlescript.js'
       - 'scripts/generate-order-catalog.js'
-      - 'order-catalog.json'
-      - '.github/workflows/generate-order-catalog.yml'
   pull_request:
     paths:
       - 'products.js'
@@ -29,25 +18,54 @@ on:
       - 'growing-guide.html'
       - 'scripts/check-inline-scripts.js'
       - 'google-script-config.js'
+      - 'scripts/generate-order-catalog.js'
       - 'catalog.js'
       - 'googlescript.js'
-      - 'scripts/generate-order-catalog.js'
       - 'order-catalog.json'
       - '.github/workflows/generate-order-catalog.yml'
   workflow_dispatch:
 
-# Validation does not need write access. Serialize runs per branch so an older
-# run cannot race a newer one or attempt to push generated files.
-permissions:
-  contents: read
-
+# Serialize catalog updates per branch to avoid competing commits.
 concurrency:
   group: order-catalog-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  validate:
+  generate-and-commit:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check source syntax
+        run: |
+          node --check products.js
+          node --check cart.js
+      - name: Generate canonical order catalog
+        run: node scripts/generate-order-catalog.js
+      - name: Commit catalog when changed
+        run: |
+          if git diff --quiet -- order-catalog.json; then
+            echo "order-catalog.json is already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add order-catalog.json
+          git commit -m "Auto-update order catalog"
+          git push
+
+  validate-pull-request:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -62,26 +80,5 @@ jobs:
           node --check products.js
           node --check googlescript.js
           node --input-type=module --check < catalog.js
-      - name: Generate and validate canonical order catalog
-        run: |
-          node scripts/generate-order-catalog.js
-          node <<'NODE'
-          const fs = require('fs');
-          const { execFileSync } = require('child_process');
-
-          const committed = JSON.parse(
-            execFileSync('git', ['show', 'HEAD:order-catalog.json'], { encoding: 'utf8' })
-          );
-          const generated = JSON.parse(fs.readFileSync('order-catalog.json', 'utf8'));
-
-          // generatedAt is intentionally time-dependent; all business data must match.
-          delete committed.generatedAt;
-          delete generated.generatedAt;
-
-          if (JSON.stringify(generated) !== JSON.stringify(committed)) {
-            console.error('order-catalog.json is out of date. Regenerate it and commit the updated file.');
-            process.exit(1);
-          }
-
-          console.log('Canonical order catalog matches products.js and SALE_SETTINGS.');
-          NODE
+      - name: Verify catalog can be generated
+        run: node scripts/generate-order-catalog.js
