@@ -190,11 +190,7 @@ window.gapkaFormTurnstile = (() => {
     const siteKey = window.TURNSTILE_SITE_KEY;
     if (!siteKey) throw new Error("Перевірка безпеки тимчасово недоступна.");
     await load();
-    if (widgets.has(containerId)) {
-      window.turnstile.reset(widgets.get(containerId));
-      tokens.set(containerId, "");
-      return;
-    }
+    if (widgets.has(containerId)) return;
     const widgetId = window.turnstile.render(container, {
       sitekey: siteKey,
       callback: token => tokens.set(containerId, token),
