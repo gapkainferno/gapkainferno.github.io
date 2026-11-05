@@ -7,19 +7,7 @@ try {
         .forEach(key => localStorage.removeItem(key));
 } catch (_) {}
 
-const orderRateLimiter = {
-    lastSubmit: 0,
-    minInterval: 30000,  // Мінімум 30 секунд між спробами
-    canSubmit() {
-        const now = Date.now();
-        if (now - this.lastSubmit < this.minInterval) {
-            console.warn('⏱️ Rate limit: спроба реєстрації замовлення занадто часто');
-            return false;
-        }
-        this.lastSubmit = now;
-        return true;
-    }
-};
+
 
 const GLOBAL_SETTINGS = {
     // Щоб відкрити магазин: isCategoryLockActive: false або lockedCategories: []
@@ -1495,12 +1483,6 @@ async function renderCheckoutTurnstile_() {
 
 // === 4. ВІДПРАВКА ЗАМОВЛЕННЯ ===
 window.submitOrder = async function() {
-    // ✅ Rate limiting
-    if (!orderRateLimiter.canSubmit()) {
-        alert("Забагато спроб відправки. Зачекайте хвилину.");
-        return;
-    }
-    
     // Honeypot перевірка
     const honeypot = document.getElementById('website_url');
     if (honeypot && honeypot.value !== '') {
