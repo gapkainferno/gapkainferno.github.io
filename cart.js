@@ -961,6 +961,11 @@ function initDeliveryOptions() {
         cityInput.value = fullTitle;
         lastSelectedCity = fullTitle;
         lastSelectedCityRef = cityRef;
+
+        // Місто вже вибране — розблоковуємо поле відділення до завантаження списку.
+        // Це також дозволяє ввести адресу вручну, якщо API тимчасово недоступне.
+        branchInput.disabled = false;
+
         citySuggestions.innerHTML = '';
         citySuggestions.style.display = 'none';
 
