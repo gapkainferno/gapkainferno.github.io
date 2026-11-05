@@ -2,415 +2,586 @@
 // HOMESTEAD INFERNO — ORDER PROCESSING SCRIPT
 // Google Apps Script для обробки замовлень з сайту
 // ════════════════════════════════════════════════════════════════
-const SCRIPT_PROPS = PropertiesService.getScriptProperties();
-const BOT_TOKEN = SCRIPT_PROPS.getProperty('BOT_TOKEN');
-const CHAT_IDS = (SCRIPT_PROPS.getProperty('CHAT_IDS') || '').split(',').map(id => id.trim()).filter(Boolean);
-const API_SECRET = SCRIPT_PROPS.getProperty('API_SECRET');
 const CONTACT_EMAIL = "homestead.inferno@gmail.com";
-const PAYMENT_IBAN = "UA000000000000000000000000000";
-const PAYMENT_RECIPIENT = "ПІБ Отримувача";
 
 const SHEET_NAME = "Замовлення"; // ЗАМІНИ на назву свого аркуша з замовленнями
 const SUB_SHEET_NAME = "Підписки"; 
 const REVIEW_SHEET_NAME = "Відгуки"; 
 
+function getSpreadsheet_() {
+  const spreadsheetId = PropertiesService.getScriptProperties().getProperty("SPREADSHEET_ID");
+  if (!spreadsheetId) {
+    throw new Error("Не налаштовано Script Property SPREADSHEET_ID");
+  }
+  return SpreadsheetApp.openById(spreadsheetId);
+}
+
 function getOrdersSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  return ss.getSheetByName(SHEET_NAME) || ss.getSheets()[0];
+  const ss = getSpreadsheet_();
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) {
+    throw new Error("У таблиці не знайдено аркуш «" + SHEET_NAME + "»");
+  }
+  return sheet;
 }
 
 function normalizeOrderId(value) {
   const orderId = String(value).trim();
   return /^\d+$/.test(orderId) ? orderId.replace(/^0+(?=\d)/, '') : orderId;
 }
+function consumeRateLimit_(key, limit, windowSeconds) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(3000)) return false;
+  try {
+    const cache = CacheService.getScriptCache();
+    const current = Number(cache.get(key) || 0);
+    if (current >= limit) return false;
+    cache.put(key, String(current + 1), windowSeconds);
+    return true;
+  } finally { lock.releaseLock(); }
+}
+function hashKey_(value) {
+  const bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(value), Utilities.Charset.UTF_8);
+  return Utilities.base64EncodeWebSafe(bytes).replace(/=+$/g, '').slice(0, 40);
+}
+function safeSheetText_(value) {
+  const text = String(value == null ? '' : value);
+  return /^[=+\-@\t\r]/.test(text) ? "'" + text : text;
+}
+function consumeRateLimitLocked_(key, limit, windowSeconds) {
+  const cache = CacheService.getScriptCache();
+  const current = Number(cache.get(key) || 0);
+  if (!Number.isFinite(current) || current < 0 || current >= limit) return false;
+  cache.put(key, String(current + 1), windowSeconds);
+  return true;
+}
+
+function ensureIdempotencyColumn_(sheet, column, header) {
+  const headerCell = sheet.getRange(1, column);
+  const existingHeader = String(headerCell.getValue() || "").trim();
+  if (existingHeader && existingHeader !== header) {
+    throw new Error("Стовпець " + column + " уже використовується («" + existingHeader + "»). Не можна перезаписувати його ключем замовлення.");
+  }
+  if (!existingHeader) {
+    const lastRow = sheet.getLastRow();
+    if (lastRow >= 2) {
+      const existingValues = sheet.getRange(2, column, lastRow - 1, 1).getValues();
+      if (existingValues.some(row => row[0] !== "" && row[0] !== null)) {
+        throw new Error("Стовпець " + column + " містить дані без службового заголовка. Перевірте таблицю перед запуском.");
+      }
+    }
+    headerCell.setValue(header);
+    headerCell.setFontWeight("bold").setBackground("#eeeeee");
+  }
+  try { sheet.hideColumns(column); } catch (_) {}
+}
+
+function ensureOrderIdempotencyColumn_(sheet) {
+  const header = "Ключ запиту (службовий)";
+  const lastColumn = Math.max(sheet.getLastColumn(), 12);
+  const headers = sheet.getRange(1, 1, 1, lastColumn).getValues()[0]
+    .map(value => String(value || "").trim());
+  const matches = [];
+  headers.forEach((value, index) => {
+    if (value === header) matches.push(index + 1);
+  });
+
+  if (matches.length > 1) {
+    throw new Error("Знайдено кілька стовпців ключа замовлення. Перевірте заголовки аркуша.");
+  }
+  if (matches.length === 1) {
+    const column = matches[0];
+    if (column < 12) {
+      throw new Error("Службовий ключ замовлення розташований серед основних полів A:K. Потрібна перевірка структури таблиці.");
+    }
+    try { sheet.hideColumns(column); } catch (_) {}
+    return column;
+  }
+
+  // Не перезаписуємо L або інший зайнятий стовпець: старі версії могли
+  // залишити там службові значення без заголовка.
+  let column = 12;
+  const l1 = String(sheet.getRange(1, 12).getValue() || "").trim();
+  let columnLHasData = false;
+  if (sheet.getLastRow() >= 2) {
+    columnLHasData = sheet.getRange(2, 12, sheet.getLastRow() - 1, 1)
+      .getValues().some(row => row[0] !== "" && row[0] !== null);
+  }
+  if (l1 || columnLHasData) column = lastColumn + 1;
+
+  if (sheet.getMaxColumns() < column) {
+    sheet.insertColumnsAfter(sheet.getMaxColumns(), column - sheet.getMaxColumns());
+  }
+  sheet.getRange(1, column).setValue(header);
+  sheet.getRange(1, column).setFontWeight("bold").setBackground("#eeeeee");
+  try { sheet.hideColumns(column); } catch (_) {}
+  return column;
+}
+
+function findIdempotentRow_(sheet, column, key) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return 0;
+  const match = sheet.getRange(2, column, lastRow - 1, 1)
+    .createTextFinder(key).matchEntireCell(true).findNext();
+  return match ? match.getRow() : 0;
+}
+
+function ensureOrderNotificationColumns_(sheet) {
+  const headers = [
+    "Email клієнту", "Email адміністратору", "Спроби email",
+    "Payload email (службовий)", "Остання спроба email", "Fingerprint запиту (службовий)"
+  ];
+  const lastColumn = Math.max(sheet.getLastColumn(), 12);
+  const rowHeaders = sheet.getRange(1, 1, 1, lastColumn).getValues()[0].map(value => String(value || "").trim());
+  const found = headers.map(header => rowHeaders.indexOf(header) + 1);
+  const foundCount = found.filter(column => column > 0).length;
+  let startColumn;
+  if (foundCount === headers.length) {
+    startColumn = found[0];
+    if (found.some((column, index) => column !== startColumn + index)) {
+      throw new Error("Службові стовпці email мають бути розташовані поруч. Перевірте заголовки таблиці.");
+    }
+  } else if (foundCount > 0) {
+    throw new Error("Знайдено лише частину службових стовпців email. Перевірте заголовки таблиці.");
+  } else {
+    startColumn = lastColumn + 1;
+    if (sheet.getMaxColumns() < startColumn + headers.length - 1) {
+      sheet.insertColumnsAfter(sheet.getMaxColumns(), startColumn + headers.length - 1 - sheet.getMaxColumns());
+    }
+    sheet.getRange(1, startColumn, 1, headers.length).setValues([headers]);
+    sheet.getRange(1, startColumn, 1, headers.length).setFontWeight("bold").setBackground("#eeeeee");
+  }
+  const map = {
+    customer: startColumn, admin: startColumn + 1, attempts: startColumn + 2,
+    payload: startColumn + 3, lastAttempt: startColumn + 4, fingerprint: startColumn + 5,
+    start: startColumn
+  };
+  try { sheet.hideColumns(map.payload); sheet.hideColumns(map.fingerprint); } catch (_) {}
+  return map;
+}
+
+function getOrderEmailState_(sheet, row) {
+  const columns = ensureOrderNotificationColumns_(sheet);
+  const values = sheet.getRange(row, columns.start, 1, 3).getValues()[0];
+  return {
+    customerEmailSent: values[0] === "SENT",
+    adminEmailSent: values[1] === "SENT",
+    attempts: Number(values[2]) || 0
+  };
+}
+
+function sendOrderEmailsForRow_(sheet, row) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) {
+    const state = getOrderEmailState_(sheet, row);
+    return { customerEmailSent: state.customerEmailSent, adminEmailSent: state.adminEmailSent, pending: true };
+  }
+  try {
+    const columns = ensureOrderNotificationColumns_(sheet);
+    const stateRange = sheet.getRange(row, columns.start, 1, 3);
+    const stateValues = stateRange.getValues()[0];
+    let customerStatus = String(stateValues[0] || "PENDING");
+    let adminStatus = String(stateValues[1] || "PENDING");
+    let attempts = Number(stateValues[2]) || 0;
+    const payloadText = String(sheet.getRange(row, columns.payload).getValue() || "");
+    if (!payloadText) {
+      return { customerEmailSent: null, adminEmailSent: null, pending: false };
+    }
+    let payload;
+    try { payload = JSON.parse(payloadText); }
+    catch (error) {
+      Logger.log("Order email payload is invalid at row " + row + ": " + error);
+      if (customerStatus !== "SENT") customerStatus = "FAILED";
+      if (adminStatus !== "SENT") adminStatus = "FAILED";
+      stateRange.setValues([[customerStatus, adminStatus, Math.max(attempts, 6)]]);
+      return { customerEmailSent: false, adminEmailSent: false, pending: false, exhausted: true };
+    }
+    if (customerStatus === "SENT" && adminStatus === "SENT") {
+      return { customerEmailSent: true, adminEmailSent: true, pending: false };
+    }
+    if (attempts >= 6) {
+      if (customerStatus !== "SENT") customerStatus = "FAILED";
+      if (adminStatus !== "SENT") adminStatus = "FAILED";
+      stateRange.setValues([[customerStatus, adminStatus, attempts]]);
+      return { customerEmailSent: customerStatus === "SENT", adminEmailSent: adminStatus === "SENT", pending: false, exhausted: true };
+    }
+
+    attempts += 1;
+    sheet.getRange(row, columns.attempts).setValue(attempts);
+    sheet.getRange(row, columns.lastAttempt).setValue(Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss"));
+
+    if (adminStatus !== "SENT") {
+      try {
+        MailApp.sendEmail({
+          to: CONTACT_EMAIL,
+          subject: "🔥 Нове замовлення #" + payload.orderId,
+          body: payload.adminBody,
+          replyTo: payload.replyTo || CONTACT_EMAIL
+        });
+        adminStatus = "SENT";
+      } catch (error) {
+        Logger.log("Admin order notification failed for " + payload.orderId + ": " + error);
+        adminStatus = "PENDING";
+      }
+      sheet.getRange(row, columns.admin).setValue(adminStatus);
+    }
+
+    if (customerStatus !== "SENT") {
+      try {
+        sendConfirmationEmail(
+          payload.email, payload.name, payload.orderId, payload.total,
+          payload.cartItems, payload.paymentMethod
+        );
+        customerStatus = "SENT";
+      } catch (error) {
+        Logger.log("Customer confirmation email failed for " + payload.orderId + ": " + error);
+        customerStatus = "PENDING";
+      }
+      sheet.getRange(row, columns.customer).setValue(customerStatus);
+    }
+
+    sheet.getRange(row, columns.attempts).setValue(attempts);
+    return {
+      customerEmailSent: customerStatus === "SENT",
+      adminEmailSent: adminStatus === "SENT",
+      pending: customerStatus !== "SENT" || adminStatus !== "SENT",
+      attempts: attempts
+    };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// Запускається часовим тригером кожні 5 хвилин. Повторює лише невдалі листи.
+function retryPendingOrderEmails() {
+  const sheet = getOrdersSheet();
+  const columns = ensureOrderNotificationColumns_(sheet);
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;
+  const rowCount = lastRow - 1;
+  const states = sheet.getRange(2, columns.start, rowCount, 3).getValues();
+  let processed = 0;
+  for (let i = 0; i < states.length && processed < 20; i++) {
+    let customerStatus = String(states[i][0] || "");
+    let adminStatus = String(states[i][1] || "");
+    const attempts = Number(states[i][2]) || 0;
+    if (customerStatus === "SENT" && adminStatus === "SENT") continue;
+    if (!sheet.getRange(i + 2, columns.payload).getValue()) continue;
+    if (attempts >= 6) {
+      if (customerStatus !== "SENT") customerStatus = "FAILED";
+      if (adminStatus !== "SENT") adminStatus = "FAILED";
+      sheet.getRange(i + 2, columns.start, 1, 2).setValues([[customerStatus, adminStatus]]);
+      continue;
+    }
+    sendOrderEmailsForRow_(sheet, i + 2);
+    processed++;
+  }
+}
+
+// Один раз запустити вручну в Apps Script, щоб увімкнути автоматичні повторні спроби.
+function installOrderEmailRetryTrigger() {
+  ScriptApp.getProjectTriggers().forEach(trigger => {
+    if (trigger.getHandlerFunction() === "retryPendingOrderEmails") {
+      ScriptApp.deleteTrigger(trigger);
+    }
+  });
+  ScriptApp.newTrigger("retryPendingOrderEmails").timeBased().everyMinutes(5).create();
+}
+
+function jsonResponse_(payload) {
+  return ContentService.createTextOutput(JSON.stringify(payload))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function verifyTurnstile_(token) {
+  const secret = PropertiesService.getScriptProperties().getProperty("TURNSTILE_SECRET_KEY");
+  // Fail closed: без секретного ключа сервер не приймає запити.
+  if (!secret) {
+    Logger.log("Turnstile secret is not configured.");
+    return { ok: false, configured: false };
+  }
+  if (!token || typeof token !== "string" || token.length > 2048) return { ok: false, configured: true };
+  try {
+    const response = UrlFetchApp.fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "post", payload: { secret: secret, response: token }, muteHttpExceptions: true
+    });
+    if (response.getResponseCode() !== 200) return { ok: false, configured: true };
+    const result = JSON.parse(response.getContentText());
+    if (result.success !== true) return { ok: false, configured: true };
+    const allowedHosts = (PropertiesService.getScriptProperties().getProperty("TURNSTILE_ALLOWED_HOSTNAMES") ||
+      "gapkainferno.github.io,localhost,127.0.0.1").split(",").map(host => host.trim().toLowerCase()).filter(Boolean);
+    const hostname = String(result.hostname || "").toLowerCase();
+    if (!hostname || !allowedHosts.includes(hostname)) return { ok: false, configured: true };
+    return { ok: true, configured: true };
+  } catch (error) {
+    Logger.log("Turnstile verification failed: " + error);
+    return { ok: false, configured: true };
+  }
+}
 
 function doGet() {
-  return ContentService.createTextOutput("Бот Homestead Inferno активний. " + 
-    "Скрипт очікує POST-запити від Telegram. Поточна версія: 48")
+  return ContentService.createTextOutput("Gapka Homestead Inferno — сервіс замовлень активний. Версія: 54")
     .setMimeType(ContentService.MimeType.TEXT);
 }
 
-function setupTelegramWebhook() {
-  if (!BOT_TOKEN) throw new Error("Telegram BOT_TOKEN is not configured");
-  const serviceUrl = ScriptApp.getService().getUrl();
-  if (!serviceUrl) throw new Error("Deploy this script as a Web app before configuring the Telegram webhook");
-  const webAppUrl = serviceUrl.replace(/\/dev$/, '/exec');
-  if (!webAppUrl.endsWith('/exec')) {
-    throw new Error(`Unexpected Web app URL: ${serviceUrl}. Expected a URL ending in /exec or /dev.`);
-  }
-
-  const response = UrlFetchApp.fetch(`https://api.telegram.org/bot${BOT_TOKEN}/setWebhook`, {
-    method: 'post',
-    contentType: 'application/json',
-    payload: JSON.stringify({
-      url: webAppUrl,
-      allowed_updates: ['message', 'callback_query']
-    }),
-    muteHttpExceptions: true
-  });
-  const result = JSON.parse(response.getContentText());
-  if (!result.ok) throw new Error(`Telegram setWebhook failed: ${result.description || response.getResponseCode()}`);
-  Logger.log(`Telegram webhook configured: ${result.description}`);
-}
-
-function checkTelegramWebhook() {
-  if (!BOT_TOKEN) throw new Error("Telegram BOT_TOKEN is not configured");
-  const response = UrlFetchApp.fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getWebhookInfo`, {
-    muteHttpExceptions: true
-  });
-  const result = JSON.parse(response.getContentText());
-  if (!result.ok) throw new Error(`Telegram getWebhookInfo failed: ${result.description || response.getResponseCode()}`);
-  Logger.log(JSON.stringify(result.result));
-}
-
 function doPost(e) {
+  const lock = LockService.getScriptLock();
   try {
-    if (!e || !e.postData || !e.postData.contents) return errorResponse("No data");
-    let data = JSON.parse(e.postData.contents);
-
-    // 1. ОБРОБКА КНОПКИ З TELEGRAM (Callback)
-    if (data.callback_query) {
-      if (!BOT_TOKEN || CHAT_IDS.length === 0) {
-        return errorResponse("Telegram configuration missing");
-      }
-      return handleTelegramCallback(data.callback_query);
+    if (!e || !e.postData || !e.postData.contents) return errorResponse("Немає даних");
+    const rawBody = e.postData.contents;
+    if (rawBody.length > 30000 || Utilities.newBlob(rawBody).getBytes().length > 30000) {
+      return errorResponse("Запит завеликий.");
     }
 
-    // 2. ОБРОБКА НОВОГО ЗАМОВЛЕННЯ З САЙТУ
-    if (!API_SECRET) return errorResponse("Server configuration missing");
-    if (data.secret_token !== API_SECRET) return errorResponse("Unauthorized");
+    let data;
+    try { data = JSON.parse(rawBody); }
+    catch (_) { return errorResponse("Некоректний формат JSON."); }
+    if (!data || typeof data !== "object" || Array.isArray(data)) return errorResponse("Некоректний запит");
 
-    // 3. ОБРОБКА ПІДПИСКИ (МАРКЕТИНГ АБО ЗАПУСК ТОВАРУ)
-    if (data.orderType === "ПІДПИСКА_МАРКЕТИНГ" || data.orderType === "ЗАПИТ_НА_ЗАПУСК") {
-      if (!validateEmail(data.email)) return errorResponse("Invalid email");
-      data.email = data.email.trim();
+    // Honeypot: не зберігаємо й не розсилаємо дані, якщо приховане поле заповнене.
+    if (String(data.website_url || "").trim()) return jsonResponse_({status:"success", accepted:true});
 
-      const ss = SpreadsheetApp.getActiveSpreadsheet();
-      let subSheet = ss.getSheetByName(SUB_SHEET_NAME);
-      
-      // Якщо аркуша немає — створюємо його з заголовками
-      if (!subSheet) {
-        subSheet = ss.insertSheet(SUB_SHEET_NAME);
-        subSheet.appendRow(["Дата", "Email", "Тип", "Деталі/Категорія"]);
-        subSheet.getRange(1, 1, 1, 4).setFontWeight("bold").setBackground("#fcefe1");
-      }
-
-      subSheet.insertRowBefore(2);
-      subSheet.getRange(2, 1, 1, 4).setValues([[
-        data.date || Utilities.formatDate(new Date(), "Europe/Kiev", "dd.MM.yyyy HH:mm:ss"),
-        data.email,
-        data.orderType,
-        data.details || "-"
-      ]]);
-
-      // ВІДПРАВКА ВІТАЛЬНОГО ЛИСТА
-      const emailSent = sendWelcomeEmail(data.email, data.orderType, data.details);
-      
-      return ContentService.createTextOutput(JSON.stringify({
-        status: "success",
-        type: "subscription",
-        emailSent: emailSent
-      }))
-        .setMimeType(ContentService.MimeType.JSON);
+    // CAPTCHA перевіряємо до пошуку дублікатів: requestId не може бути способом
+    // дізнатися про наявність чужого замовлення без успішної перевірки.
+    const captcha = verifyTurnstile_(data.turnstileToken);
+    if (!captcha.ok) return errorResponse("Перевірка безпеки не пройдена. Оновіть сторінку та повторіть спробу.");
+    // Глобальний запобіжник застосовується лише після CAPTCHA, щоб не дозволяти
+    // анонімним запитам блокувати справжніх покупців.
+    if (!consumeRateLimit_("verified_global_requests", 120, 60)) {
+      return errorResponse("Забагато запитів. Спробуйте за хвилину.");
     }
 
-    // 4. ОБРОБКА ВІДГУКУ
-    if (data.orderType === "ВІДГУК") {
-      if (!BOT_TOKEN || CHAT_IDS.length === 0) {
-        return errorResponse("Telegram configuration missing");
-      }
-      const ss = SpreadsheetApp.getActiveSpreadsheet();
-      let revSheet = ss.getSheetByName(REVIEW_SHEET_NAME);
-      
-      if (!revSheet) {
-        revSheet = ss.insertSheet(REVIEW_SHEET_NAME);
-        revSheet.appendRow(["Дата", "Автор", "Товар", "Текст відгуку"]);
-        revSheet.getRange(1, 1, 1, 4).setFontWeight("bold").setBackground("#cfe2f3");
+    const requestId = String(data.requestId || "").trim();
+    if (!/^[A-Za-z0-9_-]{20,100}$/.test(requestId)) {
+      return errorResponse("Не вдалося підтвердити запит. Оновіть сторінку та повторіть спробу.");
+    }
+
+    const emailInput = String(data.email || "").trim().toLowerCase();
+    const email = emailInput === "-" ? "" : emailInput;
+    const phone = normalizeUkrainianPhone_(data.phone);
+    const orderType = String(data.orderType || "ЗАМОВЛЕННЯ").trim();
+    const idempotencyKey = hashKey_(orderType + "|" + requestId);
+
+    // ПІДПИСКА ТА ЗАПИТ НА ПОВІДОМЛЕННЯ ПРО ПОЯВУ ТОВАРУ
+    if (orderType === "ПІДПИСКА_МАРКЕТИНГ" || orderType === "ЗАПИТ_НА_ЗАПУСК") {
+      if (!validateEmail(email)) return errorResponse("Некоректна електронна адреса");
+      const details = String(data.details || "-").trim().slice(0, 300);
+
+      if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
+      try {
+        const ss = getSpreadsheet_();
+        let subSheet = ss.getSheetByName(SUB_SHEET_NAME);
+        if (!subSheet) {
+          subSheet = ss.insertSheet(SUB_SHEET_NAME);
+          subSheet.getRange(1, 1, 1, 5).setValues([["Дата", "Email", "Тип", "Деталі/Категорія", "Ключ запиту (службовий)"]]);
+          subSheet.getRange(1, 1, 1, 5).setFontWeight("bold").setBackground("#fcefe1");
+        }
+        ensureIdempotencyColumn_(subSheet, 5, "Ключ запиту (службовий)");
+        if (findIdempotentRow_(subSheet, 5, idempotencyKey)) {
+          return jsonResponse_({status:"success", type:"subscription", duplicate:true, emailSent:null});
+        }
+        if (!consumeRateLimitLocked_("subscription_" + hashKey_(email), 5, 600)) {
+          return errorResponse("Забагато запитів з цієї адреси. Спробуйте пізніше.");
+        }
+        subSheet.insertRowBefore(2);
+        subSheet.getRange(2, 1, 1, 5).setValues([[
+          Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss"),
+          safeSheetText_(email), safeSheetText_(orderType.slice(0, 60)),
+          safeSheetText_(details), idempotencyKey
+        ]]);
+      } finally {
+        if (lock.hasLock()) lock.releaseLock();
       }
 
-      revSheet.insertRowBefore(2);
-      revSheet.getRange(2, 1, 1, 4).setValues([[
-        data.date || Utilities.formatDate(new Date(), "Europe/Kiev", "dd.MM.yyyy HH:mm:ss"),
-        data.name || "Анонім",
-        data.product || "-",
-        data.message || ""
-      ]]);
+      const emailSent = sendWelcomeEmail(email, orderType, details);
+      return jsonResponse_({status:"success", type:"subscription", emailSent:emailSent});
+    }
 
-      // Відправка повідомлення в Telegram
-      const tgMsg = `💬 <b>НОВИЙ ВІДГУК</b>\n\n👤 <b>Автор:</b> ${escapeHtml(data.name)}\n📦 <b>Товар:</b> ${escapeHtml(data.product)}\n📝 <b>Текст:</b> ${escapeHtml(data.message)}`;
-      CHAT_IDS.forEach(chatId => {
-        UrlFetchApp.fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'post',
-          contentType: 'application/json',
-          payload: JSON.stringify({ chat_id: chatId, text: tgMsg, parse_mode: 'HTML' }),
-          muteHttpExceptions: true
+    // ВІДГУКИ
+    if (orderType === "ВІДГУК") {
+      const author = String(data.name || "").trim().slice(0, 100);
+      const product = String(data.product || "").trim().slice(0, 150);
+      const message = String(data.message || "").trim().slice(0, 1500);
+      if (!author || !product || !message) return errorResponse("Заповніть усі поля відгуку");
+
+      if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
+      try {
+        const ss = getSpreadsheet_();
+        let revSheet = ss.getSheetByName(REVIEW_SHEET_NAME);
+        if (!revSheet) {
+          revSheet = ss.insertSheet(REVIEW_SHEET_NAME);
+          revSheet.getRange(1, 1, 1, 5).setValues([["Дата", "Автор", "Товар", "Текст відгуку", "Ключ запиту (службовий)"]]);
+          revSheet.getRange(1, 1, 1, 5).setFontWeight("bold").setBackground("#cfe2f3");
+        }
+        ensureIdempotencyColumn_(revSheet, 5, "Ключ запиту (службовий)");
+        if (findIdempotentRow_(revSheet, 5, idempotencyKey)) {
+          return jsonResponse_({status:"success", type:"review", duplicate:true});
+        }
+        if (!consumeRateLimitLocked_("review_" + hashKey_(author.toLowerCase()), 5, 600)) {
+          return errorResponse("Забагато відгуків. Спробуйте пізніше.");
+        }
+        revSheet.insertRowBefore(2);
+        revSheet.getRange(2, 1, 1, 5).setValues([[
+          Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss"),
+          safeSheetText_(author), safeSheetText_(product), safeSheetText_(message), idempotencyKey
+        ]]);
+      } finally {
+        if (lock.hasLock()) lock.releaseLock();
+      }
+
+      let adminEmailSent = false;
+      try {
+        MailApp.sendEmail({
+          to: CONTACT_EMAIL,
+          subject: "Новий відгук на Gapka Homestead Inferno",
+          body: "Автор: " + author + "\nТовар: " + product + "\n\n" + message
         });
-      });
-
-      return ContentService.createTextOutput(JSON.stringify({status: "success", type: "review"}))
-        .setMimeType(ContentService.MimeType.JSON);
+        adminEmailSent = true;
+      } catch (mailError) {
+        Logger.log("Review notification failed: " + mailError);
+      }
+      return jsonResponse_({status:"success", type:"review", adminEmailSent:adminEmailSent});
     }
 
-    if (!BOT_TOKEN || CHAT_IDS.length === 0) {
-      return errorResponse("Telegram configuration missing");
+    // ЗАМОВЛЕННЯ: сервер самостійно перевіряє всі критичні поля.
+    const allowedDelivery = ["Відділення НП", "Поштомат НП", "Укрпошта", "Кур'єр НП"];
+    const allowedPayments = ["Онлайн оплата", "Накладений платіж"];
+    const delivery = String(data.delivery || "").trim();
+    const payment = String(data.payment || "").trim();
+    const name = String(data.name || "").trim().slice(0, 100);
+    const city = String(data.city || "").trim().slice(0, 100);
+    const branch = String(data.branch || "").trim().slice(0, 200);
+    const comment = String(data.comment || "").trim().slice(0, 500);
+
+    if (!allowedDelivery.includes(delivery)) return errorResponse("Недоступний спосіб доставки");
+    if (!allowedPayments.includes(payment)) return errorResponse("Недоступний спосіб оплати");
+    if (!name || !phone) return errorResponse("Перевірте ім'я або номер телефону");
+    if (!city) return errorResponse("Вкажіть населений пункт доставки.");
+    if (!branch || (delivery === "Кур'єр НП" ? branch.length < 5 : branch.length < 3)) {
+      return errorResponse("Вкажіть конкретне відділення, поштомат або повну адресу доставки.");
     }
+    if (!validateEmail(email)) return errorResponse("Вкажіть коректну електронну адресу — на неї буде надіслано підтвердження замовлення та реквізити оплати.");
 
-    const orderId = String(data.id || generateOrderId()).trim();
-    const customerEmail = data.email || "-";
-    const customerName = data.name || "Друже";
-    const customerPhone = data.phone || "-";
-    const customerPayment = data.payment || "-";
-    
-    // Фіксація точного часу (день.місяць.рік години:хвилини:секунди)
-    const timestamp = Utilities.formatDate(new Date(), "Europe/Kiev", "dd.MM.yyyy HH:mm:ss");
-
-    // Витягуємо суму
     const safeCart = normalizeCart(data.cart);
     if (safeCart.error) return errorResponse(safeCart.error);
 
-    let orderTotal = safeCart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
-    const formattedTotal = orderTotal.toFixed(2);
-    const fullMessage = buildOrderDetails(data, safeCart.items);
-
-    // Запис у таблицю
-    const sheet = getOrdersSheet();
-    sheet.insertRowBefore(2);
-    
-    const rowData = [[
-      false,               // A - Чекбокс
-      timestamp,           // B - Дата
-      orderId,             // C - ID
-      customerName,        // D - Ім'я
-      customerEmail,       // E - Email
-      customerPhone,       // F - Телефон
-      fullMessage,         // G - Повідомлення
-      "🆕 Нове",           // H - Статус
-      formattedTotal + " ₴", // I - Сума
-      "",                   // J - ТТН
-      customerPayment      // K - Оплата
-    ]];
-    
-    sheet.getRange(2, 3).setNumberFormat('@');
-    sheet.getRange(2, 1, 1, 11).setValues(rowData);
-    sheet.getRange(2, 1).insertCheckboxes();
-    
-    // Стилізація (ваша логіка)
-    const wholeRow = sheet.getRange(2, 1, 1, 11);
-    wholeRow.setBackground('#061a07').setFontColor('#ffffff').setVerticalAlignment("middle");
-
-    // Відправка повідомлення з кнопками в Telegram
-    const telegramMessage = formatTelegramMessage(orderId, customerName, customerEmail, customerPhone, formattedTotal, fullMessage, customerPayment);
-    // Логуємо повідомлення перед відправкою, щоб перевірити чи воно не порожнє
-    sendOrderWithButtons(telegramMessage, orderId);
-
-    
-
-    // Відправка підтвердження клієнту на імейл
-    if (customerEmail !== "-" && customerEmail.includes("@")) {
-      sendConfirmationEmail(customerEmail, customerName, orderId, formattedTotal, safeCart.items, customerPayment);
-    }
-
-    return ContentService.createTextOutput(JSON.stringify({status: "success", orderId: orderId})).setMimeType(ContentService.MimeType.JSON);
-
-  } catch (err) {
-    return errorResponse(err.toString());
-  }
-}
-
-// Функція для відправки повідомлення з кнопками "Прийняти"
-function sendOrderWithButtons(message, orderId) {
-  if (!message || message.trim() === "") {
-    Logger.log("⚠️ КРИТИЧНО: Спроба відправити порожній текст замовлення скасована.");
-    return;
-  }
-  const messageIdsMapping = {};
-  CHAT_IDS.forEach(chatId => {
-    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-    const payload = {
-      chat_id: chatId,
-      text: message,
-      parse_mode: 'HTML',
-      reply_markup: JSON.stringify({
-        inline_keyboard: [[
-          { text: "✅ Прийняти та Оформити", callback_data: `accept_${orderId}` },
-          { text: "❌ Скасувати", callback_data: `cancel_${orderId}` }
-        ]]
-      })
+    const fingerprintData = {
+      name: name, phone: phone, email: email, delivery: delivery,
+      city: city, branch: branch, payment: payment, comment: comment,
+      cart: safeCart.items.map(item => ({
+        productId: item.productId, name: item.name, price: item.price, qty: item.qty
+      }))
     };
+    const requestFingerprint = hashKey_(JSON.stringify(fingerprintData));
+    // Перевіряємо повторний запит уже після валідації та звірки канонічних цін.
+    let duplicateRow = 0;
+    let previousOrderId = "";
+    if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
     try {
-      const response = UrlFetchApp.fetch(url, { method: 'post', contentType: 'application/json', payload: JSON.stringify(payload), muteHttpExceptions: true });
-      const resObj = JSON.parse(response.getContentText());
-      
-      if (resObj.ok) {
-        // Зберігаємо ID повідомлення для кожного адміна
-        messageIdsMapping[chatId] = resObj.result.message_id;
-        Logger.log(`✅ Повідомлення відправлено адміну ${chatId}, ID: ${resObj.result.message_id}`);
-      } else if (resObj.description.includes("bot was blocked")) {
-        Logger.log("🚫 Користувач " + chatId + " заблокував бота або не натиснув START.");
-      }
-    } catch (e) {
-      Logger.log("Критична помилка відправки для ID " + chatId + ": " + e);
-    }
-  });
-
-  // Записуємо мапу повідомлень у властивості скрипта (діє 24+ години, зазвичай достатньо для обробки)
-  const cleanOrderId = String(orderId).trim();
-  const mapToSave = JSON.stringify(messageIdsMapping);
-  PropertiesService.getScriptProperties().setProperty('msg_map_' + cleanOrderId, mapToSave);
-  Logger.log("📝 DEBUG: Збережено мапу повідомлень для " + orderId + ": " + mapToSave);
-}
-
-// Обробка натискання кнопки в Telegram
-function handleTelegramCallback(callback) {
-  const callbackMatch = String(callback.data || "").match(/^(accept|cancel)_(.+)$/);
-  if (!callbackMatch) {
-    answerCallbackQuery(callback.id, "Невідома дія для замовлення.");
-    return ContentService.createTextOutput(JSON.stringify({ status: "ignored" }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-
-  answerCallbackQuery(callback.id, "Обробляю замовлення…");
-
-  const action = callbackMatch[1];
-  const orderId = callbackMatch[2].trim();
-  const adminName = callback.from?.first_name || callback.from?.username || "Адмін";
-  const actionTime = Utilities.formatDate(new Date(), "Europe/Kiev", "HH:mm");
-  
-  Logger.log(`🚀 ОБРОБКА КЛІКУ: Адмін ${adminName}, Дія ${action}, Замовлення ${orderId}`);
-
-  const sheet = getOrdersSheet();
-  const lastRow = sheet.getLastRow();
-  const orders = lastRow >= 2
-    ? sheet.getRange(2, 3, lastRow - 1, 9).getValues()
-    : [];
-  const orderIndex = orders.findIndex(row => normalizeOrderId(row[0]) === normalizeOrderId(orderId));
-  const rowIndex = orderIndex >= 0 ? orderIndex + 2 : -1;
-
-  // Ініціалізуємо шаблон за замовчуванням (щоб не був порожнім)
-  let finalStatusTemplate = `⚠️ Статус замовлення #${escapeHtml(orderId)} змінено (Action: ${action}).`;
-
-  if (rowIndex > 0) {
-    if (action === 'accept') {
-      sheet.getRange(rowIndex, 8).setValue("📦 Пакується");
-      const orderRow = orders[orderIndex];
-      const name = orderRow[1] || "Клієнт";
-      const phone = orderRow[3] || "-";
-      const msg = orderRow[4] || "Деталі відсутні";
-      const payment = orderRow[8] || "-";
-
-      finalStatusTemplate = "✅ <b>ЗАМОВЛЕННЯ ПРИЙНЯТО</b>\n" +
-                            "📦 Статус: Пакується\n" +
-                            "💳 Оплата: <b>" + escapeHtml(payment) + "</b>\n" +
-                            "⚡️ Обробив: <b>" + escapeHtml(adminName) + "</b> о " + actionTime + "\n\n" +
-                            "📋 <b>ДАНІ ДОСТАВКИ:</b>\n" +
-                            "👤 " + escapeHtml(name) + "\n" +
-                            "📱 <code>" + escapeHtml(phone) + "</code>\n" +
-                            "📍 " + escapeHtml(msg);
-    } else if (action === 'cancel') {
-      sheet.getRange(rowIndex, 8).setValue("❌ Скасовано");
-      finalStatusTemplate = "❌ <b>ЗАМОВЛЕННЯ СКАСОВАНО</b>\n" +
-                            "👤 Ким: <b>" + escapeHtml(adminName) + "</b> о " + actionTime;
-    }
-
-    // Отримуємо збережені ID повідомлень для обох адмінів
-    const props = PropertiesService.getScriptProperties();
-    const msgMapStr = props.getProperty('msg_map_' + orderId); // Використовуємо той самий ключ
-    
-    if (msgMapStr && msgMapStr !== "{}") {
-      const msgMap = JSON.parse(msgMapStr);
-      Logger.log("📦 Знайдено зв'язки повідомлень: " + msgMapStr);
-      
-      // Цикл оновлення повідомлень у ВСІХ адмінів
-      for (const chatId in msgMap) {
-        try {
-          const success = updateTelegramMessage(chatId, msgMap[chatId], finalStatusTemplate);
-          Logger.log(`🔄 Оновлення чату ${chatId}: ${success ? "Успішно" : "ПОМИЛКА"}`);
-        } catch (e) {
-          Logger.log("Помилка оновлення для адміна " + chatId + ": " + e);
+      const sheet = getOrdersSheet();
+      const orderIdempotencyColumn = ensureOrderIdempotencyColumn_(sheet);
+      const notificationColumns = ensureOrderNotificationColumns_(sheet);
+      duplicateRow = findIdempotentRow_(sheet, orderIdempotencyColumn, idempotencyKey);
+      if (duplicateRow) {
+        previousOrderId = String(sheet.getRange(duplicateRow, 3).getValue());
+        const storedFingerprint = String(sheet.getRange(duplicateRow, notificationColumns.fingerprint).getValue() || "");
+        if (storedFingerprint && storedFingerprint !== requestFingerprint) {
+          return errorResponse("Цей запит уже використано для іншого вмісту замовлення. Оновіть сторінку та повторіть спробу.");
         }
       }
-    } else {
-      Logger.log(`⚠️ КРИТИЧНО: Мапу повідомлень для ${orderId} не знайдено в PropertiesService!`);
-      if (callback.message) {
-        updateTelegramMessage(callback.message.chat.id, callback.message.message_id, finalStatusTemplate);
+    } finally {
+      if (lock.hasLock()) lock.releaseLock();
+    }
+
+    if (duplicateRow) {
+      const notifications = sendOrderEmailsForRow_(getOrdersSheet(), duplicateRow);
+      return jsonResponse_({
+        status: "success", orderId: previousOrderId, duplicate: true,
+        adminEmailSent: notifications.adminEmailSent,
+        customerEmailSent: notifications.customerEmailSent,
+        emailNotificationsPending: notifications.pending
+      });
+    }
+
+    const orderId = generateOrderId();
+    const total = safeCart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const formattedTotal = total.toFixed(2);
+    const timestamp = Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss");
+    const normalizedOrderData = {
+      delivery: delivery, city: city, branch: branch, comment: comment
+    };
+    const fullMessage = buildOrderDetails(normalizedOrderData, safeCart.items);
+    const adminBody = [
+      "Нове замовлення #" + orderId,
+      "Клієнт: " + name,
+      "Телефон: " + phone,
+      "Email: " + email,
+      "Оплата: " + payment,
+      "Сума: " + formattedTotal + " грн",
+      "",
+      fullMessage
+    ].join("\n");
+    const emailPayload = {
+      email: email, name: name, orderId: orderId, total: formattedTotal,
+      cartItems: safeCart.items, paymentMethod: payment,
+      adminBody: adminBody, replyTo: email || CONTACT_EMAIL
+    };
+
+    let insertedRow = 0;
+    let actualOrderId = orderId;
+    let insertedAsDuplicate = false;
+    if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
+    try {
+      const sheet = getOrdersSheet();
+      const orderIdempotencyColumn = ensureOrderIdempotencyColumn_(sheet);
+      const notificationColumns = ensureOrderNotificationColumns_(sheet);
+      const duplicateDuringInsert = findIdempotentRow_(sheet, orderIdempotencyColumn, idempotencyKey);
+      if (duplicateDuringInsert) {
+        const storedFingerprint = String(sheet.getRange(duplicateDuringInsert, notificationColumns.fingerprint).getValue() || "");
+        if (storedFingerprint && storedFingerprint !== requestFingerprint) {
+          return errorResponse("Цей запит уже використано для іншого вмісту замовлення. Оновіть сторінку та повторіть спробу.");
+        }
+        insertedRow = duplicateDuringInsert;
+        actualOrderId = String(sheet.getRange(duplicateDuringInsert, 3).getValue());
+        insertedAsDuplicate = true;
+      } else {
+        if (!consumeRateLimitLocked_("order_" + hashKey_(phone + "|" + email), 5, 600)) {
+          return errorResponse("Забагато замовлень з цих контактних даних. Спробуйте пізніше.");
+        }
+        sheet.insertRowBefore(2);
+        sheet.getRange(2, 3).setNumberFormat("@");
+        sheet.getRange(2, 1, 1, 11).setValues([[
+          false, timestamp, safeSheetText_(orderId), safeSheetText_(name), safeSheetText_(email),
+          safeSheetText_(phone), safeSheetText_(fullMessage), "🆕 Нове", formattedTotal + " ₴", "",
+          safeSheetText_(payment)
+        ]]);
+        sheet.getRange(2, orderIdempotencyColumn).setValue(idempotencyKey);
+        sheet.getRange(2, notificationColumns.start, 1, 6).setValues([[
+          "PENDING", "PENDING", 0, safeSheetText_(JSON.stringify(emailPayload)), "", requestFingerprint
+        ]]);
+        sheet.getRange(2, 1).insertCheckboxes();
+        sheet.getRange(2, 1, 1, 11).setBackground("#061a07").setFontColor("#ffffff").setVerticalAlignment("middle");
+        insertedRow = 2;
       }
+    } finally {
+      if (lock.hasLock()) lock.releaseLock();
     }
-  } else {
-    // Якщо замовлення не знайдено в таблиці
-    finalStatusTemplate = `⚠️ Помилка: Замовлення #${escapeHtml(orderId)} не знайдено в таблиці.`;
-    if (callback.message) {
-      updateTelegramMessage(callback.message.chat.id, callback.message.message_id, finalStatusTemplate);
-    }
-  }
-  return ContentService.createTextOutput(JSON.stringify({ status: "success" })).setMimeType(ContentService.MimeType.JSON);
-}
 
-/**
- * Відправка відповіді на Callback (прибирає "годинник" з кнопки)
- */
-function answerCallbackQuery(callbackId, text) {
-  const url = "https://api.telegram.org/bot" + BOT_TOKEN + "/answerCallbackQuery";
-  const payload = { callback_query_id: callbackId };
-  if (text) payload.text = text;
-  try {
-    const response = UrlFetchApp.fetch(url, {
-      method: 'post',
-      contentType: 'application/json',
-      payload: JSON.stringify(payload),
-      muteHttpExceptions: true
+    const notifications = sendOrderEmailsForRow_(getOrdersSheet(), insertedRow);
+    return jsonResponse_({
+      status: "success", orderId: actualOrderId,
+      duplicate: insertedAsDuplicate,
+      adminEmailSent: notifications.adminEmailSent,
+      customerEmailSent: notifications.customerEmailSent,
+      emailNotificationsPending: notifications.pending
     });
-    const result = JSON.parse(response.getContentText());
-    if (!result.ok) Logger.log(`Telegram callback acknowledgment failed: ${result.description}`);
-  } catch (e) {
-    Logger.log("Error answering callback: " + e);
+  } catch (err) {
+    try { if (lock.hasLock()) lock.releaseLock(); } catch (_) {}
+    Logger.log("doPost error: " + err);
+    return errorResponse("Не вдалося обробити запит. Спробуйте ще раз.");
   }
 }
 
-/**
- * Допоміжна функція для ручної перевірки всіх збережених ID повідомлень.
- * Виберіть її у списку функцій зверху і натисніть "Run".
- */
-function debugCheckAllStoredOrders() {
-  const props = PropertiesService.getScriptProperties().getProperties();
-  Logger.log("=== СПИСОК ЗБЕРЕЖЕНИХ ДАНИХ (Properties) ===");
-  let found = false;
-  for (const key in props) {
-    if (key.startsWith('msg_map_')) {
-      Logger.log("Замовлення " + key.replace('msg_map_', '') + " -> " + props[key]);
-      found = true;
-    }
-  }
-  if (!found) Logger.log("Жодних активних мап повідомлень не знайдено.");
-  Logger.log("===========================================");
-}
-
-function updateTelegramMessage(chatId, messageId, newText) {
-  // ЗАХИСТ: Якщо текст порожній, Telegram видасть помилку 400
-  if (!newText || String(newText).trim() === "") {
-    Logger.log("Спроба оновити повідомлення порожнім текстом скасована.");
-    return;
-  }
-
-  const url = `https://api.telegram.org/bot${BOT_TOKEN}/editMessageText`;
-  const options = {
-    method: 'post',
-    contentType: 'application/json',
-    payload: JSON.stringify({ chat_id: chatId, message_id: messageId, text: newText, parse_mode: 'HTML' }),
-    muteHttpExceptions: true // Дозволяє побачити помилку в логах без зупинки скрипта
-  };
-  
-  const response = UrlFetchApp.fetch(url, options);
-  const resObj = JSON.parse(response.getContentText());
-  
-  // Ігноруємо помилку, якщо повідомлення вже має такий самий текст (наприклад, одночасний клік двох адмінів)
-  if (!resObj.ok && resObj.description && resObj.description.includes("message is not modified")) {
-    Logger.log(`ℹ️ Чат ${chatId}: Повідомлення вже було оновлене.`);
-    return true;
-  }
-
-  Logger.log(`Telegram Update Response for ${chatId}: ${response.getContentText()}`);
-  return resObj.ok;
-}
 /**
  * Санітизація рядка — видаляє небезпечні символи
  */
@@ -430,6 +601,15 @@ function sanitizeString(str) {
 /**
  * Валідація email
  */
+function normalizeUkrainianPhone_(value) {
+  const cleaned = String(value || "").trim().replace(/[\s().-]/g, "");
+  if (!/^\+?\d+$/.test(cleaned)) return "";
+  const digits = cleaned.replace(/\D/g, "");
+  if (/^0\d{9}$/.test(digits)) return "+38" + digits;
+  if (/^380\d{9}$/.test(digits)) return "+" + digits;
+  return "";
+}
+
 function validateEmail(email) {
   if (!email || typeof email !== 'string') return false;
   
@@ -450,36 +630,122 @@ function generateOrderId() {
   return `HS-${day}${month}${year}-${random}`;
 }
 
-function normalizeCart(cartItems) {
-  if (!Array.isArray(cartItems) || cartItems.length === 0) {
-    return { error: "Cart is empty", items: [] };
+function getCanonicalOrderCatalog() {
+  const properties = PropertiesService.getScriptProperties();
+  const url = properties.getProperty("CANONICAL_ORDER_CATALOG_URL") ||
+    "https://raw.githubusercontent.com/gapkainferno/gapkainferno.github.io/master/order-catalog.json";
+  const cache = CacheService.getScriptCache();
+  const cacheKey = "canonical_order_catalog_v1_" + encodeURIComponent(url).slice(0, 180);
+  const cached = cache.get(cacheKey);
+  if (cached) {
+    try { return JSON.parse(cached); } catch (_) {}
   }
 
+  const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true, followRedirects: true });
+  if (response.getResponseCode() !== 200) {
+    throw new Error("Canonical order catalog is unavailable (HTTP " + response.getResponseCode() + ")");
+  }
+  const catalog = JSON.parse(response.getContentText());
+  if (!catalog || catalog.schemaVersion !== 1 || !catalog.products || !catalog.bundles) {
+    throw new Error("Canonical order catalog has an unsupported format");
+  }
+  cache.put(cacheKey, JSON.stringify(catalog), 60);
+  return catalog;
+}
+
+function getCanonicalPrice(basePrice, product, catalog) {
+  let price = Number(basePrice);
+  const sale = catalog.sale || {};
+  const deadline = sale.deadline ? new Date(sale.deadline) : null;
+  const deadlinePassed = deadline instanceof Date && !Number.isNaN(deadline.getTime()) && Date.now() > deadline.getTime();
+  if (sale.isActive === true && product.allowSale === true && !deadlinePassed) {
+    const discount = Math.min(Math.max(Number(sale.discountPercent) || 0, 0), 90);
+    price = Math.round(price * (1 - discount / 100));
+  }
+  return Math.round(price * 100) / 100;
+}
+
+function normalizeCart(cartItems) {
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
+    return { error: "Кошик порожній.", items: [] };
+  }
   if (cartItems.length > 50) {
-    return { error: "Too many cart items", items: [] };
+    return { error: "У кошику забагато позицій.", items: [] };
+  }
+
+  let catalog;
+  try {
+    catalog = getCanonicalOrderCatalog();
+  } catch (error) {
+    Logger.log("Order catalog error: " + error);
+    return { error: "Не вдалося перевірити актуальний каталог. Спробуйте трохи пізніше.", items: [] };
   }
 
   const items = [];
-
   for (let i = 0; i < cartItems.length; i++) {
     const item = cartItems[i] || {};
-    const name = String(item.name || '').trim().slice(0, 200);
-    const productId = String(item.productId || '').trim().slice(0, 100);
-    const price = Number(item.price);
-    const qty = Math.max(1, Math.min(100, parseInt(item.qty, 10) || 1));
+    const productId = String(item.productId || "").trim().slice(0, 100);
+    const qty = Number(item.qty);
+    const submittedPrice = Number(item.price);
 
-    if (!name || !Number.isFinite(price) || price < 0 || price > 100000) {
-      return { error: "Invalid cart item", items: [] };
+    if (!productId || !Number.isInteger(qty) || qty < 1 || qty > 100 ||
+        !Number.isFinite(submittedPrice) || submittedPrice < 0) {
+      return { error: "Некоректна позиція кошика. Оновіть кошик і спробуйте ще раз.", items: [] };
+    }
+
+    let canonicalName = "";
+    let basePrice = NaN;
+    let saleProduct = null;
+
+    if (Object.prototype.hasOwnProperty.call(catalog.bundles, productId)) {
+      const bundle = catalog.bundles[productId];
+      if (bundle.inStock !== true || !Number.isFinite(Number(bundle.price))) {
+        return { error: "Набір «" + String(bundle.name || productId) + "» зараз недоступний.", items: [] };
+      }
+      canonicalName = String(bundle.name || productId);
+      basePrice = Number(bundle.price);
+      saleProduct = bundle;
+    } else {
+      const product = catalog.products[productId];
+      if (!product || product.isHidden === true || product.inStock === false ||
+          !Number.isFinite(Number(product.price)) || Number(product.price) <= 0) {
+        return { error: "Один із товарів більше недоступний. Оновіть кошик.", items: [] };
+      }
+
+      canonicalName = String(product.name || productId);
+      saleProduct = product;
+      const variants = product.variants || {};
+      const variantKeys = Object.keys(variants);
+      let versionKey = String(item.versionKey || "").trim();
+
+      if (variantKeys.length > 0) {
+        if (!versionKey) versionKey = "openPollinated";
+        const variant = variants[versionKey];
+        if (!variant || variant.inStock !== true || !Number.isFinite(Number(variant.price))) {
+          return { error: "Обраний варіант товару «" + canonicalName + "» більше недоступний. Оновіть кошик.", items: [] };
+        }
+        basePrice = Number(variant.price);
+        if (variant.label) canonicalName += " (" + String(variant.label) + ")";
+      } else {
+        if (versionKey) {
+          return { error: "Для товару «" + canonicalName + "» обрано невідомий варіант. Оновіть кошик.", items: [] };
+        }
+        basePrice = Number(product.price);
+      }
+    }
+
+    const expectedPrice = getCanonicalPrice(basePrice, saleProduct, catalog);
+    if (Math.abs(submittedPrice - expectedPrice) > 0.01) {
+      return { error: "Ціна товару «" + canonicalName + "» змінилася. Оновіть кошик, щоб побачити актуальну суму.", items: [] };
     }
 
     items.push({
       productId: productId,
-      name: name,
-      price: Math.round(price * 100) / 100,
+      name: canonicalName.slice(0, 200),
+      price: expectedPrice,
       qty: qty
     });
   }
-
   return { items: items };
 }
 
@@ -500,61 +766,6 @@ function buildOrderDetails(data, cartItems) {
     'Товари:',
     itemsText
   ].filter(line => line !== '').join('\n');
-}
-
-function formatTelegramMessage(orderId, name, email, phone, total, fullMessage, payment) {
-  const safeName = escapeHtml(name);
-  const safeMessage = escapeHtml(fullMessage);
-  const safeEmail = escapeHtml(email);
-  
-  // 1. Очищуємо номер від усього, крім цифр
-  let cleanPhone = String(phone).replace(/\D/g, '');
-
-  // 2. Нормалізуємо для України: якщо починається з 0, додаємо 38
-  if (cleanPhone.startsWith('0') && cleanPhone.length === 10) {
-    cleanPhone = '38' + cleanPhone;
-  }
-  // Якщо починається з 80, додаємо 3
-  if (cleanPhone.startsWith('80') && cleanPhone.length === 11) {
-    cleanPhone = '3' + cleanPhone;
-  }
-
-  // Форматуємо дату
-  const now = new Date();
-  const dateStr = now.toLocaleString('uk-UA', { 
-    timeZone: 'Europe/Kiev',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-  
-  return `
-🔥 <b>НОВЕ ЗАМОВЛЕННЯ</b> 🔥       
-
-📦 <b>Номер:</b> #${orderId}
-👤 <b>Клієнт:</b> ${safeName}
-📧 <b>Email:</b> ${safeEmail}
-📱 <b>Телефон:</b> <code>+${cleanPhone}</code>
-💳 <b>Оплата:</b> ${escapeHtml(payment)}
-
-🔗 <b>ШВИДКИЙ ЗВ'ЯЗОК:</b>
-• <a href="https://msng.link/vi/${cleanPhone}">Написати у Viber</a>
-• <a href="https://wa.me/${cleanPhone}">Написати у WhatsApp</a>
-• <a href="https://t.me/+${cleanPhone}">Спробувати Telegram</a>
-• <a href="tel:+${cleanPhone}">📞 Телефон</a>
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-<b>ПОВІДОМЛЕННЯ:</b>
-${safeMessage}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-💰 <b>СУМА ДО ОПЛАТИ: ${total} ₴</b>
-⏰ ${dateStr}
-`.trim();
 }
 
 function escapeHtml(text) {
@@ -656,7 +867,7 @@ function sendConfirmationEmail(email, name, orderId, total, cartItems, paymentMe
           <tr>
             <td style="padding: 40px 30px 20px;">
               <p style="font-size: 18px; color: #ffffff; margin: 0 0 10px 0; text-align: center; line-height: 1.6;">
-                Вітаємо, <strong style="color: #ff4500;">${name}</strong>! 
+                Вітаємо, <strong style="color: #ff4500;">${escapeHtml(name)}</strong>! 
               </p>
               <p style="font-size: 15px; color: #aaa; margin: 0 0 30px 0; text-align: center; line-height: 1.8;">
                 Ваше замовлення отримано. Ми вже перевіряємо наші вогняні запаси, щоб якнайшвидше відправити їх до вас!

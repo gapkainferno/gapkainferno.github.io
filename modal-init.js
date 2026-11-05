@@ -2,165 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Перевіряємо, чи модалки ще немає на сторінці (щоб не дублювати)
     if (document.getElementById('checkoutModal')) return;
 
-    // ═══════════════════════════════════════════════════════════════
-    // АНГЛІЙСЬКА ВЕРСІЯ МОДАЛКИ (для міжнародних замовлень)
-    // ═══════════════════════════════════════════════════════════════
-    if (window.IS_ENGLISH) {
-        const enModalHTML = `
-    <div id="checkoutModal" class="modal">
-        <div class="modal-box">
-            <button class="close-btn" onclick="closeCheckout()">&times;</button>
-            
-            <div class="checkout-header">
-                <h2 class="modal-title">🌶️ <span>International</span> Order</h2>
-                <p style="color: var(--primary-orange); font-size: 13px; opacity: 0.8; margin-top: 5px;">
-                    We ship worldwide! Shipping cost is calculated individually based on your location and order weight.
-                </p>
-            </div>
-
-            <div id="modal-main-content" class="checkout-grid">
-                <div class="checkout-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" id="cust-name" placeholder="Your full name">
-                        </div>
-                        <div class="form-group">
-                            <label>Phone</label>
-                            <input type="tel" id="cust-phone" placeholder="+1..." maxlength="20">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Email (required for international orders)</label>
-                        <input type="email" id="email" placeholder="your@email.com" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Country</label>
-                        <select id="cust-country">
-                            <option value="">— Select your country —</option>
-                            <option value="US">🇺🇸 United States</option>
-                            <option value="CA">🇨🇦 Canada</option>
-                            <option value="GB">🇬🇧 United Kingdom</option>
-                            <option value="DE">🇩🇪 Germany</option>
-                            <option value="FR">🇫🇷 France</option>
-                            <option value="IT">🇮🇹 Italy</option>
-                            <option value="ES">🇪🇸 Spain</option>
-                            <option value="NL">🇳🇱 Netherlands</option>
-                            <option value="PL">🇵🇱 Poland</option>
-                            <option value="CZ">🇨🇿 Czech Republic</option>
-                            <option value="AT">🇦🇹 Austria</option>
-                            <option value="CH">🇨🇭 Switzerland</option>
-                            <option value="BE">🇧🇪 Belgium</option>
-                            <option value="SE">🇸🇪 Sweden</option>
-                            <option value="DK">🇩🇰 Denmark</option>
-                            <option value="NO">🇳🇴 Norway</option>
-                            <option value="FI">🇫🇮 Finland</option>
-                            <option value="IE">🇮🇪 Ireland</option>
-                            <option value="PT">🇵🇹 Portugal</option>
-                            <option value="GR">🇬🇷 Greece</option>
-                            <option value="RO">🇷🇴 Romania</option>
-                            <option value="BG">🇧🇬 Bulgaria</option>
-                            <option value="HU">🇭🇺 Hungary</option>
-                            <option value="SK">🇸🇰 Slovakia</option>
-                            <option value="LT">🇱🇹 Lithuania</option>
-                            <option value="LV">🇱🇻 Latvia</option>
-                            <option value="EE">🇪🇪 Estonia</option>
-                            <option value="AU">🇦🇺 Australia</option>
-                            <option value="NZ">🇳🇿 New Zealand</option>
-                            <option value="JP">🇯🇵 Japan</option>
-                            <option value="KR">🇰🇷 South Korea</option>
-                            <option value="SG">🇸🇬 Singapore</option>
-                            <option value="UA">🇺🇦 Ukraine</option>
-                            <option value="OTHER">🌍 Other country</option>
-                        </select>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>City</label>
-                            <input type="text" id="cust-city" placeholder="Your city">
-                        </div>
-                        <div class="form-group">
-                            <label>State / Region</label>
-                            <input type="text" id="cust-state" placeholder="State or region">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group" style="flex: 2;">
-                            <label>Street Address</label>
-                            <input type="text" id="cust-address" placeholder="Street, building, apartment">
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>ZIP / Postal Code</label>
-                            <input type="text" id="cust-zip" placeholder="e.g. 90210">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Delivery Method</label>
-                        <select id="cust-delivery">
-                            <option value="Standard International">📦 Standard International Shipping (7-14 business days, with tracking)</option>
-                            <option value="Express International">🚀 Express International Shipping (3-5 business days, with tracking)</option>
-                        </select>
-                        <small style="color: var(--primary-orange); display: block; margin-top: 5px; font-style: italic;">
-                            💰 Exact shipping cost will be calculated after order placement. We'll contact you via email with the total including shipping.
-                        </small>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Payment Method</label>
-                        <select id="cust-payment">
-                            <option value="Online Payment">💳 Online Payment (Credit Card / PayPal) — Prepayment Required</option>
-                        </select>
-                        <div id="online-payment-hint" style="color: var(--primary-orange); font-size: 13px; margin-top: 5px; font-style: italic; line-height: 1.3;">
-                            ℹ️ Payment is required before shipping. After placing the order, we'll send you payment details and the shipping cost estimate via email.
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Comment / Special Instructions</label>
-                        <textarea id="cust-comment" placeholder="Any special requests?"></textarea>
-                    </div>
-
-                    <div style="position: absolute; left: -9999px; opacity: 0;">
-                        <input type="text" id="website_url" tabindex="-1" autocomplete="off">
-                    </div>
-                </div>
-
-                <div class="checkout-summary">
-                    <div class="summary-header-row">
-                        <h3 class="summary-title">Your Order</h3>
-                        <button onclick="clearFullCart()" class="clear-cart-btn">Clear</button>
-                    </div>
-                    <div id="final-list" class="cart-items-list"></div> 
-                    <div class="cart-total-block">
-                        <div class="total-row">
-                            <span>Total (without shipping):</span>
-                            <span class="total-price-display"><span id="final-price">0.00</span></span>
-                        </div>
-                        <p style="font-size: 12px; color: var(--primary-orange); font-style: italic; margin: 5px 0;">Shipping calculated after order</p>
-                        <button class="order-btn" onclick="submitOrder()">Place Order</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="success-msg" style="display:none; text-align: center; padding: 50px 20px;">
-                <h2 style="color: var(--primary-orange);">🌿 Order Placed Successfully!</h2>
-                <p>Order number: <strong id="orderNumberDisplay"></strong></p>
-                <p style="margin-top: 20px; line-height: 1.6;">Thank you for your order! We'll contact you via email within 24 hours with the shipping cost estimate and payment details.</p>
-                <p style="margin-top: 10px; font-size: 14px; opacity: 0.8;">💌 Check your email (including spam folder) for the order confirmation.</p>
-                <button class="order-btn" style="max-width: 200px; margin: 20px auto 0;" onclick="closeCheckout()">Close</button>
-            </div>
-        </div>
-    </div>`;
-        document.body.insertAdjacentHTML('beforeend', enModalHTML);
-    } else {
-        // ═══════════════════════════════════════════════════════════════
-        // УКРАЇНСЬКА ВЕРСІЯ МОДАЛКИ (для замовлень в Україні)
-        // ═══════════════════════════════════════════════════════════════
+    // Українська форма замовлення для доставки в межах України.
         const uaModalHTML = `
         <div id="checkoutModal" class="modal">
             <div class="modal-box">
@@ -226,9 +68,14 @@ document.addEventListener("DOMContentLoaded", function() {
                         </div>
 
                         <div class="form-group">
-                            <label>Електронна пошта</label>
-                            <input type="email" id="email">
+                            <label for="email">Електронна пошта <span aria-hidden="true">*</span></label>
+                            <input type="email" id="email" placeholder="name@example.com" autocomplete="email" required>
                         </div>
+
+                        <label for="remember-checkout-data" class="remember-checkout-option" style="display:flex; align-items:flex-start; gap:9px; margin:4px 0 14px; font-size:13px; line-height:1.4; cursor:pointer;">
+                            <input type="checkbox" id="remember-checkout-data" style="margin-top:2px; flex:0 0 auto;">
+                            <span>Запам’ятати мої контактні дані на цьому пристрої для наступних замовлень</span>
+                        </label>
 
                         <div class="form-group">
                             <label>Коментар</label>
@@ -251,6 +98,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <span>Разом:</span>
                                 <span class="total-price-display"><span id="final-price">0.00</span> ₴</span>
                             </div>
+                            <div id="turnstile-checkout" style="display:flex; justify-content:center; margin:14px 0;"></div>
                             <button class="order-btn" onclick="submitOrder()">Підтвердити замовлення</button>
                         </div>
                     </div>
@@ -259,29 +107,29 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div id="success-msg" style="display:none; text-align: center; padding: 50px 20px;">
                     <h2 style="color: var(--primary-orange);">🌿 Замовлення прийнято!</h2>
                     <p>Номер: <strong id="orderNumberDisplay"></strong></p>
-                    <p>Дякуємо! Якщо ви обрали онлайн оплату, будь ласка, сплатіть за реквізитами нижче, щоб ми почали відправку. При оплаті вкажіть номер замовлення. Якщо Ви обрали післяплату - ми скоро зв'яжемося з вами. Всі деталі заказу продубльовані на Вашій пошті 🔥.</p>
+                    <p>Дякуємо! Якщо ви обрали онлайн оплату, будь ласка, сплатіть за реквізитами нижче, щоб ми почали відправку. При оплаті вкажіть номер замовлення. Якщо Ви обрали післяплату - ми скоро зв'яжемося з вами. Підтвердження та деталі замовлення ми надішлемо на вашу пошту 🔥.</p>
+                    <p id="email-delivery-notice" style="display:none; color:#ffb36b; font-size:14px; line-height:1.5;">Замовлення прийнято, але лист-підтвердження затримується. Ми спробуємо надіслати його повторно автоматично. Якщо лист не надійде, напишіть нам на homestead.inferno@gmail.com.</p>
                     <div id="payment-details-success" style="display:none; margin-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;"></div>
                     <button class="order-btn" style="max-width: 200px; margin: 20px auto 0;" onclick="closeCheckout()">Закрити</button>
                 </div>
             </div>
         </div>`;
         document.body.insertAdjacentHTML('beforeend', uaModalHTML);
-    }
 
     // ═══════════════════════════════════════════════════════════════
-    // ФЛОАТИНГ КОШИК ТА ХЕДЕР КОШИК (для обох версій)
+    // Кнопки кошика
     // ═══════════════════════════════════════════════════════════════
-    const cartIcon = window.IS_ENGLISH ? '🛒' : '🛒';
-    const cartText = window.IS_ENGLISH ? 'Cart' : 'Кошик';
+    const cartIcon = '🛒';
+    const cartText = 'Кошик';
 
     const floatingCartHTML = `
-    <button type="button" class="floating-cart" onclick="openCheckout()" title="${window.IS_ENGLISH ? 'Open cart' : 'Відкрити кошик'}">
+    <button type="button" class="floating-cart" onclick="openCheckout()" title="Відкрити кошик">
         <span class="cart-icon">${cartIcon}</span>
         <span id="cart-count">0</span>
     </button>`;
 
     const headerCartHTML = `
-    <button type="button" class="header-cart-link" onclick="openCheckout()" title="${window.IS_ENGLISH ? 'Go to cart' : 'Перейти до кошика'}">
+    <button type="button" class="header-cart-link" onclick="openCheckout()" title="Перейти до кошика">
         <span class="cart-text">${cartText}</span>
         <span class="cart-icon">${cartIcon}</span>
         <span class="cart-count">0</span>
@@ -321,6 +169,76 @@ document.addEventListener("DOMContentLoaded", function() {
 // СПІЛЬНІ ЗМІННІ ТА ФУНКЦІЇ
 // ═══════════════════════════════════════════════════════════════
 
+// Спільний Turnstile для форм поза checkout.
+window.gapkaFormTurnstile = (() => {
+  const widgets = new Map();
+  const tokens = new Map();
+  let loading = null;
+
+  function load() {
+    if (window.turnstile) return Promise.resolve();
+    if (loading) return loading;
+    loading = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.defer = true;
+      script.onload = resolve;
+      script.onerror = () => reject(new Error("Не вдалося завантажити перевірку безпеки."));
+      document.head.appendChild(script);
+    }).catch(error => {
+      loading = null;
+      throw error;
+    });
+    return loading;
+  }
+
+  async function render(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) throw new Error("Не знайдено контейнер перевірки безпеки.");
+    const siteKey = window.TURNSTILE_SITE_KEY;
+    if (!siteKey) throw new Error("Перевірка безпеки тимчасово недоступна.");
+    await load();
+    if (widgets.has(containerId)) return;
+    const widgetId = window.turnstile.render(container, {
+      sitekey: siteKey,
+      callback: token => tokens.set(containerId, token),
+      "expired-callback": () => tokens.set(containerId, ""),
+      "error-callback": () => tokens.set(containerId, "")
+    });
+    widgets.set(containerId, widgetId);
+  }
+
+  function get(containerId) { return tokens.get(containerId) || ""; }
+  function reset(containerId) {
+    tokens.set(containerId, "");
+    if (widgets.has(containerId) && window.turnstile) {
+      try { window.turnstile.reset(widgets.get(containerId)); } catch (_) {}
+    }
+  }
+  return {render, get, reset};
+})();
+
+window.gapkaRequestId_ = function(storageKey, fingerprint = "") {
+  let fingerprintHash = 2166136261;
+  const source = String(fingerprint);
+  for (let i = 0; i < source.length; i++) {
+    fingerprintHash ^= source.charCodeAt(i);
+    fingerprintHash = Math.imul(fingerprintHash, 16777619);
+  }
+  fingerprintHash = (fingerprintHash >>> 0).toString(36);
+
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(storageKey) || "null"); } catch (_) {}
+  if (saved && saved.id && saved.fingerprint === fingerprintHash) return saved.id;
+
+  const id = window.crypto?.randomUUID
+    ? window.crypto.randomUUID()
+    : "ghi_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+  localStorage.setItem(storageKey, JSON.stringify({id, fingerprint:fingerprintHash}));
+  return id;
+};
+
 let currentNotifyCategory = '';
 
 function openNotifyModal(category) {
@@ -329,9 +247,7 @@ function openNotifyModal(category) {
     currentNotifyCategory = category;
     
     const messages = {
-        'fresh-peppers': window.IS_ENGLISH
-            ? "We'll email you as soon as we harvest our first crop of fresh superhots this fall! 🍂"
-            : "Ми напишемо вам, як тільки зберемо перший врожай свіжих суперхотів восени 2026! 🍂"
+        'fresh-peppers': "Ми напишемо вам, як тільки зберемо перший врожай свіжих суперхотів! 🍂"
     };
     
     if (messages[category]) {
@@ -341,45 +257,37 @@ function openNotifyModal(category) {
     // Показуємо модалку notify, якщо вона є
     if (modal) {
         modal.style.display = 'flex';
-    } else {
-        // Створюємо на льоту для англійської версії
-        createNotifyModalEn(category);
     }
 }
 
-function createNotifyModalEn(category) {
-    const notifyHTML = `
-    <div id="notifyModal" class="modal" style="display: flex;">
-        <div class="modal-box" style="max-width: 500px; padding: 40px; text-align: center;">
-            <button class="close-btn" onclick="document.getElementById('notifyModal').style.display='none'">&times;</button>
-            <h2 class="modal-title">Notify me <span>on launch</span></h2>
-            <p style="margin: 20px 0; opacity: 0.8;" id="notify-text">Leave your email and we'll send you a hot update when the product arrives!</p>
-            <div class="form-group">
-                <input type="email" id="notify-email" placeholder="Your Email" style="width: 100%; margin-bottom: 20px;">
-                <button class="order-btn" onclick="submitNotification()">Notify Me First</button>
-            </div>
-            <div id="notify-success" style="display:none; color: var(--primary-color); margin-top: 20px; font-weight: bold;">
-                Request sent. Check your email for confirmation. 🔥
-            </div>
-        </div>
-    </div>`;
-    document.body.insertAdjacentHTML('beforeend', notifyHTML);
-}
-
 // Універсальна функція для відправки даних у Google Sheet
-async function sendToGoogleSheet(data) {
+async function sendToGoogleSheet(data, turnstileContainerId, storageKey) {
+    const token = gapkaFormTurnstile.get(turnstileContainerId);
+    if (!token) {
+        alert('Пройдіть, будь ласка, перевірку безпеки перед надсиланням.');
+        await gapkaFormTurnstile.render(turnstileContainerId);
+        return false;
+    }
     try {
-        await fetch(window.GOOGLE_SCRIPT_URL, {
+        const response = await fetch(window.GOOGLE_SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',
+            mode: 'cors',
             cache: 'no-cache',
             headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-            body: JSON.stringify(data)
+            body: JSON.stringify({...data, requestId: gapkaRequestId_(storageKey, JSON.stringify([data.orderType, data.email, data.details])), turnstileToken: token})
         });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        const result = await response.json();
+        if (!result || result.status !== 'success') {
+            throw new Error(result?.message || 'Сервер не підтвердив запит.');
+        }
+        localStorage.removeItem(storageKey);
         return true;
     } catch (error) {
         console.error('Помилка відправки:', error);
         return false;
+    } finally {
+        gapkaFormTurnstile.reset(turnstileContainerId);
     }
 }
 
@@ -394,43 +302,52 @@ async function submitNotification() {
     const email = emailInput.value.trim();
     
     if (!validateEmail(email)) {
-        alert(window.IS_ENGLISH ? 'Please enter a valid email address!' : 'Будь ласка, введіть коректну адресу електронної пошти!');
+        alert('Будь ласка, введіть коректну адресу електронної пошти!');
         emailInput.classList.add('input-error');
         return;
     }
     emailInput.classList.remove('input-error');
 
     const btn = document.querySelector('#notifyModal .order-btn');
+    let captchaBox = document.getElementById('notify-turnstile');
+    if (!captchaBox) {
+        captchaBox = document.createElement('div');
+        captchaBox.id = 'notify-turnstile';
+        captchaBox.style.cssText = 'display:flex;justify-content:center;margin:12px 0;';
+        btn.parentNode.insertBefore(captchaBox, btn);
+    }
+    try { await gapkaFormTurnstile.render('notify-turnstile'); }
+    catch (error) { alert(error.message); return; }
+    if (!gapkaFormTurnstile.get('notify-turnstile')) {
+        alert('Пройдіть перевірку безпеки перед надсиланням.');
+        return;
+    }
     btn.disabled = true;
-    btn.innerText = window.IS_ENGLISH ? "Saving..." : "Записуємо...";
+    btn.innerText = "Записуємо...";
 
     const data = {
-        date: new Date().toLocaleString("en-US"),
         email: email,
         orderType: "ЗАПИТ_НА_ЗАПУСК",
-        details: `Category: ${currentNotifyCategory}${window.IS_ENGLISH ? ' (EN)' : ''}`,
-        secret_token: "summerof26"
+        details: `Запит на повідомлення про появу: ${currentNotifyCategory}`,
     };
 
-    const sent = await sendToGoogleSheet(data);
+    const sent = await sendToGoogleSheet(data, 'notify-turnstile', 'pending_notify_request_id');
     if (!sent) {
-        alert(window.IS_ENGLISH ? 'Could not send your request. Please try again.' : 'Не вдалося надіслати запит. Спробуйте ще раз.');
+        alert('Не вдалося надіслати запит. Спробуйте ще раз.');
         btn.disabled = false;
-        btn.innerText = window.IS_ENGLISH ? "Notify Me First" : "Хочу дізнатися першим";
+        btn.innerText = "Хочу дізнатися першим";
         return;
     }
 
     const successMessage = document.getElementById('notify-success');
-    successMessage.innerText = window.IS_ENGLISH
-        ? 'Request sent. Check your email for confirmation. 🔥'
-        : 'Запит надіслано. Перевірте пошту для підтвердження. 🔥';
+    successMessage.innerText = 'Запит прийнято! Якщо лист-підтвердження не надійде, перевірте папку «Спам» або напишіть нам. 🔥';
     successMessage.style.display = 'block';
     setTimeout(() => {
         document.getElementById('notifyModal').style.display = 'none';
         document.getElementById('notify-success').style.display = 'none';
         emailInput.value = '';
         btn.disabled = false;
-        btn.innerText = window.IS_ENGLISH ? "Notify Me First" : "Хочу дізнатися першим";
+        btn.innerText = "Хочу дізнатися першим";
     }, 2000);
 }
 
@@ -448,10 +365,10 @@ function openEmptyCartModal() {
     <div id="emptyCartModal" class="modal" style="display: flex;">
         <div class="modal-box" style="max-width: 600px; padding: 40px; text-align: center;">
             <button class="close-btn" onclick="closeEmptyCartModal()">&times;</button>
-            <h2 class="modal-title">${window.IS_ENGLISH ? 'Your cart is <span>empty</span>' : 'Кошик <span>порожній</span>'}</h2>
-            <p style="margin: 15px 0; font-size: 16px; opacity: 0.8;">${window.IS_ENGLISH ? 'Discover the world of spicy flavors! Browse our catalog:' : 'Відкрийте для себе світ гострих смаків! Перегляньте наш каталог:'}</p>
-            <a href="sauces.html" class="order-btn" style="display: inline-block; width: auto; text-decoration: none; margin-top: 20px;">🔥 ${window.IS_ENGLISH ? 'Hot Sauces' : 'Гострі соуси'}</a>
-            <a href="seedsandseedlings.html" class="order-btn" style="display: inline-block; width: auto; text-decoration: none; margin-top: 10px;">🌱 ${window.IS_ENGLISH ? 'Superhot Seeds' : 'Насіння суперхотів'}</a>
+            <h2 class="modal-title">Кошик <span>порожній</span></h2>
+            <p style="margin: 15px 0; font-size: 16px; opacity: 0.8;">Відкрийте для себе світ гострих смаків! Перегляньте наш каталог:</p>
+            <a href="sauces.html" class="order-btn" style="display: inline-block; width: auto; text-decoration: none; margin-top: 20px;">🔥 Гострі соуси</a>
+            <a href="seedsandseedlings.html" class="order-btn" style="display: inline-block; width: auto; text-decoration: none; margin-top: 10px;">🌱 Насіння суперхотів</a>
         </div>
     </div>`;
     document.body.insertAdjacentHTML('beforeend', emptyModalHTML);
@@ -481,34 +398,44 @@ async function handleGeneralSubscribe(event) {
     const btn = document.getElementById('sub-btn');
 
     if (!validateEmail(email)) {
-        alert(window.IS_ENGLISH ? 'Please enter a valid email address!' : 'Будь ласка, введіть коректну адресу електронної пошти!');
+        alert('Будь ласка, введіть коректну адресу електронної пошти!');
         emailInput.classList.add('input-error');
         return;
     }
     emailInput.classList.remove('input-error');
 
+    let captchaBox = document.getElementById('subscribe-turnstile');
+    if (!captchaBox) {
+        captchaBox = document.createElement('div');
+        captchaBox.id = 'subscribe-turnstile';
+        captchaBox.style.cssText = 'display:flex;justify-content:center;margin:12px 0;';
+        btn.parentNode.insertBefore(captchaBox, btn);
+    }
+    try { await gapkaFormTurnstile.render('subscribe-turnstile'); }
+    catch (error) { alert(error.message); return; }
+    if (!gapkaFormTurnstile.get('subscribe-turnstile')) {
+        alert('Пройдіть перевірку безпеки перед підпискою.');
+        return;
+    }
+
     btn.disabled = true;
     btn.innerText = "⏳";
 
     const sent = await sendToGoogleSheet({
-        date: new Date().toISOString(),
         email: email,
         orderType: "ПІДПИСКА_МАРКЕТИНГ",
-        details: window.IS_ENGLISH ? "Subscribe from English homepage" : "Підписка з головної сторінки (футер)",
-        secret_token: "summerof26"
-    });
+        details: "Підписка з головної сторінки (футер)",
+    }, 'subscribe-turnstile', 'pending_subscribe_request_id');
 
     if (!sent) {
-        alert(window.IS_ENGLISH ? 'Could not subscribe. Please try again.' : 'Не вдалося оформити підписку. Спробуйте ще раз.');
+        alert('Не вдалося оформити підписку. Спробуйте ще раз.');
         btn.disabled = false;
-        btn.innerText = window.IS_ENGLISH ? "Subscribe" : "Підписатися";
+        btn.innerText = "Підписатися";
         return;
     }
 
-    alert(window.IS_ENGLISH
-        ? 'Request sent. Check your email for confirmation. 🔥'
-        : 'Запит надіслано. Перевірте пошту для підтвердження. 🔥');
+    alert('Запит прийнято! Якщо лист-підтвердження не надійде, перевірте папку «Спам» або напишіть нам. 🔥');
     btn.disabled = false;
-    btn.innerText = window.IS_ENGLISH ? "Subscribe" : "Підписатися";
+    btn.innerText = "Підписатися";
     document.getElementById('sub-email').value = '';
 }

@@ -2,7 +2,7 @@ import { sanitize } from './utils/sanitizer.js';
 
 const safeText = (value) => sanitize.text(String(value ?? ''));
 
-const isEnglishCatalog = Boolean(window.IS_ENGLISH);
+const isEnglishCatalog = false;
 
 const CATEGORY_PAGES = {
     seeds: {
@@ -362,7 +362,7 @@ function renderProductCard(id, product) {
                     <p class="card-price${mutedPriceClass}"
                        data-base-price="${safeText(product.price)}"
                        data-allow-sale="${product.allowSale === true ? 'true' : 'false'}">
-                        ${window.IS_ENGLISH && typeof window.formatEnglishPrice === 'function' 
+                        ${false && typeof window.formatEnglishPrice === 'function' 
                             ? window.formatEnglishPrice(product.price)
                             : `${safeText(product.price)} ₴`}
                     </p>
@@ -401,7 +401,7 @@ function renderSauceBundle(pageCategory) {
     const bundleItems = document.getElementById('sauce-bundle-items');
     const addButton = document.getElementById('sauce-bundle-add');
     const sauceIds = ['sauceCoreHeat', 'sauceMildForest', 'sauceCarrotMadness', 'sauceMeanForest'];
-    const bundlePrice = 695;
+    const bundlePrice = Number(window.orderBundles?.bundle_sauce_pack?.price);
 
     if (!bundleSection || !bundleItems || !addButton) return;
 

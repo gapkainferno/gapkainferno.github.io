@@ -1,0 +1,1664 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-05T16:30:04.913Z",
+  "sale": {
+    "isActive": false,
+    "discountPercent": 10,
+    "deadline": ""
+  },
+  "products": {
+    "habaneroredsavina": {
+      "name": "Насіння перцю Habanero Red Savina",
+      "category": "seeds",
+      "price": 99,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 99,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 124,
+          "inStock": false
+        }
+      }
+    },
+    "carolinareaperred": {
+      "name": "Насіння перцю Carolina Reaper Red",
+      "category": "seeds",
+      "price": 119,
+      "inStock": false,
+      "allowSale": false,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 119,
+          "inStock": false
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 149,
+          "inStock": false
+        }
+      }
+    },
+    "bhutjolokiared": {
+      "name": "Насіння перцю Bhut Jolokia Red",
+      "category": "seeds",
+      "price": 99,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 99,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 124,
+          "inStock": false
+        }
+      }
+    },
+    "ajimelocoton": {
+      "name": "Насіння перцю Aji Melocoton",
+      "category": "seeds",
+      "price": 79,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 79,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 99,
+          "inStock": false
+        }
+      }
+    },
+    "7PotBrainStrainYellow": {
+      "name": "Насіння перцю 7 Pot Brain Strain Yellow",
+      "category": "seeds",
+      "price": 109,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 109,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 136,
+          "inStock": false
+        }
+      }
+    },
+    "monkeyfaceyellow": {
+      "name": "Насіння перцю Monkey Face Yellow",
+      "category": "seeds",
+      "price": 79,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 79,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 99,
+          "inStock": false
+        }
+      }
+    },
+    "carolinareaperchocolate": {
+      "name": "Насіння перцю Carolina Reaper Chocolate",
+      "category": "seeds",
+      "price": 109,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 109,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 136,
+          "inStock": false
+        }
+      }
+    },
+    "7pot-chocolate": {
+      "name": "Насіння перцю 7 Pot Chocolate",
+      "category": "seeds",
+      "price": 89,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 89,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 111,
+          "inStock": false
+        }
+      }
+    },
+    "starfishred": {
+      "name": "Насіння перцю Brazilian Starfish Red",
+      "category": "seeds",
+      "price": 89,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 89,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 111,
+          "inStock": true
+        }
+      }
+    },
+    "padron": {
+      "name": "Насіння перцю Padrón",
+      "category": "seeds",
+      "price": 69,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 69,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 86,
+          "inStock": false
+        }
+      }
+    },
+    "zebrange": {
+      "name": "Насіння перцю Zebrange",
+      "category": "seeds",
+      "price": 79,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 79,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 99,
+          "inStock": false
+        }
+      }
+    },
+    "peterpepper": {
+      "name": "Насіння перцю Peter Pepper",
+      "category": "seeds",
+      "price": 79,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 79,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 99,
+          "inStock": false
+        }
+      }
+    },
+    "tabasco": {
+      "name": "Насіння перцю Tabasco",
+      "category": "seeds",
+      "price": 69,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 69,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 86,
+          "inStock": false
+        }
+      }
+    },
+    "sugarrushstripey": {
+      "name": "Насіння перцю Sugar Rush Stripey",
+      "category": "seeds",
+      "price": 89,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 89,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 111,
+          "inStock": false
+        }
+      }
+    },
+    "sugarrushpeach": {
+      "name": "Насіння перцю Sugar Rush Peach",
+      "category": "seeds",
+      "price": 79,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 79,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 99,
+          "inStock": false
+        }
+      }
+    },
+    "lemondrop": {
+      "name": "Насіння перцю Lemon Drop",
+      "category": "seeds",
+      "price": 79,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 79,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 99,
+          "inStock": false
+        }
+      }
+    },
+    "giantrocotored": {
+      "name": "Насіння перцю Giant Rocoto Red",
+      "category": "seeds",
+      "price": 89,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 89,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 111,
+          "inStock": false
+        }
+      }
+    },
+    "fataliiRed": {
+      "name": "Насіння перцю Fatalii Red",
+      "category": "seeds",
+      "price": 89,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 89,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 111,
+          "inStock": false
+        }
+      }
+    },
+    "fataliiOrange": {
+      "name": "Насіння перцю Fatalii Orange",
+      "category": "seeds",
+      "price": 89,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 89,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 111,
+          "inStock": false
+        }
+      }
+    },
+    "fataliiWhite": {
+      "name": "Насіння перцю Fatalii White",
+      "category": "seeds",
+      "price": 89,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 89,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 111,
+          "inStock": false
+        }
+      }
+    },
+    "habanerochocolate": {
+      "name": "Насіння перцю Habanero Chocolate",
+      "category": "seeds",
+      "price": 89,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 89,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 111,
+          "inStock": false
+        }
+      }
+    },
+    "scotchbonnetyellow": {
+      "name": "Насіння перцю Scotch Bonnet Yellow",
+      "category": "seeds",
+      "price": 89,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 89,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 111,
+          "inStock": false
+        }
+      }
+    },
+    "morugascorpionred": {
+      "name": "Насіння перцю Moruga Scorpion Red",
+      "category": "seeds",
+      "price": 109,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 109,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 136,
+          "inStock": false
+        }
+      }
+    },
+    "jalapeno": {
+      "name": "Насіння перцю Jalapeno",
+      "category": "seeds",
+      "price": 69,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 69,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 86,
+          "inStock": false
+        }
+      }
+    },
+    "habaneroBigSun": {
+      "name": "Насіння перцю Habanero Big Sun",
+      "category": "seeds",
+      "price": 99,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 99,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 124,
+          "inStock": false
+        }
+      }
+    },
+    "jalapeno-slim-jim": {
+      "name": "Насіння перцю Jalapeno Slim Jim",
+      "category": "seeds",
+      "price": 69,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 69,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 86,
+          "inStock": false
+        }
+      }
+    },
+    "chili": {
+      "name": "Насіння перцю Чилі",
+      "category": "seeds",
+      "price": 69,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 69,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 86,
+          "inStock": false
+        }
+      }
+    },
+    "cayenne": {
+      "name": "Насіння перцю Каєнський",
+      "category": "seeds",
+      "price": 69,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 69,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 86,
+          "inStock": false
+        }
+      }
+    },
+    "ghost-peach": {
+      "name": "Насіння перцю Ghost Peach",
+      "category": "seeds",
+      "price": 99,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 99,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 124,
+          "inStock": false
+        }
+      }
+    },
+    "nebesna-pyramida": {
+      "name": "Насіння перцю Celestial Pyramid",
+      "category": "seeds",
+      "price": 69,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 69,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 86,
+          "inStock": false
+        }
+      }
+    },
+    "sauceCoreHeat": {
+      "name": "Крафтовий соус Core Heat",
+      "category": "sauces",
+      "price": 189,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {}
+    },
+    "sauceNeonVibe": {
+      "name": "Крафтовий соус Neon Vibe",
+      "category": "sauces",
+      "price": 189,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": true,
+      "variants": {}
+    },
+    "sauceMildForest": {
+      "name": "Крафтовий соус Mild Forest",
+      "category": "sauces",
+      "price": 189,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {}
+    },
+    "sauceCarrotMadness": {
+      "name": "Крафтовий соус Carrot Madness",
+      "category": "sauces",
+      "price": 189,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {}
+    },
+    "sauceMeanForest": {
+      "name": "Крафтовий соус Mean Forest",
+      "category": "sauces",
+      "price": 189,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {}
+    },
+    "sauceHotHoney": {
+      "name": "Гострий мед Honey Sting",
+      "category": "sauces",
+      "price": 200,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": true,
+      "variants": {}
+    },
+    "mar": {
+      "name": "Насіння томату Green Honey (Mar azul лінія)",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "tsitrynovyi-fresh": {
+      "name": "Насіння томату Цитриновий Фреш",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "sercevina-soncya": {
+      "name": "Насіння томату Серцевина сонця",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "zolotij-tigr": {
+      "name": "Насіння томату Золотий тигр (Golden Tiger)",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "tigrovij-vitrazh": {
+      "name": "Томат Тигровий вітраж",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "midnij-inzhir": {
+      "name": "Томат Мідний інжир",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "shokoladnij-inzhir": {
+      "name": "Томат Шоколадний інжир",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "purpurovij-inzhir": {
+      "name": "Томат Пурпуровий інжир",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "polunichnij-inzhir": {
+      "name": "Томат Полуничний інжир",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "malinovyj-kavun": {
+      "name": "Томат Малиновий кавун",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "farshyrovana-bombochka": {
+      "name": "Томат Фарширована бомбочка",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "zolochena-malynova-shpalera": {
+      "name": "Томат Золочена малинова шпалера",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "fakturna-slyva": {
+      "name": "Томат Фактурна слива",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "stepove-yajcze": {
+      "name": "Томат Степове яйце",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "rubinove-namysto": {
+      "name": "Томат Рубінове намисто",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "kivi-bifshteks": {
+      "name": "Томат Ківі-біфштекс",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "stepova-slivka": {
+      "name": "Томат Степова сливка",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "kopchena-karamel": {
+      "name": "Томат Копчена карамель (Smoked Caramel)",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "zakatna-amfora": {
+      "name": "Томат Закатна амфора",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "rubinovyj-kub": {
+      "name": "Томат Рубіновий куб",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "korolivska-slyva": {
+      "name": "Томат Королівська слива",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "bahryana-korona": {
+      "name": "Томат Багряна корона",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "marmurovij-granat": {
+      "name": "Насіння томату Мармуровий гранат",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "rubinovij-valun": {
+      "name": "Насіння томату Рубіновий валун",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "abrykosovyj-hnom": {
+      "name": "Томат Абрикосовий гном",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "dzerkalo-alisi": {
+      "name": "Томат Дзеркало Аліси",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "barbarysky-vysokorosli": {
+      "name": "Томат Барбарис високорослий",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "barbarysky-nyzkorosli": {
+      "name": "Томат Барбариски низькорослі",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "ananasovyj-vohon": {
+      "name": "Томат Ананасовий вогонь",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "brandywine_pink": {
+      "name": "Насіння томату Brandywine Pink (Лінія GHI)",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "stupice_early": {
+      "name": "Насіння томату Stupice Early (Контейнерний)",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "titan_red_814": {
+      "name": "Насіння томату GHI Titan Red (Лінія 814)",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "whitewax_186": {
+      "name": "Насіння томату White Wax GHI (Лінія 186)",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "opalgem": {
+      "name": "Насіння томату Opal Gem Collection",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "zagadka": {
+      "name": "Насіння томату Загадка",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "pinkgiant": {
+      "name": "Насіння томату Рожевий Велетень",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "ghi_medvezha_lapa": {
+      "name": "Насіння томату Ведмежа Лапа",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "mongol_dwarf": {
+      "name": "Насіння томату Монгольський Карлик",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "sgt_pepper_tomato": {
+      "name": "Насіння томату Sgt. Pepper",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "cherri-krugli": {
+      "name": "Насіння томату Черрі круглі",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "zolota-kraplia": {
+      "name": "Насіння томату Золота Крапля",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "medove-hrono": {
+      "name": "Насіння томату Медове гроно",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "synie-soniachne-siaivo": {
+      "name": "Насіння томату Синє сонячне сяйво",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "rozhevyi-hahat": {
+      "name": "Насіння томату Рожевий гагат",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "hroshovyi-mishechok": {
+      "name": "Насіння томату Грошовий мішечок",
+      "category": "tomatoes",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "kapia-sweet": {
+      "name": "Насіння солодкого перцю Капія",
+      "category": "vegetable-seeds",
+      "price": 30,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 30,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 38,
+          "inStock": false
+        }
+      }
+    },
+    "bagryanyy-shepit": {
+      "name": "Багряний Шепіт (Crimson Whisper)",
+      "category": "vegetable-seeds",
+      "price": 35,
+      "inStock": true,
+      "allowSale": true,
+      "isHidden": false,
+      "variants": {
+        "openPollinated": {
+          "label": "Open Pollinated",
+          "price": 35,
+          "inStock": true
+        },
+        "isolated": {
+          "label": "Ізольоване",
+          "price": 44,
+          "inStock": false
+        }
+      }
+    },
+    "fresh_lemondrop": {
+      "name": "Свіжий перець Lemon Drop",
+      "category": "fresh-peppers",
+      "price": 0,
+      "inStock": false,
+      "allowSale": false,
+      "isHidden": false,
+      "variants": {}
+    },
+    "fresh_habanero_chocolate": {
+      "name": "Свіжий перець Habanero Chocolate",
+      "category": "fresh-peppers",
+      "price": 0,
+      "inStock": false,
+      "allowSale": false,
+      "isHidden": false,
+      "variants": {}
+    },
+    "fresh_jalapeno": {
+      "name": "Свіжий перець Jalapeno",
+      "category": "fresh-peppers",
+      "price": 0,
+      "inStock": false,
+      "allowSale": false,
+      "isHidden": false,
+      "variants": {}
+    },
+    "fresh_fatalii": {
+      "name": "Свіжий перець Fatalii",
+      "category": "fresh-peppers",
+      "price": 0,
+      "inStock": false,
+      "allowSale": false,
+      "isHidden": false,
+      "variants": {}
+    },
+    "fresh_monkey_face": {
+      "name": "Свіжий перець Monkey Face Yellow",
+      "category": "fresh-peppers",
+      "price": 0,
+      "inStock": false,
+      "allowSale": false,
+      "isHidden": false,
+      "variants": {}
+    }
+  },
+  "bundles": {
+    "bundle_sauce_pack": {
+      "name": "Пак із чотирьох соусів",
+      "price": 695,
+      "inStock": true,
+      "allowSale": false,
+      "includedProductIds": [
+        "sauceCoreHeat",
+        "sauceMildForest",
+        "sauceCarrotMadness",
+        "sauceMeanForest"
+      ]
+    }
+  }
+}
