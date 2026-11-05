@@ -1860,20 +1860,33 @@ window.changeImage = function(dir) {
 // === 5. ВІДПРАВКА ВІДГУКУ (НОВЕ) ===
 window.sendReview = async function() {
     const honey = document.getElementById('rev-honey')?.value;
-    if (honey) return; // Якщо поле заповнене — це бот
-    // 1. Знаходимо кнопку та дані
+    if (honey) return;
+
     const btn = document.querySelector('#review-form-section .add-btn-aside');
     const author = document.getElementById('rev-author')?.value.trim().substring(0, 100);
-    const text = document.getElementById('rev-text')?.value.trim().substring(0, 1000);
-    const prodName = document.getElementById('p-name')?.innerText || "Невідомий товар";
+    const message = document.getElementById('rev-text')?.value.trim().substring(0, 1000);
+    const product = document.getElementById('p-name')?.innerText.trim().substring(0, 150) || "Невідомий товар";
 
-    // Перевірка
-    if (!author || !text) {
+    if (!author || !message) {
         alert("Заповніть, будь ласка, ім'я та текст відгуку ✍️");
         return;
     }
+    if (!window.gapkaFormTurnstile) {
+        alert("Перевірка безпеки ще завантажується. Оновіть сторінку та спробуйте знову.");
+        return;
+    }
 
-    // 2. Візуальне блокування
+    try {
+        await window.gapkaFormTurnstile.render('review-turnstile');
+    } catch (error) {
+        alert(error.message || "Не вдалося завантажити перевірку безпеки.");
+        return;
+    }
+    if (!window.gapkaFormTurnstile.get('review-turnstile')) {
+        alert("Пройдіть перевірку безпеки перед надсиланням відгуку.");
+        return;
+    }
+
     const originalText = btn.innerText;
     btn.disabled = true;
     btn.classList.add('btn-loading');
@@ -1882,41 +1895,50 @@ window.sendReview = async function() {
     btn.style.cursor = "not-allowed";
 
     try {
-        // 3. Відправка відгуку на сервер
-        await fetch(window.GOOGLE_SCRIPT_URL, {
+        const response = await fetch(window.GOOGLE_SCRIPT_URL, {
             method: "POST",
             mode: "cors",
             redirect: "follow",
-            headers: { "Content-Type": "text/plain" },
-            body: JSON.stringify({ 
+            cache: "no-cache",
+            headers: {"Content-Type": "text/plain"},
+            body: JSON.stringify({
                 orderType: "ВІДГУК",
                 name: author,
-                product: prodName,
-                message: text,
+                product,
+                message,
+                requestId: window.gapkaRequestId_('pending_review_request_id'),
+                turnstileToken: window.gapkaFormTurnstile.get('review-turnstile')
             })
         });
+        if (!response.ok) throw new Error("Сервер повернув помилку: " + response.status);
+        const result = await response.json();
+        if (!result || result.status !== 'success') {
+            throw new Error(result?.message || "Сервер не підтвердив відгук.");
+        }
 
-        // 4. Успіх: міняємо вигляд кнопки
-        btn.innerText = "Дякуємо! Надіслано 😊";
-        btn.style.background = "#325e34"; 
+        localStorage.removeItem('pending_review_request_id');
+        btn.innerText = "Дякуємо! Відгук отримано 😊";
+        btn.style.background = "#325e34";
         btn.style.opacity = "1";
-
-        // Очищаємо поля
         document.getElementById('rev-author').value = '';
         document.getElementById('rev-text').value = '';
-
-        // 5. Повертаємо кнопку в норму через 5 секунд
         setTimeout(() => {
             btn.disabled = false;
             btn.classList.remove('btn-loading');
             btn.innerText = originalText;
-            btn.style.background = ""; 
+            btn.style.background = "";
             btn.style.cursor = "pointer";
         }, 5000);
-
-    } catch (e) {
-        console.error("Помилка відправки відгуку:", e);
-        alert("Не вдалося надіслати відгук. Спробуйте ще раз або напишіть нам на homestead.inferno@gmail.com.");
+    } catch (error) {
+        console.error("Помилка відправки відгуку:", error);
+        alert(error.message || "Не вдалося надіслати відгук. Спробуйте ще раз.");
+        btn.disabled = false;
+        btn.classList.remove('btn-loading');
+        btn.innerText = originalText;
+        btn.style.opacity = "1";
+        btn.style.cursor = "pointer";
+    } finally {
+        window.gapkaFormTurnstile.reset('review-turnstile');
     }
 };
 
