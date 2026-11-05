@@ -599,31 +599,16 @@ window.openCheckout = function() {
         document.getElementById('modal-main-content').style.display = 'grid';
         document.getElementById('success-msg').style.display = 'none';
         
-        // Автозаповнення збережених даних
-        const fields = ['name', 'phone', 'city', 'branch', 'email', 'delivery', 'city_ref', 'payment', 'country', 'state', 'address', 'zip'];
-        fields.forEach(f => {
-            const val = localStorage.getItem('saved_' + f);
-            if (!val) return;
-            
-            if (f === 'city_ref') {
-                const cityEl = document.getElementById('cust-city');
-                if (cityEl) cityEl.dataset.ref = val;
-                return;
-            }
-            
-            if (f === 'branch' && !false) {
-                const branchVisible = document.getElementById('cust-branch-input');
-                if (branchVisible) branchVisible.value = val;
-            }
+        // У браузері залишаємо лише нешкідливі налаштування доставки й оплати.
+        // Контактні та адресні дані не зберігаємо між сесіями.
+        ['saved_name', 'saved_phone', 'saved_email', 'saved_city', 'saved_city_ref',
+         'saved_branch', 'saved_address', 'saved_zip', 'saved_country', 'saved_state']
+            .forEach(key => localStorage.removeItem(key));
 
-            if (false && ['address'].includes(f)) {
-                const el = document.getElementById('cust-' + f);
-                if (el) el.value = val;
-                return;
-            }
-
-            const el = document.getElementById(f === 'email' ? 'email' : 'cust-' + f);
-            if (el) el.value = val;
+        ['delivery', 'payment'].forEach(field => {
+            const value = localStorage.getItem('saved_' + field);
+            const element = document.getElementById('cust-' + field);
+            if (value && element) element.value = value;
         });
         updateCartUI();
         renderCheckoutTurnstile_();
@@ -1698,13 +1683,9 @@ window.submitOrder = async function() {
         comment: (document.getElementById('cust-comment')?.value.trim() || "").substring(0, 500),
     };
 
-    localStorage.setItem('saved_name', orderData.name);
-    localStorage.setItem('saved_phone', orderData.phone);
+    // Зберігаємо лише вибір доставки та оплати, не персональні дані.
     localStorage.setItem('saved_delivery', orderData.delivery);
     localStorage.setItem('saved_payment', orderData.payment);
-    localStorage.setItem('saved_city', orderData.city);
-    localStorage.setItem('saved_city_ref', fields.city.dataset.ref || '');
-    localStorage.setItem('saved_branch', orderData.branch);
 
     let orderText = `🌶️ НОВЕ ЗАМОВЛЕННЯ: ${orderData.id}\n`;
     orderText += `👤 ${orderData.name}\n📞 ${orderData.phone}\n`;
