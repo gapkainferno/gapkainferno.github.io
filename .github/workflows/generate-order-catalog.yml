@@ -6,6 +6,7 @@ on:
       - 'products.js'
       - 'cart.js'
       - 'modal-init.js'
+      - 'security-enhancements.js'
       - 'product.html'
       - 'index.html'
       - 'growing-guide.html'
@@ -44,6 +45,7 @@ jobs:
         run: |
           node --check cart.js
           node --check modal-init.js
+          node --check security-enhancements.js
           node scripts/check-inline-scripts.js
           node --check products.js
           node --check googlescript.js
