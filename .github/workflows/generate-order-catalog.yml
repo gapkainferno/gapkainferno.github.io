@@ -8,6 +8,8 @@ on:
       - 'modal-init.js'
       - 'product.html'
       - 'index.html'
+      - 'growing-guide.html'
+      - 'scripts/check-inline-scripts.js'
       - 'google-script-config.js'
       - 'catalog.js'
       - 'googlescript.js'
@@ -36,6 +38,7 @@ jobs:
         run: |
           node --check cart.js
           node --check modal-init.js
+          node scripts/check-inline-scripts.js
           node --check products.js
           node --check googlescript.js
           node --input-type=module --check < catalog.js
