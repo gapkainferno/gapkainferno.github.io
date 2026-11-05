@@ -5,6 +5,10 @@ on:
     paths:
       - 'products.js'
       - 'cart.js'
+      - 'modal-init.js'
+      - 'product.html'
+      - 'index.html'
+      - 'google-script-config.js'
       - 'catalog.js'
       - 'googlescript.js'
       - 'scripts/generate-order-catalog.js'
