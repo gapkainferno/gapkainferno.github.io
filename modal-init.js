@@ -322,7 +322,7 @@ async function submitNotification() {
     const data = {
         email: email,
         orderType: "ЗАПИТ_НА_ЗАПУСК",
-        details: \`Запит на повідомлення про появу: \${currentNotifyCategory}\`,
+        details: `Запит на повідомлення про появу: ${currentNotifyCategory}`,
     };
 
     const sent = await sendToGoogleSheet(data, 'notify-turnstile', 'pending_notify_request_id');
