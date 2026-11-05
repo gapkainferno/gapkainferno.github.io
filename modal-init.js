@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // ═══════════════════════════════════════════════════════════════
 
 // Спільний Turnstile для форм поза checkout.
-const gapkaFormTurnstile = (() => {
+window.gapkaFormTurnstile = (() => {
   const widgets = new Map();
   const tokens = new Map();
   let loading = null;
@@ -214,7 +214,7 @@ const gapkaFormTurnstile = (() => {
   return {render, get, reset};
 })();
 
-function gapkaRequestId_(storageKey) {
+window.gapkaRequestId_ = function(storageKey) {
   let id = localStorage.getItem(storageKey);
   if (!id) {
     id = window.crypto?.randomUUID
