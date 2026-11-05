@@ -1701,13 +1701,6 @@ window.submitOrder = async function() {
     if (!submitBtn) { console.error('submitOrder: кнопку order-btn не знайдено'); return; }
     const originalText = submitBtn.textContent;
     const orderID = generateOrderNumber();
-    let requestId = localStorage.getItem('pending_order_request_id');
-    if (!requestId) {
-        requestId = (window.crypto && typeof window.crypto.randomUUID === 'function')
-            ? window.crypto.randomUUID()
-            : 'ghi_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
-        localStorage.setItem('pending_order_request_id', requestId);
-    }
     const cartSync = syncCartPrices(getFreshCart(), { save: true });
     const cart = cartSync.cart;
     if (cartSync.changed) {
@@ -1739,6 +1732,38 @@ window.submitOrder = async function() {
         email: document.getElementById('email')?.value.trim() || "-",
         comment: (document.getElementById('cust-comment')?.value.trim() || "").substring(0, 500),
     };
+
+    // Один і той самий payload повторно використовує ключ, змінений кошик/адреса отримує новий.
+    const requestFingerprint = JSON.stringify({
+        name: orderData.name,
+        phone: orderData.phone,
+        delivery: orderData.delivery,
+        payment: orderData.payment,
+        city: orderData.city,
+        branch: orderData.branch,
+        email: orderData.email,
+        comment: orderData.comment,
+        cart: cart.map(item => ({
+            productId: item.productId || "",
+            versionKey: item.versionKey || "",
+            price: Number(item.price),
+            qty: Number(item.qty)
+        }))
+    });
+    let requestId;
+    if (typeof window.gapkaRequestId_ === 'function') {
+        requestId = window.gapkaRequestId_('pending_order_request_v2', requestFingerprint);
+    } else {
+        const savedFingerprint = localStorage.getItem('pending_order_fingerprint');
+        requestId = localStorage.getItem('pending_order_request_id');
+        if (!requestId || savedFingerprint !== requestFingerprint) {
+            requestId = (window.crypto && typeof window.crypto.randomUUID === 'function')
+                ? window.crypto.randomUUID()
+                : 'ghi_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+            localStorage.setItem('pending_order_request_id', requestId);
+            localStorage.setItem('pending_order_fingerprint', requestFingerprint);
+        }
+    }
 
     // Зберігаємо лише вибір доставки та оплати, не персональні дані.
     localStorage.setItem('saved_delivery', orderData.delivery);
@@ -1818,6 +1843,10 @@ window.submitOrder = async function() {
             successMsg.style.display = 'block';
             const orderDisplay = document.getElementById('orderNumberDisplay');
             if (orderDisplay) orderDisplay.innerText = serverResult.orderId || orderData.id;
+            const emailNotice = document.getElementById('email-delivery-notice');
+            if (emailNotice) {
+                emailNotice.style.display = serverResult.customerEmailSent === false ? 'block' : 'none';
+            }
         }
 
         const paymentDetails = document.getElementById('payment-details-success');
@@ -1847,6 +1876,8 @@ window.submitOrder = async function() {
         }
 
         localStorage.removeItem('pending_order_request_id');
+        localStorage.removeItem('pending_order_fingerprint');
+        localStorage.removeItem('pending_order_request_v2');
         window.__gapkaTurnstileToken = "";
         if (window.turnstile && turnstileWidgetId !== null) window.turnstile.reset(turnstileWidgetId);
         saveCart([]);

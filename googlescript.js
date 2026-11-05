@@ -73,6 +73,142 @@ function findIdempotentRow_(sheet, column, key) {
   return match ? match.getRow() : 0;
 }
 
+function ensureOrderNotificationColumns_(sheet) {
+  const requiredColumns = 18;
+  if (sheet.getMaxColumns() < requiredColumns) {
+    sheet.insertColumnsAfter(sheet.getMaxColumns(), requiredColumns - sheet.getMaxColumns());
+  }
+  const headers = [
+    "Email клієнту", "Email адміністратору", "Спроби email",
+    "Payload email (службовий)", "Остання спроба email", "Fingerprint запиту (службовий)"
+  ];
+  const range = sheet.getRange(1, 13, 1, headers.length);
+  const current = range.getValues()[0];
+  headers.forEach((header, index) => {
+    if (!current[index]) sheet.getRange(1, 13 + index).setValue(header);
+  });
+  try { sheet.hideColumns(16); sheet.hideColumns(18); } catch (_) {}
+}
+
+function getOrderEmailState_(sheet, row) {
+  const values = sheet.getRange(row, 13, 1, 3).getValues()[0];
+  return {
+    customerEmailSent: values[0] === "SENT",
+    adminEmailSent: values[1] === "SENT",
+    attempts: Number(values[2]) || 0
+  };
+}
+
+function sendOrderEmailsForRow_(sheet, row) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(10000)) {
+    const state = getOrderEmailState_(sheet, row);
+    return { customerEmailSent: state.customerEmailSent, adminEmailSent: state.adminEmailSent, pending: true };
+  }
+  try {
+    const stateRange = sheet.getRange(row, 13, 1, 3);
+    const stateValues = stateRange.getValues()[0];
+    let customerStatus = String(stateValues[0] || "PENDING");
+    let adminStatus = String(stateValues[1] || "PENDING");
+    let attempts = Number(stateValues[2]) || 0;
+    const payloadText = String(sheet.getRange(row, 16).getValue() || "");
+    if (!payloadText) {
+      return { customerEmailSent: null, adminEmailSent: null, pending: false };
+    }
+    let payload;
+    try { payload = JSON.parse(payloadText); }
+    catch (error) {
+      Logger.log("Order email payload is invalid at row " + row + ": " + error);
+      return { customerEmailSent: false, adminEmailSent: false, pending: true };
+    }
+    if (customerStatus === "SENT" && adminStatus === "SENT") {
+      return { customerEmailSent: true, adminEmailSent: true, pending: false };
+    }
+    if (attempts >= 6) {
+      if (customerStatus !== "SENT") customerStatus = "FAILED";
+      if (adminStatus !== "SENT") adminStatus = "FAILED";
+      stateRange.setValues([[customerStatus, adminStatus, attempts]]);
+      return { customerEmailSent: customerStatus === "SENT", adminEmailSent: adminStatus === "SENT", pending: false, exhausted: true };
+    }
+
+    attempts += 1;
+    sheet.getRange(row, 15).setValue(attempts);
+    sheet.getRange(row, 17).setValue(Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss"));
+
+    if (adminStatus !== "SENT") {
+      try {
+        MailApp.sendEmail({
+          to: CONTACT_EMAIL,
+          subject: "🔥 Нове замовлення #" + payload.orderId,
+          body: payload.adminBody,
+          replyTo: payload.replyTo || CONTACT_EMAIL
+        });
+        adminStatus = "SENT";
+      } catch (error) {
+        Logger.log("Admin order notification failed for " + payload.orderId + ": " + error);
+        adminStatus = "PENDING";
+      }
+      sheet.getRange(row, 14).setValue(adminStatus);
+    }
+
+    if (customerStatus !== "SENT") {
+      try {
+        sendConfirmationEmail(
+          payload.email, payload.name, payload.orderId, payload.total,
+          payload.cartItems, payload.paymentMethod
+        );
+        customerStatus = "SENT";
+      } catch (error) {
+        Logger.log("Customer confirmation email failed for " + payload.orderId + ": " + error);
+        customerStatus = "PENDING";
+      }
+      sheet.getRange(row, 13).setValue(customerStatus);
+    }
+
+    sheet.getRange(row, 15).setValue(attempts);
+    return {
+      customerEmailSent: customerStatus === "SENT",
+      adminEmailSent: adminStatus === "SENT",
+      pending: customerStatus !== "SENT" || adminStatus !== "SENT",
+      attempts: attempts
+    };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// Запускається часовим тригером кожні 5 хвилин. Повторює лише невдалі листи.
+function retryPendingOrderEmails() {
+  const sheet = getOrdersSheet();
+  ensureOrderNotificationColumns_(sheet);
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;
+  const startRow = 2;
+  const rowCount = Math.min(lastRow - 1, 100);
+  const states = sheet.getRange(startRow, 13, rowCount, 3).getValues();
+  let processed = 0;
+  for (let i = 0; i < states.length && processed < 20; i++) {
+    const customerStatus = String(states[i][0] || "");
+    const adminStatus = String(states[i][1] || "");
+    const attempts = Number(states[i][2]) || 0;
+    if ((customerStatus !== "SENT" || adminStatus !== "SENT") &&
+        attempts < 6 && sheet.getRange(startRow + i, 16).getValue()) {
+      sendOrderEmailsForRow_(sheet, startRow + i);
+      processed++;
+    }
+  }
+}
+
+// Один раз запустити вручну в Apps Script, щоб увімкнути автоматичні повторні спроби.
+function installOrderEmailRetryTrigger() {
+  ScriptApp.getProjectTriggers().forEach(trigger => {
+    if (trigger.getHandlerFunction() === "retryPendingOrderEmails") {
+      ScriptApp.deleteTrigger(trigger);
+    }
+  });
+  ScriptApp.newTrigger("retryPendingOrderEmails").timeBased().everyMinutes(5).create();
+}
+
 function jsonResponse_(payload) {
   return ContentService.createTextOutput(JSON.stringify(payload))
     .setMimeType(ContentService.MimeType.JSON);
@@ -228,84 +364,136 @@ function doPost(e) {
       return jsonResponse_({status:"success", type:"review", adminEmailSent:adminEmailSent});
     }
 
-    // ЗАМОВЛЕННЯ: спочатку шукаємо довговічний ключ у прихованому стовпці.
-    if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
-    try {
-      const existingOrderSheet = getOrdersSheet();
-      ensureIdempotencyColumn_(existingOrderSheet, 12, "Ключ запиту (службовий)");
-      const duplicateRow = findIdempotentRow_(existingOrderSheet, 12, idempotencyKey);
-      if (duplicateRow) {
-        const previousOrderId = String(existingOrderSheet.getRange(duplicateRow, 3).getValue());
-        return jsonResponse_({status:"success", orderId:previousOrderId, duplicate:true});
-      }
-    } finally {
-      if (lock.hasLock()) lock.releaseLock();
-    }
-
+    // ЗАМОВЛЕННЯ: сервер самостійно перевіряє всі критичні поля.
     const allowedDelivery = ["Відділення НП", "Поштомат НП", "Укрпошта", "Кур'єр НП"];
+    const allowedPayments = ["Онлайн оплата", "Накладений платіж"];
     const delivery = String(data.delivery || "").trim();
-    if (!allowedDelivery.includes(delivery)) return errorResponse("Недоступний спосіб доставки");
+    const payment = String(data.payment || "").trim();
     const name = String(data.name || "").trim().slice(0, 100);
+    const city = String(data.city || "").trim().slice(0, 100);
+    const branch = String(data.branch || "").trim().slice(0, 200);
+    const comment = String(data.comment || "").trim().slice(0, 500);
+
+    if (!allowedDelivery.includes(delivery)) return errorResponse("Недоступний спосіб доставки");
+    if (!allowedPayments.includes(payment)) return errorResponse("Недоступний спосіб оплати");
     if (!name || !phone) return errorResponse("Перевірте ім'я або номер телефону");
+    if (!city) return errorResponse("Вкажіть населений пункт доставки.");
+    if (!branch || (delivery === "Кур'єр НП" ? branch.length < 5 : branch.length < 3)) {
+      return errorResponse("Вкажіть конкретне відділення, поштомат або повну адресу доставки.");
+    }
     if (!validateEmail(email)) return errorResponse("Вкажіть коректну електронну адресу — на неї буде надіслано підтвердження замовлення та реквізити оплати.");
 
     const safeCart = normalizeCart(data.cart);
     if (safeCart.error) return errorResponse(safeCart.error);
-    const orderId = generateOrderId();
-    const total = safeCart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
-    const formattedTotal = total.toFixed(2);
-    const customerPayment = String(data.payment || "-").slice(0, 80);
-    const timestamp = Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss");
-    const fullMessage = buildOrderDetails(data, safeCart.items);
 
+    const fingerprintData = {
+      name: name, phone: phone, email: email, delivery: delivery,
+      city: city, branch: branch, payment: payment, comment: comment,
+      cart: safeCart.items.map(item => ({
+        productId: item.productId, name: item.name, price: item.price, qty: item.qty
+      }))
+    };
+    const requestFingerprint = hashKey_(JSON.stringify(fingerprintData));
+    // Перевіряємо повторний запит уже після валідації та звірки канонічних цін.
+    let duplicateRow = 0;
+    let previousOrderId = "";
     if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
     try {
       const sheet = getOrdersSheet();
       ensureIdempotencyColumn_(sheet, 12, "Ключ запиту (службовий)");
-      const duplicateRow = findIdempotentRow_(sheet, 12, idempotencyKey);
+      ensureOrderNotificationColumns_(sheet);
+      duplicateRow = findIdempotentRow_(sheet, 12, idempotencyKey);
       if (duplicateRow) {
-        const previousOrderId = String(sheet.getRange(duplicateRow, 3).getValue());
-        return jsonResponse_({status:"success", orderId:previousOrderId, duplicate:true});
+        previousOrderId = String(sheet.getRange(duplicateRow, 3).getValue());
+        const storedFingerprint = String(sheet.getRange(duplicateRow, 18).getValue() || "");
+        if (storedFingerprint && storedFingerprint !== requestFingerprint) {
+          return errorResponse("Цей запит уже використано для іншого вмісту замовлення. Оновіть сторінку та повторіть спробу.");
+        }
       }
-      if (!consumeRateLimitLocked_("order_" + hashKey_(phone + "|" + (email || "")), 5, 600)) {
-        return errorResponse("Забагато замовлень з цих контактних даних. Спробуйте пізніше.");
-      }
-
-      sheet.insertRowBefore(2);
-      sheet.getRange(2, 3).setNumberFormat("@");
-      sheet.getRange(2, 1, 1, 12).setValues([[
-        false, timestamp, safeSheetText_(orderId), safeSheetText_(name), safeSheetText_(email || "-"),
-        safeSheetText_(phone), safeSheetText_(fullMessage), "🆕 Нове", formattedTotal + " ₴", "",
-        safeSheetText_(customerPayment), idempotencyKey
-      ]]);
-      sheet.getRange(2, 1).insertCheckboxes();
-      sheet.getRange(2, 1, 1, 11).setBackground("#061a07").setFontColor("#ffffff").setVerticalAlignment("middle");
     } finally {
       if (lock.hasLock()) lock.releaseLock();
     }
 
+    if (duplicateRow) {
+      const notifications = sendOrderEmailsForRow_(getOrdersSheet(), duplicateRow);
+      return jsonResponse_({
+        status: "success", orderId: previousOrderId, duplicate: true,
+        adminEmailSent: notifications.adminEmailSent,
+        customerEmailSent: notifications.customerEmailSent,
+        emailNotificationsPending: notifications.pending
+      });
+    }
+
+    const orderId = generateOrderId();
+    const total = safeCart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const formattedTotal = total.toFixed(2);
+    const timestamp = Utilities.formatDate(new Date(), "Europe/Kyiv", "dd.MM.yyyy HH:mm:ss");
+    const normalizedOrderData = {
+      delivery: delivery, city: city, branch: branch, comment: comment
+    };
+    const fullMessage = buildOrderDetails(normalizedOrderData, safeCart.items);
     const adminBody = [
       "Нове замовлення #" + orderId,
       "Клієнт: " + name,
       "Телефон: " + phone,
-      "Email: " + (email || "не вказано"),
-      "Оплата: " + customerPayment,
+      "Email: " + email,
+      "Оплата: " + payment,
       "Сума: " + formattedTotal + " грн",
       "",
       fullMessage
     ].join("\n");
-    let adminEmailSent = false;
+    const emailPayload = {
+      email: email, name: name, orderId: orderId, total: formattedTotal,
+      cartItems: safeCart.items, paymentMethod: payment,
+      adminBody: adminBody, replyTo: email || CONTACT_EMAIL
+    };
+
+    let insertedRow = 0;
+    let actualOrderId = orderId;
+    let insertedAsDuplicate = false;
+    if (!lock.tryLock(10000)) return errorResponse("Сервер зайнятий. Спробуйте ще раз.");
     try {
-      MailApp.sendEmail({to:CONTACT_EMAIL, subject:"🔥 Нове замовлення #" + orderId, body:adminBody, replyTo:email || CONTACT_EMAIL});
-      adminEmailSent = true;
-    } catch (adminMailError) {
-      Logger.log("Admin order notification failed: " + adminMailError);
+      const sheet = getOrdersSheet();
+      ensureIdempotencyColumn_(sheet, 12, "Ключ запиту (службовий)");
+      ensureOrderNotificationColumns_(sheet);
+      const duplicateDuringInsert = findIdempotentRow_(sheet, 12, idempotencyKey);
+      if (duplicateDuringInsert) {
+        const storedFingerprint = String(sheet.getRange(duplicateDuringInsert, 18).getValue() || "");
+        if (storedFingerprint && storedFingerprint !== requestFingerprint) {
+          return errorResponse("Цей запит уже використано для іншого вмісту замовлення. Оновіть сторінку та повторіть спробу.");
+        }
+        insertedRow = duplicateDuringInsert;
+        actualOrderId = String(sheet.getRange(duplicateDuringInsert, 3).getValue());
+        insertedAsDuplicate = true;
+      } else {
+        if (!consumeRateLimitLocked_("order_" + hashKey_(phone + "|" + email), 5, 600)) {
+          return errorResponse("Забагато замовлень з цих контактних даних. Спробуйте пізніше.");
+        }
+        sheet.insertRowBefore(2);
+        sheet.getRange(2, 3).setNumberFormat("@");
+        sheet.getRange(2, 1, 1, 18).setValues([[
+          false, timestamp, safeSheetText_(orderId), safeSheetText_(name), safeSheetText_(email),
+          safeSheetText_(phone), safeSheetText_(fullMessage), "🆕 Нове", formattedTotal + " ₴", "",
+          safeSheetText_(payment), idempotencyKey,
+          "PENDING", "PENDING", 0, safeSheetText_(JSON.stringify(emailPayload)), "",
+          requestFingerprint
+        ]]);
+        sheet.getRange(2, 1).insertCheckboxes();
+        sheet.getRange(2, 1, 1, 11).setBackground("#061a07").setFontColor("#ffffff").setVerticalAlignment("middle");
+        insertedRow = 2;
+      }
+    } finally {
+      if (lock.hasLock()) lock.releaseLock();
     }
-    if (validateEmail(email)) {
-      try { sendConfirmationEmail(email, name, orderId, formattedTotal, safeCart.items, customerPayment); }
-      catch (mailError) { Logger.log("Customer confirmation email failed: " + mailError); }
-    }
-    return jsonResponse_({status:"success", orderId:orderId, adminEmailSent:adminEmailSent});
+
+    const notifications = sendOrderEmailsForRow_(getOrdersSheet(), insertedRow);
+    return jsonResponse_({
+      status: "success", orderId: actualOrderId,
+      duplicate: insertedAsDuplicate,
+      adminEmailSent: notifications.adminEmailSent,
+      customerEmailSent: notifications.customerEmailSent,
+      emailNotificationsPending: notifications.pending
+    });
   } catch (err) {
     try { if (lock.hasLock()) lock.releaseLock(); } catch (_) {}
     Logger.log("doPost error: " + err);
