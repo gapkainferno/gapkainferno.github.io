@@ -320,7 +320,7 @@ function verifyTurnstile_(token) {
 }
 
 function doGet() {
-  return ContentService.createTextOutput("Gapka Homestead Inferno — сервіс замовлень активний. Версія: 53")
+  return ContentService.createTextOutput("Gapka Homestead Inferno — сервіс замовлень активний. Версія: 54")
     .setMimeType(ContentService.MimeType.TEXT);
 }
 
