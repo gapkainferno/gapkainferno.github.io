@@ -138,7 +138,10 @@ function sendOrderEmailsForRow_(sheet, row) {
     try { payload = JSON.parse(payloadText); }
     catch (error) {
       Logger.log("Order email payload is invalid at row " + row + ": " + error);
-      return { customerEmailSent: false, adminEmailSent: false, pending: true };
+      if (customerStatus !== "SENT") customerStatus = "FAILED";
+      if (adminStatus !== "SENT") adminStatus = "FAILED";
+      stateRange.setValues([[customerStatus, adminStatus, Math.max(attempts, 6)]]);
+      return { customerEmailSent: false, adminEmailSent: false, pending: false, exhausted: true };
     }
     if (customerStatus === "SENT" && adminStatus === "SENT") {
       return { customerEmailSent: true, adminEmailSent: true, pending: false };
@@ -202,18 +205,23 @@ function retryPendingOrderEmails() {
   const columns = ensureOrderNotificationColumns_(sheet);
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) return;
-  const rowCount = Math.min(lastRow - 1, 100);
+  const rowCount = lastRow - 1;
   const states = sheet.getRange(2, columns.start, rowCount, 3).getValues();
   let processed = 0;
   for (let i = 0; i < states.length && processed < 20; i++) {
-    const customerStatus = String(states[i][0] || "");
-    const adminStatus = String(states[i][1] || "");
+    let customerStatus = String(states[i][0] || "");
+    let adminStatus = String(states[i][1] || "");
     const attempts = Number(states[i][2]) || 0;
-    if ((customerStatus !== "SENT" || adminStatus !== "SENT") &&
-        attempts < 6 && sheet.getRange(i + 2, columns.payload).getValue()) {
-      sendOrderEmailsForRow_(sheet, i + 2);
-      processed++;
+    if (customerStatus === "SENT" && adminStatus === "SENT") continue;
+    if (!sheet.getRange(i + 2, columns.payload).getValue()) continue;
+    if (attempts >= 6) {
+      if (customerStatus !== "SENT") customerStatus = "FAILED";
+      if (adminStatus !== "SENT") adminStatus = "FAILED";
+      sheet.getRange(i + 2, columns.start, 1, 2).setValues([[customerStatus, adminStatus]]);
+      continue;
     }
+    sendOrderEmailsForRow_(sheet, i + 2);
+    processed++;
   }
 }
 
