@@ -58,7 +58,18 @@ function consumeRateLimitLocked_(key, limit, windowSeconds) {
 
 function ensureIdempotencyColumn_(sheet, column, header) {
   const headerCell = sheet.getRange(1, column);
-  if (!headerCell.getValue()) {
+  const existingHeader = String(headerCell.getValue() || "").trim();
+  if (existingHeader && existingHeader !== header) {
+    throw new Error("Стовпець " + column + " уже використовується («" + existingHeader + "»). Не можна перезаписувати його ключем замовлення.");
+  }
+  if (!existingHeader) {
+    const lastRow = sheet.getLastRow();
+    if (lastRow >= 2) {
+      const existingValues = sheet.getRange(2, column, lastRow - 1, 1).getValues();
+      if (existingValues.some(row => row[0] !== "" && row[0] !== null)) {
+        throw new Error("Стовпець " + column + " містить дані без службового заголовка. Перевірте таблицю перед запуском.");
+      }
+    }
     headerCell.setValue(header);
     headerCell.setFontWeight("bold").setBackground("#eeeeee");
   }
