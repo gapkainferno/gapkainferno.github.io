@@ -68,8 +68,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         </div>
 
                         <div class="form-group">
-                            <label>Електронна пошта</label>
-                            <input type="email" id="email">
+                            <label for="email">Електронна пошта <span aria-hidden="true">*</span></label>
+                            <input type="email" id="email" placeholder="name@example.com" autocomplete="email" required>
                         </div>
 
                         <label for="remember-checkout-data" class="remember-checkout-option" style="display:flex; align-items:flex-start; gap:9px; margin:4px 0 14px; font-size:13px; line-height:1.4; cursor:pointer;">
