@@ -1573,6 +1573,7 @@
             </p>
             <form onsubmit="handleGeneralSubscribe(event)">
                 <input type="email" id="sub-email" placeholder="Ваш Email" required class="sub-input-guide">
+                <div id="guide-subscribe-turnstile" style="display:flex;justify-content:center;margin:12px 0;"></div>
                 <button type="submit" id="sub-btn" class="species-btn active" style="width: 100%; border: none;">Приєднатися</button>
             </form>
             <!-- Honeypot (захист від ботів) -->
@@ -1653,13 +1654,57 @@
             observer.observe(el);
         });
 
-        // --- ЛОГІКА ПІДПИСКИ (GOOGLE SHEETS) ---
-        function getVisitorId() {
-            let id = localStorage.getItem('ghi_visitor_id');
-            if (!id) {
-                id = 'v_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
-                localStorage.setItem('ghi_visitor_id', id);
+        // --- ЗАХИЩЕНА ПІДПИСКА (GOOGLE SHEETS + TURNSTILE) ---
+        let guideTurnstileWidgetId = null;
+        let guideTurnstileToken = "";
+        let guideTurnstileLoading = null;
+
+        function loadGuideTurnstile() {
+            if (window.turnstile) return Promise.resolve();
+            if (guideTurnstileLoading) return guideTurnstileLoading;
+            guideTurnstileLoading = new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+                script.async = true;
+                script.defer = true;
+                script.onload = resolve;
+                script.onerror = () => reject(new Error('Не вдалося завантажити перевірку безпеки.'));
+                document.head.appendChild(script);
+            }).catch(error => {
+                guideTurnstileLoading = null;
+                throw error;
+            });
+            return guideTurnstileLoading;
+        }
+
+        async function renderGuideTurnstile() {
+            if (!window.TURNSTILE_SITE_KEY) throw new Error('Перевірка безпеки тимчасово недоступна.');
+            await loadGuideTurnstile();
+            if (guideTurnstileWidgetId !== null) return;
+            guideTurnstileWidgetId = window.turnstile.render('guide-subscribe-turnstile', {
+                sitekey: window.TURNSTILE_SITE_KEY,
+                callback: token => { guideTurnstileToken = token; },
+                'expired-callback': () => { guideTurnstileToken = ''; },
+                'error-callback': () => { guideTurnstileToken = ''; }
+            });
+        }
+
+        function resetGuideTurnstile() {
+            guideTurnstileToken = '';
+            if (window.turnstile && guideTurnstileWidgetId !== null) {
+                try { window.turnstile.reset(guideTurnstileWidgetId); } catch (_) {}
             }
+        }
+
+        function getGuideRequestId(email) {
+            const fingerprint = String(email).trim().toLowerCase();
+            let saved = null;
+            try { saved = JSON.parse(localStorage.getItem('pending_guide_subscribe') || 'null'); } catch (_) {}
+            if (saved && saved.id && saved.email === fingerprint) return saved.id;
+            const id = window.crypto?.randomUUID
+                ? window.crypto.randomUUID()
+                : 'ghi_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+            localStorage.setItem('pending_guide_subscribe', JSON.stringify({id, email:fingerprint}));
             return id;
         }
 
@@ -1678,7 +1723,7 @@
                 });
                 if (!response.ok) return false;
                 const result = await response.json();
-                return result.status === 'success';
+                return !!result && result.status === 'success';
             } catch (error) {
                 console.error('Помилка відправки:', error);
                 return false;
@@ -1688,14 +1733,25 @@
         async function handleGeneralSubscribe(event) {
             event.preventDefault();
             const honeypot = document.getElementById('hp_sub_guide');
-            if (honeypot && honeypot.value !== '') return; // Бот-детект
+            if (honeypot && honeypot.value !== '') return;
 
             const emailInput = document.getElementById('sub-email');
             const email = emailInput.value.trim();
             const btn = document.getElementById('sub-btn');
-            
+
             if (!validateEmail(email)) {
                 alert('Будь ласка, введіть коректну адресу! 📧');
+                return;
+            }
+
+            try {
+                await renderGuideTurnstile();
+            } catch (error) {
+                alert(error.message);
+                return;
+            }
+            if (!guideTurnstileToken) {
+                alert('Пройдіть перевірку безпеки перед підпискою.');
                 return;
             }
 
@@ -1704,25 +1760,27 @@
             btn.textContent = "ЗАПИСУЄМО...";
 
             const sent = await sendToGoogleSheet({
-                date: new Date().toLocaleString("uk-UA"),
                 email: email,
                 orderType: "ПІДПИСКА_МАРКЕТИНГ",
                 details: "Підписка з інструкції вирощування",
+                requestId: getGuideRequestId(email),
+                turnstileToken: guideTurnstileToken,
                 website_url: honeypot?.value || ""
             });
+            resetGuideTurnstile();
 
             if (!sent) {
-                alert('Не вдалося надіслати підписку. Спробуйте ще раз.');
+                alert('Не вдалося надіслати підписку. Перевірте CAPTCHA та спробуйте ще раз.');
                 btn.disabled = false;
                 btn.textContent = originalText;
                 return;
             }
 
-            // Візуальний фідбек
+            localStorage.removeItem('pending_guide_subscribe');
             btn.textContent = "✓ ЗАПИТ НАДІСЛАНО";
             btn.style.background = "linear-gradient(135deg, #4caf50, #2e7d32)";
             emailInput.value = "";
-            
+
             setTimeout(() => {
                 btn.disabled = false;
                 btn.innerHTML = originalText;
