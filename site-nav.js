@@ -33,7 +33,7 @@
     const style = document.createElement('style');
     style.textContent = `
       .ghi-site-nav{position:relative;z-index:30;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 22px;max-width:1200px;margin:12px auto 24px;padding:12px 18px;border-top:1px solid rgba(255,110,55,.28);border-bottom:1px solid rgba(255,110,55,.28);background:rgba(12,9,7,.78);border-radius:8px}
-      .ghi-site-nav>a,.ghi-nav-dropdown>summary{display:block;color:var(--text-color,#eee);font:600 .94rem/1.4 inherit;text-decoration:none;padding:5px 2px;cursor:pointer;list-style:none}
+      .ghi-site-nav>a,.ghi-nav-dropdown>summary{display:block;color:var(--text-color,#eee);font-weight:600;font-size:.94rem;line-height:1.4;text-decoration:none;padding:5px 2px;cursor:pointer;list-style:none}
       .ghi-nav-dropdown>summary::-webkit-details-marker{display:none}
       .ghi-nav-dropdown>summary:after{content:'⌄';margin-left:7px;color:var(--primary-orange,#f60)}
       .ghi-site-nav a:hover,.ghi-nav-dropdown>summary:hover,.ghi-site-nav [aria-current=page]{color:var(--primary-orange,#ff6b35)}
