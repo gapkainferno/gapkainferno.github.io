@@ -4,6 +4,13 @@ const safeText = (value) => sanitize.text(String(value ?? ''));
 
 const isEnglishCatalog = false;
 
+function isInfernoHarvestSeasonOpen(date = new Date()) {
+    const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Kyiv', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(date);
+    const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+    const monthDay = Number(values.month) * 100 + Number(values.day);
+    return monthDay >= 911 && monthDay <= 1120;
+}
+
 const CATEGORY_PAGES = {
     seeds: {
         url: 'seedsandseedlings.html',
@@ -102,7 +109,7 @@ const CATEGORY_NAV = isEnglishCatalog ? [
         ]
     },
     { key: 'sauces', url: 'sauces.html', label: '🔥 Крафтові соуси' },
-    { key: 'fresh-peppers', url: 'fresh-peppers.html', label: '🌶️ Врожай Пекла' }
+    { key: 'fresh-peppers', url: 'fresh-peppers.html', label: '🌶️ Врожай Пекла', seasonal: true }
 ];
 
 const HEAT_LEVELS = {
@@ -158,7 +165,7 @@ function buildCategorySidebar(activeCategory) {
             });
         }
 
-        list.innerHTML = CATEGORY_NAV.map(group => {
+        list.innerHTML = CATEGORY_NAV.filter(group => !group.seasonal || isInfernoHarvestSeasonOpen()).map(group => {
             const activeLeafClass = group.key === activeCategory ? ' class="theme-active active"' : '';
 
             if (group.children) {
@@ -546,6 +553,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (container && mainGrid && typeof allProducts !== 'undefined') {
         const pageCategory = mainGrid.getAttribute('data-category');
+        if (pageCategory === 'fresh-peppers' && !isInfernoHarvestSeasonOpen()) {
+            mainGrid.querySelector('.filter-section')?.remove();
+            const title = mainGrid.querySelector('.page-title');
+            if (title) title.textContent = 'Врожай Пекла повернеться у вересні';
+            const description = mainGrid.querySelector('.description');
+            if (description) description.textContent = 'Сезон свіжих і сушених перців та продуктів із нашого врожаю триває орієнтовно з 11 вересня до 20 листопада. Поза сезоном каталог тимчасово закритий — завітайте до нас восени.';
+            container.innerHTML = '<section class="season-closed-card"><span class="season-closed-icon" aria-hidden="true">🌶️</span><h2>Зараз міжсезоння</h2><p>Ми повернемо «Врожай Пекла» у другій декаді вересня, щойно почнеться сезонний збір. Орієнтовне завершення сезону — 20 листопада.</p><a class="add-btn" href="blog.html">Читайте нотатки ферми</a></section>';
+            return;
+        }
         prepareCategoryPage(mainGrid, pageCategory);
         renderCatalog(container, pageCategory);
         renderSauceBundle(pageCategory);
