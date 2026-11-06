@@ -118,19 +118,19 @@ class BlogApp {
         return `
             <article class="blog-post-card ${hasImage ? '' : 'no-image'}" onclick="blogApp.openPost('${post.id}')">
                 ${hasImage ? `<div class="post-image">
-                    <img src="${post.image}" alt="${post.title}" onerror="this.closest('.post-image')?.remove(); const card=this.closest('.blog-post-card'); card?.classList.add('no-image'); card?.querySelectorAll('.post-meta,.post-excerpt,.post-read-more').forEach(el => el.remove());">
-                    <span class="post-category-badge">${post.categoryLabel}</span>
+                    <img src="${post.image}" alt="${post.title}" onerror="this.closest('.post-image')?.remove(); this.closest('.blog-post-card')?.classList.add('no-image');">
                 </div>` : ''}
                 <div class="post-content">
-                    ${hasImage ? `<div class="post-meta">
+                    <div class="post-category-badge">${post.categoryLabel}</div>
+                    <div class="post-meta">
                         <span>📅 ${this.formatDate(post.date)}</span>
                         <span>⏱️ ${post.readTime}</span>
-                    </div>` : ''}
+                    </div>
                     <h3>${post.title}</h3>
-                    ${hasImage ? `<p class="post-excerpt">${post.excerpt}</p>
+                    <p class="post-excerpt">${post.excerpt}</p>
                     <a href="#" class="post-read-more" onclick="event.preventDefault()">
                         Читати далі →
-                    </a>` : ''}
+                    </a>
                 </div>
             </article>
         `;
