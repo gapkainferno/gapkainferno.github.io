@@ -526,7 +526,7 @@ const blogPosts = [
     date: '2026-07-16',
     author: 'Gapka',
     readTime: '8 хв',
-    image: 'scoville-scale-main.webp',
+    image: null,
     featured: true,
     excerpt: 'Що таке ці загадкові SHU? Від звичайного болгарського перцю з супермаркету до екстремальних суперхотів: розбираємо шкалу Сковілла, вчимося її розуміти і порівнюємо звичні нам українські продукти.',
     content: `
@@ -688,7 +688,7 @@ const blogPosts = [
         date: '2026-04-24',
         author: 'Gapka',
         readTime: '8 хв',
-        image: 'ghi-titan-red-814-main.webp',
+        image: null,
         featured: false,
         excerpt: 'Виростити помідор вагою понад 800 грамів чи засадити грядку "томатами для лінивих"? Розбираємо ексклюзивні лінії томатів нашої ферми.',
         content: `
@@ -819,7 +819,7 @@ const blogPosts = [
         date: '2026-05-10',
         author: 'Gapka',
         readTime: '8 хв',
-        image: 'giant-rocoto-red-main.jpg', // Фото з твого каталогу
+        image: null, // Фото з твого каталогу
         featured: false,
         excerpt: 'У той час як інші перці здаються перед першими нічними холодами, Giant Rocoto тільки починає своє справжнє шоу. Знайомтеся з унікальним мешканцем Анд.',
         content: `

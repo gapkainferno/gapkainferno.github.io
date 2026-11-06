@@ -653,3 +653,24 @@ body.blog-article-page {
         justify-content: center;
     }
 }
+
+
+/* Article cover image */
+.article-cover {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto 42px;
+    overflow: hidden;
+    border: 1px solid var(--border-warm);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+}
+.article-cover img {
+    display: block;
+    width: 100%;
+    max-height: 560px;
+    object-fit: cover;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+}

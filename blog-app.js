@@ -32,11 +32,11 @@ class BlogApp {
         if (!container) return;
 
         container.innerHTML = `
-            <div class="featured-post-content">
-                <div class="featured-post-image">
-                    <img src="${featuredPost.image}" alt="${featuredPost.title}">
+            <div class="featured-post-content ${featuredPost.image ? '' : 'no-image'}">
+                ${featuredPost.image ? `<div class="featured-post-image">
+                    <img src="${featuredPost.image}" alt="${featuredPost.title}" onerror="this.closest('.featured-post-image')?.remove(); this.closest('.featured-post-content')?.classList.add('no-image');">
                     <span class="featured-badge">⭐ Головна стаття</span>
-                </div>
+                </div>` : ''}
                 <div class="featured-post-text">
                     <div class="featured-category">${featuredPost.categoryLabel}</div>
                     <h2>${featuredPost.title}</h2>
@@ -68,10 +68,10 @@ class BlogApp {
             .slice(0, 5);
 
         container.innerHTML = popular.map(post => `
-            <div class="popular-post-item" onclick="blogApp.openPost('${post.id}')">
-                <div class="popular-post-thumb">
-                    <img src="${post.image}" alt="${post.title}">
-                </div>
+            <div class="popular-post-item ${post.image ? '' : 'no-image'}" onclick="blogApp.openPost('${post.id}')">
+                ${post.image ? `<div class="popular-post-thumb">
+                    <img src="${post.image}" alt="${post.title}" onerror="this.closest('.popular-post-thumb')?.remove(); this.closest('.popular-post-item')?.classList.add('no-image');">
+                </div>` : ''}
                 <div class="popular-post-info">
                     <h4>${post.title}</h4>
                     <p>${this.formatDate(post.date)} • ${post.readTime}</p>
@@ -114,22 +114,23 @@ class BlogApp {
     }
 
     createPostCard(post) {
+        const hasImage = Boolean(post.image);
         return `
-            <article class="blog-post-card" onclick="blogApp.openPost('${post.id}')">
-                <div class="post-image">
-                    <img src="${post.image}" alt="${post.title}">
+            <article class="blog-post-card ${hasImage ? '' : 'no-image'}" onclick="blogApp.openPost('${post.id}')">
+                ${hasImage ? `<div class="post-image">
+                    <img src="${post.image}" alt="${post.title}" onerror="this.closest('.post-image')?.remove(); const card=this.closest('.blog-post-card'); card?.classList.add('no-image'); card?.querySelectorAll('.post-meta,.post-excerpt,.post-read-more').forEach(el => el.remove());">
                     <span class="post-category-badge">${post.categoryLabel}</span>
-                </div>
+                </div>` : ''}
                 <div class="post-content">
-                    <div class="post-meta">
+                    ${hasImage ? `<div class="post-meta">
                         <span>📅 ${this.formatDate(post.date)}</span>
                         <span>⏱️ ${post.readTime}</span>
-                    </div>
+                    </div>` : ''}
                     <h3>${post.title}</h3>
-                    <p class="post-excerpt">${post.excerpt}</p>
+                    ${hasImage ? `<p class="post-excerpt">${post.excerpt}</p>
                     <a href="#" class="post-read-more" onclick="event.preventDefault()">
                         Читати далі →
-                    </a>
+                    </a>` : ''}
                 </div>
             </article>
         `;
