@@ -573,14 +573,14 @@ const blogPosts = [
 
     {
         id: 'fatalii-pepper-guide',
-        title: 'Жовта блискавка: Чому Fatalii має бути у вашій колекції',
+        title: 'Чому Fatalii має бути у вашій колекції',
         slug: 'fatalii-pepper-guide',
         category: 'varieties',
         categoryLabel: 'Сорти',
         date: '2026-04-10',
         author: 'Gapka',
         readTime: '7 хв',
-        image: 'fatalii-yellow-main.webp',
+        image: 'fatalii-red.jpg',
         featured: true,
         excerpt: 'Африканський перець Fatalii — це потужний цитрусовий вибух, який б\'є миттєво і залишає незабутній післясмак.',
         content: `
