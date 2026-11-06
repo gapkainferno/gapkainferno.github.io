@@ -1,234 +1,65 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self'; 
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
-    font-src 'self' https://fonts.gstatic.com; 
-    script-src 'self' 'unsafe-inline' https://script.google.com https://challenges.cloudflare.com; 
-    connect-src 'self' https://script.google.com https://script.googleusercontent.com https://challenges.cloudflare.com; 
-    img-src 'self' data: https://gapkainferno.github.io;
-    script-src 'self' https://challenges.cloudflare.com;
-    connect-src 'self' https://challenges.cloudflare.com;
-    frame-src 'self' https://challenges.cloudflare.com;">
-
-    <title>Політика конфіденційності — Gapka Homestead Inferno</title>
-    <meta name="description" content="Політика конфіденційності Gapka Homestead Inferno: як ми збираємо, обробляємо та захищаємо дані клієнтів під час замовлення насіння, соусів та підписки на новини.">
-    <meta name="keywords" content="політика конфіденційності, захист даних, homestead inferno, приватність, замовлення насіння, замовлення соусів">
-    <link rel="canonical" href="https://gapkainferno.github.io/privacy.html">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://gapkainferno.github.io/privacy.html">
-    <meta property="og:title" content="Політика конфіденційності — Gapka Homestead Inferno">
-    <meta property="og:description" content="Політика конфіденційності Homestead Inferno: як ми захищаємо ваші персональні дані при оформленні замовлень.">
-    <meta property="og:image" content="https://gapkainferno.github.io/GapkaLogo.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="uk_UA">
-    <meta property="og:site_name" content="Gapka Homestead Inferno">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://gapkainferno.github.io/privacy.html">
-    <meta property="twitter:title" content="Політика конфіденційності — Gapka Homestead Inferno">
-    <meta property="twitter:description" content="Політика конфіденційності Homestead Inferno: безпека даних клієнтів при замовленні насіння та соусів.">
-    <meta property="twitter:image" content="https://gapkainferno.github.io/GapkaLogo.png">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Organization",
-          "@id": "https://gapkainferno.github.io/#organization",
-          "name": "Gapka Homestead Inferno",
-          "alternateName": "Homestead Inferno",
-          "url": "https://gapkainferno.github.io/",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://gapkainferno.github.io/GapkaLogo.png",
-            "width": 400,
-            "height": 100
-          },
-          "sameAs": [
-            "https://instagram.com/homestead.inferno"
-            
-          ]
-        },
-        {
-          "@type": "WebPage",
-          "@id": "https://gapkainferno.github.io/privacy.html#webpage",
-          "url": "https://gapkainferno.github.io/privacy.html",
-          "name": "Політика конфіденційності — Gapka Homestead Inferno",
-          "description": "Політика конфіденційності Homestead Inferno: безпека даних клієнтів при замовленні насіння та соусів.",
-          "inLanguage": "uk-UA",
-          "isPartOf": {
-            "@id": "https://gapkainferno.github.io/#website"
-          },
-          "primaryImageOfPage": {
-            "@type": "ImageObject",
-            "url": "https://gapkainferno.github.io/GapkaLogo.png",
-            "width": 1200,
-            "height": 630
-          }
-        }
-      ]
-    }
-    </script>
-
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .privacy-container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            line-height: 1.8;
-        }
-        .privacy-container h1 {
-            color: var(--primary-orange);
-            margin-bottom: 30px;
-        }
-        .privacy-container h2 {
-            color: var(--primary-orange);
-            margin-top: 30px;
-            margin-bottom: 15px;
-            font-size: 15px;
-        }
-        .privacy-container p {
-            margin-bottom: 15px;
-        }
-        .privacy-container ul {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-        .privacy-container li {
-            margin-bottom: 8px;
-        }
-    </style>
-</head>
-<body>
-    <div class="overlay">
-        <div class="container">
-            <header>
-                <a href="index.html" class="main-logo-link">
-                
-                <img src="GapkaLogo.png" alt="Gapka Homestead Inferno - Магазин гострого насіння та соусів" class="logo-image" width="200" height="50">
-                </a>
-            </header>
-
-            <main class="privacy-container">
-                <h1>📋 Політика конфіденційності</h1>
-                
-                <p><em>Остання редакція: Лютий 2026</em></p>
-
-                <h2>1. Які дані ми збираємо</h2>
-                <p>Під час оформлення замовлення ми збираємо наступну інформацію:</p>
-                <ul>
-                    <li>Ім'я, прізвище, по-батькові</li>
-                    <li>Номер телефону</li>
-                    <li>Місто та адреса доставки</li>
-                    <li>Електронна пошта</li>
-                    <li>Коментар до замовлення (опціонально)</li>
-                </ul>
-
-                <h2>2. Як ми використовуємо ваші дані</h2>
-                <p>Ваші персональні дані використовуються виключно для:</p>
-                <ul>
-                    <li>Обробки та виконання вашого замовлення</li>
-                    <li>Зв'язку з вами щодо замовлення</li>
-                    <li>Відправки товару на вказану адресу</li>
-                    <li>Маркетингових повідомлень та сповіщень про наявність товарів (лише за вашою згодою)</li>
-                    <li>Аналізу статистики відвідуваності через Google Analytics</li>
-                </ul>
-
-                <h2>3. Як ми зберігаємо ваші дані</h2>
-                <p>Ваші дані зберігаються:</p>
-                <ul>
-                    <li>В захищеній базі даних через сервіси Google Apps Script</li>
-                    <li>Тимчасово в вашому браузері (LocalStorage) для зручності повторного замовлення</li>
-                    <li>Ми НЕ передаємо ваші дані третім особам без вашої згоди, за винятком випадків, необхідних для доставки замовлення (передача даних службі доставки "Нова Пошта", "Укрпошта" або іншим логістичним компаніям).</li>
-                </ul>
-
-                <h2>4. Cookies та LocalStorage</h2>
-                <p>Наш сайт використовує LocalStorage для:</p>
-                <ul>
-                    <li>Збереження кошика покупок</li>
-                    <li>Запам'ятовування даних для швидшого оформлення наступних замовлень</li>
-                </ul>
-                <p>Ви можете очистити ці дані в будь-який момент через налаштування браузера.</p>
-
-                <h2>5. Ваші права</h2>
-                <p>Ви маєте право:</p>
-                <ul>
-                    <li>Отримати інформацію про збережені дані</li>
-                    <li>Вимагати видалення ваших персональних даних</li>
-                    <li>Відмовитись від отримання повідомлень</li>
-                </ul>
-
-                <h2>6. Безпека</h2>
-                <p>Ми вживаємо всіх необхідних заходів для захисту ваших персональних даних від несанкціонованого доступу, зміни або знищення.</p>
-
-                <h2>7. Зміни в політиці</h2>
-                <p>Ми залишаємо за собою право оновлювати цю політику конфіденційності. Всі зміни будуть опубліковані на цій сторінці.</p>
-
-                <h2>8. Контакти</h2>
-                <p>Якщо у вас є питання щодо політики конфіденційності, зв'яжіться з нами:</p>
-                <ul>
-                    <li>Email: <a href="mailto:example@mail.com">homestead.inferno@gmail.com</a></li>
-                </ul>
-
-                <p style="margin-top: 40px; text-align: center;">
-                    <a href="index.html" class="add-btn" style="display: inline-block; width: auto; padding: 12px 30px;">
-                        Повернутися на головну
-                    </a>
-                </p>
-            </main>
-
-   <footer>
-    <div class="footer-content">
-        <div class="footer-brand">
-            <img src="GapkaLogo.png" alt="Gapka Homestead Inferno Logo" class="footer-logo-img" width="180" height="45">
-            <p class="footer-tagline">2026 Gapka Homestead Inferno. Farm to Bottle & Seed to Harvest 🔥
-        </div>
-        
-        <div class="footer-section">
-            <h4>Клієнтам</h4>
-            <div class="footer-links">
-                <a href="faq.html">Питання та відповіді (FAQ)</a>
-                <a href="shipping.html">Доставка та оплата</a>
-            </div>
-        </div>
-
-        <div class="footer-section">
-            <h4>Зв'язок</h4>
-            <div class="footer-contacts">
-                <!-- <span>+00000000000</span>-->
-                <a href="mailto:homestead.inferno@gmail.com">homestead.inferno@gmail.com</a>
-                <div class="footer-socials">
-                   </div>
-            </div>
-        </div>
-
-        <div class="footer-section">
-            <h4>Інфо</h4>
-            <div class="footer-pp">
-                <a href="privacy.html">Конфіденційність</a>
-                <a href="terms.html">Публічна оферта</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        <p>&copy; 2026 Gapka Homestead Inferno. Farm to Bottle & Seed to Harvest 🔥</p>
-    </div>
-</footer>
-        </div>
-    </div>
-<script type="module" src="analytics.js"></script>
-</body>
-</html>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Політика конфіденційності | Gapka Homestead Inferno</title>
+<meta name="description" content="Як Gapka Homestead Inferno збирає, використовує, зберігає та захищає персональні дані відвідувачів і покупців.">
+<link rel="canonical" href="https://gapkainferno.github.io/privacy.html"><link rel="stylesheet" href="style.css">
+<style>
+.privacy-container{max-width:900px;margin:44px auto;padding:30px 24px;background:rgba(255,255,255,.04);border-radius:10px;line-height:1.8;color:#ddd}.privacy-container h1,.privacy-container h2{color:var(--primary-orange)}.privacy-container h2{margin-top:28px;font-size:1.15rem}.privacy-container li{margin:7px 0}.privacy-container a{color:var(--primary-orange)}.review-note{padding:14px 18px;border-left:4px solid #d66;border-radius:4px;background:rgba(214,102,102,.08);color:#f0d6d6}
+</style></head>
+<body><div class="overlay"><div class="container">
+<header><a href="index.html" class="main-logo-link"><img src="GapkaLogo.png" alt="Gapka Homestead Inferno" class="logo-image" width="200" height="50"></a></header>
+<main class="privacy-container">
+<p><a href="index.html">← До крамниці</a></p><h1>Політика конфіденційності</h1>
+<p><em>Редакція для юридичної перевірки від 6 листопада 2026 року.</em></p>
+<p class="review-note"><strong>Потребує заповнення до публікації:</strong> зазначити повне ім’я/найменування продавця, його правовий статус, адресу для юридично значущих звернень та інші обов’язкові ідентифікаційні відомості. Наразі сайт містить лише бренд і контактну електронну адресу; бренд сам по собі не ідентифікує володільця персональних даних.</p>
+<h2>1. Хто є володільцем персональних даних</h2>
+<p>Володілець персональних даних: <strong>[ПОВНЕ ІМ’Я ФІЗИЧНОЇ ОСОБИ / НАЙМЕНУВАННЯ СУБ’ЄКТА ГОСПОДАРЮВАННЯ, ПРАВОВИЙ СТАТУС, РНОКПП/ЄДРПОУ ЗА НАЯВНОСТІ]</strong>. Контакт для звернень: <a href="mailto:homestead.inferno@gmail.com">homestead.inferno@gmail.com</a>. Адреса для листування: <strong>[ЗАПОВНИТИ]</strong>. У цій Політиці він/вона іменується «Магазин» або «Володілець».</p>
+<h2>2. На кого поширюється Політика</h2>
+<p>Політика стосується відвідувачів сайту Gapka Homestead Inferno, осіб, які оформлюють замовлення на насіння, соуси та сезонну продукцію, звертаються до Магазину або підписуються на повідомлення про новини й наявність товарів.</p>
+<h2>3. Які дані можуть оброблятися</h2>
+<ul>
+<li>ідентифікаційні та контактні дані, які покупець вводить у форму: ім’я та прізвище (та інші поля, якщо вони передбачені формою), номер телефону, електронна пошта;</li>
+<li>дані для доставки: населений пункт, обраний перевізник, тип і номер/назва відділення або поштомата, адреса для кур’єрської доставки;</li>
+<li>дані замовлення: склад, кількість і вартість товарів, коментар, обраний спосіб оплати та доставки, статус оплати/замовлення, номер відправлення;</li>
+<li>дані підписки або звернення, якщо користувач самостійно їх надає;</li>
+<li>технічні дані про використання сайту: IP-адреса, тип браузера й пристрою, сторінки та події взаємодії, ідентифікатори cookie або локального сховища — у межах роботи відповідних інструментів.</li>
+</ul>
+<p>Магазин не просить надавати спеціальні категорії персональних даних і не має наміру їх збирати.</p>
+<h2>4. Мета та правові підстави обробки</h2>
+<ul>
+<li>прийняття, підтвердження, комплектування та виконання замовлення, зв’язок із покупцем, організація доставки й обробка звернень — для вжиття заходів на запит особи до укладення договору та/або виконання договору;</li>
+<li>облік замовлень, платежів, звернень і виконання обов’язків, установлених законодавством, — у межах відповідних законних обов’язків;</li>
+<li>повідомлення про новинки, сезонний асортимент і наявність товарів — за окремою добровільною згодою або на іншій належній правовій підставі; відмовитися від таких повідомлень можна в будь-який час;</li>
+<li>забезпечення працездатності, аналітика та захист сайту від автоматизованих зловживань — на підставі законного інтересу Магазину та/або згоди, якщо вона вимагається для відповідної технології.</li>
+</ul>
+<h2>5. Звідки надходять дані</h2>
+<p>Переважно дані отримуються безпосередньо від користувача під час оформлення замовлення, підписки або звернення. Технічні дані можуть формуватися автоматично під час користування сайтом.</p>
+<h2>6. Кому можуть передаватися дані</h2>
+<p>Дані передаються лише в обсязі, необхідному для визначеної мети, зокрема:</p>
+<ul>
+<li>перевізникам (Нова пошта, Укрпошта) — для створення та доставки відправлення;</li>
+<li>постачальникам інфраструктурних сервісів Google (зокрема Google Apps Script, Google Sheets та електронної пошти), які забезпечують отримання, обробку, зберігання замовлень і комунікацію;</li>
+<li>Cloudflare Turnstile — для перевірки запитів і захисту форм від автоматизованих зловживань;</li>
+<li>Google Analytics або іншому фактично підключеному аналітичному сервісу — для статистики використання сайту, якщо відповідний інструмент активний.</li>
+</ul>
+<p>Магазин не продає персональні дані. Дані також можуть бути надані державним органам або іншим особам у випадках та порядку, прямо передбачених законом. Використання інфраструктури міжнародних постачальників може передбачати обробку даних за межами України відповідно до умов і механізмів захисту таких постачальників.</p>
+<h2>7. Зберігання та захист</h2>
+<p>Дані замовлень зберігаються в робочих таблицях/сервісах Google, що використовуються Магазином для обліку замовлень, а повідомлення — у відповідних поштових скриньках. Частина інформації, необхідної для роботи кошика та зручності оформлення, може тимчасово зберігатися у локальному сховищі браузера користувача. Технічні журнали можуть зберігатися постачальниками сервісів відповідно до їхніх правил.</p>
+<p>Дані зберігаються не довше, ніж це необхідно для цілей обробки, виконання договору, розгляду можливих претензій та дотримання обов’язкових строків зберігання документів. Конкретні строки визначаються видом даних і відповідними вимогами законодавства. Магазин застосовує організаційні та технічні заходи для обмеження доступу до даних.</p>
+<h2>8. Права суб’єкта персональних даних</h2>
+<p>Особа має права, передбачені законодавством України, зокрема право знати про джерела, місцезнаходження, мету та склад оброблюваних даних; отримувати доступ до своїх даних; вимагати виправлення неточних даних; заперечувати проти обробки у передбачених законом випадках; вимагати видалення або знищення даних за наявності законних підстав; відкликати згоду, якщо обробка ґрунтується на згоді; звертатися зі скаргою до Уповноваженого Верховної Ради України з прав людини або до суду.</p>
+<p>Для реалізації прав напишіть на <a href="mailto:homestead.inferno@gmail.com">homestead.inferno@gmail.com</a> із темою «Персональні дані». Для захисту від розкриття даних сторонній особі Магазин може попросити підтвердити особу заявника. Видалення не здійснюється в частині, в якій подальше зберігання вимагається законом або необхідне для захисту правових вимог.</p>
+<h2>9. Cookie та локальне сховище</h2>
+<p>Сайт може використовувати локальне сховище браузера для кошика та даних, які користувач вирішив зберегти для зручності оформлення, а також cookie/подібні технології аналітичних і захисних сервісів. Користувач може керувати cookie через налаштування браузера. Вимкнення окремих технологій може вплинути на роботу певних функцій сайту.</p>
+<h2>10. Неповнолітні</h2>
+<p>Сайт і замовлення не адресовані дітям. Якщо Магазину стане відомо, що дані дитини були надані без належних правових підстав, Магазин вживе заходів для перевірки обставин та видалення даних, якщо для їх зберігання немає законної підстави.</p>
+<h2>11. Зміни до Політики</h2>
+<p>Актуальна редакція публікується на цій сторінці. Істотні зміни застосовуються з моменту оприлюднення, якщо інше не зазначено в самій редакції.</p>
+<h2>12. Контакти</h2>
+<p><strong>[ПОВНЕ ІМ’Я/НАЙМЕНУВАННЯ ВОЛОДІЛЬЦЯ]</strong><br>Email: <a href="mailto:homestead.inferno@gmail.com">homestead.inferno@gmail.com</a><br>Адреса для звернень: <strong>[ЗАПОВНИТИ]</strong></p>
+<p><a href="terms.html">Публічна оферта</a> · <a href="shipping.html">Доставка та оплата</a></p>
+</main>
+<footer><div class="footer-content"><div class="footer-brand"><img src="GapkaLogo.png" alt="Gapka Homestead Inferno" class="footer-logo-img" width="180" height="45"><p class="footer-tagline">Farm to Bottle & Seed to Harvest 🔥</p></div><div class="footer-section"><h4>Клієнтам</h4><div class="footer-links"><a href="faq.html">FAQ</a><a href="shipping.html">Доставка та оплата</a><a href="blog.html">Inferno Нотатки</a></div></div><div class="footer-section"><h4>Зв’язок</h4><div class="footer-contacts"><a href="mailto:homestead.inferno@gmail.com">homestead.inferno@gmail.com</a></div></div><div class="footer-section"><h4>Інфо</h4><div class="footer-pp"><a href="privacy.html">Конфіденційність</a><a href="terms.html">Публічна оферта</a></div></div></div><div class="footer-bottom"><p>&copy; 2026 Gapka Homestead Inferno.</p></div></footer>
+</div></div><script type="module" src="analytics.js"></script></body></html>
