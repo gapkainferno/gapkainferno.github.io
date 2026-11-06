@@ -123,7 +123,7 @@ const blogPosts = [
         featured: false,
         excerpt: 'Найгостріший перець у світі — Carolina Reaper. Детальний гайд як виростити його вдома від А до Я.',
         content: `
-            <p class="article-intro">Carolina Reaper — це не просто перець. Це символ, виклик і золотий стандарт у світі екстремальної гостроти. 2.2 мільйона одиниць Сковілла — це межа, де закінчується просто кулінарія і починається справжнє випробування духу.</p>
+            <p class="article-intro"><a class="article-product-link" href="product.html?id=carolinareaperred">Carolina Reaper</a> — це не просто перець. Це символ, виклик і золотий стандарт у світі екстремальної гостроти. 2.2 мільйона одиниць Сковілла — це межа, де закінчується просто кулінарія і починається справжнє випробування духу.</p>
 
 <div class="stat-card" style="background: #1a1a1a; padding: 20px; border-radius: 12px; border: 1px solid #ef4444; margin: 25px 0;">
     <h3 style="color: #ef4444; margin-top: 0;">🔥 Досьє Королеви</h3>
@@ -155,7 +155,7 @@ const blogPosts = [
 
 <div class="anatomy-box" style="background: #272727; padding: 20px; border-radius: 10px; border-right: 5px solid #ef4444; margin: 20px 0;">
     <h4>🦂 Анатомія Смерті: Шукайте Хвіст</h4>
-    <p>Справжню Carolina Reaper впізнають за характерним "хвостиком скорпіона" на кінці плоду та неймовірно горбистою шкіркою. Чим гірший вигляд має перець — тим більше в ньому капсаїцину. Аромат Ріпера — це солодкі фрукти з нотками вишні та шоколаду, які за секунду змінюються нищівним жаром.</p>
+    <p>Справжню <a class="article-product-link" href="product.html?id=carolinareaperred">Carolina Reaper</a> впізнають за характерним "хвостиком скорпіона" на кінці плоду та неймовірно горбистою шкіркою. Чим гірший вигляд має перець — тим більше в ньому капсаїцину. Аромат Ріпера — це солодкі фрукти з нотками вишні та шоколаду, які за секунду змінюються нищівним жаром.</p>
 </div>
 
 <blockquote>
@@ -242,11 +242,11 @@ const blogPosts = [
      //       <h3>2. 7 Pot Primo</h3>
     //        <p>Кузен Reaper'а з характерним "хвостиком". Гострота космічна — 1.5M SHU.</p>
 //
-     //       <h3>3. Sugar Rush Peach</h3>
+     //       <h3>3. <a class="article-product-link" href="product.html?id=sugarrushpeach">Sugar Rush Peach</a></h3>
     //        <p>Не суперхот, але цікавий! Персиковий колір, фруктовий смак, приємна гострота.</p>
 //
      //       <h3>4. Jay's Peach Ghost Scorpion</h3>
-    //        <p>Гібрид Ghost Pepper + Trinidad Scorpion. Персиковий, красивий, пекельний.</p>
+    //        <p>Гібрид <a class="article-product-link" href="product.html?id=bhutjolokiared">Ghost Pepper</a> + Trinidad Scorpion. Персиковий, красивий, пекельний.</p>
 //
      //       <h3>5. MOA Scotch Bonnet</h3>
       //      <p>Рідкісний Scotch Bonnet з Ямайки. Цитрусовий аромат, класична гострота.</p>
@@ -293,13 +293,13 @@ const blogPosts = [
     <h3>Зал слави: Найвідоміші представники</h3>
     
     <div class="cultivars">
-        <h4>🏆 Carolina Reaper (2.2M+ SHU)</h4>
+        <h4>🏆 <a class="article-product-link" href="product.html?id=carolinareaperred">Carolina Reaper</a> (2.2M+ SHU)</h4>
         <p>Чинний рекордсмен Книги рекордів Гіннеса. Створений Едом Каррі шляхом схрещування пакистанської Наги та Хабанеро з Сент-Вінсента. Його легко впізнати за морщинистою шкіркою та характерним "жалом" — хвостиком скорпіона.</p>
 
         <h4>🦂 Trinidad Moruga Scorpion (1.2M - 2M SHU)</h4>
         <p>Довгий час вважався найгострішим. Його гострота не миттєва, вона накопичується. Має грубу шкірку та солодкуватий присмак, який швидко перетворюється на пекельне полум'я.</p>
 
-        <h4>👻 Ghost Pepper / Bhut Jolokia (1M SHU)</h4>
+        <h4>👻 <a class="article-product-link" href="product.html?id=bhutjolokiared">Ghost Pepper</a> / <a class="article-product-link" href="product.html?id=bhutjolokiared">Bhut Jolokia</a> (1M SHU)</h4>
         <p>Легендарний "перець-привид" з Ассаму (Індія). Це перший в історії перець, що офіційно подолав бар'єр у 1 мільйон Сковіллів. Його гострота тримається неймовірно довго — до 20-30 хвилин.</p>
 
         <h4>🌶️ Habanero (100K - 350K SHU)</h4>
@@ -347,9 +347,9 @@ const blogPosts = [
         <p>Це еліта, яка не пробачає помилок. Вони ростуть повільно, але б'ють наповал.</p>
 
         <div class="variety-card">
-            <h4>Carolina Reaper (Red & Chocolate)</h4>
+            <h4><a class="article-product-link" href="product.html?id=carolinareaperred">Carolina Reaper</a> (Red & Chocolate)</h4>
             <img src="images/peppers/reaper-main.jpg" alt="Carolina Reaper" class="article-img" />
-            <p>Наш флагман. Ми вирощуємо класичну червону та елегантну шоколадну версії. <strong>Carolina Reaper Chocolate</strong> зазвичай має більш "важкий" аромат і підступну гостроту, що накочує хвилями.</p>
+            <p>Наш флагман. Ми вирощуємо класичну червону та елегантну шоколадну версії. <strong><a class="article-product-link" href="product.html?id=carolinareaperchocolate"><a class="article-product-link" href="product.html?id=carolinareaperred">Carolina Reaper</a> Chocolate</a></strong> зазвичай має більш "важкий" аромат і підступну гостроту, що накочує хвилями.</p>
         </div>
 
         <div class="variety-card">
@@ -359,9 +359,9 @@ const blogPosts = [
         </div>
 
         <div class="variety-card">
-            <h4>Naga Bhut Jolokia & Scorpion</h4>
+            <h4>Naga <a class="article-product-link" href="product.html?id=bhutjolokiared">Bhut Jolokia</a> & Scorpion</h4>
             <img src="images/peppers/naga-ghost.jpg" alt="Ghost Peppers" class="article-img" />
-            <p>Класика жанру. У списку — класичний <strong>Bhut Jolokia</strong>, <strong>Naga Bhut Jolokia</strong> та <strong>Moruga Scorpion</strong>. Ці сорти — фундамент для наших найгостріших соусів.</p>
+            <p>Класика жанру. У списку — класичний <strong><a class="article-product-link" href="product.html?id=bhutjolokiared">Bhut Jolokia</a></strong>, <strong>Naga <a class="article-product-link" href="product.html?id=bhutjolokiared">Bhut Jolokia</a></strong> та <strong>Moruga Scorpion</strong>. Ці сорти — фундамент для наших найгостріших соусів.</p>
         </div>
 
         <h2 style="color: #d97706; margin-top: 40px;">🥭 Дивізіон "Тропічний шторм": Habanero & Scotch Bonnet</h2>
@@ -389,24 +389,24 @@ const blogPosts = [
         </div>
 
         <div class="variety-card">
-            <h4>Baccatum Beauty: Zebrange & Sugar Rush</h4>
+            <h4>Baccatum Beauty: <a class="article-product-link" href="product.html?id=zebrange">Zebrange</a> & Sugar Rush</h4>
             <img src="images/peppers/zebrange-sugar.jpg" alt="Baccatum peppers" class="article-img" />
-            <p><strong>Sugar Rush</strong> (Полосатий цукор) та смугастий <strong>Zebrange</strong> — головні "моделі" для фотосесій. Вони солодкі, ароматні та неймовірно врожайні.</p>
+            <p><strong>Sugar Rush</strong> (Полосатий цукор) та смугастий <strong><a class="article-product-link" href="product.html?id=zebrange">Zebrange</a></strong> — головні "моделі" для фотосесій. Вони солодкі, ароматні та неймовірно врожайні.</p>
         </div>
 
         <div class="variety-card">
-            <h4>Monkey Face & Aji Melocoton</h4>
+            <h4>Monkey Face & <a class="article-product-link" href="product.html?id=ajimelocoton">Aji Melocoton</a></h4>
             <img src="images/peppers/funky-shapes.jpg" alt="Monkey Face Pepper" class="article-img" />
-            <p>Сорти з характером. <strong>Monkey Face</strong> дивує формою, а <strong>Aji Melocoton</strong> дарує ніжний персиковий смак та делікатну гостроту.</p>
+            <p>Сорти з характером. <strong>Monkey Face</strong> дивує формою, а <strong><a class="article-product-link" href="product.html?id=ajimelocoton">Aji Melocoton</a></strong> дарує ніжний персиковий смак та делікатну гостроту.</p>
         </div>
 
         <h2 style="color: #2563eb; margin-top: 40px;">🍕 Дивізіон "Кухонний Спецназ": Класика гриля</h2>
         <p>Те, що робить щоденну їжу яскравішою. Робочі конячки плантації.</p>
         <ul>
-            <li><strong>Jalapeno :</strong> Король маринування та "попперсів".</li>
+            <li><strong><a class="article-product-link" href="product.html?id=jalapeno">Jalapeno</a> :</strong> Король маринування та "попперсів".</li>
             <li><strong>Padron</strong> & <strong>Shishito:</strong> Ідеальні для швидкої обсмажки на олії з сіллю.</li>
-            <li><strong>Lemon Drop</strong> & <strong>Brazilian Starfish:</strong> Цитрусові нотки для салатів та риби.</li>
-            <li><strong>Peter Pepper :</strong> Перець, який завжди викликає посмішку завдяки своїй анатомічній формі.</li>
+            <li><strong><a class="article-product-link" href="product.html?id=lemondrop">Lemon Drop</a></strong> & <strong>Brazilian Starfish:</strong> Цитрусові нотки для салатів та риби.</li>
+            <li><strong><a class="article-product-link" href="product.html?id=peterpepper">Peter Pepper</a> :</strong> Перець, який завжди викликає посмішку завдяки своїй анатомічній формі.</li>
             <li><strong>Ancho San Luis :</strong> Великі, м'ясисті плоди для фарширування та сушіння.</li>
         </ul>
 
@@ -459,7 +459,7 @@ const blogPosts = [
             <div class="newspaper-divider" style="text-align: center; margin: 30px 0; font-size: 24px; color: #555;">❦ ❦ ❦</div>
 
             <h3>Наш шлях: Від насінини до вогню</h3>
-            <p>Кожна Naga, кожен Fatalii та кожен Sugar Rush Stripey проходить через наші руки. Ми контролюємо все: від вологої серветки під час пророщування до фінального оформлення крафтових соусів. Ми віримо, що в цифрову епоху справжні речі — зроблені власноруч, з повагою до землі та дрібкою божевілля — мають найбільшу цінність.</p>
+            <p>Кожна Naga, кожен Fatalii та кожен <a class="article-product-link" href="product.html?id=sugarrushstripey">Sugar Rush Stripey</a> проходить через наші руки. Ми контролюємо все: від вологої серветки під час пророщування до фінального оформлення крафтових соусів. Ми віримо, що в цифрову епоху справжні речі — зроблені власноруч, з повагою до землі та дрібкою божевілля — мають найбільшу цінність.</p>
 
             <blockquote class="article-quote">
                 <strong>Gapka Homestead Inferno</strong> — це про вогонь всередині нас і на ваших тарілках. Ласкаво просимо до нашої пекельної родини!
@@ -497,7 +497,7 @@ const blogPosts = [
 <p>Сучасні реліквії (особливо чорні та сині сорти) містять <strong>антоціани</strong> — потужні антиоксиданти, які ми зазвичай шукаємо в чорниці чи лохині. Під впливом сонця боки таких томатів забарвлюються у глибокий фіолетовий або вугільно-чорний колір. Це не тільки красиво, а й неймовірно корисно для серця та імунітету.</p>
 
 <h3>Естетика грядки: Смугасті та Чорні</h3>
-<p>Справжні реліквії рідко бувають ідеально круглими. Вони ребристі, серцеподібні, у смужку (як наші улюблені Zebrange серед перців). Спостерігати за тим, як на кущі дозріває "Кримський чорний" або "GHI Opal Gem" — це чиста візуальна насолода. Це живе мистецтво, яке ви створили своїми руками.</p>
+<p>Справжні реліквії рідко бувають ідеально круглими. Вони ребристі, серцеподібні, у смужку (як наші улюблені <a class="article-product-link" href="product.html?id=zebrange">Zebrange</a> серед перців). Спостерігати за тим, як на кущі дозріває "Кримський чорний" або "GHI Opal Gem" — це чиста візуальна насолода. Це живе мистецтво, яке ви створили своїми руками.</p>
 
 <h3>Томати + Перці = Ідеальні сусіди?</h3>
 <p>Хоча вони родичі (пасльонові) і люблять схожий раціон (калій та фосфор), у них є нюанси:
@@ -551,7 +551,7 @@ const blogPosts = [
             <li><strong>1 000 – 5 000 SHU — Легкий пікантний рівень:</strong> Сюди потрапляє наш улюблений зелений перець Пепероні або м'які соуси з перцем Халапеньо. Це гострота, яка не обпалює, а лише приємно «розігріває» страву. Ідеально підходить для щоденного борщу чи м'яса.</li>
             <li><strong>30 000 – 50 000 SHU — Територія «Вогника»:</strong> Знайомий багатьом з ринків чи бабусиних грядок класичний червоний гіркий перець (так званий «Чілі» або Каєнський). Тут уже доводиться замислитися над запитанням: «А чи не поклала я забагато?». Подих трохи перехоплює, але їсти ще дуже приємно.</li>
             <li><strong>100 000 – 350 000 SHU — Зона Хабанеро та Скотч Боннет:</strong> Привіт нашим улюбленим шоколадним хабікам із цьогорічного врожаю! Це рівень, де починається справжня магія крафтових соусів. Гострота яскрава, швидка, але вона супроводжується неймовірними фруктовими, димними чи тропічними нотами.</li>
-            <li><strong>800 000 – 2 000 000+ SHU — Екстремальні суперхоти:</strong> Територія мазохістів і справжніх поціновувачів адреналіну. 7 Pot, Bhut Jolokia (Примарний перець) та легендарна Carolina Reaper. Тут капсаїцин діє як удар молотка. Це не просто їжа, це досвід.</li>
+            <li><strong>800 000 – 2 000 000+ SHU — Екстремальні суперхоти:</strong> Територія мазохістів і справжніх поціновувачів адреналіну. 7 Pot, <a class="article-product-link" href="product.html?id=bhutjolokiared">Bhut Jolokia</a> (Примарний перець) та легендарна <a class="article-product-link" href="product.html?id=carolinareaperred">Carolina Reaper</a>. Тут капсаїцин діє як удар молотка. Це не просто їжа, це досвід.</li>
         </ul>
 
         <h2>Як зрозуміти шкалу Сковілла?</h2>
@@ -630,10 +630,10 @@ const blogPosts = [
         featured: true,
         excerpt: 'Що спільного між іспанськими тапас та японськими закусками? Знайомтеся: Padrón та Shishito — перці, де 9 плодів солодкі, а 10-й... змусить вас попітніти.',
         content: `
-            <p class="article-intro">Ми в <a href="index.html" class="main-logo-link"><strong>Gapka Homestead Inferno</strong></a> обожнюємо екстремальну гостроту, але навіть професійним "поглиначам вогню" іноді хочеться відпочити. Саме для таких моментів існують <strong>Padrón</strong> та <strong>Shishito</strong> — перці, які перетворюють звичайну вечерю на захопливу гру в "гастрономічну рулетку".</p>
+            <p class="article-intro">Ми в <a href="index.html" class="main-logo-link"><strong>Gapka Homestead Inferno</strong></a> обожнюємо екстремальну гостроту, але навіть професійним "поглиначам вогню" іноді хочеться відпочити. Саме для таких моментів існують <strong><a class="article-product-link" href="product.html?id=padron">Padrón</a></strong> та <strong>Shishito</strong> — перці, які перетворюють звичайну вечерю на захопливу гру в "гастрономічну рулетку".</p>
 
     <h3>Магія "Десятого перця": Як працює рулетка?</h3>
-    <p>Ці сорти — справжня загадка природи. Більшість плодів на кущі мають нульову або мінімальну гостроту (близько 500 SHU), але приблизно кожен десятий накопичує в собі неочікуваний заряд капсаїцину. Ви їсте ніжний, солодкий овоч, а потім — <em>бам!</em> — ваші рецептори прокидаються від пікантного ляпаса. Це не вб'є вас, як Carolina Reaper, але змусить потягнутися за келихом прохолодного вина.</p>
+    <p>Ці сорти — справжня загадка природи. Більшість плодів на кущі мають нульову або мінімальну гостроту (близько 500 SHU), але приблизно кожен десятий накопичує в собі неочікуваний заряд капсаїцину. Ви їсте ніжний, солодкий овоч, а потім — <em>бам!</em> — ваші рецептори прокидаються від пікантного ляпаса. Це не вб'є вас, як <a class="article-product-link" href="product.html?id=carolinareaperred">Carolina Reaper</a>, але змусить потягнутися за келихом прохолодного вина.</p>
 
     <div class="culinary-masterclass" style="background: #1a1a1a; border: 1px solid #d4af37; padding: 25px; margin: 30px 0; position: relative;">
         <span style="position: absolute; top: -15px; left: 20px; background: #d4af37; color: #000; padding: 2px 15px; font-weight: bold; text-transform: uppercase;">Золотий стандарт приготування</span>
@@ -650,7 +650,7 @@ const blogPosts = [
     
     <div class="comparison-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
         <div class="variety-card" style="background: #222; padding: 15px;">
-            <h4>🇪🇸 Padrón (Падрон)</h4>
+            <h4>🇪🇸 <a class="article-product-link" href="product.html?id=padron">Padrón</a> (Падрон)</h4>
             <p>Гордість Галісії. Має конічну форму та м’ясисту шкірку. </p>
             <p><strong>Смак:</strong> Більш землистий, насичений, класичний перцевий профіль. </p>
             <p><strong>Секрет Gapka:</strong> Збирайте їх, коли вони розміром з великий палець (4-5 см). Переростаючи, вони стають жорсткими, а шанс "програти" в рулетку зростає до 5 з 10!</p>
@@ -672,10 +672,10 @@ const blogPosts = [
     </ul>
 
     <blockquote style="border-left: 4px solid #10b981; padding-left: 20px; font-style: italic; color: #aaa;">
-        "В Іспанії кажуть: 'Os pementos de Padrón, uns pican e outros non' — Перці Падрон, одні гострі, а інші ні. У цьому і є весь сенс.
+        "В Іспанії кажуть: 'Os pementos de <a class="article-product-link" href="product.html?id=padron">Padrón</a>, uns pican e outros non' — Перці Падрон, одні гострі, а інші ні. У цьому і є весь сенс.
     </blockquote>
 
-    <p>Замовляйте насіння Padrón та Shishito в нашому каталозі та влаштовуйте власну гастрономічну рулетку вже цього літа. Це саме той випадок, коли азарт приносить лише задоволення!</p>`,
+    <p>Замовляйте насіння <a class="article-product-link" href="product.html?id=padron">Padrón</a> та Shishito в нашому каталозі та влаштовуйте власну гастрономічну рулетку вже цього літа. Це саме той випадок, коли азарт приносить лише задоволення!</p>`,
         tags: ['padron', 'shishito', 'закуски', 'вирощування', 'сорти']
     },
 
