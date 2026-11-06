@@ -674,3 +674,18 @@ body.blog-article-page {
     border: 0;
     border-radius: 0;
 }
+
+
+/* Links to pepper seed product cards inside articles */
+.article-content-full a.article-product-link {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: rgba(214, 96, 58, 0.55);
+    text-underline-offset: 3px;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+.article-content-full a.article-product-link:hover {
+    color: var(--primary-hover);
+    text-decoration-color: currentColor;
+}
