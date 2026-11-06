@@ -89,7 +89,13 @@ class ArticleApp {
         // Main content
         const mainEl = document.getElementById('article-main');
         if (mainEl) {
+            const coverImage = post.image
+                ? `<figure class="article-cover">
+                    <img src="${post.image}" alt="${post.title}" onerror="this.closest('.article-cover')?.remove();">
+                </figure>`
+                : '';
             mainEl.innerHTML = `
+                ${coverImage}
                 <div class="article-cut">
                     ${post.content}
                 </div>
@@ -197,10 +203,10 @@ class ArticleApp {
         }
 
         relatedEl.innerHTML = related.map(post => `
-            <a href="blog-article.html?id=${post.id}" class="related-card">
-                <div class="related-image">
-                    <img src="${post.image}" alt="${post.title}">
-                </div>
+            <a href="blog-article.html?id=${post.id}" class="related-card ${post.image ? '' : 'no-image'}">
+                ${post.image ? `<div class="related-image">
+                    <img src="${post.image}" alt="${post.title}" onerror="this.closest('.related-image')?.remove(); this.closest('.related-card')?.classList.add('no-image');">
+                </div>` : ''}
                 <div class="related-info">
                     <span class="related-category">${post.categoryLabel}</span>
                     <h4>${post.title}</h4>
@@ -267,7 +273,7 @@ class ArticleApp {
         // Додаємо Open Graph meta tags для соціальних мереж
         this.addMetaTag('og:title', post.title);
         this.addMetaTag('og:description', post.excerpt);
-        this.addMetaTag('og:image', post.image);
+        this.addMetaTag('og:image', post.image ? new URL(post.image, window.location.href).href : 'https://gapkainferno.github.io/GapkaLogo.png');
         this.addMetaTag('og:url', window.location.href);
     }
 
