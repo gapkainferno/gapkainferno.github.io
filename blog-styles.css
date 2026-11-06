@@ -612,14 +612,6 @@ body.blog-page {
 }
 
 
-/* Cards without a cover image show only the article title */
-.blog-post-card.no-image .post-content {
-    justify-content: center;
-    min-height: 150px;
-}
-.blog-post-card.no-image .post-content h3 {
-    margin: 0;
-}
 .featured-post-content.no-image {
     grid-template-columns: 1fr;
 }
