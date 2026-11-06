@@ -5184,3 +5184,80 @@ body.fresh-peppers-page header::after {
 /* ╔══════════════════════════════════════════════════════════════╗
    ║  КІНЕЦЬ — v6.0 · 23 секції · динамічні теми                ║
    ╚══════════════════════════════════════════════════════════════╝ */
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FAQ — мобільна адаптація та захист від горизонтального overflow
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.faq-page .main-layout,
+.faq-page main,
+.faq-page .content-box,
+.faq-page .faq-item,
+.faq-page .faq-question,
+.faq-page .faq-answer {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.faq-page .content-box {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 768px) {
+    .faq-page .container {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .faq-page .main-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        gap: 18px;
+    }
+
+    .faq-page main {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .faq-page .content-box {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding: 20px 16px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .faq-page .content-box h1 {
+        font-size: clamp(1.65rem, 7vw, 2.2rem);
+        overflow-wrap: anywhere;
+    }
+
+    .faq-page .content-box h2 {
+        max-width: 100%;
+        font-size: clamp(1.15rem, 5vw, 1.4rem);
+        white-space: normal;
+    }
+
+    .faq-page .faq-question,
+    .faq-page .faq-answer,
+    .faq-page .faq-answer p,
+    .faq-page .faq-answer li {
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+
+    .faq-page footer .footer-content,
+    .faq-page footer .footer-bottom {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+}
