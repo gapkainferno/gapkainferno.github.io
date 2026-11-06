@@ -296,7 +296,7 @@ const blogPosts = [
         <h4>🏆 <a class="article-product-link" href="product.html?id=carolinareaperred">Carolina Reaper</a> (2.2M+ SHU)</h4>
         <p>Чинний рекордсмен Книги рекордів Гіннеса. Створений Едом Каррі шляхом схрещування пакистанської Наги та Хабанеро з Сент-Вінсента. Його легко впізнати за морщинистою шкіркою та характерним "жалом" — хвостиком скорпіона.</p>
 
-        <h4>🦂 Trinidad Moruga Scorpion (1.2M - 2M SHU)</h4>
+        <h4>🦂 <a class="article-product-link" href="product.html?id=morugascorpionred">Trinidad Moruga Scorpion</a> (1.2M - 2M SHU)</h4>
         <p>Довгий час вважався найгострішим. Його гострота не миттєва, вона накопичується. Має грубу шкірку та солодкуватий присмак, який швидко перетворюється на пекельне полум'я.</p>
 
         <h4>👻 <a class="article-product-link" href="product.html?id=bhutjolokiared">Ghost Pepper</a> / <a class="article-product-link" href="product.html?id=bhutjolokiared">Bhut Jolokia</a> (1M SHU)</h4>
@@ -370,7 +370,7 @@ const blogPosts = [
         <div class="variety-card">
             <h4>Habanero Clan</h4>
             <img src="images/peppers/habanero-grid.jpg" alt="Habanero Collection" class="article-img" />
-            <p>У нас справжній пантеон Хабанеро: <strong>Savina Red</strong> (екс-рекордсмен), <strong>Chocolate</strong>, <strong>Dominica</strong> та яскравий <strong>Big Sun</strong>. Кожен має свій відтінок фруктових нот.</p>
+            <p>У нас справжній пантеон Хабанеро: <strong><a class="article-product-link" href="product.html?id=habaneroredsavina">Savina Red</a></strong> (екс-рекордсмен), <strong>Chocolate</strong>, <strong>Dominica</strong> та яскравий <strong>Big Sun</strong>. Кожен має свій відтінок фруктових нот.</p>
         </div>
 
         <div class="variety-card">
@@ -383,7 +383,7 @@ const blogPosts = [
         <p>Перці для тих, хто цінує не лише гостроту, а й красу куща та унікальний смак.</p>
 
         <div class="variety-card">
-            <h4>Giant Rocoto</h4>
+            <h4><a class="article-product-link" href="product.html?id=giantrocotored">Giant Rocoto</a></h4>
             <img src="images/peppers/giant-rocoto.jpg" alt="Giant Rocoto" class="article-img" />
             <p>Зірка партії. Чорне насіння, фіолетові квіти та товсті соковиті стінки. <strong> Rocoto</strong> — це перець-довгожитель, який обожнює прохолоду і ненавидить спеку, зовсім як ми!.</p>
         </div>
@@ -395,17 +395,17 @@ const blogPosts = [
         </div>
 
         <div class="variety-card">
-            <h4>Monkey Face & <a class="article-product-link" href="product.html?id=ajimelocoton">Aji Melocoton</a></h4>
+            <h4><a class="article-product-link" href="product.html?id=monkeyfaceyellow">Monkey Face</a> & <a class="article-product-link" href="product.html?id=ajimelocoton">Aji Melocoton</a></h4>
             <img src="images/peppers/funky-shapes.jpg" alt="Monkey Face Pepper" class="article-img" />
-            <p>Сорти з характером. <strong>Monkey Face</strong> дивує формою, а <strong><a class="article-product-link" href="product.html?id=ajimelocoton">Aji Melocoton</a></strong> дарує ніжний персиковий смак та делікатну гостроту.</p>
+            <p>Сорти з характером. <strong><a class="article-product-link" href="product.html?id=monkeyfaceyellow">Monkey Face</a></strong> дивує формою, а <strong><a class="article-product-link" href="product.html?id=ajimelocoton">Aji Melocoton</a></strong> дарує ніжний персиковий смак та делікатну гостроту.</p>
         </div>
 
         <h2 style="color: #2563eb; margin-top: 40px;">🍕 Дивізіон "Кухонний Спецназ": Класика гриля</h2>
         <p>Те, що робить щоденну їжу яскравішою. Робочі конячки плантації.</p>
         <ul>
             <li><strong><a class="article-product-link" href="product.html?id=jalapeno">Jalapeno</a> :</strong> Король маринування та "попперсів".</li>
-            <li><strong>Padron</strong> & <strong>Shishito:</strong> Ідеальні для швидкої обсмажки на олії з сіллю.</li>
-            <li><strong><a class="article-product-link" href="product.html?id=lemondrop">Lemon Drop</a></strong> & <strong>Brazilian Starfish:</strong> Цитрусові нотки для салатів та риби.</li>
+            <li><strong><a class="article-product-link" href="product.html?id=padron">Padron</a></strong> & <strong>Shishito:</strong> Ідеальні для швидкої обсмажки на олії з сіллю.</li>
+            <li><strong><a class="article-product-link" href="product.html?id=lemondrop">Lemon Drop</a></strong> & <strong><a class="article-product-link" href="product.html?id=starfishred">Brazilian Starfish</a>:</strong> Цитрусові нотки для салатів та риби.</li>
             <li><strong><a class="article-product-link" href="product.html?id=peterpepper">Peter Pepper</a> :</strong> Перець, який завжди викликає посмішку завдяки своїй анатомічній формі.</li>
             <li><strong>Ancho San Luis :</strong> Великі, м'ясисті плоди для фарширування та сушіння.</li>
         </ul>
@@ -823,7 +823,7 @@ const blogPosts = [
         featured: false,
         excerpt: 'У той час як інші перці здаються перед першими нічними холодами, Giant Rocoto тільки починає своє справжнє шоу. Знайомтеся з унікальним мешканцем Анд.',
         content: `
-            <p class="article-intro">Якщо ви шукаєте перець, який не схожий ні на що інше у вашому саду — зверніть увагу на <strong>Giant Rocoto</strong>. Це представник виду <em>Capsicum pubescens</em>, і він має кілька секретів, які роблять його ідеальним для нашого осіннього запуску.</p>
+            <p class="article-intro">Якщо ви шукаєте перець, який не схожий ні на що інше у вашому саду — зверніть увагу на <strong><a class="article-product-link" href="product.html?id=giantrocotored">Giant Rocoto</a></strong>. Це представник виду <em>Capsicum pubescens</em>, і він має кілька секретів, які роблять його ідеальним для нашого осіннього запуску.</p>
 
 <h3>Чорне насіння та фіолетові квіти</h3>
 <p>Rocoto — це аристократ світу чилі. Його легко впізнати за «пухнастим» волохатим листям (що допомагає йому виживати у високогірних туманах) та унікальним вугільно-чорним насінням. На відміну від більшості перців, він цвіте приголомшливими фіолетовими квітами. У період цвітіння кущ виглядає як екзотична декоративна рослина, а не просто овоч на грядці.</p>
