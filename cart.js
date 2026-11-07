@@ -246,6 +246,14 @@ function syncCartPrices(cart, options = {}) {
         if (!product) return item;
 
         const previousVersionKey = item.versionKey || null;
+
+        // Варіанти існують лише у товарів із seedVersions.
+        // Прибираємо застарілий versionKey з кошика, якщо товар більше не має варіантів.
+        if (!product.seedVersions && item.versionKey) {
+            item.versionKey = null;
+            changed = true;
+        }
+
         const basePrice = getCartItemBasePrice(item, product);
         const currentPrice = getDiscountedPrice(basePrice, product);
         const normalizedOriginalPrice = basePrice || item.originalPrice || item.price;
@@ -1368,7 +1376,10 @@ window.addToCart = function(productId, price, name, qty = 1, originalPrice = nul
         existing.qty = Math.min(existing.qty + validatedQty, CART_CONSTANTS.MAX_QTY);
         existing.price = validatedPrice;
         existing.originalPrice = normalizedOriginalPrice;
-        existing.versionKey = versionKey || existing.versionKey || null;
+        // Не переносимо застарілий ключ варіанта на товари без варіантів (наприклад, соуси).
+        existing.versionKey = productData?.seedVersions
+            ? (versionKey || existing.versionKey || null)
+            : null;
         if (image) existing.image = image;
         if (productId && !existing.productId) {
             existing.productId = productId;
