@@ -1891,6 +1891,16 @@ window.submitOrder = async function() {
             }
         }
 
+        // На мобільних після успішного замовлення показуємо початок повідомлення.
+        if (window.matchMedia('(max-width: 540px)').matches) {
+            requestAnimationFrame(() => {
+                const successScreen = document.getElementById('success-msg');
+                if (successScreen) {
+                    successScreen.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+
         localStorage.removeItem('pending_order_request_id');
         localStorage.removeItem('pending_order_fingerprint');
         localStorage.removeItem('pending_order_request_v2');
