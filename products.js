@@ -85,7 +85,7 @@ heatScore:"3",
         images: ["ghost111.jpg", "bhut-jolokia-red-secondary.webp", "BhutJolokiaRed2.webp", "ghost-main.webp","ghost4.jpg","ghost5.jpg", "ghost-main.jpg"],
         specs: {
             maturity: "100-120 днів",
-            height: "60-90 см",
+            height: "60-140 см",
             species: "Capsicum chinense x Capsicum frutescens (природний гібрид)",
             yield: ""
         },
@@ -115,7 +115,7 @@ heatScore:"1",
         images: ["aji-melocoton.jpg", "melocoton.jpg", "melocoton4.jpg"],
         specs: {
             maturity: "80-90 днів",
-            height: "90-150 см (високий, розлогий кущ)",
+            height: "90-150 см",
             species: "Capsicum baccatum",
             yield: ""
         },
@@ -144,7 +144,7 @@ heatScore:"3",
         images: ["7-pot-brain-strain-yellow-main.webp", "7-pot-brain-strain (2).webp", "7-pot-brain-strain.webp"],
         specs: {
             maturity: "110-120 днів",
-            height: "90-120 см (сильний, розлогий)",
+            height: "70-100 см (сильний, розлогий)",
             species: "Capsicum chinense",
             yield: ""
         },
@@ -239,7 +239,7 @@ heatScore:"4",
         images: ["carolina.jpg", "carolinaw.jpg", "product-secondary-placeholder.webp"],
         specs: {
             maturity: "110-130 днів (довгий шлях до фінішу)",
-            height: "До 120 см",
+            height: "100 - 120 см",
             species: "Capsicum chinense",
             yield: ""
         },
@@ -271,7 +271,7 @@ heatScore:"4",
         images: ["7-pot-choc.jpg", "7pot2.jpg", "7pot.jpg"],
         specs: {
             maturity: "Пізній (110–120 днів)",
-            height: "0.8 – 1.2 м (розлогий)",
+            height: "80 – 90 см",
             species: "Capsicum chinense",
             yield: "Висока",
         },
@@ -330,9 +330,9 @@ heatScore:"1",
         images: ["padron-main.webp", "padron-sub.jpg", "padron-sub2.jpg"],
         specs: {
             maturity: "60–75 днів",
-            height: "60–80 см",
+            height: "60–100 см",
             species: "Capsicum annuum",
-            yield: ""
+            yield: "900-1000г"
         },
         description: `<b>Padrón</b> — це легендарний іспанський перець для «гастрономічної рулетки», що дозволить вам влаштувати справжнє шоу на кухні.
         <br><br>
@@ -425,7 +425,7 @@ heatScore:"1",
         images: ["tabasco-main.jpg", "tabasco.jpg", ""],
         specs: {
             maturity: "80–90 днів",
-            height: "Може вирости до 1.5 метра",
+            height: "90-100 см",
             species: "Capsicum frutescens",
             yield: ""
         },
@@ -610,7 +610,7 @@ heatScore:"2",
         images: ["fatalii.jpg", "fatalii (2).webp", ""],
         specs: {
             maturity: "90–110 днів",
-            height: "60–90 см",
+            height: "60–110 см",
             species: "Capsicum chinense",
             yield: "400–800 г з куща"
         },
@@ -640,7 +640,7 @@ heatScore:"2",
         images: ["fatalii-white.jpg", "fatalii-white (2).webp", ""],
         specs: {
             maturity: "Пізньостиглий (110–125 днів)",
-            height: "0.7 – 1.0 м (кущовий, розлогий)",
+            height: "70-100 см",
             species: "Capsicum chinense",
             yield: "Висока"
         },
@@ -766,7 +766,7 @@ heatScore:"1",
         images: ["jalapeno-main.webp", "jalapeno.jpg", "jalapeno (2).jpg", "jalapeno1.jpg", ],
         specs: {
             maturity: "70-80 днів",
-            height: "",
+            height: "60-80 см",
             species: "Capsicum annuum",
             yield: ""
         },
@@ -798,7 +798,7 @@ heatScore:"2",
         images: ["1793357968176.jpg","bigsun.jpg", "hab-big-sun.jpg" ],
         specs: {
             maturity: "90-120 днів",
-            height: " ",
+            height: "60-80 см",
             species: "Capsicum chinense",
             yield: ""
         },
