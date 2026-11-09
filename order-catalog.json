@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-09T13:42:41.962Z",
+  "generatedAt": "2026-11-09T18:02:07.718Z",
   "sale": {
     "isActive": false,
     "discountPercent": 10,
@@ -1263,26 +1263,6 @@
     },
     "stupice_early": {
       "name": "Насіння томату Stupice Early (Контейнерний)",
-      "category": "tomatoes",
-      "price": 30,
-      "inStock": true,
-      "allowSale": true,
-      "isHidden": false,
-      "variants": {
-        "openPollinated": {
-          "label": "Open Pollinated",
-          "price": 30,
-          "inStock": true
-        },
-        "isolated": {
-          "label": "Ізольоване",
-          "price": 38,
-          "inStock": false
-        }
-      }
-    },
-    "titan_red_814": {
-      "name": "Насіння томату GHI Titan Red (Лінія 814)",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
