@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-10T11:39:57.696Z",
+  "generatedAt": "2026-11-10T20:58:48.399Z",
   "sale": {
     "isActive": false,
     "discountPercent": 10,
@@ -742,7 +742,7 @@
       }
     },
     "tigrovij-vitrazh": {
-      "name": "Томат Тигровий вітраж",
+      "name": "Насіння томату Тигровий вітраж",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -762,7 +762,7 @@
       }
     },
     "midnij-inzhir": {
-      "name": "Томат Мідний інжир",
+      "name": "Насіння томату Мідний інжир",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -782,7 +782,7 @@
       }
     },
     "shokoladnij-inzhir": {
-      "name": "Томат Шоколадний інжир",
+      "name": "Насіння томату Шоколадний інжир",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -802,7 +802,7 @@
       }
     },
     "purpurovij-inzhir": {
-      "name": "Томат Пурпуровий інжир",
+      "name": "Насіння томату Пурпуровий інжир",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -822,7 +822,7 @@
       }
     },
     "polunichnij-inzhir": {
-      "name": "Томат Полуничний інжир",
+      "name": "Насіння томату Полуничний інжир",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -842,7 +842,7 @@
       }
     },
     "malinovyj-kavun": {
-      "name": "Томат Малиновий кавун",
+      "name": "Насіння томату Малиновий кавун",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -862,7 +862,7 @@
       }
     },
     "farshyrovana-bombochka": {
-      "name": "Томат Фарширована бомбочка",
+      "name": "Насіння томату Фарширована бомбочка",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -882,7 +882,7 @@
       }
     },
     "zolochena-malynova-shpalera": {
-      "name": "Томат Золочена малинова шпалера",
+      "name": "Насіння томату Золочена малинова шпалера",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -902,7 +902,7 @@
       }
     },
     "fakturna-slyva": {
-      "name": "Томат Фактурна слива",
+      "name": "Насіння томату Фактурна слива",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -922,7 +922,7 @@
       }
     },
     "stepove-yajcze": {
-      "name": "Томат Степове яйце",
+      "name": "Насіння томату Степове яйце",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -942,7 +942,7 @@
       }
     },
     "rubinove-namysto": {
-      "name": "Томат Рубінове намисто",
+      "name": "Насіння томату Рубінове намисто",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -962,7 +962,7 @@
       }
     },
     "kivi-bifshteks": {
-      "name": "Томат Ківі-біфштекс",
+      "name": "Насіння томату Ківі-біфштекс",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -982,7 +982,7 @@
       }
     },
     "stepova-slivka": {
-      "name": "Томат Степова сливка",
+      "name": "Насіння томату Степова сливка",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -1002,7 +1002,7 @@
       }
     },
     "kopchena-karamel": {
-      "name": "Томат Копчена карамель (Smoked Caramel)",
+      "name": "Насіння томату Копчена карамель (Smoked Caramel)",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -1022,7 +1022,7 @@
       }
     },
     "zakatna-amfora": {
-      "name": "Томат Закатна амфора",
+      "name": "Насіння томату Закатна амфора",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -1042,7 +1042,7 @@
       }
     },
     "rubinovyj-kub": {
-      "name": "Томат Рубіновий куб",
+      "name": "Насіння томату Рубіновий куб",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -1062,7 +1062,7 @@
       }
     },
     "korolivska-slyva": {
-      "name": "Томат Королівська слива",
+      "name": "Насіння томату Королівська слива",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -1082,7 +1082,7 @@
       }
     },
     "bahryana-korona": {
-      "name": "Томат Багряна корона",
+      "name": "Насіння томату Багряна корона",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -1142,7 +1142,7 @@
       }
     },
     "abrykosovyj-hnom": {
-      "name": "Томат Абрикосовий гном",
+      "name": "Насіння томату Абрикосовий гном",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -1162,7 +1162,7 @@
       }
     },
     "dzerkalo-alisi": {
-      "name": "Томат Дзеркало Аліси",
+      "name": "Насіння томату Дзеркало Аліси",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -1182,7 +1182,7 @@
       }
     },
     "barbarysky-vysokorosli": {
-      "name": "Томат Барбарис високорослий",
+      "name": "Насіння томату Барбарис високорослий",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -1202,7 +1202,7 @@
       }
     },
     "barbarysky-nyzkorosli": {
-      "name": "Томат Барбариски низькорослі",
+      "name": "Насіння томату Барбариски низькорослі",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -1222,7 +1222,7 @@
       }
     },
     "ananasovyj-vohon": {
-      "name": "Томат Ананасовий вогонь",
+      "name": "Насіння томату Ананасовий вогонь",
       "category": "tomatoes",
       "price": 30,
       "inStock": true,
@@ -1562,7 +1562,7 @@
       }
     },
     "bagryanyy-shepit": {
-      "name": "Багряний Шепіт (Crimson Whisper)",
+      "name": "Насіння перцю Багряний Шепіт (Crimson Whisper)",
       "category": "vegetable-seeds",
       "price": 35,
       "inStock": true,
