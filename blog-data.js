@@ -741,7 +741,7 @@ const blogPosts = [
         date: '2026-05-10',
         author: 'Gapka',
         readTime: '8 хв',
-        image: null, // Фото з твого каталогу
+        image: 'Rocoto (2).jpg', // Фото з твого каталогу
         featured: false,
         excerpt: 'У той час як інші перці здаються перед першими нічними холодами, Giant Rocoto тільки починає своє справжнє шоу. Знайомтеся з унікальним мешканцем Анд.',
         content: `
