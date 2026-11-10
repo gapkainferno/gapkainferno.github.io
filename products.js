@@ -300,7 +300,7 @@ heatScore:"1",
         specs: {
             maturity: "90–100 днів",
             height: "до 1.5 - 2 метрів",
-            species: "Capsicum baccatum (Ягідний перець)",
+            species: "Capsicum baccatum",
             yield: ""
         },
         description: `<b>Brazilian Starfish Red</b> — це справжня перлина виду Capsicum baccatum, що вражає своїм інопланетним виглядом «червоної морської зірки».
@@ -363,7 +363,7 @@ heatScore:"1",
         specs: {
             maturity: "85–95 днів",
             height: "80–120 см",
-            species: "Capsicum baccatum (Ягідний перець)",
+            species: "Capsicum baccatum (ний перець)",
             yield: ""
         },
         description: `<b>Zebrange</b> — це вибір для тих, хто шукає справжню екзотику та візуальне захоплення. Цей сорт є унікальним кросом Aji Fantasy та Christmas Bell, що поєднує найкращі якості обох.
@@ -458,7 +458,7 @@ heatScore:"2",
         specs: {
             maturity: "100–120 днів",
             height: "100–150 см",
-            species: "Capsicum baccatum (Ягідний перець)",
+            species: "Capsicum baccatum",
             yield: ""
         },
         description: `<b>Sugar Rush Stripey</b> — мабуть, найсмачніший перець у світі, що подарує вам справжній «фруктовий вибух».
@@ -489,7 +489,7 @@ heatScore:"2",
         specs: {
             maturity: "100–120 днів",
             height: "100–150 см",
-            species: "Capsicum baccatum (Ягідний перець)",
+            species: "Capsicum baccatum",
             yield: "Висока"
         },
         description: `<b>Sugar Rush Peach</b> — ароматний сорт перцю з родини Sugar Rush, відомий солодкими персиковими плодами та яскравим фруктовим смаком.
