@@ -82,7 +82,7 @@ heatScore:"4",
         heatLevel: "🔥🔥🔥 ДУЖЕ ВИСОКА (800,000 – 1,001,304 SHU)",
         metaDescription: "Купити насіння Ghost Pepper (Bhut Jolokia). Легендарний перець-мільйонник із примарною гостротою та квітковим ароматом. Доставка по Україні.",
 heatScore:"3",
-        images: ["ghost111.jpg", "bhut-jolokia-red-secondary.webp", "BhutJolokiaRed2.webp", "ghost-main.webp","ghost4.jpg","ghost5.jpg", "ghost-main.jpg"],
+        images: ["ghost111.jpg", "bhut-jolokia-red-secondary.webp", "BhutJolokiaRed2.webp", "ghost-main.webp","ghost4.jpg", "ghost-main.jpg"],
         specs: {
             maturity: "100-120 днів",
             height: "60-90 см",
