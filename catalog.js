@@ -221,6 +221,21 @@ function renderCategoryFilters(mainGrid, category) {
         catalogContainer?.insertAdjacentElement('beforebegin', filterSection);
     }
 
+    const extraFilters = category === CATEGORY_PAGES.seeds ? `
+        <div class="catalog-extra-filters">
+            <label class="catalog-filter-field" for="species-filter">
+                <span>Вид перцю</span>
+                <select id="species-filter">
+                    <option value="all">Усі види</option>
+                </select>
+            </label>
+            <label class="catalog-stock-filter" for="stock-only-filter">
+                <input type="checkbox" id="stock-only-filter">
+                <span>Лише в наявності</span>
+            </label>
+        </div>
+    ` : '';
+
     filterSection.innerHTML = `
         <span class="filter-title">${safeText(category.filterTitle)}</span>
         <div class="filter-buttons">
@@ -230,7 +245,31 @@ function renderCategoryFilters(mainGrid, category) {
                 </button>
             `).join('')}
         </div>
+        ${extraFilters}
     `;
+
+    if (category === CATEGORY_PAGES.seeds) {
+        const speciesSelect = filterSection.querySelector('#species-filter');
+        const speciesByKey = new Map();
+        Object.values(allProducts)
+            .filter(product => product && product.category === 'seeds' && product.specs?.species)
+            .forEach(product => {
+                const value = String(product.specs.species)
+                    .normalize('NFKC')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                if (!value) return;
+                const key = value.toLocaleLowerCase('uk');
+                if (!speciesByKey.has(key)) speciesByKey.set(key, value);
+            });
+        const species = [...speciesByKey.values()].sort((a, b) => a.localeCompare(b, 'uk'));
+        species.forEach(value => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value;
+            speciesSelect.appendChild(option);
+        });
+    }
 }
 
 function prepareCategoryPage(mainGrid, pageCategory) {
@@ -472,28 +511,40 @@ function renderSauceBundle(pageCategory) {
 
 function initFilters(mainGrid) {
     const filterButtons = mainGrid.querySelectorAll('.filter-btn');
+    let selectedHeat = 'all';
+    const speciesSelect = mainGrid.querySelector('#species-filter');
+    const stockOnly = mainGrid.querySelector('#stock-only-filter');
 
-    const applyFilter = (selectedHeat) => {
+    const applyFilters = () => {
         mainGrid.querySelectorAll('.product-card').forEach(card => {
             const productId = card.getAttribute('data-id');
             const product = allProducts[productId];
             if (!product) return;
 
-            const productHeat = String(product.heatScore || '');
-            card.classList.toggle('is-filtered-out', selectedHeat !== 'all' && productHeat !== selectedHeat);
+            const heatMatches = selectedHeat === 'all' || String(product.heatScore || '') === selectedHeat;
+            const selectedSpecies = speciesSelect?.value || 'all';
+            const speciesMatches = selectedSpecies === 'all' ||
+                String(product.specs?.species || '').normalize('NFKC').replace(/\s+/g, ' ').trim().toLocaleLowerCase('uk') ===
+                selectedSpecies.normalize('NFKC').replace(/\s+/g, ' ').trim().toLocaleLowerCase('uk');
+            const stockMatches = !stockOnly?.checked ||
+                (product.inStock === true && product.allowSale === true && product.isHidden !== true);
+
+            card.classList.toggle('is-filtered-out', !(heatMatches && speciesMatches && stockMatches));
         });
     };
 
-    // Фильтры работают ВСЕГДА
     filterButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             filterButtons.forEach(button => button.classList.remove('active'));
             btn.classList.add('active');
-            applyFilter(btn.getAttribute('data-heat'));
+            selectedHeat = btn.getAttribute('data-heat') || 'all';
+            applyFilters();
         });
     });
 
-    // Слайдер инициализируется ТОЛЬКО если он есть
+    speciesSelect?.addEventListener('change', applyFilters);
+    stockOnly?.addEventListener('change', applyFilters);
+
     const slider = document.getElementById('scoville-slider');
     if (!slider) return;
 
@@ -506,7 +557,6 @@ function initFilters(mainGrid) {
     const updateThermometerDisplay = (value) => {
         const data = SCOVILLE_DATA[value];
         if (!data) return;
-
         if (pepperName) pepperName.innerText = data.name;
         if (pepperShu) pepperShu.innerText = data.shu + " SHU";
         if (heatStatus) heatStatus.innerText = "Рівень: " + data.status;
@@ -519,9 +569,12 @@ function initFilters(mainGrid) {
     resetBtn?.addEventListener('click', () => {
         slider.value = 1;
         updateThermometerDisplay('1');
-        applyFilter('all');
+        selectedHeat = 'all';
+        if (speciesSelect) speciesSelect.value = 'all';
+        if (stockOnly) stockOnly.checked = false;
         filterButtons.forEach(button => button.classList.remove('active'));
         mainGrid.querySelector('.filter-btn[data-heat="all"]')?.classList.add('active');
+        applyFilters();
     });
 
     slider.addEventListener('input', function() {
@@ -529,14 +582,13 @@ function initFilters(mainGrid) {
     });
 
     slider.addEventListener('change', function() {
-        const value = this.value;
-        updateThermometerDisplay(value);
-        const targetBtn = mainGrid.querySelector(`.filter-btn[data-heat="${value}"]`);
+        selectedHeat = this.value;
+        const targetBtn = mainGrid.querySelector(`.filter-btn[data-heat="${selectedHeat}"]`);
         if (targetBtn) {
             filterButtons.forEach(button => button.classList.remove('active'));
             targetBtn.classList.add('active');
         }
-        applyFilter(value);
+        applyFilters();
     });
 }
 

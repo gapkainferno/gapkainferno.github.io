@@ -486,9 +486,9 @@
     </div>
 
     <div class="top-nav">
-        <span>🚀 Швидке відправлення замовлень</span>
+        <span>🚀 Швидке відправлення</span>
         <span>🤝 Є післяплата та онлайн оплата</span>
-        <span>📦 Без мінімальної суми замовлення</span>
+        <span>📦 Без мінімальної суми</span>
         <span>✨ Замовляйте без реєстрації</span>
     </div>
 
@@ -502,91 +502,73 @@
         <input 
             type="text" 
             id="search-input" 
-            placeholder="Шукати товари..."
+            placeholder="Шукати..."
             autocomplete="off"
         >
         <span class="search-icon">🔍</span>
         <div id="search-results"></div>
     </div>
+
+    <nav class="header-quick-links" aria-label="Швидка навігація">
+        <a href="about.html">Про нас</a>
+        <a href="blog.html">Нотатки</a>
+        <a href="product.html?openCart=1" class="header-cart-link" onclick="event.preventDefault(); if(typeof openCheckout==='function'){openCheckout();} else {window.location.href='product.html?openCart=1';}">Кошик</a>
+    </nav>
 </header>
 
 <main>
-            <section class="hero-text">
-                <h1>Ми відкрились! Вирощуйте врожай, яким хочеться хвалитися, та відкривайте для себе крафтові соуси, що наділяють звичайну їжу <a href="sauces.html"><span class="fire-text">INFERNO</span></a> здібностями. Завітайте до наших <a href="https://gapkainferno.github.io/blog.html"><span class="fire-text">INFERNO Нотаток</span></a> за натхненням і порадами.</h1>
-            </section>
-
 <section class="cards-section">
-<!-- ═══ НАСІННЯ СУПЕРГОСТРИХ ПЕРЦІВ ═══ -->
     <a href="seedsandseedlings.html" class="card-link seeds">
-        <img src="peppers.jpg" 
-             alt="Рослина гострого перцю — насіння суперхотів" 
-             class="card-image" 
-             width="400" 
-             height="300">
+        <img src="peppers.jpg" alt="Рослина гострого перцю — насіння суперхотів" class="card-image" width="400" height="300" fetchpriority="high" decoding="async">
         <div class="card-label">Насіння<br>супергострих перців</div>
+        <span class="card-description">Рідкісні сорти, суперхоти та власні лінії</span>
+        <span class="card-arrow" aria-hidden="true">→</span>
     </a>
 
-    <!-- ═══ КРАФТОВІ СОУСИ ═══ -->
     <a href="sauces.html" class="card-link sauces">
-        <img src="sauces-inferno-assortment.webp" 
-             alt="Купити гострі соуси Inferno" 
-             class="card-image" 
-             width="400" 
-             height="300">
+        <img src="sauces-inferno-assortment.webp" alt="Купити гострі соуси Inferno" class="card-image" width="400" height="300" loading="lazy" decoding="async">
         <div class="card-label">Гострі<br>Соуси INFERNO</div>
+        <span class="card-description">Авторські смаки, створені малими партіями</span>
+        <span class="card-arrow" aria-hidden="true">→</span>
     </a>
 
-    <!--
-      РОЗБЛОКУВАТИ СЕЗОННУ КАТЕГОРІЮ:
-      замініть цей <div> на <a href="fresh-peppers.html" class="card-link fresh-peppers">
-      і закривальний </div> нижче — на </a>. Клас seasonal-closed приберіть.
-    -->
-    <div class="card-link fresh-peppers seasonal-closed" role="group" aria-label="Врожай Inferno — сезонний розділ, наразі зачинено">
-        <img src="freshpeppers.jpg" 
-             alt="Врожай Inferno — свіжі, сушені перці та продукти з перців" 
-             class="card-image" 
-             width="400" 
-             height="300">
+    <a href="fresh-peppers.html" class="card-link fresh-peppers seasonal-closed" data-season-category="fresh-peppers" hidden aria-label="Врожай Inferno — свіжі, сушені перці та продукти з перців">
+        <img src="freshpeppers.jpg" alt="Врожай Inferno — свіжі, сушені перці та продукти з перців" class="card-image" width="400" height="300" loading="lazy" decoding="async">
         <span class="seasonal-badge">Сезонний розділ</span>
         <div class="card-label">Врожай Inferno:<br>свіжі, сушені перці та продукти з них</div>
-        <span class="seasonal-note">Наразі зачинено</span>
-    </div>
-
-    <!-- ═══ НАСІННЯ ТОМАТІВ ═══ -->
-    <a href="tomatoes.html" class="card-link tomatoes">
-        <img src="tomatoes.jpg"
-             alt="Стиглий томат — насіння томатів"
-             class="card-image"
-             width="400"
-             height="300">
-        <div class="card-label">Насіння<br>томатів</div>
+        <span class="card-description">Свіжі й сушені перці з нашого врожаю</span>
+        <span class="card-arrow" aria-hidden="true">→</span>
     </a>
 
-    <!-- ═══ НАСІННЯ ОВОЧІВ ═══ -->
+    <a href="tomatoes.html" class="card-link tomatoes">
+        <img src="tomatoes.jpg" alt="Стиглий томат — насіння томатів" class="card-image" width="400" height="300" loading="lazy" decoding="async">
+        <div class="card-label">Насіння<br>томатів</div>
+        <span class="card-description">Незвичайні форми, кольори й смаки</span>
+        <span class="card-arrow" aria-hidden="true">→</span>
+    </a>
+
     <a href="vegetable-seeds.html" class="card-link vegetable-seeds">
-        <img src="veggies.jpg"
-             alt="Плоди перцю Капія — насіння овочів"
-             class="card-image"
-             width="400"
-             height="300">
+        <img src="veggies.jpg" alt="Плоди перцю Капія — насіння овочів" class="card-image" width="400" height="300" loading="lazy" decoding="async">
         <div class="card-label">Інше насіння</div>
+        <span class="card-description">Овочі та культури для вашого городу</span>
+        <span class="card-arrow" aria-hidden="true">→</span>
     </a>
 </section>
 
-    <p class="description">
-    Ласкаво просимо на наш <strong>Small Batch Homestead</strong>. Тут ми власноруч плекаємо генетику, від перевіреної часом класики до екстремальних авторських ліній. 
-    <br><br>
-    Кожна крапля нашої ультра-гострої лінійки соусів <a href="sauces.html"><span class="fire-text">INFERNO</span></a> народжена саме з цього <a href="seedsandseedlings.html"><span class="green-text">насіння</span></a>, вирощеного під наглядом сонця та нашої уваги. Ми відібрали світові легенди: 
-    <strong>Carolina Reaper, Ghost <img src="bhutjolokiaNOTEXT.PNG" alt="Ghost Pepper" class="pepper-icon" width="28" height="28">, Habanero</strong> , 
-    <strong>Fatalii, Red Savina, Scorpion</strong> 
-    <img src="morugascorpNOTEXT.PNG" alt="Scorpion Pepper" class="pepper-icon" width="28" height="28">
-    та екзотичні <strong>Aji Lemon і Rocoto <img src="GiantrocottoNOTEXT.PNG" alt="Rocoto Pepper" class="pepper-icon" width="28" height="28">, а також інші, їх можна знайти у каталозі.</strong> 
-    <br><br>
-    Це не промислове виробництво — це справжній фермерський відбір на вагу, колір та автентичний смак. Ми пропонуємо не просто насіння, а результат наших щоденних експериментів на садибі. Вирощування, що стає пристрастю.
-    </p>
+<section class="home-picks" aria-labelledby="home-picks-title">
+    <div class="home-picks-heading">
+        <h2 id="home-picks-title">Також варто спробувати <span aria-hidden="true">🔥</span></h2>
+    </div>
+    <div class="home-picks-grid" id="home-picks-grid" aria-live="polite"></div>
+</section>
 
+<section class="home-intro" aria-labelledby="home-main-title">
+    <span class="home-intro-eyebrow">GAPKA HOMESTEAD INFERNO</span>
+    <h1 id="home-main-title">Від власного насіння — до соусів із характером.</h1>
+    <p>Ми вирощуємо перці, відбираємо цікаву генетику та створюємо крафтові гострі соуси малими партіями. Ділимося тим, що любимо самі: насінням, врожаєм і справжнім смаком вогню.</p>
+</section>
 
-     <!-- ════════════════════════════════════════════════════════
+<!-- ════════════════════════════════════════════════════════
          <БАНДЛИ> - ПЕКЕЛЬНІ СЮРПРИЗ-БОКСИ (доступно)
          ════════════════════════════════════════════════════════ 
             <section class="bundles-section container">
@@ -718,28 +700,7 @@
     </div>
 </section>
 
-<h2 style="text-align: center; margin: 40px 0 30px; padding: 0 30px;">Які переваги Gapka Homestead Inferno?</h2>
 
-<section class="features-grid container">
-    <div class="feature-item">
-        <div class="feature-icon">🌿</div>
-        <h3>100% Натуральний цикл</h3>
-        <p>Ми не купуємо сировину на базах. Все, що потрапляє у ваші руки, виросло на нашому городі під сонцем. Ніяких консервантів, стабілізаторів чи підсилювачів смаку — тільки перець, вогонь та натуральні інгредієнти.</p>
-    </div>
-    <div class="feature-item">
-        <div class="feature-icon">🔍</div>
-        <h3>Відбір найкращого </h3>
-        <p>Ми не лабораторія, але ми фанати. Вручну відбираємо найсильніші плоди, щоб ви отримали справжній характер сорту.</p>
-    </div>
-    <div class="feature-item">
-    <div class="feature-icon">🤝</div>
-    <h3>Гарантія чесності</h3>
-    <p>Якщо з насінням щось пішло не так або виріс не той сорт — ми готові до діалогу! Нам важливий ваш врожай, і ми піклуємося про кожного фермера та "пекельного" ентузіаста.</p>
-</div>
-</section>
-<p style="text-align: center; margin-top: 20px; font-size: 14px; opacity: 0.7;">
-    Детальніше про наші принципи роботи та <a href="faq.html#guarantee" style="color: var(--primary-orange); text-decoration: underline;">умови гарантії читайте тут</a>
-</p>
 
 </main>
         </div>
@@ -755,6 +716,7 @@
             <h4>Клієнтам</h4>
             <div class="footer-links">
                 <a href="https://gapkainferno.github.io/blog.html">Inferno Нотатки</a>
+                <a href="about.html">Про нас</a>
                 <a href="https://gapkainferno.github.io/faq.html">Питання та відповіді (FAQ)</a> 
                 <a href="https://gapkainferno.github.io/shipping.html">Доставка та оплата</a>
             </div>
@@ -794,6 +756,111 @@
 
 
 <script src="products.js"></script>
+<script>
+// Формуємо випадкову добірку з товарів, які зараз доступні до продажу.
+(function () {
+    function renderHomePicks() {
+        const grid = document.getElementById('home-picks-grid');
+        if (!grid || typeof allProducts === 'undefined') return;
+
+        const labels = {
+            seeds: 'НАСІННЯ ПЕРЦЮ',
+            sauces: 'КРАФТОВИЙ СОУС',
+            otherseeds: 'ІНШЕ НАСІННЯ',
+            'fresh-peppers': 'СЕЗОННИЙ ВРОЖАЙ'
+        };
+
+        const available = Object.entries(allProducts).filter(([id, product]) =>
+            product &&
+            product.inStock === true &&
+            product.allowSale === true &&
+            product.isHidden !== true &&
+            Number.isFinite(Number(product.price)) &&
+            typeof product.name === 'string' &&
+            Array.isArray(product.images) &&
+            typeof product.images[0] === 'string' &&
+            product.images[0].trim() !== ''
+        );
+
+        // Перемішуємо весь доступний асортимент алгоритмом Fisher–Yates.
+        for (let i = available.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [available[i], available[j]] = [available[j], available[i]];
+        }
+
+        grid.replaceChildren();
+        available.slice(0, 4).forEach(([id, product]) => {
+            const card = document.createElement('a');
+            card.className = 'home-pick-card';
+            card.href = 'product.html?id=' + encodeURIComponent(id);
+
+            const imageWrap = document.createElement('div');
+            imageWrap.className = 'home-pick-image-wrap';
+
+            const image = document.createElement('img');
+            image.src = product.images[0];
+            image.alt = product.name;
+            image.loading = 'lazy';
+            image.decoding = 'async';
+            imageWrap.appendChild(image);
+
+            const info = document.createElement('div');
+            info.className = 'home-pick-info';
+
+            const title = document.createElement('h3');
+            title.textContent = product.name;
+
+            info.append(title);
+            card.append(imageWrap, info);
+            grid.appendChild(card);
+        });
+
+        if (grid.children.length === 0) {
+            const empty = document.createElement('p');
+            empty.textContent = 'Наразі немає товарів для добірки. Перегляньте наші каталоги.';
+            grid.appendChild(empty);
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', renderHomePicks, { once: true });
+    } else {
+        renderHomePicks();
+    }
+})();
+</script>
+
+<script>
+// Показуємо сезонний розділ лише тоді, коли є хоча б один товар,
+// який одночасно позначений як наявний і дозволений до продажу.
+(function () {
+    const updateSeasonCategory = () => {
+        const card = document.querySelector('[data-season-category="fresh-peppers"]');
+        if (!card || typeof allProducts === 'undefined') return;
+
+        const hasAvailableHarvest = Object.values(allProducts).some(product =>
+            product &&
+            product.category === 'fresh-peppers' &&
+            product.inStock === true &&
+            product.allowSale === true &&
+            product.isHidden !== true
+        );
+
+        card.hidden = !hasAvailableHarvest;
+        card.classList.toggle('is-season-hidden', !hasAvailableHarvest);
+        card.classList.toggle('is-season-open', hasAvailableHarvest);
+        card.classList.toggle('seasonal-closed', !hasAvailableHarvest);
+        card.setAttribute('aria-disabled', hasAvailableHarvest ? 'false' : 'true');
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateSeasonCategory, { once: true });
+    } else {
+        updateSeasonCategory();
+    }
+})();
+</script>
+
 <script type="module" src="analytics.js"></script>
 <script type="module" src="search.js"></script>
 <script src="security-enhancements.js"></script>

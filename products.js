@@ -363,7 +363,7 @@ heatScore:"1",
         specs: {
             maturity: "85–95 днів",
             height: "80–120 см",
-            species: "Capsicum baccatum (ний перець)",
+            species: "Capsicum baccatum",
             yield: ""
         },
         description: `<b>Zebrange</b> — це вибір для тих, хто шукає справжню екзотику та візуальне захоплення. Цей сорт є унікальним кросом Aji Fantasy та Christmas Bell, що поєднує найкращі якості обох.
