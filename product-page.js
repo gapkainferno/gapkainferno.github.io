@@ -126,33 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
             schema.flavor = product.isFlavor.replace(/.*? (.+)/, '$1').trim(); // Витягуємо текст смаку, наприклад, "Шоколад & Дим"
         }
 
-        // Додаємо відгуки та рейтинг (виправляємо помилку відсутності полів для Google Search Console)
-        if (product.reviews && product.reviews.length > 0) {
-            schema.review = product.reviews.map(r => ({
-                "@type": "Review",
-                "author": { "@type": "Person", "name": r.author },
-                "reviewBody": r.text
-            }));
-            schema.aggregateRating = {
-                "@type": "AggregateRating",
-                "ratingValue": "5",
-                "reviewCount": product.reviews.length
-            };
-        } else {
-            // Якщо відгуків у базі немає, додаємо значення за замовчуванням, щоб прибрати попередження Google
-            schema.aggregateRating = {
-                "@type": "AggregateRating",
-                "ratingValue": "5",
-                "reviewCount": "5"
-            };
-            schema.review = [
-                {
-                    "@type": "Review",
-                    "author": { "@type": "Person", "name": "Клієнт Homestead" },
-                    "reviewBody": "Якісний товар, швидка доставка та відмінна схожість насіння. Рекомендую!"
-                }
-            ];
-        }
+        // Не додаємо рейтинг або відгуки до SEO-розмітки без підтверджених оцінок покупців.
 
         // Створюємо елемент скрипта
         const script = document.createElement('script');
