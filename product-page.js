@@ -171,9 +171,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const ogImage = document.getElementById('og-image');
         if (ogImage && product.images && product.images[0]) {
-            // Додаємо базову адресу до назви картинки
             const baseUrl = "https://gapkainferno.github.io/";
             ogImage.content = baseUrl + product.images[0];
+        }
+        const twitterImage = document.getElementById('twitter-image');
+        if (twitterImage && product.images && product.images[0]) {
+            twitterImage.content = "https://gapkainferno.github.io/" + product.images[0];
         }
         
         // ===== 11. ПЕРЕВІРКА НАЯВНОСТІ (Out of Stock логіка) =====
