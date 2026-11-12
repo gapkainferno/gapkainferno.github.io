@@ -72,12 +72,6 @@
   ═══════════════════════════════════════════════════════════════ -->
   
   <!-- Core Heat Sauce -->
-  <url>
-    <loc>https://gapkainferno.github.io/product.html?id=sauceCoreHeat</loc>
-    <lastmod>2026-11-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
   
   <!-- Mild Forest Sauce -->
   <url>
@@ -217,41 +211,6 @@
        ТОВАРИ (ІНШЕ НАСІННЯ / ТОМАТИ)
   ═══════════════════════════════════════════════════════════════ -->
 
-  <url>
-    <loc>https://gapkainferno.github.io/product.html?id=brandywine_pink</loc>
-    <lastmod>2026-11-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://gapkainferno.github.io/product.html?id=stupice_early</loc>
-    <lastmod>2026-11-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://gapkainferno.github.io/product.html?id=zagadka</loc>
-    <lastmod>2026-11-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://gapkainferno.github.io/product.html?id=pinkgiant</loc>
-    <lastmod>2026-11-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://gapkainferno.github.io/product.html?id=ghi_medvezha_lapa</loc>
-    <lastmod>2026-11-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://gapkainferno.github.io/product.html?id=mongol_dwarf</loc>
-    <lastmod>2026-11-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://gapkainferno.github.io/product.html?id=sgt_pepper_tomato</loc>
-    <lastmod>2026-11-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority>
-  </url>
-
   <!-- ═══════════════════════════════════════════════════════════════
        ТОВАРИ (ВРОЖАЙ ПЕКЛА)
   ═══════════════════════════════════════════════════════════════ -->
@@ -315,5 +274,59 @@
     <lastmod>2026-11-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://gapkainferno.github.io/product.html?id=7pot-chocolate</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gapkainferno.github.io/product.html?id=sugarrushpeach</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gapkainferno.github.io/product.html?id=fataliiOrange</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gapkainferno.github.io/product.html?id=fataliiWhite</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gapkainferno.github.io/product.html?id=jalapeno-slim-jim</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gapkainferno.github.io/product.html?id=chili</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gapkainferno.github.io/product.html?id=cayenne</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gapkainferno.github.io/product.html?id=ghost-peach</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gapkainferno.github.io/product.html?id=nebesna-pyramida</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
