@@ -126,33 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
             schema.flavor = product.isFlavor.replace(/.*? (.+)/, '$1').trim(); // Витягуємо текст смаку, наприклад, "Шоколад & Дим"
         }
 
-        // Додаємо відгуки та рейтинг (виправляємо помилку відсутності полів для Google Search Console)
-        if (product.reviews && product.reviews.length > 0) {
-            schema.review = product.reviews.map(r => ({
-                "@type": "Review",
-                "author": { "@type": "Person", "name": r.author },
-                "reviewBody": r.text
-            }));
-            schema.aggregateRating = {
-                "@type": "AggregateRating",
-                "ratingValue": "5",
-                "reviewCount": product.reviews.length
-            };
-        } else {
-            // Якщо відгуків у базі немає, додаємо значення за замовчуванням, щоб прибрати попередження Google
-            schema.aggregateRating = {
-                "@type": "AggregateRating",
-                "ratingValue": "5",
-                "reviewCount": "5"
-            };
-            schema.review = [
-                {
-                    "@type": "Review",
-                    "author": { "@type": "Person", "name": "Клієнт Homestead" },
-                    "reviewBody": "Якісний товар, швидка доставка та відмінна схожість насіння. Рекомендую!"
-                }
-            ];
-        }
+        // Не додаємо рейтинг або відгуки до SEO-розмітки без підтверджених оцінок покупців.
 
         // Створюємо елемент скрипта
         const script = document.createElement('script');
@@ -186,13 +160,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const ogTitle = document.getElementById('og-title');
-        if (ogTitle) ogTitle.content = `${productDisplayName} — ${catName} — Gapka Homestead Inferno`;
+        const dynamicTitle = `${productDisplayName} — ${catName} — Gapka Homestead Inferno`;
+        if (ogTitle) ogTitle.content = dynamicTitle;
+        const ogDescription = document.getElementById('og-description');
+        if (ogDescription && metaDesc) ogDescription.content = metaDesc.content;
+        const twitterTitle = document.getElementById('twitter-title');
+        if (twitterTitle) twitterTitle.content = dynamicTitle;
+        const twitterDescription = document.getElementById('twitter-description');
+        if (twitterDescription && metaDesc) twitterDescription.content = metaDesc.content;
+        const canonicalLink = document.getElementById('canonical-url');
+        if (canonicalLink) canonicalLink.href = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(productId)}`;
         
         const ogImage = document.getElementById('og-image');
         if (ogImage && product.images && product.images[0]) {
-            // Додаємо базову адресу до назви картинки
             const baseUrl = "https://gapkainferno.github.io/";
             ogImage.content = baseUrl + product.images[0];
+        }
+        const twitterImage = document.getElementById('twitter-image');
+        if (twitterImage && product.images && product.images[0]) {
+            twitterImage.content = "https://gapkainferno.github.io/" + product.images[0];
         }
         
         // ===== 11. ПЕРЕВІРКА НАЯВНОСТІ (Out of Stock логіка) =====
