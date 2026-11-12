@@ -160,7 +160,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const ogTitle = document.getElementById('og-title');
-        if (ogTitle) ogTitle.content = `${productDisplayName} — ${catName} — Gapka Homestead Inferno`;
+        const dynamicTitle = `${productDisplayName} — ${catName} — Gapka Homestead Inferno`;
+        if (ogTitle) ogTitle.content = dynamicTitle;
+        const twitterTitle = document.getElementById('twitter-title');
+        if (twitterTitle) twitterTitle.content = dynamicTitle;
+        const twitterDescription = document.getElementById('twitter-description');
+        if (twitterDescription && metaDesc) twitterDescription.content = metaDesc.content;
+        const canonicalLink = document.getElementById('canonical-url');
+        if (canonicalLink) canonicalLink.href = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(productId)}`;
         
         const ogImage = document.getElementById('og-image');
         if (ogImage && product.images && product.images[0]) {
