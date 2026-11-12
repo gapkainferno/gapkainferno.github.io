@@ -73,6 +73,13 @@
   
   <!-- Core Heat Sauce -->
   
+  <url>
+    <loc>https://gapkainferno.github.io/product.html?id=sauceCoreHeat</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Mild Forest Sauce -->
   <url>
     <loc>https://gapkainferno.github.io/product.html?id=sauceMildForest</loc>
