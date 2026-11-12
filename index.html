@@ -455,14 +455,43 @@
             product.images[0].trim() !== ''
         );
 
-        // Перемішуємо весь доступний асортимент алгоритмом Fisher–Yates.
-        for (let i = available.length - 1; i > 0; i--) {
+        // Перемішуємо товари всередині кожної категорії.
+        const byCategory = new Map();
+        available.forEach(item => {
+            const category = item[1].category || 'other';
+            if (!byCategory.has(category)) byCategory.set(category, []);
+            byCategory.get(category).push(item);
+        });
+
+        byCategory.forEach(items => {
+            for (let i = items.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [items[i], items[j]] = [items[j], items[i]];
+            }
+        });
+
+        // Формуємо добірку почергово з різних категорій, доки є доступні товари.
+        const categories = Array.from(byCategory.keys());
+        for (let i = categories.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [available[i], available[j]] = [available[j], available[i]];
+            [categories[i], categories[j]] = [categories[j], categories[i]];
+        }
+
+        const picks = [];
+        while (picks.length < 4) {
+            let added = false;
+            categories.forEach(category => {
+                const item = byCategory.get(category).shift();
+                if (item && picks.length < 4) {
+                    picks.push(item);
+                    added = true;
+                }
+            });
+            if (!added) break;
         }
 
         grid.replaceChildren();
-        available.slice(0, 4).forEach(([id, product]) => {
+        picks.forEach(([id, product]) => {
             const card = document.createElement('a');
             card.className = 'home-pick-card';
             card.href = 'product.html?id=' + encodeURIComponent(id);
