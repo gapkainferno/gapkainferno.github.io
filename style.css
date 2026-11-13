@@ -7216,3 +7216,62 @@ body.homepage .cards-section > a.card-link:hover > .card-arrow {
     background: rgba(255,255,255,0.075); border-color: var(--border-color);
     border-left-color: var(--primary-color); color: var(--text-color);
 }
+
+
+/* Catalog pagination: keep product lists to three rows per page */
+#catalog-container .product-card.is-page-hidden {
+    display: none !important;
+}
+
+.catalog-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 auto 34px;
+    width: 100%;
+}
+
+.catalog-page-numbers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.catalog-pagination button {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--border-color, rgba(255,255,255,.2));
+    border-radius: 8px;
+    background: rgba(255,255,255,.04);
+    color: var(--text-color, #fff);
+    font: inherit;
+    cursor: pointer;
+    transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.catalog-pagination button:hover:not(:disabled),
+.catalog-pagination button.is-active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #160b06;
+}
+
+.catalog-pagination button:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+.catalog-pagination button:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+    .catalog-pagination { gap: 6px; margin-bottom: 26px; }
+    .catalog-page-numbers { gap: 4px; }
+    .catalog-pagination button { min-width: 36px; height: 38px; padding: 0 9px; }
+}
