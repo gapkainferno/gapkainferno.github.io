@@ -633,16 +633,6 @@ function renderSeedVersionSelector(product, productId) {
     
     html += `
             </div>
-            <div class="version-info">
-                <div class="info-icon">ℹ️</div>
-                <div class="info-text">
-                    <strong>Вільне запилення (Open Pollinated):</strong> Вільне запилення. Насіння зібране з рослин, 
-                    які вільно запилювалися (вітром, комахами). Може бути варіація у потомстві.
-                    <br><br>
-                    <strong>Ізольоване (Isolated):</strong> Контрольоване запилення. Рослини ізольовані під час цвітіння, 
-                    що гарантує чистоту сорту.
-                </div>
-            </div>
         </div>
     `;
     
@@ -651,6 +641,22 @@ function renderSeedVersionSelector(product, productId) {
     // Вставляємо після ціни (стандартне місце)
     priceEl.parentNode.insertBefore(selectorContainer, priceEl.nextSibling);
     
+    // Пояснення про типи запилення — під метаданими, а не всередині селектора.
+    const meta = document.querySelector('.product-meta');
+    if (meta && !document.getElementById('seed-version-info')) {
+        const info = document.createElement('details');
+        info.id = 'seed-version-info';
+        info.className = 'seed-version-info';
+        info.innerHTML = `
+            <summary>Чим відрізняються типи насіння?</summary>
+            <div class="seed-version-info-content">
+                <p><strong>Вільне запилення (Open Pollinated):</strong> Насіння з рослин, які вільно запилювалися вітром або комахами. У потомстві можлива природна варіація ознак.</p>
+                <p><strong>Ізольоване (Isolated):</strong> Квіти були ізольовані під час цвітіння для контрольованого запилення та збереження сортових ознак.</p>
+            </div>
+        `;
+        meta.insertAdjacentElement('afterend', info);
+    }
+
     // Встановлюємо початкову версію
     const firstVersion = Object.keys(versions)[0];
     selectedSeedVersion = firstVersion;
@@ -741,39 +747,39 @@ function updateAddToCartButton(priceForCart, versionKey) {
 const versionSelectorStyles = `
 <style>
 .seed-version-selector {
-    margin: 30px 0;
+    margin: 12px 0 8px;
 }
 
 .version-selector-wrapper {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.025);
     border: 1px solid var(--border-warm);
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 10px;
+    padding: 12px 14px;
 }
 
 .version-selector-title {
     font-family: var(--font-heading);
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     color: var(--text-color);
-    margin-bottom: 15px;
-    text-align: center;
+    margin: 0 0 10px;
+    text-align: left;
 }
 
 .version-buttons {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 0;
 }
 
 .version-btn {
     background: rgba(255, 255, 255, 0.05);
     border: 2px solid var(--border-warm);
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-align: center;
+    text-align: left;
     font-family: var(--font-body);
 }
 
@@ -817,10 +823,10 @@ const versionSelectorStyles = `
 }
 
 .version-price {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--primary-color);
-    margin: 10px 0;
+    margin: 6px 0;
 }
 
 .version-btn.active .version-price {
@@ -828,44 +834,45 @@ const versionSelectorStyles = `
 }
 
 .version-description {
-    font-size: 0.8rem;
+    font-size: 0.76rem;
     opacity: 0.8;
-    line-height: 1.3;
+    line-height: 1.35;
 }
 
 .version-btn.active .version-description {
     opacity: 1;
 }
 
-.version-info {
-    background: rgba(129, 201, 149, 0.1);
-    border: 1px solid var(--accent-green);
-    border-radius: 8px;
-    padding: 15px;
-    display: flex;
-    gap: 12px;
-    font-size: 0.85rem;
+.seed-version-info {
+    margin: 10px 0 0;
+    color: var(--text-muted);
+    font-size: 0.82rem;
     line-height: 1.5;
 }
-
-.info-icon {
-    font-size: 1.5rem;
-    flex-shrink: 0;
-}
-
-.info-text strong {
+.seed-version-info summary {
+    width: fit-content;
     color: var(--accent-green);
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: rgba(129, 201, 149, 0.45);
+    text-underline-offset: 3px;
 }
+.seed-version-info-content {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-left: 2px solid var(--accent-green);
+    background: rgba(129, 201, 149, 0.06);
+    border-radius: 0 6px 6px 0;
+}
+.seed-version-info-content p { margin: 0 0 7px; }
+.seed-version-info-content p:last-child { margin-bottom: 0; }
+.seed-version-info-content strong { color: var(--accent-green); }
 
 @media (max-width: 600px) {
     .version-buttons {
         grid-template-columns: 1fr;
     }
-    
-    .version-info {
-        flex-direction: column;
-        text-align: center;
-    }
+
 }
 </style>
 `;
