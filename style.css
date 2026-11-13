@@ -2000,6 +2000,13 @@ body.product-page-layout main.product-page > #p-name {
     line-height: 1.2;
 }
 
+/* Показник гостроти — по центру одразу під назвою товару */
+body.product-page-layout main.product-page > #product-heat-wrap {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin: -2px 0 0;
+}
+
 /* Компактніша галерея: менше порожнього простору над і під фото */
 body.product-page-layout .main-img-wrap {
     aspect-ratio: 4 / 3;
