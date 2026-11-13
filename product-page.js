@@ -620,7 +620,6 @@ function renderSeedVersionSelector(product, productId) {
                 onclick="selectSeedVersion('${versionKey}', '${productId}')">
                 
                 <div class="version-btn-header">
-                    <span class="version-label">${version.label}</span>
                     ${stockLabel}
                 </div>
                 
