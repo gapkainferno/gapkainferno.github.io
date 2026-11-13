@@ -366,8 +366,10 @@ function renderProductCard(id, product) {
 
                 ${hasHeatInfo ? `
                     <div class="scoville-overlay heat-${safeText(product.heatScore || 'unknown')}">
-                        ${SCOVILLE_HELP.link ? `<span class="scoville-help-link" role="link" tabindex="0" aria-label="${safeText(SCOVILLE_HELP.title)}" onclick="event.stopPropagation(); event.preventDefault(); window.location.href='${SCOVILLE_HELP.link}'; return false;" onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.click(); }">${safeText(SCOVILLE_HELP.title)} <span aria-hidden="true">↗</span></span>` : ''}
-                        <div class="shu-value">${safeText(currentHeat.shu)}</div>
+                        <div class="shu-value-row">
+                            <div class="shu-value">${safeText(currentHeat.shu)}</div>
+                            ${SCOVILLE_HELP.link ? `<span class="scoville-help-icon" role="link" tabindex="0" aria-label="${safeText(SCOVILLE_HELP.title)}" title="${safeText(SCOVILLE_HELP.title)}" onclick="event.stopPropagation(); event.preventDefault(); window.location.href='${SCOVILLE_HELP.link}'; return false;" onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.click(); }">?</span>` : ''}
+                        </div>
                         <div class="scoville-bar-container">
                             <div class="scoville-bar-fill" style="width: ${safeText(currentHeat.width)}"></div>
                         </div>
