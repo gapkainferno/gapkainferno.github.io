@@ -118,15 +118,8 @@ const HEAT_LEVELS = {
     "4": { shu: "1M-2.2M+", width: "100%" }
 };
 
-const SCOVILLE_HELP = isEnglishCatalog ? {
-    title: 'What do these numbers mean?',
-    text: 'SHU means Scoville Heat Units. The higher the number, the more capsaicin and the stronger the heat.',
-    linkLabel: 'Scoville guide',
-    link: ''
-} : {
-    title: 'Що означають ці цифри?',
-    text: 'SHU — це одиниці гостроти за шкалою Сковілла. Чим більше число, тим більше капсаїцину й сильніше пече.',
-    linkLabel: 'Читати гід по Сковіллу',
+const SCOVILLE_HELP = {
+    title: isEnglishCatalog ? 'What do these numbers mean?' : 'Що означають ці цифри?',
     link: 'blog-article.html?id=scoville-scale-explained'
 };
 
@@ -373,14 +366,7 @@ function renderProductCard(id, product) {
 
                 ${hasHeatInfo ? `
                     <div class="scoville-overlay heat-${safeText(product.heatScore || 'unknown')}">
-                        <button class="scoville-help" type="button" aria-label="${safeText(SCOVILLE_HELP.title)}" aria-describedby="scoville-help-${safeText(id)}" onclick="event.stopPropagation(); event.preventDefault(); this.classList.toggle('is-open'); return false;">
-                            <span aria-hidden="true">?</span>
-                            <span class="scoville-help-tooltip" id="scoville-help-${safeText(id)}" role="tooltip">
-                                <strong>${safeText(SCOVILLE_HELP.title)}</strong>
-                                <span>${safeText(SCOVILLE_HELP.text)}</span>
-                                ${SCOVILLE_HELP.link ? `<span class="scoville-help-link" role="link" tabindex="0" onclick="event.stopPropagation(); event.preventDefault(); window.location.href='${SCOVILLE_HELP.link}'; return false;" onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.click(); }">${safeText(SCOVILLE_HELP.linkLabel)} <span aria-hidden="true">↗</span></span>` : ''}
-                            </span>
-                        </button>
+                        ${SCOVILLE_HELP.link ? `<span class="scoville-help-link" role="link" tabindex="0" aria-label="${safeText(SCOVILLE_HELP.title)}" onclick="event.stopPropagation(); event.preventDefault(); window.location.href='${SCOVILLE_HELP.link}'; return false;" onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.click(); }">${safeText(SCOVILLE_HELP.title)} <span aria-hidden="true">↗</span></span>` : ''}
                         <div class="shu-value">${safeText(currentHeat.shu)}</div>
                         <div class="scoville-bar-container">
                             <div class="scoville-bar-fill" style="width: ${safeText(currentHeat.width)}"></div>
