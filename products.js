@@ -2545,19 +2545,19 @@ Object.values(allProducts).forEach(product => {
                     openPollinated: {
                         label: "Open Pollinated",
                         price: p.price,
-                        description: "Насіння вільного запилення.",
+                        description: "Не ізольоване насіння",
                         inStock: p.inStock !== false
                     },
                     isolated: {
                         label: "Ізольоване",
                         price: isolatedPrice,
-                        description: "Контрольоване запилення.",
+                        description: "Ізольоване насіння",
                         inStock: p.isolatedAvailable === true && p.inStock !== false
                     }
                 };
             }
         });
-        console.log("🔥 Gapka Homestead Inferno: Протоколи ціноутворення синхронізовано.");
+        console.log("🔥 Gapka Homestead Inferno.");
 
         // ───────────────────────────────────────────────────────────────
         // АВТОМАТИЧНА СИНХРОНІЗАЦІЯ SEO-РОЗМІТКИ (JSON-LD)
