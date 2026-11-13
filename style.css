@@ -1602,34 +1602,28 @@ body.has-sale-banner {
 }
 
 /* Постійна кнопка-підказка біля показника SHU */
-.scoville-help-icon {
-    display: inline-flex;
-    flex: 0 0 17px;
-    width: 17px;
-    height: 17px;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(255, 209, 158, 0.85);
-    border-radius: 50%;
+.scoville-help-text {
+    display: inline-block;
+    margin-left: 6px;
     color: #ffd19e;
-    font: 700 11px/1 Arial, sans-serif;
-    margin-left: 5px;
-    text-decoration: none;
-    vertical-align: middle;
+    font: 600 10px/1.3 var(--font-body, sans-serif);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 209, 158, 0.55);
+    text-underline-offset: 2px;
+    white-space: nowrap;
     cursor: pointer;
-    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
 
-.scoville-help-icon:hover,
-.scoville-help-icon:focus-visible {
+.scoville-help-text:hover,
+.scoville-help-text:focus-visible {
     color: #fff;
-    border-color: #fff;
-    background: rgba(255, 255, 255, 0.12);
+    text-decoration-color: #fff;
     outline: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .scoville-help-icon {
+    .scoville-help-text {
         transition: none;
     }
 }
