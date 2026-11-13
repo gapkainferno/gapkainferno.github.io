@@ -322,10 +322,6 @@ function getMiniSpecsHTML(product) {
 
     // Решту характеристик залишаємо на сторінці товару; картка зберігає лише
     // короткі додаткові відомості, які не дублюють висоту чи дозрівання.
-    if (s.yield && s.yield.trim() !== '' && s.yield.trim() !== '-') {
-        specs.push({ label: 'Врожайність', value: s.yield });
-    }
-
     if ((product.category === 'tomatoes' || product.category === 'vegetable-seeds') && s.color && s.color.trim() !== '' && s.color.trim() !== '-') {
         specs.push({ label: 'Колір', value: s.color });
     }
