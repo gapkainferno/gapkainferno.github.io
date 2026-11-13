@@ -1613,6 +1613,9 @@ body.has-sale-banner {
     border-radius: 50%;
     color: #ffd19e;
     font: 700 11px/1 Arial, sans-serif;
+    margin-left: 5px;
+    text-decoration: none;
+    vertical-align: middle;
     cursor: pointer;
     transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
