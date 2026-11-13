@@ -77,8 +77,8 @@
             </div>
         </header>
 
-        <nav class="breadcrumb-nav" aria-label="Breadcrumb" style="margin: 10px 0; font-size: 0.85rem; opacity: 0.8;">
-            <ul style="list-style: none; padding: 0; display: flex; gap: 8px;">
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb" style="margin: 4px 0 6px; font-size: 0.85rem; opacity: 0.8;">
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 8px; flex-wrap: wrap;">
                 <li><a href="index.html">Головна</a></li>
                 <li>/</li>
                 <li><a href="#" id="breadcrumb-category-link">Категорія</a></li>
@@ -125,6 +125,18 @@
             </aside>
 
             <main class="product-page">
+                <h1 id="p-name">Завантаження...</h1>
+                <div class="product-heat-wrap" id="product-heat-wrap">
+                        <span class="heat-tag" id="product-heat"></span>
+                        <button class="product-heat-help" type="button" aria-label="Що означають цифри SHU?" aria-describedby="product-heat-help-text">
+                            <span aria-hidden="true">?</span>
+                            <span class="product-heat-help-tooltip" id="product-heat-help-text" role="tooltip">
+                                <strong>Що означають ці цифри?</strong>
+                                <span>SHU — одиниці гостроти за шкалою Сковілла. Чим більше число, тим більша гострота.</span>
+                                <a href="blog-article.html?id=scoville-scale-explained">Як розуміти шкалу Сковілла?<span aria-hidden="true">↗</span></a>
+                            </span>
+                        </button>
+                    </div>
                 <div class="gallery-col">
                     <div class="main-img-wrap">
                         <button class="nav-arrow left" onclick="changeImage(-1)">&#10094;</button>
@@ -157,19 +169,7 @@
                 </div>
 
                <div class="info-col">
-    <div class="product-heat-wrap" id="product-heat-wrap">
-        <span class="heat-tag" id="product-heat"></span>
-        <button class="product-heat-help" type="button" aria-label="Що означають цифри SHU?" aria-describedby="product-heat-help-text">
-            <span aria-hidden="true">?</span>
-            <span class="product-heat-help-tooltip" id="product-heat-help-text" role="tooltip">
-                <strong>Що означають ці цифри?</strong>
-                <span>SHU — одиниці гостроти за шкалою Сковілла. Чим більше число, тим більша гострота.</span>
-                <a href="blog-article.html?id=scoville-scale-explained">Як розуміти шкалу Сковілла?<span aria-hidden="true">↗</span></a>
-            </span>
-        </button>
-    </div>
-    <h1 id="p-name">Завантаження...</h1>
-    <div id="p-desc"></div>
+        <div id="p-desc"></div>
     <p id="product-tips" style="display: none;"><i></i></p>
     <div id="extreme-warning-zone" style="display: none;"></div>
     <div class="price-big" id="p-price" data-val="0" data-allow-sale="true">

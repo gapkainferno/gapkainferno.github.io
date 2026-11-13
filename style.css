@@ -1009,10 +1009,9 @@ body.has-sale-banner {
     padding: 0 0 60px;
 }
 
-/* Ущільнюємо верхній відступ лише основної колонки каталогу.
-   Сайдбар категорій та хедер залишаються без змін. */
+/* Каталог починається нижче хедера: заголовок категорії не заходить під шапку. */
 .main-layout > main.products-grid {
-    margin-top: -66px;
+    margin-top: 0;
 }
 
 
@@ -1575,33 +1574,6 @@ body.has-sale-banner {
     opacity: 1;
 }
 
-.scoville-help {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 50%;
-    background: rgba(12, 12, 12, 0.58);
-    color: #fff;
-    font: 700 15px/1 var(--font-heading, sans-serif);
-    cursor: help;
-    z-index: 4;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-.scoville-help:hover,
-.scoville-help:focus-visible,
-.scoville-help.is-open {
-    background: var(--primary-color);
-    border-color: rgba(255,255,255,0.75);
-    outline: none;
-    transform: scale(1.08);
-}
-
-.scoville-help::after,
 .product-heat-help::after {
     content: '';
     position: absolute;
@@ -1611,29 +1583,6 @@ body.has-sale-banner {
     height: 12px;
 }
 
-.scoville-help-tooltip {
-    position: absolute;
-    top: 40px;
-    right: 0;
-    width: min(250px, calc(100vw - 42px));
-    padding: 14px 15px;
-    display: grid;
-    gap: 7px;
-    border: 1px solid rgba(255, 166, 82, 0.48);
-    border-radius: 10px;
-    background: rgba(20, 14, 11, 0.97);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.42), 0 0 20px rgba(255, 120, 35, 0.12);
-    color: #fff;
-    font: 400 12px/1.45 var(--font-body, sans-serif);
-    text-align: left;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(-5px);
-    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
-}
-
-.scoville-help-tooltip::before,
 .product-heat-help-tooltip::before {
     content: '';
     position: absolute;
@@ -1643,30 +1592,37 @@ body.has-sale-banner {
     height: 12px;
 }
 
-.scoville-help-tooltip strong {
-    color: #ffb15c;
-    font-size: 13px;
+.shu-value-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-bottom: 8px;
 }
 
-.scoville-help-link {
+/* Постійна кнопка-підказка біля показника SHU */
+.scoville-help-text {
+    display: inline-block;
+    margin-left: 6px;
     color: #ffd19e;
+    font: 600 10px/1.3 var(--font-body, sans-serif);
     text-decoration: underline;
+    text-decoration-color: rgba(255, 209, 158, 0.55);
     text-underline-offset: 2px;
+    white-space: nowrap;
     cursor: pointer;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
 
-.scoville-help:hover .scoville-help-tooltip,
-.scoville-help:focus-visible .scoville-help-tooltip,
-.scoville-help.is-open .scoville-help-tooltip {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateY(0);
+.scoville-help-text:hover,
+.scoville-help-text:focus-visible {
+    color: #fff;
+    text-decoration-color: #fff;
+    outline: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .scoville-help,
-    .scoville-help-tooltip {
+    .scoville-help-text {
         transition: none;
     }
 }
@@ -1677,7 +1633,7 @@ body.has-sale-banner {
     font-family: 'Monaco', monospace;
     font-weight: bold;
     font-size: 1.2rem;
-    margin-bottom: 8px;
+    margin: 0;
     text-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
 }
 
@@ -2027,9 +1983,39 @@ body.has-sale-banner {
 main.product-page {
     display: grid;
     grid-template-columns: 1.1fr 1.2fr;
-    gap: 40px;
+    gap: 22px 40px;
     align-items: start;
     min-width: 0;
+}
+
+/* Піднімаємо вміст сторінки товару ближче до хедера */
+body.product-page-layout main.product-page {
+    margin-top: -36px;
+}
+
+/* Назва товару — спільний заголовок над фото та описом */
+body.product-page-layout main.product-page > #p-name {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin: 0;
+    padding: 2px 0 4px;
+    text-align: center;
+    font-size: clamp(1.5rem, 2.4vw, 2.15rem);
+    line-height: 1.2;
+}
+
+/* Показник гостроти — по центру одразу під назвою товару */
+body.product-page-layout main.product-page > #product-heat-wrap {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin: -2px 0 0;
+}
+
+/* Компактніша галерея: менше порожнього простору над і під фото */
+body.product-page-layout .main-img-wrap {
+    aspect-ratio: 4 / 3;
+    margin-top: 0;
+    margin-bottom: 8px;
 }
 
 .related-products-section {
@@ -2290,7 +2276,7 @@ main.product-page {
 .info-col {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     min-width: 0;
 }
 
@@ -2463,7 +2449,7 @@ main.product-page {
 
 #p-desc {
     font-size: var(--fs-base);
-    line-height: 1.85;
+    line-height: 1.68;
     color: rgba(234,221,207,0.82);
     
     /* 1. ОБМЕЖЕННЯ ШИРИНИ */
@@ -2479,11 +2465,11 @@ main.product-page {
     -webkit-hyphens: auto;     /* для підтримки Safari */
     
     /* 4. ВІДСТУПИ */
-    margin-bottom: 25px;       /* Збільшимо відступ знизу для "повітря" */
-    margin-top: 25px;
+    margin-bottom: 12px;
+    margin-top: 10px;
     font-family: var(--font-body);
     font-weight: 400;
-    font-size: 1.05rem;
+    font-size: 1rem;
     text-align: justify;
 }
 .product-specs {
@@ -2626,28 +2612,24 @@ main.product-page {
 .back-btn {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 9px;
-    padding: 11px 22px;
-    border: 2px solid var(--primary-color);
-    border-radius: var(--radius-sm);
-    background: linear-gradient(to bottom, var(--primary-color), var(--primary-hover));
-    color: #fff;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 4px 0;
+    border: 0;
+    background: transparent;
+    color: var(--text-muted);
     font-family: inherit;
-    font-size: var(--fs-sm);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 0.82rem;
+    text-transform: none;
+    letter-spacing: 0;
     cursor: pointer;
-    margin: 20px 0;
-    /* точна ширина = sidebar, кнопка вирівняна по його лівому краю */
-    width: var(--sidebar-width);
-    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-    box-shadow: 0 4px 12px var(--accent-shadow);
+    margin: 0 0 10px;
+    width: auto;
+    box-shadow: none;
+    transition: color 0.2s ease;
 }
-.back-btn:hover { 
-    transform: translateX(-3px);
-    box-shadow: 0 8px 20px var(--accent-shadow);
-    background: linear-gradient(to bottom, var(--primary-hover), var(--primary-color));
+.back-btn:hover {
+    color: var(--primary-orange);
 }
 .back-btn:focus-visible {
     outline: 2px solid var(--primary-color);
@@ -4074,8 +4056,8 @@ footer {
 
     /* back-btn на мобілці — на всю ширину */
     .back-btn {
-        width: 100%;
-        margin-bottom: 20px;
+        width: auto;
+        margin: 0 0 8px;
     }
 
     /* Каталог */
@@ -7296,4 +7278,64 @@ body.homepage .cards-section > a.card-link:hover > .card-arrow {
     .catalog-pagination { gap: 6px; margin-bottom: 26px; }
     .catalog-page-numbers { gap: 4px; }
     .catalog-pagination button { min-width: 36px; height: 38px; padding: 0 9px; }
+}
+
+/* Shared site search: wider field and readable, unclipped result names on every page */
+@media (min-width: 761px) {
+  body.homepage .overlay > .container > header .search-container,
+  body:not(.homepage) header.brand-header .search-container {
+    width: min(460px, 40vw) !important;
+    max-width: 460px !important;
+  }
+
+  body.homepage .overlay > .container > header #search-results,
+  body:not(.homepage) header.brand-header #search-results {
+    left: 50% !important;
+    right: auto !important;
+    width: min(560px, calc(100vw - 40px)) !important;
+    transform: translateX(-50%) !important;
+  }
+
+  body.homepage .overlay > .container > header .search-result-name,
+  body:not(.homepage) header.brand-header .search-result-name {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+    line-height: 1.3 !important;
+  }
+}
+
+@media (max-width: 760px) {
+  body.homepage .overlay > .container > header .search-container,
+  body:not(.homepage) header.brand-header .search-container {
+    width: calc(100vw - 28px) !important;
+    max-width: 520px !important;
+  }
+
+  body.homepage .overlay > .container > header #search-results,
+  body:not(.homepage) header.brand-header #search-results {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    transform: none !important;
+  }
+}
+
+/* Keep search result text flexible so long names do not get squeezed by the price */
+.search-result-item {
+  min-width: 0;
+}
+
+.search-result-info {
+  min-width: 0;
+}
+
+.search-result-name {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
 }
