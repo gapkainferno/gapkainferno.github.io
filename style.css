@@ -1593,11 +1593,6 @@ body.has-sale-banner {
     height: 12px;
 }
 
-.scoville-help-tooltip strong {
-    color: #ffb15c;
-    font-size: 13px;
-}
-
 .scoville-help-link {
     display: inline-block;
     max-width: 100%;
