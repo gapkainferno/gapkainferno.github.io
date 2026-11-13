@@ -43,6 +43,14 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- Увесь каталог насіння -->
+  <url>
+    <loc>https://gapkainferno.github.io/all-seeds.html</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
   
   <!-- Насіння томатів -->
   <url>
