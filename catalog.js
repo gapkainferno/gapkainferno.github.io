@@ -528,7 +528,7 @@ function initCatalogPagination(container, mainGrid) {
 
     const getColumns = () => {
         const template = getComputedStyle(container).gridTemplateColumns;
-        const columns = template.split(/\\s+/).filter(Boolean).length;
+        const columns = template.trim().split(/\s+/).filter(Boolean).length;
         return Math.max(1, columns || 1);
     };
 
