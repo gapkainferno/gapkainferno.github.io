@@ -234,6 +234,22 @@ function renderCategoryFilters(mainGrid, category) {
                 <span>Лише в наявності</span>
             </label>
         </div>
+    ` : category === CATEGORY_PAGES['all-seeds'] ? `
+        <div class="catalog-extra-filters">
+            <label class="catalog-filter-field" for="seed-category-filter">
+                <span>Показати</span>
+                <select id="seed-category-filter">
+                    <option value="all">Усі культури</option>
+                    <option value="seeds">Гострі перці</option>
+                    <option value="tomatoes">Томати</option>
+                    <option value="vegetable-seeds">Інше насіння</option>
+                </select>
+            </label>
+            <label class="catalog-stock-filter" for="stock-only-filter">
+                <input type="checkbox" id="stock-only-filter">
+                <span>Лише в наявності</span>
+            </label>
+        </div>
     ` : '';
 
     filterSection.innerHTML = `
