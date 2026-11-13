@@ -5,6 +5,12 @@ const safeText = (value) => sanitize.text(String(value ?? ''));
 const isEnglishCatalog = false;
 
 const CATEGORY_PAGES = {
+    'all-seeds': {
+        url: 'all-seeds.html', navLabel: '🌱 Усе насіння',
+        title: 'Каталог насіння',
+        description: 'Усе насіння Gapka Homestead Inferno в одному місці — обирайте культуру та знаходьте свої сорти.',
+        filterTitle: 'Культура:', filters: []
+    },
     seeds: {
         url: 'seedsandseedlings.html',
         navLabel: isEnglishCatalog ? '🌶️ Superhot peppers' : '🌶️ Супергострі перці',
@@ -82,6 +88,7 @@ const CATEGORY_PAGES = {
 const CATEGORY_NAV = isEnglishCatalog ? [
     {
         key: 'seeds-group',
+        url: 'all-seeds.html',
         label: '🌱 Seeds',
         children: [
             { key: 'seeds', url: 'seedsandseedlings.html', label: '🌶️ Superhot peppers' },
@@ -89,11 +96,11 @@ const CATEGORY_NAV = isEnglishCatalog ? [
             { key: 'vegetable-seeds', url: 'vegetable-seeds.html', label: '🫑 Vegetable pepper seeds' }
         ]
     },
-    { key: 'sauces', url: 'sauces.html', label: '🔥 Craft sauces' },
-    { key: 'fresh-peppers', url: 'fresh-peppers.html', label: '🌶️ Inferno harvest' }
+    { key: 'sauces', url: 'sauces.html', label: '🔥 Craft sauces' }
 ] : [
     {
         key: 'seeds-group',
+        url: 'all-seeds.html',
         label: '🌱 Насіння',
         children: [
             { key: 'seeds', url: 'seedsandseedlings.html', label: '🌶️ Супергострі перці' },
@@ -101,8 +108,7 @@ const CATEGORY_NAV = isEnglishCatalog ? [
             { key: 'vegetable-seeds', url: 'vegetable-seeds.html', label: '🫑 Насіння овочів' }
         ]
     },
-    { key: 'sauces', url: 'sauces.html', label: '🔥 Крафтові соуси' },
-    { key: 'fresh-peppers', url: 'fresh-peppers.html', label: '🌶️ Врожай Пекла' }
+    { key: 'sauces', url: 'sauces.html', label: '🔥 Крафтові соуси' }
 ];
 
 const HEAT_LEVELS = {
@@ -165,7 +171,7 @@ function buildCategorySidebar(activeCategory) {
                 const groupHasActive = group.children.some(child => child.key === activeCategory);
                 return `
                     <li class="sidebar-group${groupHasActive ? ' is-open' : ''}">
-                        <button type="button" class="sidebar-group-label" aria-expanded="${groupHasActive}" aria-controls="category-submenu-${safeText(group.key)}">${safeText(group.label)}</button>
+                        <a class="sidebar-group-label${activeCategory === 'all-seeds' ? ' theme-active active' : ''}" href="${group.url}">${safeText(group.label)}</a>
                         <ul class="sidebar-submenu" id="category-submenu-${safeText(group.key)}">
                             ${group.children.map(child => {
                                 const childActiveClass = child.key === activeCategory ? ' class="theme-active active"' : '';
@@ -178,14 +184,7 @@ function buildCategorySidebar(activeCategory) {
             return `<li><a href="${group.url}"${activeLeafClass}>${safeText(group.label)}</a></li>`;
         }).join('');
     });
-    // Додаємо клік для перемикання підменю
-    document.querySelectorAll('.sidebar-group-label').forEach(label => {
-        label.addEventListener('click', () => {
-            const group = label.parentElement;
-            const isOpen = group.classList.toggle('is-open');
-            label.setAttribute('aria-expanded', String(isOpen));
-        });
-    });
+    // Батьківська категорія «Насіння» веде до спільного каталогу; підкатегорії залишаються окремими посиланнями.
 }
 
 function renderCategoryIntro(mainGrid, category) {
@@ -208,7 +207,7 @@ function renderCategoryIntro(mainGrid, category) {
 
 function renderCategoryFilters(mainGrid, category) {
     let filterSection = mainGrid.querySelector('.filter-section');
-    if (!category.filters.length) {
+    if (!category.filters.length && category !== CATEGORY_PAGES['all-seeds']) {
         filterSection?.remove();
         return;
     }
@@ -435,7 +434,11 @@ function renderCatalog(container, pageCategory) {
     const productIds = Object.keys(allProducts)
         .filter(id => {
             const product = allProducts[id];
-            return !product.isHidden && (!pageCategory || product.category === pageCategory);
+            const seedCategories = ['seeds', 'tomatoes', 'vegetable-seeds'];
+            const matchesCategory = pageCategory === 'all-seeds'
+                ? seedCategories.includes(product.category)
+                : (!pageCategory || product.category === pageCategory);
+            return !product.isHidden && matchesCategory;
         })
         .sort((a, b) => Number(allProducts[a].inStock === false) - Number(allProducts[b].inStock === false));
 
@@ -538,6 +541,9 @@ function initFilters(mainGrid) {
             if (!product) return;
 
             const heatMatches = selectedHeat === 'all' || String(product.heatScore || '') === selectedHeat;
+            const seedCategorySelect = mainGrid.querySelector('#seed-category-filter');
+            const selectedSeedCategory = seedCategorySelect?.value || 'all';
+            const seedCategoryMatches = selectedSeedCategory === 'all' || product.category === selectedSeedCategory;
             const selectedSpecies = speciesSelect?.value || 'all';
             const speciesMatches = selectedSpecies === 'all' ||
                 String(product.specs?.species || '').normalize('NFKC').replace(/\s+/g, ' ').trim().toLocaleLowerCase('uk') ===
@@ -545,7 +551,7 @@ function initFilters(mainGrid) {
             const stockMatches = !stockOnly?.checked ||
                 (product.inStock === true && product.allowSale === true && product.isHidden !== true);
 
-            card.classList.toggle('is-filtered-out', !(heatMatches && speciesMatches && stockMatches));
+            card.classList.toggle('is-filtered-out', !(heatMatches && seedCategoryMatches && speciesMatches && stockMatches));
         });
     };
 
@@ -559,6 +565,7 @@ function initFilters(mainGrid) {
     });
 
     speciesSelect?.addEventListener('change', applyFilters);
+    mainGrid.querySelector('#seed-category-filter')?.addEventListener('change', applyFilters);
     stockOnly?.addEventListener('change', applyFilters);
 
     const slider = document.getElementById('scoville-slider');
@@ -587,6 +594,8 @@ function initFilters(mainGrid) {
         updateThermometerDisplay('1');
         selectedHeat = 'all';
         if (speciesSelect) speciesSelect.value = 'all';
+        const seedCategorySelect = mainGrid.querySelector('#seed-category-filter');
+        if (seedCategorySelect) seedCategorySelect.value = 'all';
         if (stockOnly) stockOnly.checked = false;
         filterButtons.forEach(button => button.classList.remove('active'));
         mainGrid.querySelector('.filter-btn[data-heat="all"]')?.classList.add('active');
