@@ -5,6 +5,12 @@ const safeText = (value) => sanitize.text(String(value ?? ''));
 const isEnglishCatalog = false;
 
 const CATEGORY_PAGES = {
+    'all-seeds': {
+        url: 'all-seeds.html', navLabel: '🌱 Усе насіння',
+        title: 'Каталог насіння',
+        description: 'Усе насіння Gapka Homestead Inferno в одному місці — обирайте культуру та знаходьте свої сорти.',
+        filterTitle: 'Культура:', filters: []
+    },
     seeds: {
         url: 'seedsandseedlings.html',
         navLabel: isEnglishCatalog ? '🌶️ Superhot peppers' : '🌶️ Супергострі перці',
@@ -82,6 +88,7 @@ const CATEGORY_PAGES = {
 const CATEGORY_NAV = isEnglishCatalog ? [
     {
         key: 'seeds-group',
+        url: 'all-seeds.html',
         label: '🌱 Seeds',
         children: [
             { key: 'seeds', url: 'seedsandseedlings.html', label: '🌶️ Superhot peppers' },
@@ -89,11 +96,11 @@ const CATEGORY_NAV = isEnglishCatalog ? [
             { key: 'vegetable-seeds', url: 'vegetable-seeds.html', label: '🫑 Vegetable pepper seeds' }
         ]
     },
-    { key: 'sauces', url: 'sauces.html', label: '🔥 Craft sauces' },
-    { key: 'fresh-peppers', url: 'fresh-peppers.html', label: '🌶️ Inferno harvest' }
+    { key: 'sauces', url: 'sauces.html', label: '🔥 Craft sauces' }
 ] : [
     {
         key: 'seeds-group',
+        url: 'all-seeds.html',
         label: '🌱 Насіння',
         children: [
             { key: 'seeds', url: 'seedsandseedlings.html', label: '🌶️ Супергострі перці' },
@@ -101,8 +108,7 @@ const CATEGORY_NAV = isEnglishCatalog ? [
             { key: 'vegetable-seeds', url: 'vegetable-seeds.html', label: '🫑 Насіння овочів' }
         ]
     },
-    { key: 'sauces', url: 'sauces.html', label: '🔥 Крафтові соуси' },
-    { key: 'fresh-peppers', url: 'fresh-peppers.html', label: '🌶️ Врожай Пекла' }
+    { key: 'sauces', url: 'sauces.html', label: '🔥 Крафтові соуси' }
 ];
 
 const HEAT_LEVELS = {
@@ -165,7 +171,7 @@ function buildCategorySidebar(activeCategory) {
                 const groupHasActive = group.children.some(child => child.key === activeCategory);
                 return `
                     <li class="sidebar-group${groupHasActive ? ' is-open' : ''}">
-                        <button type="button" class="sidebar-group-label" aria-expanded="${groupHasActive}" aria-controls="category-submenu-${safeText(group.key)}">${safeText(group.label)}</button>
+                        <a class="sidebar-group-label${activeCategory === 'all-seeds' ? ' theme-active active' : ''}" href="${group.url}">${safeText(group.label)}</a>
                         <ul class="sidebar-submenu" id="category-submenu-${safeText(group.key)}">
                             ${group.children.map(child => {
                                 const childActiveClass = child.key === activeCategory ? ' class="theme-active active"' : '';
@@ -178,14 +184,7 @@ function buildCategorySidebar(activeCategory) {
             return `<li><a href="${group.url}"${activeLeafClass}>${safeText(group.label)}</a></li>`;
         }).join('');
     });
-    // Додаємо клік для перемикання підменю
-    document.querySelectorAll('.sidebar-group-label').forEach(label => {
-        label.addEventListener('click', () => {
-            const group = label.parentElement;
-            const isOpen = group.classList.toggle('is-open');
-            label.setAttribute('aria-expanded', String(isOpen));
-        });
-    });
+    // Батьківська категорія «Насіння» веде до спільного каталогу; підкатегорії залишаються окремими посиланнями.
 }
 
 function renderCategoryIntro(mainGrid, category) {
@@ -208,7 +207,7 @@ function renderCategoryIntro(mainGrid, category) {
 
 function renderCategoryFilters(mainGrid, category) {
     let filterSection = mainGrid.querySelector('.filter-section');
-    if (!category.filters.length) {
+    if (!category.filters.length && category !== CATEGORY_PAGES['all-seeds']) {
         filterSection?.remove();
         return;
     }
@@ -227,6 +226,22 @@ function renderCategoryFilters(mainGrid, category) {
                 <span>Вид перцю</span>
                 <select id="species-filter">
                     <option value="all">Усі види</option>
+                </select>
+            </label>
+            <label class="catalog-stock-filter" for="stock-only-filter">
+                <input type="checkbox" id="stock-only-filter">
+                <span>Лише в наявності</span>
+            </label>
+        </div>
+    ` : category === CATEGORY_PAGES['all-seeds'] ? `
+        <div class="catalog-extra-filters">
+            <label class="catalog-filter-field" for="seed-category-filter">
+                <span>Перейти до каталогу</span>
+                <select id="seed-category-filter">
+                    <option value="all-seeds">Усе насіння</option>
+                    <option value="seeds">Супергострі перці</option>
+                    <option value="tomatoes">Томати</option>
+                    <option value="vegetable-seeds">Інше насіння</option>
                 </select>
             </label>
             <label class="catalog-stock-filter" for="stock-only-filter">
@@ -288,43 +303,31 @@ function getDescriptionText(product) {
 }
 
 function getMiniSpecsHTML(product) {
-    if (!product.specs) return '';
-
     const specs = [];
-    const s = product.specs;
+    const s = product.specs || {};
+    const isSeed = ['seeds', 'tomatoes', 'vegetable-seeds'].includes(product.category);
 
-    // Дозрівання (maturity) - показуємо якщо не порожнє і не "-"
-    if (s.maturity && s.maturity.trim() !== '' && s.maturity.trim() !== '-') {
-        specs.push({ label: 'Дозрівання', value: s.maturity });
+    // Для насіння головне на картці — фасування та числовий діапазон SHU.
+    if (isSeed && product.meta?.count) {
+        specs.push({ label: 'У пакетику', value: product.meta.count });
     }
 
-    // Висота (height) - показуємо якщо не порожнє і не "-"
-    if (s.height && s.height.trim() !== '' && s.height.trim() !== '-') {
-        specs.push({ label: 'Висота', value: s.height });
-    }
-
-    // Врожайність (yield) - показуємо якщо не порожнє і не "-"
-    if (s.yield && s.yield.trim() !== '' && s.yield.trim() !== '-') {
-        specs.push({ label: 'Врожайність', value: s.yield });
-    }
-
-    // Для перців показуємо гострота
-    if ((product.category === 'seeds' || product.isSpicy) && product.heatLevel) {
-        const heat = product.heatLevel.split('(')[0].trim();
-        if (heat && heat !== '-' && heat !== 'N/A') {
-            specs.push({ label: 'Гострота', value: heat });
+    if (product.category === 'seeds' && product.heatLevel) {
+        const shuMatch = product.heatLevel.match(/\(([^()]*)\)/);
+        const shuValue = shuMatch?.[1]?.match(/[\d,.\s–—+-]+\s*SHU/i)?.[0]?.trim();
+        if (shuValue) {
+            specs.push({ label: 'Гострота', value: shuValue.replace(/\\s+/g, ' ') });
         }
     }
 
-    // Для овочів показуємо колір (якщо є)
+    // Решту характеристик залишаємо на сторінці товару; картка зберігає лише
+    // короткі додаткові відомості, які не дублюють висоту чи дозрівання.
     if ((product.category === 'tomatoes' || product.category === 'vegetable-seeds') && s.color && s.color.trim() !== '' && s.color.trim() !== '-') {
         specs.push({ label: 'Колір', value: s.color });
     }
 
-    // Якщо немає характеристик - не показуємо блок
     if (specs.length === 0) return '';
 
-    // Генеруємо HTML для характеристик
     const specsHTML = specs.map(spec => `
         <div class="spec-item">
             <span class="spec-label">${safeText(spec.label)}</span>
@@ -419,7 +422,11 @@ function renderCatalog(container, pageCategory) {
     const productIds = Object.keys(allProducts)
         .filter(id => {
             const product = allProducts[id];
-            return !product.isHidden && (!pageCategory || product.category === pageCategory);
+            const seedCategories = ['seeds', 'tomatoes', 'vegetable-seeds'];
+            const matchesCategory = pageCategory === 'all-seeds'
+                ? seedCategories.includes(product.category)
+                : (!pageCategory || product.category === pageCategory);
+            return !product.isHidden && matchesCategory;
         })
         .sort((a, b) => Number(allProducts[a].inStock === false) - Number(allProducts[b].inStock === false));
 
@@ -509,11 +516,84 @@ function renderSauceBundle(pageCategory) {
     bundleSection.hidden = false;
 }
 
+function initCatalogPagination(container, mainGrid) {
+    const pagination = document.createElement('nav');
+    pagination.className = 'catalog-pagination';
+    pagination.setAttribute('aria-label', 'Сторінки каталогу');
+    pagination.hidden = true;
+    container.insertAdjacentElement('afterend', pagination);
+
+    let currentPage = 1;
+    let pageSize = 12;
+
+    const getColumns = () => {
+        const template = getComputedStyle(container).gridTemplateColumns;
+        const columns = template.trim().split(/\s+/).filter(Boolean).length;
+        return Math.max(1, columns || 1);
+    };
+
+    const getFilteredCards = () => Array.from(container.querySelectorAll('.product-card'))
+        .filter(card => !card.classList.contains('is-filtered-out'));
+
+    const render = (reset = false) => {
+        const cards = Array.from(container.querySelectorAll('.product-card'));
+        const filteredCards = getFilteredCards();
+        pageSize = window.matchMedia('(max-width: 760px)').matches ? 12 : getColumns() * 3;
+        const totalPages = Math.max(1, Math.ceil(filteredCards.length / pageSize));
+        if (reset) currentPage = 1;
+        currentPage = Math.min(currentPage, totalPages);
+
+        const visibleCards = new Set(filteredCards.slice((currentPage - 1) * pageSize, currentPage * pageSize));
+        cards.forEach(card => card.classList.toggle('is-page-hidden', !visibleCards.has(card)));
+
+        pagination.hidden = totalPages <= 1;
+        if (totalPages <= 1) {
+            pagination.replaceChildren();
+            return;
+        }
+
+        pagination.innerHTML = `
+            <button type="button" class="catalog-page-arrow" data-page="prev" aria-label="Попередня сторінка" ${currentPage === 1 ? 'disabled' : ''}>‹</button>
+            <div class="catalog-page-numbers">
+                ${Array.from({ length: totalPages }, (_, index) => {
+                    const page = index + 1;
+                    return `<button type="button" class="catalog-page-number ${page === currentPage ? 'is-active' : ''}" data-page="${page}" aria-label="Сторінка ${page}" aria-current="${page === currentPage ? 'page' : 'false'}">${page}</button>`;
+                }).join('')}
+            </div>
+            <button type="button" class="catalog-page-arrow" data-page="next" aria-label="Наступна сторінка" ${currentPage === totalPages ? 'disabled' : ''}>›</button>
+        `;
+    };
+
+    pagination.addEventListener('click', event => {
+        const button = event.target.closest('button[data-page]');
+        if (!button || button.disabled) return;
+        const filteredCards = getFilteredCards();
+        const totalPages = Math.max(1, Math.ceil(filteredCards.length / pageSize));
+        const target = button.dataset.page;
+        if (target === 'prev') currentPage--;
+        else if (target === 'next') currentPage++;
+        else currentPage = Number(target);
+        currentPage = Math.max(1, Math.min(currentPage, totalPages));
+        render();
+        document.querySelector('.main-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    let resizeFrame = null;
+    window.addEventListener('resize', () => {
+        if (resizeFrame) cancelAnimationFrame(resizeFrame);
+        resizeFrame = requestAnimationFrame(() => render());
+    });
+
+    render();
+    return { refresh: render };
+}
+
 function initFilters(mainGrid) {
     const filterButtons = mainGrid.querySelectorAll('.filter-btn');
     let selectedHeat = 'all';
     const speciesSelect = mainGrid.querySelector('#species-filter');
     const stockOnly = mainGrid.querySelector('#stock-only-filter');
+    const pagination = initCatalogPagination(mainGrid.querySelector('#catalog-container'), mainGrid);
 
     const applyFilters = () => {
         mainGrid.querySelectorAll('.product-card').forEach(card => {
@@ -531,6 +611,7 @@ function initFilters(mainGrid) {
 
             card.classList.toggle('is-filtered-out', !(heatMatches && speciesMatches && stockMatches));
         });
+        pagination?.refresh(true);
     };
 
     filterButtons.forEach(btn => {
@@ -543,6 +624,12 @@ function initFilters(mainGrid) {
     });
 
     speciesSelect?.addEventListener('change', applyFilters);
+    const seedCategorySelect = mainGrid.querySelector('#seed-category-filter');
+    seedCategorySelect?.addEventListener('change', () => {
+        const targetCategory = seedCategorySelect.value;
+        const targetPage = CATEGORY_PAGES[targetCategory];
+        if (targetPage?.url) window.location.href = targetPage.url;
+    });
     stockOnly?.addEventListener('change', applyFilters);
 
     const slider = document.getElementById('scoville-slider');
