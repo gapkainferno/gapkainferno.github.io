@@ -313,8 +313,8 @@ function getMiniSpecsHTML(product) {
     }
 
     if (product.category === 'seeds' && product.heatLevel) {
-        const shuMatch = product.heatLevel.match(/\\(([^()]*)\\)/);
-        const shuValue = shuMatch?.[1]?.match(/[\\d,.,\\s–—+-]+\\s*SHU/i)?.[0]?.trim();
+        const shuMatch = product.heatLevel.match(/\(([^()]*)\)/);
+        const shuValue = shuMatch?.[1]?.match(/[\d,.\s–—+-]+\s*SHU/i)?.[0]?.trim();
         if (shuValue) {
             specs.push({ label: 'Гострота', value: shuValue.replace(/\\s+/g, ' ') });
         }
