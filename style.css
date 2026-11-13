@@ -2247,7 +2247,7 @@ main.product-page {
 .info-col {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     min-width: 0;
 }
 
@@ -2420,7 +2420,7 @@ main.product-page {
 
 #p-desc {
     font-size: var(--fs-base);
-    line-height: 1.85;
+    line-height: 1.68;
     color: rgba(234,221,207,0.82);
     
     /* 1. ОБМЕЖЕННЯ ШИРИНИ */
@@ -2436,11 +2436,11 @@ main.product-page {
     -webkit-hyphens: auto;     /* для підтримки Safari */
     
     /* 4. ВІДСТУПИ */
-    margin-bottom: 25px;       /* Збільшимо відступ знизу для "повітря" */
-    margin-top: 25px;
+    margin-bottom: 12px;
+    margin-top: 10px;
     font-family: var(--font-body);
     font-weight: 400;
-    font-size: 1.05rem;
+    font-size: 1rem;
     text-align: justify;
 }
 .product-specs {
