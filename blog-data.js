@@ -474,7 +474,7 @@ const blogPosts = [
 
     {
     id: 'scoville-scale-explained',
-    title: 'Як вимірюють пекло: Шкала Сковілла простими словами і що вона означає в Україні',
+    title: 'Як вимірюють пекло: Шкала Сковілла простими словами і що вона означає',
     slug: 'scoville-scale-explained',
     category: 'guides',
     categoryLabel: 'Гід по гостроті',
