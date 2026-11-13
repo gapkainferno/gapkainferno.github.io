@@ -1988,6 +1988,11 @@ main.product-page {
     min-width: 0;
 }
 
+/* Піднімаємо вміст сторінки товару ближче до хедера */
+body.product-page-layout main.product-page {
+    margin-top: -36px;
+}
+
 /* Назва товару — спільний заголовок над фото та описом */
 body.product-page-layout main.product-page > #p-name {
     grid-column: 1 / -1;
