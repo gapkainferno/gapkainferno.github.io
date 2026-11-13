@@ -1575,33 +1575,6 @@ body.has-sale-banner {
     opacity: 1;
 }
 
-.scoville-help {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 50%;
-    background: rgba(12, 12, 12, 0.58);
-    color: #fff;
-    font: 700 15px/1 var(--font-heading, sans-serif);
-    cursor: help;
-    z-index: 4;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-.scoville-help:hover,
-.scoville-help:focus-visible,
-.scoville-help.is-open {
-    background: var(--primary-color);
-    border-color: rgba(255,255,255,0.75);
-    outline: none;
-    transform: scale(1.08);
-}
-
-.scoville-help::after,
 .product-heat-help::after {
     content: '';
     position: absolute;
@@ -1611,29 +1584,6 @@ body.has-sale-banner {
     height: 12px;
 }
 
-.scoville-help-tooltip {
-    position: absolute;
-    top: 40px;
-    right: 0;
-    width: min(250px, calc(100vw - 42px));
-    padding: 14px 15px;
-    display: grid;
-    gap: 7px;
-    border: 1px solid rgba(255, 166, 82, 0.48);
-    border-radius: 10px;
-    background: rgba(20, 14, 11, 0.97);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.42), 0 0 20px rgba(255, 120, 35, 0.12);
-    color: #fff;
-    font: 400 12px/1.45 var(--font-body, sans-serif);
-    text-align: left;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(-5px);
-    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
-}
-
-.scoville-help-tooltip::before,
 .product-heat-help-tooltip::before {
     content: '';
     position: absolute;
@@ -1649,24 +1599,28 @@ body.has-sale-banner {
 }
 
 .scoville-help-link {
+    display: inline-block;
+    max-width: 100%;
+    margin: 0 0 9px;
     color: #ffd19e;
+    font: 600 11px/1.35 var(--font-body, sans-serif);
+    text-align: center;
     text-decoration: underline;
-    text-underline-offset: 2px;
+    text-decoration-color: rgba(255, 209, 158, 0.65);
+    text-underline-offset: 3px;
     cursor: pointer;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
 
-.scoville-help:hover .scoville-help-tooltip,
-.scoville-help:focus-visible .scoville-help-tooltip,
-.scoville-help.is-open .scoville-help-tooltip {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateY(0);
+.scoville-help-link:hover,
+.scoville-help-link:focus-visible {
+    color: #fff;
+    text-decoration-color: #fff;
+    outline: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .scoville-help,
-    .scoville-help-tooltip {
+    .scoville-help-link {
         transition: none;
     }
 }
