@@ -516,11 +516,84 @@ function renderSauceBundle(pageCategory) {
     bundleSection.hidden = false;
 }
 
+function initCatalogPagination(container, mainGrid) {
+    const pagination = document.createElement('nav');
+    pagination.className = 'catalog-pagination';
+    pagination.setAttribute('aria-label', 'Сторінки каталогу');
+    pagination.hidden = true;
+    container.insertAdjacentElement('afterend', pagination);
+
+    let currentPage = 1;
+    let pageSize = 12;
+
+    const getColumns = () => {
+        const template = getComputedStyle(container).gridTemplateColumns;
+        const columns = template.split(/\\s+/).filter(Boolean).length;
+        return Math.max(1, columns || 1);
+    };
+
+    const getFilteredCards = () => Array.from(container.querySelectorAll('.product-card'))
+        .filter(card => !card.classList.contains('is-filtered-out'));
+
+    const render = (reset = false) => {
+        const cards = Array.from(container.querySelectorAll('.product-card'));
+        const filteredCards = getFilteredCards();
+        pageSize = getColumns() * 3;
+        const totalPages = Math.max(1, Math.ceil(filteredCards.length / pageSize));
+        if (reset) currentPage = 1;
+        currentPage = Math.min(currentPage, totalPages);
+
+        const visibleCards = new Set(filteredCards.slice((currentPage - 1) * pageSize, currentPage * pageSize));
+        cards.forEach(card => card.classList.toggle('is-page-hidden', !visibleCards.has(card)));
+
+        pagination.hidden = totalPages <= 1;
+        if (totalPages <= 1) {
+            pagination.replaceChildren();
+            return;
+        }
+
+        pagination.innerHTML = `
+            <button type="button" class="catalog-page-arrow" data-page="prev" aria-label="Попередня сторінка" ${currentPage === 1 ? 'disabled' : ''}>‹</button>
+            <div class="catalog-page-numbers">
+                ${Array.from({ length: totalPages }, (_, index) => {
+                    const page = index + 1;
+                    return `<button type="button" class="catalog-page-number ${page === currentPage ? 'is-active' : ''}" data-page="${page}" aria-label="Сторінка ${page}" aria-current="${page === currentPage ? 'page' : 'false'}">${page}</button>`;
+                }).join('')}
+            </div>
+            <button type="button" class="catalog-page-arrow" data-page="next" aria-label="Наступна сторінка" ${currentPage === totalPages ? 'disabled' : ''}>›</button>
+        `;
+    };
+
+    pagination.addEventListener('click', event => {
+        const button = event.target.closest('button[data-page]');
+        if (!button || button.disabled) return;
+        const filteredCards = getFilteredCards();
+        const totalPages = Math.max(1, Math.ceil(filteredCards.length / pageSize));
+        const target = button.dataset.page;
+        if (target === 'prev') currentPage--;
+        else if (target === 'next') currentPage++;
+        else currentPage = Number(target);
+        currentPage = Math.max(1, Math.min(currentPage, totalPages));
+        render();
+        document.querySelector('.main-layout')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    let resizeFrame = null;
+    window.addEventListener('resize', () => {
+        if (resizeFrame) cancelAnimationFrame(resizeFrame);
+        resizeFrame = requestAnimationFrame(() => render());
+    });
+
+    render();
+    return { refresh: render };
+}
+
 function initFilters(mainGrid) {
     const filterButtons = mainGrid.querySelectorAll('.filter-btn');
     let selectedHeat = 'all';
     const speciesSelect = mainGrid.querySelector('#species-filter');
     const stockOnly = mainGrid.querySelector('#stock-only-filter');
+    const pagination = initCatalogPagination(mainGrid.querySelector('#catalog-container'), mainGrid);
 
     const applyFilters = () => {
         mainGrid.querySelectorAll('.product-card').forEach(card => {
@@ -538,6 +611,7 @@ function initFilters(mainGrid) {
 
             card.classList.toggle('is-filtered-out', !(heatMatches && speciesMatches && stockMatches));
         });
+        pagination?.refresh(true);
     };
 
     filterButtons.forEach(btn => {
