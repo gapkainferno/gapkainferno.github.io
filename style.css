@@ -1593,29 +1593,40 @@ body.has-sale-banner {
     height: 12px;
 }
 
-.scoville-help-link {
-    display: inline-block;
-    max-width: 100%;
-    margin: 0 0 9px;
-    color: #ffd19e;
-    font: 600 11px/1.35 var(--font-body, sans-serif);
-    text-align: center;
-    text-decoration: underline;
-    text-decoration-color: rgba(255, 209, 158, 0.65);
-    text-underline-offset: 3px;
-    cursor: pointer;
-    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+.shu-value-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-bottom: 8px;
 }
 
-.scoville-help-link:hover,
-.scoville-help-link:focus-visible {
+/* Постійна кнопка-підказка біля показника SHU */
+.scoville-help-icon {
+    display: inline-flex;
+    flex: 0 0 17px;
+    width: 17px;
+    height: 17px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 209, 158, 0.85);
+    border-radius: 50%;
+    color: #ffd19e;
+    font: 700 11px/1 Arial, sans-serif;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.scoville-help-icon:hover,
+.scoville-help-icon:focus-visible {
     color: #fff;
-    text-decoration-color: #fff;
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.12);
     outline: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .scoville-help-link {
+    .scoville-help-icon {
         transition: none;
     }
 }
@@ -1626,7 +1637,7 @@ body.has-sale-banner {
     font-family: 'Monaco', monospace;
     font-weight: bold;
     font-size: 1.2rem;
-    margin-bottom: 8px;
+    margin: 0;
     text-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
 }
 
