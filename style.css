@@ -1333,10 +1333,8 @@ body.has-sale-banner {
     border-radius: 10px;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    position: sticky;
-    top: 12px;
-    z-index: 80;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.28);
+    position: relative;
+    z-index: 1;
 }
 
 .filter-title {
