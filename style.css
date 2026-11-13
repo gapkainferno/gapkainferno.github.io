@@ -2583,28 +2583,24 @@ main.product-page {
 .back-btn {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 9px;
-    padding: 11px 22px;
-    border: 2px solid var(--primary-color);
-    border-radius: var(--radius-sm);
-    background: linear-gradient(to bottom, var(--primary-color), var(--primary-hover));
-    color: #fff;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 4px 0;
+    border: 0;
+    background: transparent;
+    color: var(--text-muted);
     font-family: inherit;
-    font-size: var(--fs-sm);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 0.82rem;
+    text-transform: none;
+    letter-spacing: 0;
     cursor: pointer;
-    margin: 20px 0;
-    /* точна ширина = sidebar, кнопка вирівняна по його лівому краю */
-    width: var(--sidebar-width);
-    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-    box-shadow: 0 4px 12px var(--accent-shadow);
+    margin: 0 0 10px;
+    width: auto;
+    box-shadow: none;
+    transition: color 0.2s ease;
 }
-.back-btn:hover { 
-    transform: translateX(-3px);
-    box-shadow: 0 8px 20px var(--accent-shadow);
-    background: linear-gradient(to bottom, var(--primary-hover), var(--primary-color));
+.back-btn:hover {
+    color: var(--primary-orange);
 }
 .back-btn:focus-visible {
     outline: 2px solid var(--primary-color);
@@ -4031,8 +4027,8 @@ footer {
 
     /* back-btn на мобілці — на всю ширину */
     .back-btn {
-        width: 100%;
-        margin-bottom: 20px;
+        width: auto;
+        margin: 0 0 8px;
     }
 
     /* Каталог */
