@@ -2629,7 +2629,7 @@ main.product-page {
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
-    margin: 20px 0;
+    margin: 0 0 8px;
     /* точна ширина = sidebar, кнопка вирівняна по його лівому краю */
     width: var(--sidebar-width);
     transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
@@ -4066,7 +4066,7 @@ footer {
     /* back-btn на мобілці — на всю ширину */
     .back-btn {
         width: 100%;
-        margin-bottom: 20px;
+        margin: 0 0 8px;
     }
 
     /* Каталог */
