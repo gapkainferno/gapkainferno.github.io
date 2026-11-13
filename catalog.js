@@ -326,7 +326,7 @@ function getMiniSpecsHTML(product) {
             <span class="spec-label">${safeText(spec.label)}</span>
             <span class="spec-value">
                 ${safeText(spec.value)}
-                ${spec.label === 'Гострота' && SCOVILLE_HELP.link ? `<a class="scoville-help-icon" href="${SCOVILLE_HELP.link}" aria-label="${safeText(SCOVILLE_HELP.title)}" title="${safeText(SCOVILLE_HELP.title)}" onclick="event.stopPropagation();">?</a>` : ''}
+                ${spec.label === 'Гострота' && SCOVILLE_HELP.link ? `<span class="scoville-help-icon" role="link" tabindex="0" aria-label="${safeText(SCOVILLE_HELP.title)}" title="${safeText(SCOVILLE_HELP.title)}" onclick="event.stopPropagation(); event.preventDefault(); window.location.href='${SCOVILLE_HELP.link}'; return false;" onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.click(); }">?</span>` : ''}
             </span>
         </div>
     `).join('');
