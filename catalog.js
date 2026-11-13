@@ -120,7 +120,7 @@ const HEAT_LEVELS = {
 
 const SCOVILLE_HELP = {
     title: isEnglishCatalog ? 'What do these numbers mean?' : 'Що означають ці цифри?',
-    link: 'blog-article.html?id=scoville-scale-explained'
+    link: isEnglishCatalog ? '' : 'blog-article.html?id=scoville-scale-explained'
 };
 
 const SCOVILLE_DATA = isEnglishCatalog ? {
