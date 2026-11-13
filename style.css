@@ -1012,7 +1012,7 @@ body.has-sale-banner {
 /* Ущільнюємо верхній відступ лише основної колонки каталогу.
    Сайдбар категорій та хедер залишаються без змін. */
 .main-layout > main.products-grid {
-    margin-top: -36px;
+    margin-top: -66px;
 }
 
 
