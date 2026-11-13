@@ -1984,9 +1984,27 @@ body.has-sale-banner {
 main.product-page {
     display: grid;
     grid-template-columns: 1.1fr 1.2fr;
-    gap: 40px;
+    gap: 22px 40px;
     align-items: start;
     min-width: 0;
+}
+
+/* Назва товару — спільний заголовок над фото та описом */
+body.product-page-layout main.product-page > #p-name {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin: 0;
+    padding: 2px 0 4px;
+    text-align: center;
+    font-size: clamp(1.5rem, 2.4vw, 2.15rem);
+    line-height: 1.2;
+}
+
+/* Компактніша галерея: менше порожнього простору над і під фото */
+body.product-page-layout .main-img-wrap {
+    aspect-ratio: 4 / 3;
+    margin-top: 0;
+    margin-bottom: 8px;
 }
 
 .related-products-section {
