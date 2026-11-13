@@ -236,10 +236,10 @@ function renderCategoryFilters(mainGrid, category) {
     ` : category === CATEGORY_PAGES['all-seeds'] ? `
         <div class="catalog-extra-filters">
             <label class="catalog-filter-field" for="seed-category-filter">
-                <span>Показати</span>
+                <span>Перейти до каталогу</span>
                 <select id="seed-category-filter">
-                    <option value="all">Усі культури</option>
-                    <option value="seeds">Гострі перці</option>
+                    <option value="all-seeds">Усе насіння</option>
+                    <option value="seeds">Супергострі перці</option>
                     <option value="tomatoes">Томати</option>
                     <option value="vegetable-seeds">Інше насіння</option>
                 </select>
@@ -541,9 +541,6 @@ function initFilters(mainGrid) {
             if (!product) return;
 
             const heatMatches = selectedHeat === 'all' || String(product.heatScore || '') === selectedHeat;
-            const seedCategorySelect = mainGrid.querySelector('#seed-category-filter');
-            const selectedSeedCategory = seedCategorySelect?.value || 'all';
-            const seedCategoryMatches = selectedSeedCategory === 'all' || product.category === selectedSeedCategory;
             const selectedSpecies = speciesSelect?.value || 'all';
             const speciesMatches = selectedSpecies === 'all' ||
                 String(product.specs?.species || '').normalize('NFKC').replace(/\s+/g, ' ').trim().toLocaleLowerCase('uk') ===
@@ -551,7 +548,7 @@ function initFilters(mainGrid) {
             const stockMatches = !stockOnly?.checked ||
                 (product.inStock === true && product.allowSale === true && product.isHidden !== true);
 
-            card.classList.toggle('is-filtered-out', !(heatMatches && seedCategoryMatches && speciesMatches && stockMatches));
+            card.classList.toggle('is-filtered-out', !(heatMatches && speciesMatches && stockMatches));
         });
     };
 
@@ -565,7 +562,12 @@ function initFilters(mainGrid) {
     });
 
     speciesSelect?.addEventListener('change', applyFilters);
-    mainGrid.querySelector('#seed-category-filter')?.addEventListener('change', applyFilters);
+    const seedCategorySelect = mainGrid.querySelector('#seed-category-filter');
+    seedCategorySelect?.addEventListener('change', () => {
+        const targetCategory = seedCategorySelect.value;
+        const targetPage = CATEGORY_PAGES[targetCategory];
+        if (targetPage?.url) window.location.href = targetPage.url;
+    });
     stockOnly?.addEventListener('change', applyFilters);
 
     const slider = document.getElementById('scoville-slider');
@@ -594,8 +596,6 @@ function initFilters(mainGrid) {
         updateThermometerDisplay('1');
         selectedHeat = 'all';
         if (speciesSelect) speciesSelect.value = 'all';
-        const seedCategorySelect = mainGrid.querySelector('#seed-category-filter');
-        if (seedCategorySelect) seedCategorySelect.value = 'all';
         if (stockOnly) stockOnly.checked = false;
         filterButtons.forEach(button => button.classList.remove('active'));
         mainGrid.querySelector('.filter-btn[data-heat="all"]')?.classList.add('active');
