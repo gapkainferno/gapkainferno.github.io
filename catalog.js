@@ -538,7 +538,7 @@ function initCatalogPagination(container, mainGrid) {
     const render = (reset = false) => {
         const cards = Array.from(container.querySelectorAll('.product-card'));
         const filteredCards = getFilteredCards();
-        pageSize = getColumns() * 3;
+        pageSize = window.matchMedia('(max-width: 760px)').matches ? 12 : getColumns() * 3;
         const totalPages = Math.max(1, Math.ceil(filteredCards.length / pageSize));
         if (reset) currentPage = 1;
         currentPage = Math.min(currentPage, totalPages);
