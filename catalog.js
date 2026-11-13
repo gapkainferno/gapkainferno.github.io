@@ -303,43 +303,35 @@ function getDescriptionText(product) {
 }
 
 function getMiniSpecsHTML(product) {
-    if (!product.specs) return '';
-
     const specs = [];
-    const s = product.specs;
+    const s = product.specs || {};
+    const isSeed = ['seeds', 'tomatoes', 'vegetable-seeds'].includes(product.category);
 
-    // Дозрівання (maturity) - показуємо якщо не порожнє і не "-"
-    if (s.maturity && s.maturity.trim() !== '' && s.maturity.trim() !== '-') {
-        specs.push({ label: 'Дозрівання', value: s.maturity });
+    // Для насіння головне на картці — фасування та числовий діапазон SHU.
+    if (isSeed && product.meta?.count) {
+        specs.push({ label: 'У пакетику', value: product.meta.count });
     }
 
-    // Висота (height) - показуємо якщо не порожнє і не "-"
-    if (s.height && s.height.trim() !== '' && s.height.trim() !== '-') {
-        specs.push({ label: 'Висота', value: s.height });
+    if (product.category === 'seeds' && product.heatLevel) {
+        const shuMatch = product.heatLevel.match(/\\(([^()]*)\\)/);
+        const shuValue = shuMatch?.[1]?.match(/[\\d,.,\\s–—+-]+\\s*SHU/i)?.[0]?.trim();
+        if (shuValue) {
+            specs.push({ label: 'Гострота', value: shuValue.replace(/\\s+/g, ' ') });
+        }
     }
 
-    // Врожайність (yield) - показуємо якщо не порожнє і не "-"
+    // Решту характеристик залишаємо на сторінці товару; картка зберігає лише
+    // короткі додаткові відомості, які не дублюють висоту чи дозрівання.
     if (s.yield && s.yield.trim() !== '' && s.yield.trim() !== '-') {
         specs.push({ label: 'Врожайність', value: s.yield });
     }
 
-    // Для перців показуємо гострота
-    if ((product.category === 'seeds' || product.isSpicy) && product.heatLevel) {
-        const heat = product.heatLevel.split('(')[0].trim();
-        if (heat && heat !== '-' && heat !== 'N/A') {
-            specs.push({ label: 'Гострота', value: heat });
-        }
-    }
-
-    // Для овочів показуємо колір (якщо є)
     if ((product.category === 'tomatoes' || product.category === 'vegetable-seeds') && s.color && s.color.trim() !== '' && s.color.trim() !== '-') {
         specs.push({ label: 'Колір', value: s.color });
     }
 
-    // Якщо немає характеристик - не показуємо блок
     if (specs.length === 0) return '';
 
-    // Генеруємо HTML для характеристик
     const specsHTML = specs.map(spec => `
         <div class="spec-item">
             <span class="spec-label">${safeText(spec.label)}</span>
