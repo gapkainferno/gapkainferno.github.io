@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-13T14:17:37.069Z",
+  "generatedAt": "2026-11-18T12:08:47.305Z",
   "sale": {
     "isActive": false,
     "discountPercent": 10,
@@ -1564,19 +1564,19 @@
     "bagryanyy-shepit": {
       "name": "Насіння перцю Багряний Шепіт (Crimson Whisper)",
       "category": "vegetable-seeds",
-      "price": 35,
+      "price": 30,
       "inStock": true,
       "allowSale": true,
       "isHidden": false,
       "variants": {
         "openPollinated": {
           "label": "Open Pollinated",
-          "price": 35,
+          "price": 30,
           "inStock": true
         },
         "isolated": {
           "label": "Ізольоване",
-          "price": 44,
+          "price": 38,
           "inStock": false
         }
       }
