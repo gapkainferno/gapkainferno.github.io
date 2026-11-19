@@ -7339,3 +7339,16 @@ body.homepage .cards-section > a.card-link:hover > .card-arrow {
   overflow-wrap: anywhere;
   line-height: 1.3;
 }
+
+/* Homepage sauces card: keep the hover title readable over the pepper-red photo.
+   The cherry accent remains on the short decorative line. */
+body.homepage .cards-section > a.card-link.sauces:hover > .card-label {
+  color: #fff1e8 !important;
+  text-shadow:
+    0 2px 5px rgba(0, 0, 0, .95),
+    0 5px 16px rgba(0, 0, 0, .9);
+}
+
+body.homepage .cards-section > a.card-link.sauces:hover > .card-label::before {
+  background: #b83240 !important;
+}
